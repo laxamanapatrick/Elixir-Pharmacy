@@ -65,6 +65,7 @@ const LoginPage = () => {
                     Login
                 </Button>
                 <Text color='gray.300' fontSize='10px'>© 2022, Elixir Powered by MIS</Text>
+                {/* <Text>Test git</Text> */}
             </VStack>
         </form>
     </Flex>;
