@@ -353,7 +353,6 @@ const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSub
 
     } catch (err) {
     }
-    console.log(data.formData)
   }
 
   const fetchMainMenu = async () => {
