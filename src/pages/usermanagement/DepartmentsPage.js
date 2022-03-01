@@ -62,7 +62,7 @@ const currentUser = decodeUser()
 const schema = yup.object().shape({
   formData: yup.object().shape({
     id: yup.string(),
-    departmentName: yup.string().required("Main Menu is required"),
+    departmentName: yup.string().required("Department name is required"),
   })
 })
 
@@ -84,6 +84,7 @@ const DepartmentsPage = () => {
       formData: {
         id: "",
         departmentName: "",
+        addedBy: currentUser.addedBy
       }
     }
   })

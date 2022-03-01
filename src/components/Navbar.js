@@ -10,7 +10,7 @@ const Navbar = (props) => {
         <Flex>
             {menus.subMenu.map((sub) => (
                 <Link to={sub.path} key={sub.title}>
-                    <Box bgColor={pathname.includes(sub.path) ? 'accent' : 'secondary'} p={2} borderBottom='1px' borderColor='primary' cursor='pointer' _hover={{ bgColor: 'accent' }}>
+                    <Box bgColor={pathname.includes(sub.path) ? 'accent' : 'secondary'} p={2} borderRight="1px" borderBottom='1px' borderColor='primary' cursor='pointer' _hover={{ bgColor: 'accent' }}>
                         <Text color='white'>{sub.title}</Text>
                     </Box>
                 </Link>

@@ -142,7 +142,7 @@ function App() {
             <Route path="raw-materials-masterlisting" element={user ? <RawMaterialsPage /> : <Navigate to="/login" />} />
             <Route path="customer-management" element={user ? <CustomerManagementPage /> : <Navigate to="/login" />} />
             <Route path="supplier" element={user ? <SupplierPage /> : <Navigate to="/login" />} />
-            <Route path="transformation-management" element={user ? <TransformationManagementPage /> : <Navigate to="/login" />} />
+            <Route path="t-management" element={user ? <TransformationManagementPage /> : <Navigate to="/login" />} />
             <Route path="reason" element={user ? <ReasonPage /> : <Navigate to="/login" />} />
           </Route>
 

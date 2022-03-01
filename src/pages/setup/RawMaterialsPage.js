@@ -56,6 +56,7 @@ import {
   PaginationPageGroup,
 } from '@ajna/pagination'
 import { FaSearch } from 'react-icons/fa';
+// import { RawMaterialsContext } from '../../context/RawMaterials-Context';
 
 const currentUser = decodeUser()
 
@@ -175,6 +176,7 @@ const RawMaterialsPage = () => {
   }
 
   return (
+    // <RawMaterialsContext.Provider value={{raws}}>
     <Flex p={5} w='full' flexDirection='column'>
       <Flex mb={2} justifyContent='space-between'>
 
@@ -342,6 +344,7 @@ const RawMaterialsPage = () => {
 
       </Flex>
     </Flex>
+    // </RawMaterialsContext.Provider>
   )
 };
 
