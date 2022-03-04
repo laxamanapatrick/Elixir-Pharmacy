@@ -191,7 +191,7 @@ const UserRolePage = () => {
               pointerEvents='none'
               children={<FaSearch color='gray.300' />}
             />
-            <Input type='text' placeholder='ex: juan dela cruz' onChange={(e) => searchHandler(e.target.value)} focusBorderColor='accent' />
+            <Input type='text' placeholder='Search: Role' onChange={(e) => searchHandler(e.target.value)} focusBorderColor='accent' />
           </InputGroup>
         </HStack>
 
@@ -226,6 +226,7 @@ const UserRolePage = () => {
                   <Th color='white'>Modified by</Th>
                   <Th color='white'>Date modified</Th>
                   <Th color='white'>Actions</Th>
+                  <Th color='white'>Access</Th>
                 </Tr>
               </Thead>
               <Tbody>
@@ -263,12 +264,13 @@ const UserRolePage = () => {
                             </Portal>
                           </Popover>
 
-                          <Button p={0} background='none' color='secondary' onClick={() => { taggingHandler(role.id, role.roleName) }}>
-                            <AiFillTag />
-                          </Button>
-
                         </HStack>
                       </Flex>
+                    </Td>
+                    <Td>
+                      <Button p={0} background='none' color='secondary' onClick={() => { taggingHandler(role.id, role.roleName) }}>
+                        <AiFillTag />
+                      </Button>
                     </Td>
                   </Tr>
                 )

@@ -21,7 +21,8 @@ import {
     Th,
     Thead,
     toast,
-    Tr
+    Tr,
+    VStack
 } from '@chakra-ui/react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from "yup";
@@ -35,12 +36,12 @@ import { ToastComponent } from '../../../components/Toast';
 
 const currentUser = decodeUser()
 
-// const schema = yup.object().shape({
+// const modalSchema = yup.object().shape({
 //     formData: yup.object().shape({
-//         id: yup.string(),
-//         formulaCode: yup.string().required("Item code is required"),
-//         formulaDescription: yup.string().required("Item code is required"),
-//         formulaQuantity: yup.string().required("Quantity is required").typeError("Must be a number")
+//         rawMaterialId: yup.string(),
+//         itemCode: yup.string().required("Item code is required"),
+//         rawMaterialQuantity: yup.string().required("Quantity is required"),
+//         rawMaterialDescription: yup.string().required("Description is required")
 //     })
 // })
 
@@ -53,20 +54,8 @@ const ModalComponent = ({ isOpen, onClose, formulaId, formulaItemCode, formulaIt
     const [itemCode, setItemCode] = useState("")
     const [recipeData, setRecipeData] = useState([])
     const [isLoading, setisLoading] = useState(false)
-
-    // const { register, handleSubmit, formState: { errors, isValid }, setValue, reset } = useForm({
-    //     resolver: yupResolver(schema),
-    //     mode: "onChange",
-    //     defaultValues: {
-    //         formData: {
-    //             id: "",
-    //             requirementCode: "",
-    //             requirementDescription: "",
-    //             requirementQuantity: "",
-    //             addedBy: currentUser.userName,
-    //         }
-    //     }
-    // })
+    const [errors, setErrors] = useState({
+    })
 
     const fetchFormulationRequirementsApi = async () => {
         const res = await apiClient.get(`Transformation/GetAllFormulaWithRequirementByFormulaId/${formulaId}`)
@@ -98,11 +87,17 @@ const ModalComponent = ({ isOpen, onClose, formulaId, formulaItemCode, formulaIt
         fetchRaws()
     }, [setRaws])
 
-    const rawMaterialDescriptionHandler = (raw) => {
-        const newRaw = JSON.parse(raw)
-        setRawMaterialDescription(newRaw.itemDescription)
-        setRawMaterialId(newRaw.id)
-        setItemCode(newRaw.itemCode)
+    const rawMaterialDescriptionHandler = (data) => {
+        if (data) {
+            const newRaw = JSON.parse(data)
+            setRawMaterialDescription(newRaw.itemDescription)
+            setRawMaterialId(newRaw.id)
+            setItemCode(newRaw.itemCode)
+        }
+        else {
+            setItemCode("")
+        }
+
     }
 
     const rawMaterialQuantityHandler = (data) => {
@@ -110,15 +105,36 @@ const ModalComponent = ({ isOpen, onClose, formulaId, formulaItemCode, formulaIt
     }
 
     const recipeDataHandler = () => {
+        if (!itemCode) {
+            setErrors({
+                code: true,
+            })
+            return
+        }
+        if (!rawMaterialQuantity) {
+            setErrors({
+                quantity: true
+            })
+            return
+        } else {
+            setErrors({
+                code: false,
+                quantity: false
+            })
+        }
+
         const data = {
-            "rawMaterialId" : rawMaterialId,
-            "itemCode" : itemCode,
-            "rawMaterialQuantity" : rawMaterialQuantity,
-            "rawMaterialDescription" : rawMaterialDescription,
+            "rawMaterialId": rawMaterialId,
+            "itemCode": itemCode,
+            "rawMaterialQuantity": rawMaterialQuantity,
+            "rawMaterialDescription": rawMaterialDescription,
             "formulaId": formulaId
         }
         setRecipeData([...recipeData, data])
-        console.log(recipeData)
+    }
+
+    const deleteRecipeHandler = (id, itemCode, description, quantity) => {
+        console.log(id, itemCode, description, quantity)
     }
 
     return (
@@ -130,92 +146,82 @@ const ModalComponent = ({ isOpen, onClose, formulaId, formulaItemCode, formulaIt
             <ModalOverlay />
 
             <ModalContent>
-                <ModalHeader>Transformation Formula Requirements for {formulaItemCode} : {formulaItemDescription}</ModalHeader>
+                <ModalHeader>
+                    <VStack><Text>Transformation Formula</Text></VStack>
+                    <Flex flexDirection='column'>
+                        <Text fontSize='md'>Code: {formulaItemCode}</Text>
+                        <Text fontSize='md'>Description: {formulaItemDescription}</Text>
+                    </Flex>
+                </ModalHeader>
                 <ModalCloseButton />
 
                 <ModalBody>
 
-                    <form>
-                        <HStack mb={3}>
+                    <HStack mb={3}>
 
-                            <Flex flexDirection='column'>
+                        <Flex flexDirection='column'>
 
-                                <HStack mb={1}>
-                                    <Text>
-                                        Item Code:
-                                    </Text>
-                                    {
-                                        raws.length > 0 ?
-                                            (<Select
-                                                // {...register("formData.requirementCode")}
-                                                onChange={(e) => rawMaterialDescriptionHandler(e.target.value)}
-                                                placeholder='Select Item Code'
-                                                w='60%'
-                                            >
-                                                {raws?.map(raw =>
-                                                    <option key={raw.id} value={JSON.stringify(raw)}>{raw.itemCode}</option>
-                                                )}
-                                            </Select>) : "Loading"
-                                    }
-                                    {/* <Text color="danger" fontSize="xs">{errors.formData?.requirementCode?.message}</Text> */}
-                                </HStack>
+                            <HStack mb={1}>
+                                <Text>
+                                    Item Code:
+                                </Text>
+                                {
+                                    raws.length > 0 ?
+                                        (<Select
+                                            placeholder='Select Item Code'
+                                            w='60%'
+                                            onChange={(e) => rawMaterialDescriptionHandler(e.target.value)}
+                                            isInvalid={errors.code}
+                                        >
+                                            {raws?.map(raw =>
+                                                <option key={raw.id} value={JSON.stringify(raw)}>{raw.itemCode}</option>
+                                            )}
+                                        </Select>) : "Loading"
+                                }
+                            </HStack>
 
-                                <HStack>
-                                    <Text>
-                                        Quantity:
-                                    </Text>
-                                    <Input
-                                        onChange={(e) => rawMaterialQuantityHandler(e.target.value)}
-                                        // {...register("formData.requirementQuantity")}
-                                        w='65%' placeholder='Enter Quantity' />
-                                    {/* <Text color="danger" fontSize="xs">{errors.formData?.requirementQuantity?.message}</Text> */}
-                                </HStack>
+                            <HStack>
+                                <Text>
+                                    Quantity:
+                                </Text>
+                                <Input
+                                    type='number'
+                                    isInvalid={errors.quantity}
+                                    onChange={(e) => rawMaterialQuantityHandler(e.target.value)}
+                                    w='65%' placeholder='Enter Quantity' />
+                            </HStack>
 
-                            </Flex>
+                        </Flex>
 
-                            <Flex flexDirection='column' ml={10}>
+                        <Flex flexDirection='column' ml={10}>
 
-                                <HStack>
-                                    <Text>
-                                        Item Description:
-                                    </Text>
-                                    <Text
-                                        // {...register("formData.requirementDescription")}
-                                        color='black'>{rawMaterialDescription}
-                                    </Text>
-                                    {/* <Text color="danger" fontSize="xs">{errors.formData?.requirementDescription?.message}</Text> */}
-                                </HStack>
+                            <HStack>
+                                <Text>
+                                    Item Description:
+                                </Text>
+                                <Text
+                                    color='black'>{rawMaterialDescription}
+                                </Text>
+                            </HStack>
 
-                            </Flex>
+                        </Flex>
 
-                            <Flex>
-                                <Button p={0}
-                                    onClick={recipeDataHandler}
-                                    bgColor='secondary'
-                                    color='white'
-                                    _hover={{ bgColor: 'accent' }}
-                                >
-                                    <IoIosAddCircle fontSize='25px' />
-                                </Button>
-                            </Flex>
+                        <Flex>
+                            <Button p={0}
+                                onClick={recipeDataHandler}
+                                bgColor='secondary'
+                                color='white'
+                                _hover={{ bgColor: 'accent' }}
+                            >
+                                <IoIosAddCircle fontSize='25px' />
+                            </Button>
+                        </Flex>
 
-                        </HStack>
-                    </form>
-
-
-
-
-
+                    </HStack>
 
 
 
                     {/* Table of submitted */}
-
-
-
-
-
-
 
 
 
@@ -244,7 +250,7 @@ const ModalComponent = ({ isOpen, onClose, formulaId, formulaItemCode, formulaIt
                                             <Button p={0}
                                                 background='none'
                                                 color='secondary'
-                                            // onClick={() => deleteRecipeHandler(recipe.requirementId)}
+                                                onClick={() => deleteRecipeHandler(recipe.rawMaterialId, recipe.itemCode, recipe.rawMaterialDescription, recipe.rawMaterialQuantity)}
                                             >
                                                 <AiFillMinusCircle fontSize='25px' />
                                             </Button>

@@ -187,7 +187,7 @@ const CustomerManagementPage = () => {
               pointerEvents='none'
               children={<FaSearch color='gray.300' />}
             />
-            <Input type='text' placeholder='ex: juan dela cruz'
+            <Input type='text' placeholder='Search: Customer Name'
               onChange={(e) => searchHandler(e.target.value)}
               focusBorderColor='accent'
             />
@@ -440,7 +440,7 @@ const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSub
                         placeholder='Select Farm Type'>
                         {farms.map(farm => (
                           <option key={farm.id} value={farm.id}>{farm.farmName}</option>
-                          
+
                         ))}
 
                       </Select>) : "loading"
@@ -462,6 +462,7 @@ const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSub
                 <Box>
                   <FormLabel>Mobile Number:</FormLabel>
                   <Input
+                    type='number'
                     placeholder='Please enter Mobile Number'
                     {...register("formData.mobileNumber")}
                   />

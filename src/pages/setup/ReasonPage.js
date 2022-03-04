@@ -174,7 +174,7 @@ const ReasonPage = () => {
               pointerEvents='none'
               children={<FaSearch color='gray.300' />}
             />
-            <Input type='text' placeholder='ex: juan dela cruz'
+            <Input type='text' placeholder='Search: Reason'
               onChange={(e) => searchHandler(e.target.value)}
               focusBorderColor='accent'
             />

@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -34,18 +35,17 @@ import {
   DrawerOverlay,
   FormLabel
 } from '@chakra-ui/react';
-import React, { useEffect, useState, useCallback } from 'react';
-import apiClient from '../../services/apiClient';
+import apiClient from '../../../services/apiClient';
 import { FcAddDatabase } from 'react-icons/fc'
 import { RiEditBoxFill } from 'react-icons/ri'
 import { GiChoice } from 'react-icons/gi'
 import { useDisclosure } from '@chakra-ui/react';
-import { ToastComponent } from '../../components/Toast';
+import { ToastComponent } from '../../../components/Toast';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
-import { decodeUser } from '../../services/decode-user';
-import { FaSearch } from 'react-icons/fa';
+import { decodeUser } from '../../../services/decode-user';
+import PageScroll from '../../../components/PageScroll';
 import {
   Pagination,
   usePagination,
@@ -55,26 +55,26 @@ import {
   PaginationContainer,
   PaginationPageGroup,
 } from '@ajna/pagination'
-import PageScroll from '../../components/PageScroll';
+import { FaSearch } from 'react-icons/fa';
 
 const currentUser = decodeUser()
 
 const schema = yup.object().shape({
   formData: yup.object().shape({
     id: yup.string(),
-    departmentName: yup.string().required("Department name is required"),
+    itemCategoryName: yup.string().required("Category is required"),
   })
 })
 
-const fetchDepartmentsApi = async (status) => {
-  const res = await apiClient.get(`User/GetDepartmentByStatus/${status}`)
+const fetchCategoryApi = async () => {
+  const res = await apiClient.get(`RawMaterial/GetAllItemCategory`)
   return res.data
 }
 
-const DepartmentsPage = () => {
-  const [departments, setDepartments] = useState([])
+
+const ItemCategoryPage = () => {
+  const [categories, setCategories] = useState([])
   const [isLoading, setIsLoading] = useState(true)
-  const [status, setStatus] = useState(true)
   const toast = useToast()
   const { isOpen: isDrawerOpen, onOpen: openDrawer, onClose: closeDrawer } = useDisclosure()
 
@@ -84,61 +84,44 @@ const DepartmentsPage = () => {
     defaultValues: {
       formData: {
         id: "",
-        departmentName: "",
+        itemCategoryName: "",
         addedBy: currentUser.addedBy
       }
     }
   })
 
-  const fetchDepartments = () => {
-    fetchDepartmentsApi(status).then(res => {
-      setDepartments(res)
+  const fetchCategory = () => {
+    fetchCategoryApi().then(res => {
+      setCategories(res)
     })
   }
 
   useEffect(() => {
-    fetchDepartments()
+    fetchCategory()
     setIsLoading(false)
-  }, [status])
+  }, [])
 
-  const statusHandler = (data) => {
-    setStatus(data)
-  }
+  //No status parameters for item category
 
-  const changeStatusHandler = (id, status) => {
-    let routeLabel;
-    if (status) {
-      routeLabel = "InActiveDepartment"
-    } else {
-      routeLabel = "ActivateDepartment"
-    }
-
-    apiClient.put(`User/${routeLabel}/${id}`, { id: id }).then((res) => {
-      ToastComponent("Success", "Deparment Updated", "success", toast)
-      fetchDepartments()
-    }).catch(err => {
-      console.log(err);
-    })
-  }
-
-  const editHandler = (dep) => {
+  const editHandler = (cat) => {
     openDrawer();
     setValue("formData", {
-      id: dep.id,
-      departmentName: dep.departmentName,
+      id: cat.id,
+      itemCategoryName: cat.itemCategoryName,
     }, { shouldValidate: true })
 
   }
 
-  const newDepartmentHandler = () => {
+  const newCategoryHandler = () => {
     openDrawer()
     reset()
   }
 
+
   return (
     <Flex p={5} w="full" flexDirection="column">
 
-      <Flex mb={2.5} justifyContent='end'>
+      {/* <Flex mb={2.5} justifyContent='end'>
         <HStack>
           <Text>STATUS: </Text>
           <Select onChange={(e) => statusHandler(e.target.value)}>
@@ -146,7 +129,7 @@ const DepartmentsPage = () => {
             <option value={false}>Inactive</option>
           </Select>
         </HStack>
-      </Flex>
+      </Flex> */}
 
       <PageScroll>
         {
@@ -164,26 +147,26 @@ const DepartmentsPage = () => {
               <Thead>
                 <Tr bgColor='secondary'>
                   <Th color='white'>Id</Th>
-                  <Th color='white'>Department Name</Th>
+                  <Th color='white'>Category Name</Th>
                   <Th color='white'>Added By</Th>
                   <Th color='white'>Date Added</Th>
                   <Th color='white'>Actions</Th>
                 </Tr>
               </Thead>
               <Tbody>
-                {departments?.map(dep =>
-                  <Tr key={dep.id}>
-                    <Td>{dep.id}</Td>
-                    <Td>{dep.departmentName}</Td>
-                    <Td>{dep.addedBy}</Td>
-                    <Td>{dep.dateAdded}</Td>
+                {categories?.map(cat =>
+                  <Tr key={cat.id}>
+                    <Td>{cat.id}</Td>
+                    <Td>{cat.itemCategoryName}</Td>
+                    <Td>{cat.addedBy}</Td>
+                    <Td>{cat.dateAdded}</Td>
                     <Td>
 
-                      <Button p={0} background='none' color='secondary' onClick={() => editHandler(dep)}>
+                      <Button p={0} background='none' color='secondary' onClick={() => editHandler(cat)}>
                         <RiEditBoxFill />
                       </Button>
 
-                      <Popover>
+                      {/* <Popover>
                         <PopoverTrigger>
                           <Button p={0} background='none'><GiChoice /></Button>
                         </PopoverTrigger>
@@ -193,13 +176,13 @@ const DepartmentsPage = () => {
                             <PopoverCloseButton />
                             <PopoverBody>
                               <VStack>
-                                {dep.isActive === true ? <Text>Are you sure you want to set this department inactive?</Text> : <Text>Are you sure you want to set this department active?</Text>}
-                                <Button bgColor='secondary' color='white' _hover={{ bgColor: 'accent' }} onClick={() => changeStatusHandler(dep.id, dep.isActive)}>Yes</Button>
+                                {cat.isActive === true ? <Text>Are you sure you want to set this category inactive?</Text> : <Text>Are you sure you want to set this category active?</Text>}
+                                <Button bgColor='secondary' color='white' _hover={{ bgColor: 'accent' }} onClick={() => changeStatusHandler(cat.id, cat.isActive)}>Yes</Button>
                               </VStack>
                             </PopoverBody>
                           </PopoverContent>
                         </Portal>
-                      </Popover>
+                      </Popover> */}
 
                     </Td>
                   </Tr>
@@ -211,8 +194,8 @@ const DepartmentsPage = () => {
         }
       </PageScroll>
       <Flex justifyContent='space-between' mt={5}>
-        <Button leftIcon={<FcAddDatabase color='white' />} bgColor='secondary' onClick={newDepartmentHandler} _hover={{ bgColor: 'accent' }}>
-          <Text color='white'>New Deparment</Text>
+        <Button leftIcon={<FcAddDatabase color='white' />} bgColor='secondary' onClick={newCategoryHandler} _hover={{ bgColor: 'accent' }}>
+          <Text color='white'>New Category</Text>
         </Button>
         {
           isDrawerOpen && (
@@ -223,7 +206,7 @@ const DepartmentsPage = () => {
               errors={errors}
               isValid={isValid}
               handleSubmit={handleSubmit}
-              fetchDepartments={fetchDepartments}
+              fetchCategory={fetchCategory}
             />
           )
         }
@@ -232,9 +215,9 @@ const DepartmentsPage = () => {
   )
 }
 
-export default DepartmentsPage
+export default ItemCategoryPage
 
-const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSubmit, fetchDepartments }) => {
+const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSubmit, fetchCategory }) => {
   const [isLoading, setisLoading] = useState(false)
   const toast = useToast()
 
@@ -243,10 +226,10 @@ const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSub
       if (data.formData.id === "") {
         delete data.formData["id"]
         setisLoading(true)
-        const res = apiClient.post("User/AddNewDepartment", data.formData).then((res) => {
-          ToastComponent("Success", "New department created", "success", toast)
+        const res = apiClient.post("RawMaterial/AddNewItemCategories", data.formData).then((res) => {
+          ToastComponent("Success", "New category created", "success", toast)
           setisLoading(false)
-          fetchDepartments()
+          fetchCategory()
           onClose(onClose)
         }).catch(err => {
           setisLoading(false)
@@ -254,10 +237,10 @@ const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSub
           data.formData.id = "" // add property id to objects for if condition
         })
       } else {
-        const res = apiClient.put(`User/UpdateDepartmentInfo/${data.formData.id}`, data.formData).then((res) => {
-          ToastComponent("Success", "Department Updated", "success", toast)
+        const res = apiClient.put(`RawMaterial/UpdateItemCategories/${data.formData.id}`, data.formData).then((res) => {
+          ToastComponent("Success", "Category Updated", "success", toast)
           setisLoading(false)
-          fetchDepartments()
+          fetchCategory()
           onClose(onClose)
         }).catch(err => {
           ToastComponent("Update Failed", err.response.data, "warning", toast)
@@ -281,7 +264,7 @@ const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSub
           <DrawerContent>
             <DrawerCloseButton />
             <DrawerHeader borderBottomWidth='1px'>
-              Department Form
+              Category Form
             </DrawerHeader>
             <DrawerBody>
 
@@ -290,12 +273,12 @@ const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSub
                 <Flex mt={1.5}></Flex>
 
                 <Box>
-                  <FormLabel>Department Name:</FormLabel>
+                  <FormLabel>Category Name:</FormLabel>
                   <Input
                     placeholder='Please enter Department Name'
-                    {...register("formData.departmentName")}
+                    {...register("formData.itemCategoryName")}
                   />
-                  <Text color="danger" fontSize="xs">{errors.formData?.departmentName?.message}</Text>
+                  <Text color="danger" fontSize="xs">{errors.formData?.itemCategoryName?.message}</Text>
                 </Box>
 
               </Stack>

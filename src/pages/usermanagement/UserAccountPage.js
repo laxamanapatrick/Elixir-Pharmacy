@@ -180,7 +180,7 @@ const UserAccountPage = () => {
               pointerEvents='none'
               children={<FaSearch color='gray.300' />}
             />
-            <Input type='text' placeholder='ex: juan dela cruz' onChange={(e) => searchHandler(e.target.value)} focusBorderColor='accent' />
+            <Input type='text' placeholder='Search: Username' onChange={(e) => searchHandler(e.target.value)} focusBorderColor='accent' />
           </InputGroup>
 
         </HStack>
@@ -269,22 +269,22 @@ const UserAccountPage = () => {
       {/* Table data end */}
 
       <Flex justifyContent='space-between' mt={5}>
-          <Button leftIcon={<FcAddDatabase color='white' />} bgColor='secondary' onClick={newUserHandler} _hover={{ bgColor: 'accent' }}>
-            <Text color='white'>New User</Text>
-          </Button>
-          {
-            isDrawerOpen && (
-              <DrawerComponent
-                isOpen={isDrawerOpen}
-                onClose={closeDrawer}
-                register={register}
-                errors={errors}
-                isValid={isValid}
-                handleSubmit={handleSubmit}
-                fetchUsers={fetchUsers}
-              />
-            )
-          }
+        <Button leftIcon={<FcAddDatabase color='white' />} bgColor='secondary' onClick={newUserHandler} _hover={{ bgColor: 'accent' }}>
+          <Text color='white'>New User</Text>
+        </Button>
+        {
+          isDrawerOpen && (
+            <DrawerComponent
+              isOpen={isDrawerOpen}
+              onClose={closeDrawer}
+              register={register}
+              errors={errors}
+              isValid={isValid}
+              handleSubmit={handleSubmit}
+              fetchUsers={fetchUsers}
+            />
+          )
+        }
         <Stack>
           <Pagination
             pagesCount={pagesCount}
@@ -317,7 +317,7 @@ const UserAccountPage = () => {
             </PaginationContainer>
           </Pagination>
         </Stack>
-        
+
       </Flex>
     </Flex >
   )

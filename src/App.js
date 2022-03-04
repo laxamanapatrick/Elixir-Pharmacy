@@ -56,13 +56,17 @@ import DepartmentsPage from './pages/usermanagement/DepartmentsPage'
 import SetupPage from './pages/SetupPage';
 import UomManagementPage from './pages/setup/UomManagementPage'
 import LotManagementPage from './pages/setup/LotManagementPage'
+import LotCategoryPage from './pages/setup/lotmanagement/LotCategoryPage';
 import RawMaterialsPage from './pages/setup/RawMaterialsPage'
+import ItemCategoryPage from './pages/setup/rawmaterials/ItemCategoryPage';
 import CustomerManagementPage from './pages/setup/CustomerManagementPage'
+import FarmPage from './pages/setup/customermanagement/FarmPage';
 import SupplierPage from './pages/setup/SupplierPage'
 import TransformationManagementPage from './pages/setup/TransformationManagementPage'
 import ReasonPage from './pages/setup/ReasonPage'
 
 import ReportsPage from './pages/ReportsPage';
+
 
 function App() {
   const [isSidebarVisible, setIsSidebarVisible] = useState(false)
@@ -139,8 +143,11 @@ function App() {
           <Route path="setup" element={user ? <SetupPage /> : <Navigate to="/login" />}>
             <Route path="uom-management" element={user ? <UomManagementPage /> : <Navigate to="/login" />} />
             <Route path="lot-management" element={user ? <LotManagementPage /> : <Navigate to="/login" />} />
+            <Route path="lot-category" element={user ? <LotCategoryPage /> : <Navigate to="/login" />} />
             <Route path="raw-materials-masterlisting" element={user ? <RawMaterialsPage /> : <Navigate to="/login" />} />
+            <Route path="item-category" element={user ? <ItemCategoryPage /> : <Navigate to="/login" />} />
             <Route path="customer-management" element={user ? <CustomerManagementPage /> : <Navigate to="/login" />} />
+            <Route path="farms" element={user ? <FarmPage /> : <Navigate to="/login" />} />
             <Route path="supplier" element={user ? <SupplierPage /> : <Navigate to="/login" />} />
             <Route path="t-management" element={user ? <TransformationManagementPage /> : <Navigate to="/login" />} />
             <Route path="reason" element={user ? <ReasonPage /> : <Navigate to="/login" />} />

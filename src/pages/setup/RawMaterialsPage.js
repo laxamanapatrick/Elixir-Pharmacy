@@ -186,7 +186,7 @@ const RawMaterialsPage = () => {
               pointerEvents='none'
               children={<FaSearch color='gray.300' />}
             />
-            <Input type='text' placeholder='ex: juan dela cruz'
+            <Input type='text' placeholder='Search: Item Code'
               onChange={(e) => searchHandler(e.target.value)}
               focusBorderColor='accent'
             />
@@ -388,7 +388,7 @@ const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSub
 
   const fetchUom = async () => {
     try {
-      const res = await apiClient.get('Uom/GetAllUOM')
+      const res = await apiClient.get('Uom/GetAllActiveUOM')
       setUom(res.data)
     } catch (error) {
 
