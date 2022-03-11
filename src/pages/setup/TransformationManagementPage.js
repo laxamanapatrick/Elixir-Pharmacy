@@ -65,9 +65,10 @@ import {
   PaginationPageGroup,
 } from '@ajna/pagination'
 import { FaSearch } from 'react-icons/fa';
-import { IoIosAddCircle } from 'react-icons/io';
+import { AiOutlineFundView } from 'react-icons/ai';
 import DrawerComponent from './transoformationmanagement/TransformationManagement-Drawer';
 import ModalComponent from './transoformationmanagement/TransformationManagement-Modal';
+import TransformationManagementModalViewing from './transoformationmanagement/TransformationManagement-Modal-Viewing';
 
 const currentUser = decodeUser()
 
@@ -76,6 +77,7 @@ const schema = yup.object().shape({
     id: yup.string(),
     itemCode: yup.string().required("Item code is required"),
     itemDescription: yup.string().required("Item code is required"),
+    uom: yup.string().required("UOM is required"),
     quantity: yup.number().required("Quantity is required").typeError("Must be a number")
   })
 })
@@ -85,11 +87,12 @@ const fetchFormulaApi = async (pageNumber, pageSize, status, search) => {
   return res.data
 }
 
-const TransformationManagementPage = () => {
+const TransformationManagementPage = ({ disableAddRecipehandler }) => {
   const [formulas, setFormulas] = useState([])
   const [formulaId, setFormulaId] = useState()
   const [itemCode, setItemCode] = useState()
   const [itemDescription, setItemDescription] = useState()
+  const [disableAddRecipeButton, setDisableAddRecipeButton] = useState(false)
   const [quantity, setQuantity] = useState()
   const [isLoading, setIsLoading] = useState(true)
   const [status, setStatus] = useState(true)
@@ -98,6 +101,7 @@ const TransformationManagementPage = () => {
   const [pageTotal, setPageTotal] = useState(undefined);
   const { isOpen: isDrawerOpen, onOpen: openDrawer, onClose: closeDrawer } = useDisclosure()
   const { isOpen: isModalOpen, onOpen: openModal, onClose: closeModal } = useDisclosure()
+  const { isOpen: isViewingModalOpen, onOpen: openViewingModal, onClose: closeViewingModal } = useDisclosure()
 
   const { register, handleSubmit, formState: { errors, isValid }, setValue, reset } = useForm({
     resolver: yupResolver(schema),
@@ -107,7 +111,8 @@ const TransformationManagementPage = () => {
         id: "",
         itemCode: "",
         itemDescription: "",
-        quantity: "",
+        uom: "",
+        quantity: null,
         addedBy: currentUser.userName,
       }
     }
@@ -169,16 +174,17 @@ const TransformationManagementPage = () => {
     setSearch(inputValue)
   }
 
-  const editHandler = (formula) => {
-    openDrawer()
-    setValue("formData", {
-      id: formula.id,
-      itemCode: formula.itemCode,
-      itemDescription: formula.itemDescription,
-      quantity: formula.quantity,
-      modifiedBy: currentUser.userName
-    })
-  }
+  // const editHandler = (formula) => {
+  //   openDrawer()
+  //   setValue("formData", {
+  //     id: formula.id,
+  //     itemCode: formula.itemCode,
+  //     itemDescription: formula.itemDescription,
+  //     uom: formula.uom,
+  //     quantity: formula.quantity,
+  //     modifiedBy: currentUser.userName
+  //   })
+  // }
 
   const newFormulaHandler = () => {
     openDrawer()
@@ -191,6 +197,14 @@ const TransformationManagementPage = () => {
     setItemDescription(itemDescription)
     setQuantity(quantity)
     openModal()
+  }
+
+  const recipeViewing = (id, itemCode, itemDescription, quantity) => {
+    setFormulaId(id)
+    setItemCode(itemCode)
+    setItemDescription(itemDescription)
+    setQuantity(quantity)
+    openViewingModal()
   }
 
   return (
@@ -232,13 +246,14 @@ const TransformationManagementPage = () => {
               <Thead>
                 <Tr bgColor='secondary'>
                   <Th color='white'>ID</Th>
-                  <Th color='white'>Item Code</Th>
-                  <Th color='white'>Item Description</Th>
+                  <Th color='white'>Formula Code</Th>
+                  <Th color='white'>Formula Description</Th>
                   <Th color='white'>Version</Th>
                   <Th color='white'>Quantity</Th>
+                  {/* <Th color='white'>UOM</Th> */}
                   <Th color='white'>Date Added</Th>
                   <Th color='white'>Added by</Th>
-                  <Th color='white'>Add Recipe</Th>
+                  <Th color='white'>Requirements</Th>
                   <Th color='white'>Actions</Th>
                 </Tr>
               </Thead>
@@ -250,23 +265,33 @@ const TransformationManagementPage = () => {
                     <Td>{formula.itemDescription}</Td>
                     <Td>{formula.version}</Td>
                     <Td>{formula.quantity}</Td>
+                    {/* <Td>{formula.uom}</Td> */}
                     <Td>{formula.dateAdded}</Td>
                     <Td>{formula.addedBy}</Td>
                     <Td>
                       <Button
+                        disabled={formula.countFormula > 1 && true}
                         onClick={() => recipeHandler(formula.id, formula.itemCode, formula.itemDescription, formula.quantity)}
                         p={0} background='none' color='secondary'
                       >
                         <AiFillMedicineBox />
+                      </Button>
+
+                      <Button
+                        disabled={formula.countFormula <= 1 && true}
+                        onClick={() => recipeViewing(formula.id, formula.itemCode, formula.itemDescription, formula.quantity)}
+                        p={0} background='none' color='secondary'
+                      >
+                        <AiOutlineFundView />
                       </Button>
                     </Td>
                     <Td>
                       <Flex>
                         <HStack>
 
-                          <Button p={0} background='none' color='secondary' onClick={() => editHandler(formula)}>
+                          {/* <Button p={0} background='none' color='secondary' onClick={() => editHandler(formula)}>
                             <RiEditBoxFill />
-                          </Button>
+                          </Button> */}
 
                           <Popover>
                             <PopoverTrigger>
@@ -324,6 +349,7 @@ const TransformationManagementPage = () => {
               errors={errors}
               isValid={isValid}
               handleSubmit={handleSubmit}
+              setValue={setValue}
               fetchFormula={fetchFormula}
             />
           )
@@ -335,6 +361,21 @@ const TransformationManagementPage = () => {
               isOpen={isModalOpen}
               onClose={closeModal}
               onOpen={openModal}
+              formulaId={formulaId}
+              formulaItemCode={itemCode}
+              formulaItemDescription={itemDescription}
+              formulaQuantity={quantity}
+              fetchFormula={fetchFormula}
+            />
+          )
+        }
+
+        {
+          isViewingModalOpen && (
+            <TransformationManagementModalViewing
+              isOpen={isViewingModalOpen}
+              onClose={closeViewingModal}
+              onOpen={openViewingModal}
               formulaId={formulaId}
               formulaItemCode={itemCode}
               formulaItemDescription={itemDescription}

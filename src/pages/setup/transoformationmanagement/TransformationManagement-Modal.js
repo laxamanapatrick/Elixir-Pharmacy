@@ -22,6 +22,7 @@ import {
     Thead,
     toast,
     Tr,
+    useToast,
     VStack
 } from '@chakra-ui/react'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -29,48 +30,48 @@ import * as yup from "yup";
 import { useForm } from 'react-hook-form'
 import { AiFillMinusCircle } from 'react-icons/ai'
 import { IoIosAddCircle } from 'react-icons/io'
-import PageScroll from '../../../components/PageScroll'
+import PageScrollModal from '../../../components/PageScrollModal'
 import apiClient from '../../../services/apiClient'
 import { decodeUser } from '../../../services/decode-user';
 import { ToastComponent } from '../../../components/Toast';
+import TransformationManagementModalViewing from './TransformationManagement-Modal-Viewing';
 
 const currentUser = decodeUser()
 
 // const modalSchema = yup.object().shape({
 //     formData: yup.object().shape({
-//         rawMaterialId: yup.string(),
-//         itemCode: yup.string().required("Item code is required"),
-//         rawMaterialQuantity: yup.string().required("Quantity is required"),
-//         rawMaterialDescription: yup.string().required("Description is required")
+//         recipeData: yup.array().required()
 //     })
 // })
 
-const ModalComponent = ({ isOpen, onClose, formulaId, formulaItemCode, formulaItemDescription, formulaQuantity }) => {
-    const [recipes, setRecipes] = useState([])
+const ModalComponent = ({ isOpen, onClose, formulaId, formulaItemCode, formulaItemDescription, formulaQuantity, fetchFormula }) => {
     const [raws, setRaws] = useState([])
-    const [rawMaterialId, setRawMaterialId] = useState("")
+    const [rmId, setRmId] = useState("")
     const [rawMaterialQuantity, setRawMaterialQuantity] = useState()
+    const [quantityRemaining, setQuantityRemaining] = useState()
+    const [currentQuantity, setCurrentQuantity] = useState()
     const [rawMaterialDescription, setRawMaterialDescription] = useState("")
     const [itemCode, setItemCode] = useState("")
+    const [uom, setUom] = useState("")
     const [recipeData, setRecipeData] = useState([])
     const [isLoading, setisLoading] = useState(false)
+    const [isDisabled, setIsDisabled] = useState(false)
+    const [isSubmitDisabled, setIsSubmitDisabled] = useState(true)
     const [errors, setErrors] = useState({
     })
+    const toast = useToast()
 
-    const fetchFormulationRequirementsApi = async () => {
-        const res = await apiClient.get(`Transformation/GetAllFormulaWithRequirementByFormulaId/${formulaId}`)
-        return res.data
-    }
+    // const { register, handleSubmit } = useForm({
+    //     resolver: yupResolver(modalSchema),
+    //     mode: "onChange",
+    //     defaultValues: {
+    //         formData: {
+    //             recipeData: [],
+    //         }
+    //     }
+    // })
 
-    const fetchRecipe = () => {
-        fetchFormulationRequirementsApi(formulaId).then(res => {
-            setRecipes(res)
-        })
-    }
 
-    useEffect(() => {
-        fetchRecipe()
-    }, [formulaId]);
 
     const fetchRawMaterialsApi = async () => {
         const res = await apiClient.get('RawMaterial/GetAllActiveRawMaterials')
@@ -87,17 +88,46 @@ const ModalComponent = ({ isOpen, onClose, formulaId, formulaItemCode, formulaIt
         fetchRaws()
     }, [setRaws])
 
+    useEffect(() => {
+        if (recipeData.length) {
+
+            let totalQuantity = recipeData.map((q) => parseFloat(q.rawMaterialQuantity))
+            let sum = totalQuantity.reduce((a, b) => a + b)
+
+            setQuantityRemaining(formulaQuantity - sum)
+            setCurrentQuantity(sum)
+
+
+            if (formulaQuantity <= sum) {
+                setIsDisabled(true)
+            } else {
+                setIsDisabled(false)
+            }
+            if (formulaQuantity === sum) {
+                setIsSubmitDisabled(false)
+            } else {
+                setIsSubmitDisabled(true)
+            }
+
+        }
+        else {
+            setIsDisabled(false)
+            setQuantityRemaining(null)
+            setCurrentQuantity(null)
+        }
+    }, [recipeData, formulaQuantity])
+
     const rawMaterialDescriptionHandler = (data) => {
         if (data) {
             const newRaw = JSON.parse(data)
             setRawMaterialDescription(newRaw.itemDescription)
-            setRawMaterialId(newRaw.id)
+            setRmId(newRaw.id)
             setItemCode(newRaw.itemCode)
+            setUom(newRaw.uom)
         }
         else {
             setItemCode("")
         }
-
     }
 
     const rawMaterialQuantityHandler = (data) => {
@@ -105,6 +135,12 @@ const ModalComponent = ({ isOpen, onClose, formulaId, formulaItemCode, formulaIt
     }
 
     const recipeDataHandler = () => {
+
+        if (recipeData.some((recipe) => recipe.itemCode === itemCode)) {
+            ToastComponent("Error!", "Raw Material already added", "error", toast)
+            return
+        }
+
         if (!itemCode) {
             setErrors({
                 code: true,
@@ -123,24 +159,56 @@ const ModalComponent = ({ isOpen, onClose, formulaId, formulaItemCode, formulaIt
             })
         }
 
+
         const data = {
-            "rawMaterialId": rawMaterialId,
+            "rmId": rmId,
             "itemCode": itemCode,
             "rawMaterialQuantity": rawMaterialQuantity,
             "rawMaterialDescription": rawMaterialDescription,
+            "uom": uom,
             "formulaId": formulaId
         }
         setRecipeData([...recipeData, data])
+
     }
 
-    const deleteRecipeHandler = (id, itemCode, description, quantity) => {
-        console.log(id, itemCode, description, quantity)
+    const deleteRecipeHandler = (deleteId) => {
+        setRecipeData(recipeData.filter((row) =>
+            row.rmId !== deleteId
+        ))
+    }
+
+    const submitRecipeHandler = (recipeData) => {
+
+        const resultArray = recipeData.map(item => {
+            return {
+                transformationformulaid: item.formulaId,
+                rawMaterialId: item.rmId,
+                quantity: item.rawMaterialQuantity
+            }
+        })
+
+        try {
+            setisLoading(true)
+            const res = apiClient.post('Transformation/AddNewTransformationRequirementinFormula', resultArray).then((res) => {
+                ToastComponent("Success!", "Transformation Formula Requirements created", "success", toast)
+                setisLoading(false)
+                fetchFormula()
+                onClose(onClose)
+            }).catch(err => {
+                setisLoading(false)
+                ToastComponent("Error", err.response.data, "error", toast)
+                // add property id to objects for if condition
+                // data.formData.id = ""
+            })
+        } catch (err) {
+        }
     }
 
     return (
         <Modal
             size='5xl'
-            isOpen={isOpen} onClose={onClose}
+            isOpen={isOpen}
         >
 
             <ModalOverlay />
@@ -153,7 +221,7 @@ const ModalComponent = ({ isOpen, onClose, formulaId, formulaItemCode, formulaIt
                         <Text fontSize='md'>Description: {formulaItemDescription}</Text>
                     </Flex>
                 </ModalHeader>
-                <ModalCloseButton />
+                <ModalCloseButton onClick={onClose} />
 
                 <ModalBody>
 
@@ -193,7 +261,7 @@ const ModalComponent = ({ isOpen, onClose, formulaId, formulaItemCode, formulaIt
 
                         </Flex>
 
-                        <Flex flexDirection='column' ml={10}>
+                        <Flex flexDirection='column'>
 
                             <HStack>
                                 <Text>
@@ -204,17 +272,20 @@ const ModalComponent = ({ isOpen, onClose, formulaId, formulaItemCode, formulaIt
                                 </Text>
                             </HStack>
 
-                        </Flex>
 
-                        <Flex>
-                            <Button p={0}
-                                onClick={recipeDataHandler}
-                                bgColor='secondary'
-                                color='white'
-                                _hover={{ bgColor: 'accent' }}
-                            >
-                                <IoIosAddCircle fontSize='25px' />
-                            </Button>
+
+                            <Flex>
+                                <Button p={5}
+                                    disabled={isDisabled}
+                                    onClick={recipeDataHandler}
+                                    bgColor='secondary'
+                                    color='white'
+                                    _hover={{ bgColor: 'accent' }}
+                                >
+                                    <Text mr={2}>Add Requirement</Text> <IoIosAddCircle fontSize='25px' />
+                                </Button>
+                            </Flex>
+
                         </Flex>
 
                     </HStack>
@@ -226,7 +297,7 @@ const ModalComponent = ({ isOpen, onClose, formulaId, formulaItemCode, formulaIt
 
 
 
-                    <PageScroll>
+                    <PageScrollModal>
                         <Table variant='striped' size="sm">
                             <Thead>
                                 <Tr bgColor="secondary" >
@@ -235,22 +306,24 @@ const ModalComponent = ({ isOpen, onClose, formulaId, formulaItemCode, formulaIt
                                     <Th color="white">Item Code</Th>
                                     <Th color="white">Item Description</Th>
                                     <Th color="white">Quantity</Th>
+                                    <Th color="white">UOM</Th>
                                     <Th color="white"> </Th>
                                 </Tr>
                             </Thead>
                             <Tbody>
                                 {recipeData?.map((recipe, i) =>
-                                    <Tr key={i}>
+                                    <Tr key={i} value={recipe.rmId}>
                                         <Td> </Td>
-                                        <Td>{recipe.rawMaterialId}</Td>
+                                        <Td>{recipe.rmId}</Td>
                                         <Td>{recipe.itemCode}</Td>
                                         <Td>{recipe.rawMaterialDescription}</Td>
                                         <Td>{recipe.rawMaterialQuantity}</Td>
+                                        <Td>{recipe.uom}</Td>
                                         <Td>
                                             <Button p={0}
                                                 background='none'
                                                 color='secondary'
-                                                onClick={() => deleteRecipeHandler(recipe.rawMaterialId, recipe.itemCode, recipe.rawMaterialDescription, recipe.rawMaterialQuantity)}
+                                                onClick={() => deleteRecipeHandler(recipe.rmId)}
                                             >
                                                 <AiFillMinusCircle fontSize='25px' />
                                             </Button>
@@ -259,14 +332,18 @@ const ModalComponent = ({ isOpen, onClose, formulaId, formulaItemCode, formulaIt
                                 )}
                             </Tbody>
                         </Table>
-                    </PageScroll>
+                    </PageScrollModal>
+
                     <Text>Quantity Needed: {formulaQuantity}</Text>
+                    <Text>Current Quantity Added: {currentQuantity}</Text>
+                    <Text fontWeight='semibold'>Remaining Quantity Needed: {quantityRemaining}</Text>
 
                 </ModalBody>
 
                 <ModalFooter>
                     <Button
-                        // disabled={!isValid}
+                        onClick={() => submitRecipeHandler(recipeData)}
+                        disabled={isSubmitDisabled}
                         isLoading={isLoading}
                         bgColor='secondary' color='white' _hover={{ bgColor: 'accent' }} mr={3}
                     >

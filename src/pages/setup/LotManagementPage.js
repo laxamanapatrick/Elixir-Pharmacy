@@ -404,7 +404,7 @@ const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSub
                     {
                       lotC.length > 0 ? (<Select
                         {...register("formData.lotCategoryId")}
-                        placeholder='Select Item Category'>
+                        placeholder='Select Lot Name'>
                         {lotC.map(lotcat => (
                           <option key={lotcat.id} value={lotcat.id}>{lotcat.categoryName}</option>
                         ))}

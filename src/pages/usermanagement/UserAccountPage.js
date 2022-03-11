@@ -77,6 +77,7 @@ const UserAccountPage = () => {
   const toast = useToast()
   const [pageTotal, setPageTotal] = useState(undefined);
   const { isOpen: isDrawerOpen, onOpen: openDrawer, onClose: closeDrawer } = useDisclosure()
+  
 
   const { register, handleSubmit, formState: { errors, isValid }, setValue, reset } = useForm({
     resolver: yupResolver(schema),
