@@ -12,9 +12,13 @@ const theme = extendTheme({
     },
     components: {
         Input: {
+            baseStyle: {
+                borderRadius: "none",
+            },
             variants: {
                 filled: {
                     field: {
+                        borderRadius: "none",
                         backgroundColor: "secondary",
                         color: 'white',
                         _focus: {
@@ -29,10 +33,40 @@ const theme = extendTheme({
                         }
                     },
                 },
+                outline: {
+                    field: {
+                        borderRadius: "none",
+                        _focus: {
+                            borderColor: "purple.500",
+                        },
+                        _active: {
+                            borderColor: "purple.500",
+                        },
+                    },
+                },
             },
+        },
+        Button: {
+            baseStyle: {
+                borderRadius: "none"
+            },
+        },
+        Select: {
+            variants: {
+                outline: {
+                    field: {
+                        borderRadius: "1px",
+                    },
+                },
+            },
+
         }
-    }
-})
+    },
+
+}, withDefaultVariant({
+    variant: "outline",
+    components: ["Input", "Select"],
+}))
 
 // const [successToast, errorToast] = createStandaloneToast()
 

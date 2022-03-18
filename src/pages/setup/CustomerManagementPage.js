@@ -176,7 +176,7 @@ const CustomerManagementPage = () => {
     openDrawer()
     reset()
   }
-
+  
   return (
     <Flex p={5} w='full' flexDirection='column'>
       <Flex mb={2} justifyContent='space-between'>
@@ -356,6 +356,9 @@ export default CustomerManagementPage;
 const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSubmit, fetchCustomer }) => {
   const [farms, setFarms] = useState([])
   const [isLoading, setisLoading] = useState(false)
+  const [company, setCompany] = useState([{
+    companyName: "RDF"
+  }])
   const toast = useToast()
 
   const submitHandler = (data) => {
@@ -404,6 +407,7 @@ const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSub
     }
   }, []);
 
+
   return (
     <Flex>
       <Drawer
@@ -451,13 +455,32 @@ const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSub
                 </Box>
 
                 <Box>
+                  <Stack>
+                    <Text fontWeight='semibold'>Company Name:</Text>
+                    {
+                      company.length > 0 ? (<Select
+                        {...register("formData.companyName")}
+                        placeholder='Select Company Name'>
+                        {company.map((c, i) => (
+                          <option key={i} value={c.companyName}>{c.companyName}</option>
+
+                        ))}
+
+                      </Select>) : "loading"
+                    }
+
+                    <Text color="danger" fontSize="xs">{errors.formData?.companyName?.message}</Text>
+                  </Stack>
+                </Box>
+
+                {/* <Box>
                   <FormLabel>Company Name:</FormLabel>
                   <Input
                     placeholder='Please enter Company Name'
                     {...register("formData.companyName")}
                   />
                   <Text color="danger" fontSize="xs">{errors.formData?.companyName?.message}</Text>
-                </Box>
+                </Box> */}
 
                 <Box>
                   <FormLabel>Mobile Number:</FormLabel>
