@@ -118,6 +118,7 @@ const UserRolePage = () => {
 
   const fetchRoles = () => {
     fetchRolesApi(currentPage, pageSize, status, search).then(res => {
+      setIsLoading(false)
       setRoles(res)
       setPageTotal(res.totalCount)
     })
@@ -125,7 +126,6 @@ const UserRolePage = () => {
 
   useEffect(() => {
     fetchRoles()
-    setIsLoading(false)
   }, [status, pageSize, currentPage, search])
 
   const handlePageChange = (nextPage) => {

@@ -114,6 +114,7 @@ const RawMaterialsPage = () => {
 
   const fetchRaw = () => {
     fetchRawApi(currentPage, pageSize, status, search).then(res => {
+      setIsLoading(false)
       setRaws(res)
       setPageTotal(res.totalCount)
     })
@@ -121,7 +122,6 @@ const RawMaterialsPage = () => {
 
   useEffect(() => {
     fetchRaw()
-    setIsLoading(false)
   }, [status, pageSize, currentPage, search])
 
   const handlePageChange = (nextPage) => {

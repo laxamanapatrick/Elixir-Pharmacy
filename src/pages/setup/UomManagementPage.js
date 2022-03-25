@@ -107,6 +107,7 @@ const UomManagementPage = () => {
 
   const fetchUom = () => {
     fetchUomApi(currentPage, pageSize, status, search).then(res => {
+      setIsLoading(false)
       setUom(res)
       setPageTotal(res.totalCount)
     })
@@ -114,7 +115,6 @@ const UomManagementPage = () => {
 
   useEffect(() => {
     fetchUom()
-    setIsLoading(false)
   }, [status, pageSize, currentPage, search])
 
   const handlePageChange = (nextPage) => {

@@ -107,6 +107,7 @@ const ReasonPage = () => {
 
   const fetchReasons = () => {
     fetchReasonApi(currentPage, pageSize, status, search).then(res => {
+      setIsLoading(false)
       setReasons(res)
       setPageTotal(res.total)
     })
@@ -114,7 +115,6 @@ const ReasonPage = () => {
 
   useEffect(() => {
     fetchReasons()
-    setIsLoading(false)
   }, [status, pageSize, currentPage, search])
 
   const handlePageChange = (nextPage) => {

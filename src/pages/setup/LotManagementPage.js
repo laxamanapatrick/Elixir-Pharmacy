@@ -107,6 +107,7 @@ const LotManagementPage = () => {
 
   const fetchLot = () => {
     fetchLotApi(currentPage, pageSize, status, search).then(res => {
+      setIsLoading(false)
       setLots(res)
       setPageTotal(res.totalCount)
     })
@@ -114,7 +115,6 @@ const LotManagementPage = () => {
 
   useEffect(() => {
     fetchLot()
-    setIsLoading(false)
   }, [status, pageSize, currentPage, search])
 
   const handlePageChange = (nextPage) => {

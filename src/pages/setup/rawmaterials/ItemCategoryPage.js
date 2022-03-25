@@ -92,13 +92,13 @@ const ItemCategoryPage = () => {
 
   const fetchCategory = () => {
     fetchCategoryApi().then(res => {
+      setIsLoading(false)
       setCategories(res)
     })
   }
 
   useEffect(() => {
     fetchCategory()
-    setIsLoading(false)
   }, [])
 
   //No status parameters for item category

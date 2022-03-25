@@ -131,6 +131,7 @@ const TransformationManagementPage = ({ disableAddRecipehandler }) => {
 
   const fetchFormula = () => {
     fetchFormulaApi(currentPage, pageSize, status, search).then(res => {
+      setIsLoading(false)
       setFormulas(res)
       setPageTotal(res.totalCount)
     })
@@ -138,7 +139,6 @@ const TransformationManagementPage = ({ disableAddRecipehandler }) => {
 
   useEffect(() => {
     fetchFormula()
-    setIsLoading(false)
   }, [status, pageSize, currentPage, search])
 
   const handlePageChange = (nextPage) => {

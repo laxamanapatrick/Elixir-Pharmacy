@@ -6,6 +6,9 @@ import apiClient from '../../services/apiClient'
 import { ToastComponent } from '../../components/Toast'
 import DateConverter from '../../components/DateConverter'
 import moment from 'moment';
+import { decodeUser } from '../../services/decode-user';
+
+const currentUser = decodeUser()
 
 const ImportPoPage = () => {
 
@@ -74,7 +77,8 @@ const ImportPoPage = () => {
       billed: item.qty_billed,
       uom: item.uom,
       unitPrice: item.unit_price,
-      vendorName: item.vendor_name
+      vendorName: item.vendor_name,
+      addedBy: currentUser.username
     }
 
   })
@@ -137,18 +141,18 @@ const ImportPoPage = () => {
                 {resultArray?.map((ed, i) =>
                   <Tr key={i}>
                     {/* <Td>{ }</Td> */}
-                    <Td>{ed.pR_number}</Td>
-                    <Td>{ed.pR_date}</Td>
-                    <Td>{ed.pO_number}</Td>
-                    <Td>{ed.pO_date}</Td>
-                    <Td>{ed.itemCode}</Td>
-                    <Td>{ed.itemDescription}</Td>
-                    <Td>{ed.ordered}</Td>
-                    <Td>{ed.delivered}</Td>
-                    <Td>{ed.billed}</Td>
-                    <Td>{ed.uom}</Td>
-                    <Td>{ed.unitPrice}</Td>
-                    <Td>{ed.vendorName}</Td>
+                    <Td>{ed.pR_number ? ed.pR_number : <Text fontWeight='semibold' color='danger'>Data missing. Please make sure correct excel file for PO is uploaded.</Text>}</Td>
+                    <Td>{ed.pR_date ? ed.pR_date : <Text fontWeight='semibold' color='danger'>Data missing. Please make sure correct excel file for PO is uploaded.</Text>}</Td>
+                    <Td>{ed.pO_number ? ed.pO_number : <Text fontWeight='semibold' color='danger'>Data missing. Please make sure correct excel file for PO is uploaded.</Text>}</Td>
+                    <Td>{ed.pO_date ? ed.pO_date : <Text fontWeight='semibold' color='danger'>Data missing. Please make sure correct excel file for PO is uploaded.</Text>}</Td>
+                    <Td>{ed.itemCode ? ed.itemCode : <Text fontWeight='semibold' color='danger'>Data missing. Please make sure correct excel file for PO is uploaded.</Text>}</Td>
+                    <Td>{ed.itemDescription ? ed.itemDescription : <Text fontWeight='semibold' color='danger'>Data missing. Please make sure correct excel file for PO is uploaded.</Text>}</Td>
+                    <Td>{ed.ordered ? ed.ordered : <Text fontWeight='semibold' color='danger'>Data missing. Please make sure correct excel file for PO is uploaded.</Text>}</Td>
+                    <Td>{ed.delivered ? ed.delivered : <Text fontWeight='semibold' color='danger'>Data missing. Please make sure correct excel file for PO is uploaded.</Text>}</Td>
+                    <Td>{ed.billed ? ed.billed : <Text fontWeight='semibold' color='danger'>Data missing. Please make sure correct excel file for PO is uploaded.</Text>}</Td>
+                    <Td>{ed.uom ? ed.uom : <Text fontWeight='semibold' color='danger'>Data missing. Please make sure correct excel file for PO is uploaded.</Text>}</Td>
+                    <Td>{ed.unitPrice ? ed.unitPrice : <Text fontWeight='semibold' color='danger'>Data missing. Please make sure correct excel file for PO is uploaded.</Text>}</Td>
+                    <Td>{ed.vendorName ? ed.vendorName : <Text fontWeight='semibold' color='danger'>Data missing. Please make sure correct excel file for PO is uploaded.</Text>}</Td>
                   </Tr>
                 )}
               </Tbody>

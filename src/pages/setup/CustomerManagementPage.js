@@ -115,6 +115,7 @@ const CustomerManagementPage = () => {
 
   const fetchCustomer = () => {
     fetchCustomerApi(currentPage, pageSize, status, search).then(res => {
+      setIsLoading(false)
       setCustomers(res)
       setPageTotal(res.totalCount)
     })
@@ -122,7 +123,6 @@ const CustomerManagementPage = () => {
 
   useEffect(() => {
     fetchCustomer()
-    setIsLoading(false)
   }, [status, pageSize, currentPage, search])
 
   const handlePageChange = (nextPage) => {

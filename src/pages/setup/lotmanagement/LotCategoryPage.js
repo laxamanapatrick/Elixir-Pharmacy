@@ -90,13 +90,13 @@ const LotCategoryPage = () => {
 
   const fetchLot = () => {
     fetchLotCategoryApi().then(res => {
+      setIsLoading(false)
       setLots(res)
     })
   }
 
   useEffect(() => {
     fetchLot()
-    setIsLoading(false)
   }, [])
 
   //No status parameters for item category

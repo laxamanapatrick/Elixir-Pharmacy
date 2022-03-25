@@ -92,13 +92,13 @@ const DepartmentsPage = () => {
 
   const fetchDepartments = () => {
     fetchDepartmentsApi(status).then(res => {
+      setIsLoading(false)
       setDepartments(res)
     })
   }
 
   useEffect(() => {
     fetchDepartments()
-    setIsLoading(false)
   }, [status])
 
   const statusHandler = (data) => {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button, Flex, HStack, Input, Select, Table, Tbody, Td, Text, Th, Thead, Tr, useToast } from '@chakra-ui/react';
+import { Box, Button, Flex, HStack, Input, Select, Skeleton, Stack, Table, Tbody, Td, Text, Th, Thead, Tr, useToast } from '@chakra-ui/react';
 import PageScrollImport from '../../components/PageScrollImport'
 import * as XLSX from 'xlsx'
 import apiClient from '../../services/apiClient'
@@ -65,6 +65,10 @@ const ImportRawMaterialsPage = () => {
   }
 
   const fileHandler = async (e) => {
+
+
+    // (jsonData.item_code.length() && jsonData.item_description.length() && jsonData.item_category.length() && jsonData.uom.length() && jsonData.buffer_level.length())
+
     const file = e[0]
     const data = await file.arrayBuffer()
     const workbook = XLSX.readFile(data)
@@ -81,6 +85,7 @@ const ImportRawMaterialsPage = () => {
     } else {
       setIsDisabled(true)
     }
+
   }
 
   const sheetNumberHandlder = (data = 0) => {
@@ -119,20 +124,19 @@ const ImportRawMaterialsPage = () => {
     })
   })
 
-  const submitFile = (submitArray) => {
+  const submitFile = () => {
+
     try {
       setisLoading(true)
-      const res = apiClient.post('Import/AddNewRawMaterialManual', 
-
-      resultArray.map(item => ({
-        itemCode: item.itemCode,
-        itemDescription: item.itemDescription,
-        uomId: uomIdProvider?.id,
-        itemCategoryId: itemCategoryIdProvider?.id,
-        bufferLevel: item.bufferLevel,
-        addedBy: currentUser.userName
-    }))
-          
+      const res = apiClient.post('Import/AddNewRawMaterialManual',
+        resultArray.map(item => ({
+          itemCode: item.itemCode,
+          itemDescription: item.itemDescription,
+          uomId: uomIdProvider?.id,
+          itemCategoryId: itemCategoryIdProvider?.id,
+          bufferLevel: item.bufferLevel,
+          addedBy: currentUser.userName
+        }))
       ).then((res) => {
         ToastComponent("Success!", "Raw Materials Imported", "success", toast)
         setisLoading(false)
@@ -143,6 +147,7 @@ const ImportRawMaterialsPage = () => {
       })
     } catch (err) {
     }
+
   }
 
   return (
@@ -163,7 +168,12 @@ const ImportRawMaterialsPage = () => {
         <Flex>
 
           <PageScrollImport>
-
+            {/* {
+              !resultArray.bufferLevel ? (
+                <Flex>
+                  <Text>Some data are missing. Please import the correct xlsx file for raw materials</Text>
+                </Flex>
+              ) : ( */}
             <Table variant='striped' size="sm">
               <Thead bgColor='secondary'>
                 <Tr>
@@ -177,16 +187,17 @@ const ImportRawMaterialsPage = () => {
               <Tbody>
                 {resultArray?.map((ed, i) =>
                   <Tr key={i}>
-                    <Td>{ed.itemCode}</Td>
-                    <Td>{ed.itemDescription}</Td>
-                    <Td>{ed.uom}</Td>
-                    <Td>{ed.itemCategory}</Td>
-                    <Td>{ed.bufferLevel}</Td>
+                    <Td>{ed.itemCode ? ed.itemCode : <Text fontWeight='semibold' color='danger'>Data missing. Please make sure correct excel file for raw materials is uploaded.</Text>}</Td>
+                    <Td>{ed.itemDescription ? ed.itemDescription : <Text fontWeight='semibold' color='danger'>Data missing. Please make sure correct excel file for raw materials is uploaded.</Text>}</Td>
+                    <Td>{ed.uom ? ed.uom : <Text fontWeight='semibold' color='danger'>Data missing. Please make sure correct excel file for raw materias . is uploaded.</Text>}</Td>
+                    <Td>{ed.itemCategory ? ed.itemCategory : <Text fontWeight='semibold' color='danger'>Data missing. Please make sure correct excel file for raw materials is uploaded.</Text>}</Td>
+                    <Td>{ed.bufferLevel ? ed.bufferLevel : <Text fontWeight='semibold' color='danger'>Data missing. Please make sure correct excel file for raw materials is uploaded.</Text>}</Td>
                   </Tr>
                 )}
               </Tbody>
             </Table>
-
+            {/* )
+            } */}
           </PageScrollImport>
         </Flex>
 

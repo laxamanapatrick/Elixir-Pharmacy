@@ -110,6 +110,7 @@ const ModuleManagementPage = () => {
 
   const fetchModules = () => {
     fetchModuleApi(currentPage, pageSize, status, search).then(res => {
+      setIsLoading(false)
       setModules(res)
       setPageTotal(res.totalCount)
     })
@@ -117,7 +118,6 @@ const ModuleManagementPage = () => {
 
   useEffect(() => {
     fetchModules()
-    setIsLoading(false)
   }, [status, pageSize, currentPage, search]);
 
   const handlePageChange = (nextPage) => {

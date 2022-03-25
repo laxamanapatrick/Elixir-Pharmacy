@@ -110,6 +110,7 @@ const UserAccountPage = () => {
 
   const fetchUsers = () => {
     fetchUserApi(currentPage, pageSize, status, search).then(res => {
+      setIsLoading(false)
       setUsers(res)
       setPageTotal(res.totalCount)
     })
@@ -117,7 +118,6 @@ const UserAccountPage = () => {
 
   useEffect(() => {
     fetchUsers()
-    setIsLoading(false)
   }, [status, pageSize, currentPage, search]);
 
 

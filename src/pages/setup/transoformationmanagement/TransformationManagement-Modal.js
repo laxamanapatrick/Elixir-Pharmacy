@@ -209,6 +209,7 @@ const ModalComponent = ({ isOpen, onClose, formulaId, formulaItemCode, formulaIt
         <Modal
             size='5xl'
             isOpen={isOpen}
+            onClose={() => {}}
         >
 
             <ModalOverlay />

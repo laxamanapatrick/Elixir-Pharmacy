@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Button, Flex, HStack, Input, Select, Table, Tbody, Td, Text, Th, Thead, Tr, useToast } from '@chakra-ui/react';
 import PageScrollImport from '../../components/PageScrollImport'
 import * as XLSX from 'xlsx'
@@ -7,15 +7,50 @@ import { ToastComponent } from '../../components/Toast'
 import DateConverter from '../../components/DateConverter'
 import moment from 'moment';
 import { isDisabled } from '@testing-library/user-event/dist/utils';
+import { decodeUser } from '../../services/decode-user';
+
+const currentUser = decodeUser()
+
+const fetchFormulaApi = async () => {
+  const res = await apiClient.get('Transformation/GetAllActiveFormula');
+  return res.data
+}
+
+const fetchRawMaterialsApi = async () => {
+  const res = await apiClient.get('RawMaterial/GetAllActiveRawMaterials');
+  return res.data
+}
 
 const ImportFormulationCodePage = () => {
 
+  const [formulas, setFormulas] = useState([])
+  const [rawMaterials, setRawMaterials] = useState([])
   const [workbook, setWorkbook] = useState([])
   const [excelData, setExcelData] = useState([])
   const [isLoading, setisLoading] = useState(false)
   const [isDisabled, setIsDisabled] = useState(true)
   const [sheetOptions, setSheetOptions] = useState([])
   const toast = useToast()
+
+  const fetchFormula = () => {
+    fetchFormulaApi().then(res => {
+      setFormulas(res)
+    })
+  }
+
+  const fetchRawMaterials = () => {
+    fetchRawMaterialsApi().then(res => {
+      setRawMaterials(res)
+    })
+  }
+
+  useEffect(() => {
+    fetchFormula()
+  }, []);
+
+  useEffect(() => {
+    fetchRawMaterials()
+  }, []);
 
   const fileRenderer = (jsonData) => {
     jsonData.forEach((row) => {
@@ -59,32 +94,80 @@ const ImportFormulationCodePage = () => {
     }
   }
 
-  // const resultArray = excelData.map(item => {
+  const resultArray = excelData.map(item => {
 
-  //   return {
-  //     itemCode: item.item_code,
-  //     itemDescription: item.item_description,
-  //     uom: item.uom,
-  //     itemCategory: item.item_category,
-  //     bufferLevel: item.buffer_level
-  //   }
+    return {
+      formulaCode: item.formula_code,
+      formulaDescription: item.formula_description,
+      version: item.version,
+      itemCodeInitial: item.item_code,
+      itemDescription: item.item_description,
+      quantity: item.quantity
+    }
 
+  })
+
+  // let formulaCodeIdProvider = formulas?.find(two => {
+
+  //   return resultArray.some(one => {
+  //     return one.formulaCode === two.itemCode
+  //   })
   // })
 
-  // const submitFile = (resultArray) => {
-  //   try {
-  //     setisLoading(true)
-  //     const res = apiClient.post('Import/AddNewRawMaterialManual', resultArray).then((res) => {
-  //       ToastComponent("Success!", "Raw Materials Imported", "success", toast)
-  //       setisLoading(false)
-  //       setIsDisabled(true)
-  //     }).catch(err => {
-  //       setisLoading(false)
-  //       ToastComponent("Error", err.response.data, "error", toast)
-  //     })
-  //   } catch (err) {
-  //   }
-  // }
+  // const rawMaterialIdProvider = rawMaterials?.find(two => {
+
+  //   return resultArray.some(one => {
+  //     return one.itemCodeInitial === two.itemCode
+  //   })
+  // })
+
+
+  // console.log(formulaCodeIdProvider)
+  // console.log(rawMaterialIdProvider)
+  // console.log(rawMaterials)
+  // console.log(formulas)
+  // console.log(resultArray)
+
+
+  const submitFile = (resultArray) => {
+    let hasError = false
+
+    resultArray.forEach(item => {
+      if (!formulas.some(check => check.itemCode === item.formulaCode && check.version === item.version)) {
+        hasError = true
+      }
+    })
+
+    if (hasError) {
+      ToastComponent("Error!", "Version not available.", "error", toast)
+      return
+    }
+
+    try {
+      setisLoading(true)
+      const res = apiClient.post('Import/AddNewFormulaManual',
+        resultArray.map(item => ({
+          transformationFormulaId: formulas.find(data => data.itemCode === item.formulaCode && data.version === item.version).id,
+          rawMaterialId: rawMaterials.find(data => data.itemCode === item.itemCodeInitial).id,
+          quantity: item.quantity,
+          formulaDescription: item.formulaDescription,
+          itemDescription: item.itemDescription,
+          version: item.version,
+          addedBy: currentUser.userName
+        }))
+      ).then((res) => {
+        ToastComponent("Success!", "Raw Materials Imported", "success", toast)
+        setisLoading(false)
+        setIsDisabled(true)
+      }).catch(err => {
+        setisLoading(false)
+        ToastComponent("Error", err.response.data, "error", toast)
+      })
+    } catch (err) {
+      console.log(err)
+    }
+
+  }
 
   return (
     <Flex w='full'>
@@ -107,24 +190,26 @@ const ImportFormulationCodePage = () => {
 
             <Table variant='striped' size="sm">
               <Thead bgColor='secondary'>
-                {/* <Tr>
+                <Tr>
+                  <Th color='white'>Formula Code</Th>
+                  <Th color='white'>Formula Description</Th>
+                  <Th color='white'>Version</Th>
                   <Th color='white'>Item Code</Th>
                   <Th color='white'>Item Description</Th>
-                  <Th color='white'>UOM</Th>
-                  <Th color='white'>Item Category</Th>
-                  <Th color='white'>Buffer Level</Th>
-                </Tr> */}
+                  <Th color='white'>Quantity</Th>
+                </Tr>
               </Thead>
               <Tbody>
-                {/* {resultArray?.map((ed, i) =>
+                {resultArray?.map((ed, i) =>
                   <Tr key={i}>
-                    <Td>{ed.itemCode}</Td>
-                    <Td>{ed.itemDescription}</Td>
-                    <Td>{ed.uom}</Td>
-                    <Td>{ed.itemCategory}</Td>
-                    <Td>{ed.bufferLevel}</Td>
+                    <Td>{ed.formulaCode ? ed.formulaCode : <Text fontWeight='semibold' color='danger'>Data missing. Please make sure correct excel file for formulation code is uploaded.</Text>}</Td>
+                    <Td>{ed.formulaDescription ? ed.formulaDescription : <Text fontWeight='semibold' color='danger'>Data missing. Please make sure correct excel file for formulation code is uploaded.</Text>}</Td>
+                    <Td>{ed.version ? ed.version : <Text fontWeight='semibold' color='danger'>Data missing. Please make sure correct excel file for formulation code is uploaded.</Text>}</Td>
+                    <Td>{ed.itemCodeInitial ? ed.itemCodeInitial : <Text fontWeight='semibold' color='danger'>Data missing. Please make sure correct excel file for formulation code is uploaded.</Text>}</Td>
+                    <Td>{ed.itemDescription ? ed.itemDescription : <Text fontWeight='semibold' color='danger'>Data missing. Please make sure correct excel file for formulation code is uploaded.</Text>}</Td>
+                    <Td>{ed.quantity ? ed.quantity : <Text fontWeight='semibold' color='danger'>Data missing. Please make sure correct excel file for formulation code is uploaded.</Text>}</Td>
                   </Tr>
-                )} */}
+                )}
               </Tbody>
             </Table>
 
@@ -154,7 +239,7 @@ const ImportFormulationCodePage = () => {
 
             <HStack>
               <Button
-                // onClick={() => submitFile(resultArray)}
+                onClick={() => submitFile(resultArray)}
                 type='submit'
                 isLoading={isLoading}
                 isDisabled={isDisabled}

@@ -107,6 +107,7 @@ const SupplierPage = () => {
 
   const fetchSupplier = () => {
     fetchSupplierApi( currentPage, pageSize, status, search ).then(res => {
+      setIsLoading(false)
       setSuppliers(res)
       setPageTotal(res.totalCount)
     })
@@ -114,7 +115,6 @@ const SupplierPage = () => {
 
   useEffect(() => {
     fetchSupplier()
-    setIsLoading(false)
   }, [status, pageSize, currentPage, search])
   
   const handlePageChange = (nextPage) => {

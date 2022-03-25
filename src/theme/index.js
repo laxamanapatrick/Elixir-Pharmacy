@@ -60,7 +60,7 @@ const theme = extendTheme({
                 },
             },
 
-        }
+        },
     },
 
 }, withDefaultVariant({

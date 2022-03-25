@@ -57,7 +57,7 @@ const TransformationManagementModalViewing = ({
     return (
         <Modal
             size='5xl'
-            isOpen={isOpen} onClose={onClose}
+            isOpen={isOpen} onClose={() => {}}
         >
 
             <ModalOverlay />
@@ -66,7 +66,7 @@ const TransformationManagementModalViewing = ({
                 <ModalHeader>
                     <VStack><Text>Transformation Formula</Text></VStack>
                 </ModalHeader>
-                <ModalCloseButton />
+                <ModalCloseButton onClick={onClose} />
 
                 <ModalBody>
 
