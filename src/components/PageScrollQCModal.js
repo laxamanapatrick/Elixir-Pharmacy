@@ -5,7 +5,7 @@ const PageScrollQCModal = ({children}) => {
     return (
         <Box w="full" overflowY="auto" overflowX="auto" mt={4}
             minHeight="300px"
-            maxHeight="645px"
+            maxHeight="640px"
             sx={{
                 "&::-webkit-scrollbar": {
                     height: "5px",

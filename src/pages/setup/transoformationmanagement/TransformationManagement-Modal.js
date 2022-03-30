@@ -199,7 +199,7 @@ const ModalComponent = ({ isOpen, onClose, formulaId, formulaItemCode, formulaIt
                 setisLoading(false)
                 ToastComponent("Error", err.response.data, "error", toast)
                 // add property id to objects for if condition
-                // data.formData.id = ""
+                // data.formData.id = "" 
             })
         } catch (err) {
         }

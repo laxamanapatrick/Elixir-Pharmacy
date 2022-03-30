@@ -15,14 +15,6 @@ import {
   Tr,
   Td,
   Button,
-  Popover,
-  PopoverTrigger,
-  Portal,
-  PopoverContent,
-  PopoverArrow,
-  PopoverCloseButton,
-  VStack,
-  PopoverBody,
   Stack,
   useDisclosure,
   Modal,
@@ -33,11 +25,6 @@ import {
   ModalBody,
   ModalFooter,
   Skeleton,
-  Box,
-  FormLabel,
-  Checkbox,
-  Radio,
-  RadioGroup
 } from '@chakra-ui/react'
 import {
   Pagination,
@@ -50,16 +37,12 @@ import {
 } from '@ajna/pagination'
 import PageScroll from '../../components/PageScroll'
 import PageScrollModal from '../../components/PageScrollModal'
-import PageScrollQCModal from '../../components/PageScrollQCModal'
-import { GoCheck } from 'react-icons/go'
-import { ImCross } from 'react-icons/im'
-import { BsSlashLg } from 'react-icons/bs'
 import { FaSearch } from 'react-icons/fa'
 import apiClient from '../../services/apiClient'
 import { decodeUser } from '../../services/decode-user'
-import DateConverter from '../../components/DateConverter'
 import moment from 'moment'
 import { EditModalComponent } from './qc-receiving-page/Edit-Modal'
+import { CancelModalComponent } from './qc-receiving-page/Cancel-Modal'
 
 
 const currentUser = decodeUser()
@@ -77,6 +60,7 @@ const QCReceivingPage = () => {
   const [search, setSearch] = useState("")
   const [viewingData, setViewingData] = useState([])
   const [editData, setEditData] = useState([])
+  const [poId, setPoId] = useState(null)
   const { isOpen: isViewModalOpen, onOpen: openViewModal, onClose: closeViewModal } = useDisclosure()
   const { isOpen: isEditModalOpen, onOpen: openEditModal, onClose: closeEditModal } = useDisclosure()
   const { isOpen: isCancelModalOpen, onOpen: openCancelModal, onClose: closeCancelModal } = useDisclosure()
@@ -127,7 +111,8 @@ const QCReceivingPage = () => {
     openEditModal()
   }
 
-  const cancelModalHandler = () => {
+  const cancelModalHandler = (data) => {
+    setPoId(data)
     openCancelModal()
   }
 
@@ -211,7 +196,7 @@ const QCReceivingPage = () => {
                         </Button>
 
                         <Button
-                          onClick={() => cancelModalHandler()}
+                          onClick={() => cancelModalHandler(po.id)}
                           color='white' bgColor='danger' _hover={{ bgColor: 'secondary', color: 'white' }} size='xs'
                         >
                           Cancel
@@ -256,6 +241,8 @@ const QCReceivingPage = () => {
             <CancelModalComponent
               isOpen={isCancelModalOpen}
               onClose={closeCancelModal}
+              poId={poId}
+              fetchPo={fetchPo}
             />
           )
         }
@@ -370,91 +357,5 @@ const ViewModalComponent = ({ isOpen, onClose, viewingData }) => {
 
 }
 
-//Cancel Modal
 
-const CancelModalComponent = ({ isOpen, onClose }) => {
-
-  const [reasons, setReasons] = useState([])
-  const [reasonData, setReasonData] = useState(null)
-  const [isDisabled, setIsDisabled] = useState(true)
-
-  const fetchReasonsApi = async () => {
-    const res = await apiClient.get(`Reason/GetAllActiveReason`)
-    return res.data
-  }
-
-  const fetchReasons = () => {
-    fetchReasonsApi().then(res => {
-      setReasons(res)
-    })
-  }
-
-  useEffect(() => {
-    fetchReasons()
-  }, [])
-
-  const reasonHandler = (data) => {
-    if (data) {
-      setIsDisabled(false)
-    } else {
-      setIsDisabled(true)
-    }
-
-    setReasonData(data)
-  }
-
-  return (
-
-    <Flex>
-      <Modal size='xl' isOpen={isOpen} onClose={() => { }}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>
-            <Flex justifyContent='center'>
-              <Text>
-                Cancel Raw Materials
-              </Text>
-            </Flex>
-          </ModalHeader>
-          <ModalCloseButton onClick={onClose} />
-          <Flex borderColor='gray.100' borderWidth='5px' borderX='none' borderTop='none'></Flex>
-          <ModalBody>
-
-            <Flex justifyContent='center' my={7}>
-              <VStack spacing={5}>
-                <Text>Are you sure you want to cancel this raw material?</Text>
-
-                {
-                  reasons.length > 0 ? (<Select
-                    onChange={(e) => reasonHandler(e.target.value)}
-                    placeholder='Select Reason'
-                  >
-                    {reasons.map(reason => (
-                      <option key={reason.id} value={reason.id}>{reason.reasonName}</option>
-                    ))}
-
-                  </Select>) : "loading"
-                }
-
-              </VStack>
-            </Flex>
-
-          </ModalBody>
-          <Flex borderColor='gray.100' borderWidth='5px' borderX='none' borderTop='none'></Flex>
-          <ModalFooter>
-            <Button
-              disabled={isDisabled}
-              _hover={{ bgColor: 'accent', color: 'white' }}
-              variant='outline'
-              onClick={onClose}
-            >
-              Submit
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </Flex >
-  )
-
-}
 
