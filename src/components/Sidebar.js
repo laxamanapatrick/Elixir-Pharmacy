@@ -57,6 +57,10 @@ const Sidebar = () => {
 
     useEffect(() => {
         fetchTagged()
+
+        return () => {
+            setTagModules([])
+        }
     }, []);
 
     const selectedMenuHandler = (data) => {

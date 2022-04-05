@@ -1,4 +1,4 @@
-import { Button, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Text, useToast, VStack } from '@chakra-ui/react'
+import { Button, ButtonGroup, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverFooter, PopoverTrigger, Select, Text, useToast, VStack } from '@chakra-ui/react'
 import React, { useState, useEffect } from 'react'
 import { ToastComponent } from '../../../components/Toast'
 import apiClient from '../../../services/apiClient'
@@ -26,6 +26,10 @@ export const CancelModalComponent = ({ isOpen, onClose, poId, fetchPo }) => {
 
     useEffect(() => {
         fetchReasons()
+
+        return () => {
+            setReasons([])
+        }
     }, [])
 
     const reasonHandler = (data) => {
@@ -44,12 +48,12 @@ export const CancelModalComponent = ({ isOpen, onClose, poId, fetchPo }) => {
             id: poId,
             reason: reasonData
         }
-        
+
         try {
             setIsLoading(true)
             const res = apiClient.put(`Receiving/CancelPO/${poId}`, submitData
             ).then((res) => {
-                ToastComponent("Success!", "PO Updated", "success", toast)
+                ToastComponent("Success!", "PO Cancelled", "success", toast)
                 fetchPo()
                 onClose()
                 setIsLoading(false)
@@ -104,15 +108,24 @@ export const CancelModalComponent = ({ isOpen, onClose, poId, fetchPo }) => {
                     </ModalBody>
                     <Flex borderColor='gray.100' borderWidth='5px' borderX='none' borderTop='none'></Flex>
                     <ModalFooter>
-                        <Button
-                            onClick={() => submitCancellation()}
-                            disabled={isDisabled}
-                            isLoading={isLoading}
-                            _hover={{ bgColor: 'accent', color: 'white' }}
-                            variant='outline'
-                        >
-                            Submit
-                        </Button>
+                        
+                        <ButtonGroup size='md'>
+                            <Button
+                                colorScheme='blue' _hover={{ bgColor: 'accent' }}
+                                isLoading={isLoading}
+                                onClick={() => submitCancellation()}
+                            >
+                                Yes
+                            </Button>
+                            <Button
+                                colorScheme='red'
+                                _hover={{ bgColor: 'danger' }}
+                                onClick={onClose}
+                            >
+                                No
+                            </Button>
+                        </ButtonGroup>
+
                     </ModalFooter>
                 </ModalContent>
             </Modal>

@@ -342,7 +342,8 @@ const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSub
       if (data.formData.id === "") {
         delete data.formData["id"]
         setisLoading(true)
-        const res = apiClient.post("Supplier/AddNewSupplier", data.formData).then((res) => {
+        const res = apiClient.post("Supplier/AddNewSupplier", data.formData)
+        .then((res) => {
           ToastComponent("Success", "Supplier created", "success", toast)
           setisLoading(false)
           fetchSupplier()

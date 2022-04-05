@@ -14,36 +14,34 @@ import { ImCross } from 'react-icons/im'
 import { BsSlashLg } from 'react-icons/bs'
 import { ReceivingContext } from '../../../context/ReceivingContext'
 
-export const EditModalChecklist = () => {
+export const EditModalChecklist = ({manufacturingDate, expiryDate, expectedDelivery, actualDelivered, batchNo, setIsSubmitDisabled}) => {
 
     const { setSubmitDataThree } = useContext(ReceivingContext)
 
-    const [checkListDisable, setCheckListDisable] = useState(true)
-
-    const [truckInspectionOne, setTruckInspectionOne] = useState(false)
+    const [truckInspectionOne, setTruckInspectionOne] = useState(null)
     const [truckInspectionRemarksOne, setTruckInspectionRemarksOne] = useState(null)
-    const [truckInspectionTwo, setTruckInspectionTwo] = useState(false)
+    const [truckInspectionTwo, setTruckInspectionTwo] = useState(null)
     const [truckInspectionRemarksTwo, setTruckInspectionRemarksTwo] = useState(null)
-    const [truckInspectionThree, setTruckInspectionThree] = useState(false)
+    const [truckInspectionThree, setTruckInspectionThree] = useState(null)
     const [truckInspectionThreeRemarks, setTruckInspectionThreeRemarks] = useState(null)
-    const [truckInspectionFour, setTruckInspectionFour] = useState(false)
+    const [truckInspectionFour, setTruckInspectionFour] = useState(null)
     const [truckInspectionFourRemarks, setTruckInspectionFourRemarks] = useState(null)
 
-    const [unloadingRawMatsOne, setUnloadingRawMatsOne] = useState(false)
+    const [unloadingRawMatsOne, setUnloadingRawMatsOne] = useState(null)
     const [unloadingRawMatsOneRemarks, setUnloadingRawMatsOneRemarks] = useState(null)
-    const [unloadingRawMatsTwo, setUnloadingRawMatsTwo] = useState(false)
+    const [unloadingRawMatsTwo, setUnloadingRawMatsTwo] = useState(null)
     const [unloadingRawMatsTwoRemarks, setUnloadingRawMatsTwoRemarks] = useState(null)
-    const [unloadingRawMatsThree, setUnloadingRawMatsThree] = useState(false)
+    const [unloadingRawMatsThree, setUnloadingRawMatsThree] = useState(null)
     const [unloadingRawMatsThreeRemarks, setUnloadingRawMatsThreeRemarks] = useState(null)
-    const [unloadingRawMatsFour, setUnloadingRawMatsFour] = useState(false)
+    const [unloadingRawMatsFour, setUnloadingRawMatsFour] = useState(null)
     const [unloadingRawMatsFourRemarks, setUnloadingRawMatsFourRemarks] = useState(null)
 
-    const [checkingPAOne, setCheckingPAOne] = useState(false)
+    const [checkingPAOne, setCheckingPAOne] = useState(null)
     const [checkingPAOneRemarks, setCheckingPAOneRemarks] = useState(null)
-    const [checkingPATwo, setCheckingPATwo] = useState(false)
+    const [checkingPATwo, setCheckingPATwo] = useState(null)
     const [checkingPATwoRemarks, setCheckingPATwoRemarks] = useState(null)
 
-    const [qaChecklist, setQaChecklist] = useState(false)
+    const [qaChecklist, setQaChecklist] = useState(null)
     const [qaChecklistRemarks, setQaChecklistRemarks] = useState(null)
 
     useEffect(() => {
@@ -170,7 +168,13 @@ export const EditModalChecklist = () => {
 
     // QA Checklist Approval data
     const checklistQA = (data) => {
-        setQaChecklist(data)
+        if(data === true || data === false && manufacturingDate && expiryDate && expectedDelivery && actualDelivered && batchNo ) {
+            setIsSubmitDisabled(false)
+            setQaChecklist(data)
+        } else {
+            setIsSubmitDisabled(true)
+            setQaChecklist(data)
+        }
     }
     const checklistQARemarks = (remarks) => {
         setQaChecklistRemarks(remarks)
@@ -216,9 +220,9 @@ export const EditModalChecklist = () => {
                     <Text w='40%'>Floorboards are dry and clean</Text>
                     <HStack mr={2}>
                         <HStack mr='127.5px' onChange={(e) => truckInspection2(JSON.parse(e.target.value))}>
-                            <input type="radio" id="tc2" name="truck-inspection2" value={true} />
+                            <input type="radio" id="tc2" name="truck-inspection2" value={true} disabled={truckInspectionOne != null ? false : true} />
                             <label htmlFor="tc2"><GoCheck fontSize='20px' /></label>
-                            <input type="radio" id="tx2" name="truck-inspection2" value={false} />
+                            <input type="radio" id="tx2" name="truck-inspection2" value={false} disabled={truckInspectionOne != null  ? false : true}  />
                             <label htmlFor="tx2"><ImCross fontSize='12px' /></label>
                         </HStack>
                         <Input
@@ -233,9 +237,9 @@ export const EditModalChecklist = () => {
                     <Text w='40%'>No evidence of chemical pills, garbage, waste or spoiled foods</Text>
                     <HStack mr={2}>
                         <HStack mr='127.5px' onChange={(e) => truckInspection3(JSON.parse(e.target.value))}>
-                            <input type="radio" id="tc3" name="truck-inspection3" value={true} />
+                            <input type="radio" id="tc3" name="truck-inspection3" value={true} disabled={truckInspectionTwo != null ? false : true} />
                             <label htmlFor="tc3"><GoCheck fontSize='20px' /></label>
-                            <input type="radio" id="tx3" name="truck-inspection3" value={false} />
+                            <input type="radio" id="tx3" name="truck-inspection3" value={false} disabled={truckInspectionTwo != null  ? false : true} />
                             <label htmlFor="tx3"><ImCross fontSize='12px' /></label>
                         </HStack>
                         <Input
@@ -250,9 +254,9 @@ export const EditModalChecklist = () => {
                     <Text w='40%'>No insect and rodent activity</Text>
                     <HStack mr={2}>
                         <HStack mr='127.5px' onChange={(e) => truckInspection4(JSON.parse(e.target.value))}>
-                            <input type="radio" id="tc4" name="truck-inspection4" value={true} />
+                            <input type="radio" id="tc4" name="truck-inspection4" value={true} disabled={truckInspectionThree != null ? false : true} />
                             <label htmlFor="tc2"><GoCheck fontSize='20px' /></label>
-                            <input type="radio" id="tx4" name="truck-inspection4" value={false} />
+                            <input type="radio" id="tx4" name="truck-inspection4" value={false} disabled={truckInspectionThree != null  ? false : true} />
                             <label htmlFor="tx4"><ImCross fontSize='12px' /></label>
                         </HStack>
                         <Input
@@ -283,9 +287,9 @@ export const EditModalChecklist = () => {
                     <Text w='40%'>All products are on clean pallets (if applicable)</Text>
                     <HStack mr={2}>
                         <HStack mr='127.5px' onChange={(e) => unloadingRM1(JSON.parse(e.target.value))}>
-                            <input type="radio" id="uorwc1" name="unloading-of-raw-materials1" value={true} />
+                            <input type="radio" id="uorwc1" name="unloading-of-raw-materials1" value={true} disabled={truckInspectionFour != null ? false : true} />
                             <label htmlFor="uorwc1"><GoCheck fontSize='20px' /></label>
-                            <input type="radio" id="uorwx1" name="unloading-of-raw-materials1" value={false} />
+                            <input type="radio" id="uorwx1" name="unloading-of-raw-materials1" value={false} disabled={truckInspectionFour != null  ? false : true} />
                             <label htmlFor="uorwx1"><ImCross fontSize='12px' /></label>
                         </HStack>
                         <Input
@@ -300,9 +304,9 @@ export const EditModalChecklist = () => {
                     <Text w='40%'>No damage packaging</Text>
                     <HStack mr={2}>
                         <HStack mr='127.5px' onChange={(e) => unloadingRM2(JSON.parse(e.target.value))}>
-                            <input type="radio" id="uorwc2" name="unloading-of-raw-materials2" value={true} />
+                            <input type="radio" id="uorwc2" name="unloading-of-raw-materials2" value={true} disabled={unloadingRawMatsOne != null ? false : true} />
                             <label htmlFor="uorwc2"><GoCheck fontSize='20px' /></label>
-                            <input type="radio" id="uorwx2" name="unloading-of-raw-materials2" value={false} />
+                            <input type="radio" id="uorwx2" name="unloading-of-raw-materials2" value={false} disabled={unloadingRawMatsOne != null  ? false : true} />
                             <label htmlFor="uorwx2"><ImCross fontSize='12px' /></label>
                         </HStack>
                         <Input
@@ -317,9 +321,9 @@ export const EditModalChecklist = () => {
                     <Text w='40%'>All packing are clean</Text>
                     <HStack mr={2}>
                         <HStack mr='127.5px' onChange={(e) => unloadingRM3(JSON.parse(e.target.value))}>
-                            <input type="radio" id="uorwc3" name="unloading-of-raw-materials3" value={true} />
+                            <input type="radio" id="uorwc3" name="unloading-of-raw-materials3" value={true} disabled={unloadingRawMatsTwo != null ? false : true} />
                             <label htmlFor="uorwc3"><GoCheck fontSize='20px' /></label>
-                            <input type="radio" id="uorwx3" name="unloading-of-raw-materials3" value={false} />
+                            <input type="radio" id="uorwx3" name="unloading-of-raw-materials3" value={false} disabled={unloadingRawMatsTwo != null  ? false : true} />
                             <label htmlFor="uorwx3"><ImCross fontSize='12px' /></label>
                         </HStack>
                         <Input
@@ -334,9 +338,9 @@ export const EditModalChecklist = () => {
                     <Text w='40%'>Batch number, manufacturing date and expiry date are same as written in the Certificate of Analysis (COA) provided by supplier</Text>
                     <HStack mr={2}>
                         <HStack mr='127.5px' onChange={(e) => unloadingRM4(JSON.parse(e.target.value))}>
-                            <input type="radio" id="uorwc4" name="unloading-of-raw-materials4" value={true} />
+                            <input type="radio" id="uorwc4" name="unloading-of-raw-materials4" value={true} disabled={unloadingRawMatsThree != null ? false : true} />
                             <label htmlFor="uorwc4"><GoCheck fontSize='20px' /></label>
-                            <input type="radio" id="uorwx4" name="unloading-of-raw-materials4" value={false} />
+                            <input type="radio" id="uorwx4" name="unloading-of-raw-materials4" value={false} disabled={unloadingRawMatsThree != null  ? false : true} />
                             <label htmlFor="uorwx4"><ImCross fontSize='12px' /></label>
                         </HStack>
                         <Input
@@ -367,9 +371,9 @@ export const EditModalChecklist = () => {
                     <Text w='40%'>The delivered raw materials has the same color/appearance</Text>
                     <HStack mr={2}>
                         <HStack mr='127.5px'  onChange={(e) => checkingPA1(JSON.parse(e.target.value))}>
-                            <input type="radio" id="cc1" name="check-of-physical-appeareance/sampling1" value={true} />
+                            <input type="radio" id="cc1" name="check-of-physical-appeareance/sampling1" value={true} disabled={unloadingRawMatsFour != null ? false : true} />
                             <label htmlFor="cc1"><GoCheck fontSize='20px' /></label>
-                            <input type="radio" id="cx1" name="check-of-physical-appeareance/sampling1" value={false} />
+                            <input type="radio" id="cx1" name="check-of-physical-appeareance/sampling1" value={false} disabled={unloadingRawMatsFour != null  ? false : true} />
                             <label htmlFor="cx1"><ImCross fontSize='12px' /></label>
                         </HStack>
                         <Input
@@ -384,9 +388,9 @@ export const EditModalChecklist = () => {
                     <Text w='40%'>No foreign materials in the packaging and in the content of raw material</Text>
                     <HStack mr={2}>
                         <HStack mr='127.5px' onChange={(e) => checkingPA2(JSON.parse(e.target.value))}>
-                            <input type="radio" id="cc2" name="check-of-physical-appeareance/sampling2" value={true} />
+                            <input type="radio" id="cc2" name="check-of-physical-appeareance/sampling2" value={true} disabled={checkingPAOne != null ? false : true} />
                             <label htmlFor="cc2"><GoCheck fontSize='20px' /></label>
-                            <input type="radio" id="cx2" name="check-of-physical-appeareance/sampling2" value={false} />
+                            <input type="radio" id="cx2" name="check-of-physical-appeareance/sampling2" value={false} disabled={checkingPAOne != null  ? false : true} />
                             <label htmlFor="cx2"><ImCross fontSize='12px' /></label>
                         </HStack>
                         <Input
@@ -417,9 +421,9 @@ export const EditModalChecklist = () => {
                     <Text w='40%'>The item selected, If approved in our QA basic mark as approved or else reject</Text>
                     <HStack mr={2}>
                         <HStack mr='127.5px' onChange={(e) => checklistQA(JSON.parse(e.target.value))}>
-                            <input type="radio" id="qc1" name="qa-checklist-approval1" value={true} />
+                            <input type="radio" id="qc1" name="qa-checklist-approval1" value={true} disabled={checkingPATwo != null ? false : true} />
                             <label htmlFor="qc1"><GoCheck fontSize='20px' /></label>
-                            <input type="radio" id="qx1" name="qa-checklist-approval1" value={false} />
+                            <input type="radio" id="qx1" name="qa-checklist-approval1" value={false} disabled={checkingPATwo != null  ? false : true} />
                             <label htmlFor="qx1"><ImCross fontSize='12px' /></label>
                         </HStack>
                         <Input
@@ -428,8 +432,6 @@ export const EditModalChecklist = () => {
                         />
                     </HStack>
                 </Flex>
-                {/* {qaChecklist === false ? <Text textAlign='end' mt={-1} mr='113px' color='danger' fontSize='sm'>Remarks required</Text> : ""} */}
-
             </Box>
 
         </Stack>

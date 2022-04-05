@@ -1,3 +1,5 @@
+// RM QC Receiving
+
 import React, { useState, useEffect } from 'react'
 import {
   Flex,
@@ -25,6 +27,7 @@ import {
   ModalBody,
   ModalFooter,
   Skeleton,
+  Badge,
 } from '@chakra-ui/react'
 import {
   Pagination,
@@ -122,19 +125,28 @@ const QCReceivingPage = () => {
         <Heading color='secondary' fontSize='xl' justifyContent='c'>PO Summary Checklist</Heading>
       </Flex>
 
-      <Flex mb={2} justifyContent='start'>
+      <Flex mb={2} justifyContent='space-between'>
         <HStack>
           <InputGroup>
             <InputLeftElement
               pointerEvents='none'
               children={<FaSearch color='gray.300' />}
             />
-            <Input type='text' placeholder='Search: Role'
+            <Input type='text' placeholder='Search: PO Number'
               focusBorderColor='accent'
               onChange={(e) => searchHandler(e.target.value)}
             />
           </InputGroup>
         </HStack>
+
+        <HStack>
+          <Badge colorScheme='green'>
+            <Text color='secondary'>
+              Number of Records: {poData.posummary?.length}
+            </Text>
+          </Badge>
+        </HStack>
+
       </Flex>
 
       <PageScroll>

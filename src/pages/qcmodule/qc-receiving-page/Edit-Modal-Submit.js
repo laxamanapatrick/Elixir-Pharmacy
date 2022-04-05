@@ -1,40 +1,51 @@
-import React, { useState, useContext } from 'react'
-import { Button, useToast } from '@chakra-ui/react'
+import React, { useState, useEffect, useContext } from 'react'
+import { Button, ButtonGroup, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverFooter, PopoverTrigger, useDisclosure, useToast } from '@chakra-ui/react'
 import { ReceivingContext } from '../../../context/ReceivingContext'
 import apiClient from '../../../services/apiClient'
 import { ToastComponent } from '../../../components/Toast'
 
-export const EditModalSubmit = ({ isSubmitDisabled, po_ReceivingId, submitDataOne, submitDataTwo, submitDataThree, fetchPo, closeModal }) => {
+export const EditModalSubmit = ({ isSubmitDisabled, receivingId, sumQuantity, submitDataOne, submitDataTwo, submitDataThree, fetchPo, closeModal }) => {
+
+    const { setReceivingId } = useContext(ReceivingContext)
 
     const [isLoading, setIsLoading] = useState(false)
     const toast = useToast()
+    const {onClose} = useDisclosure()
 
     const firstSubmit = { ...submitDataOne, ...submitDataThree }
-    const secondSubmit = submitDataTwo
-
-    // console.log(firstSubmit)
-    // console.log(secondSubmit)
 
     const submitEditedHandlder = () => {
-
-
-
-        if (submitDataTwo) {
-            // try {
-            const res = apiClient.put(`Receiving/RejectRawMaterialsByReceivingId/${po_ReceivingId}`, secondSubmit)
-            // } catch (err) {
-            //     console.log(err)
-            // }
-        }
-
         try {
             setIsLoading(true)
             const res = apiClient.put(`Receiving/ReceiveRawMaterialsById/${submitDataOne.pO_Summary_Id}`, firstSubmit
             ).then((res) => {
                 ToastComponent("Success!", "PO Updated", "success", toast)
+                setReceivingId(res.data.id)
+                // setIsLoading(false)
                 fetchPo()
                 closeModal()
-                setIsLoading(false)
+
+                // take generated id 
+                const receivingIdWithoutUseContext = res.data.id
+
+                // final array data for second put
+                const secondSubmit = submitDataTwo.map(data => {
+                    return {
+                        pO_ReceivingId: receivingIdWithoutUseContext,
+                        quantity: sumQuantity,
+                        remarks: data.remarksName
+                    }
+                })
+
+                if (sumQuantity > 0) {
+                    try {
+                        const res = apiClient.put(`Receiving/RejectRawMaterialsByReceivingId`, secondSubmit)
+                    } catch (err) {
+                        console.log(err)
+                    }
+
+                    // proceed to first put error catch if condition for second put is not met
+                }
             }
             ).catch(err => {
                 setIsLoading(false)
@@ -44,20 +55,62 @@ export const EditModalSubmit = ({ isSubmitDisabled, po_ReceivingId, submitDataOn
         } catch (err) {
             console.log(err)
         }
+
     }
 
     return (
-        <Button
-            onClick={() => submitEditedHandlder()}
-            disabled={isSubmitDisabled}
-            isLoading={isLoading}
-            _hover={{bgColor: 'accent', color:'white'}}
-            variant='outline'
+        <Popover
+            placement='top-end'
+            closeOnBlur={false}
         >
-            Save
-        </Button>
+            <PopoverTrigger>
+                <Button
+                    disabled={isSubmitDisabled}
+                    _hover={{ bgColor: 'accent', color: 'white' }}
+                    variant='outline'
+                >
+                    Save
+                </Button>
+            </PopoverTrigger>
+            <PopoverContent color='white' bg='secondary' borderColor='accent'>
+                <PopoverArrow />
+                <PopoverCloseButton />
+                <PopoverBody>
+                    Are you sure you want to submit?
+                </PopoverBody>
+                <PopoverFooter
+                    border='0'
+                    d='flex'
+                    alignItems='center'
+                    justifyContent='space-between'
+                    pb={4}
+                >
+                    <ButtonGroup size='md'>
+                        <Button
+                            colorScheme='blue' _hover={{ bgColor: 'accent' }}
+                            isLoading={isLoading}
+                            onClick={() => submitEditedHandlder()}
+                        >
+                            Yes
+                        </Button>
+                    </ButtonGroup>
+                </PopoverFooter>
+            </PopoverContent>
+        </Popover>
     )
 }
+
+// // execute second put method if quantity is present on the data
+// if (sumQuantity > 0) {
+//     window.setTimeout(() => {
+//         console.log(secondSubmit)
+//         try {
+//             const res = apiClient.put(`Receiving/RejectRawMaterialsByReceivingId/${receivingId}`, [secondSubmit])
+//         } catch (err) {
+//             console.log(err)
+//         }
+//     }, 500)
+// }
 
 
 

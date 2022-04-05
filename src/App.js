@@ -19,11 +19,12 @@ import MiscellaneousReceiptPage from './pages/inventory/MiscellaneousReceiptPage
 import MiscellaneousIssuePage from './pages/inventory/MiscellaneousIssuePage'
 
 import QcModulePage from './pages/QcModulePage'
-import QCReceivingPage from './pages/qcmodule/QCReceivingPage'
-import WHReceivingPage from './pages/qcmodule/WHReceivingPage'
-import RMNearlyExpirePage from './pages/qcmodule/RMNearlyExpirePage'
-import ApprovalWHRejectionPage from './pages/qcmodule/ApprovalWHRejectionPage';
-import CancelledRMPage from './pages/qcmodule/CancelledRMPage'
+import QCReceivingPage from './pages/qcmodule/RM-QCReceivingPage'
+import RMWHReceivingPage from './pages/qcmodule/RM-WH-ReceivingPage'
+import WHConfirmReject from './pages/qcmodule/WH-Receiving-ConfirmReject'
+import RMNearlyExpirePage from './pages/qcmodule/RM-NearlyExpirePage'
+import RejectRMWHReceiving from './pages/qcmodule/RejectRM-WH-Receiving';
+import CancelledRMPage from './pages/qcmodule/Cancelled-RMPage'
 
 import ReceivingPage from './pages/ReceivingPage';
 import RmReceivingPage from './pages/receiving/RmReceivingPage';
@@ -101,9 +102,10 @@ function App() {
 
           <Route path="qc-module" element={user ? <QcModulePage /> : <Navigate to="/login" />}>
             <Route path="qc-receiving" element={user ? <QCReceivingPage /> : <Navigate to="/login" />} />
-            <Route path="wh-receiving" element={user ? <WHReceivingPage /> : <Navigate to="/login" />} />
+            <Route path="wh-receiving" element={user ? <RMWHReceivingPage /> : <Navigate to="/login" />} />
+            <Route path="wh-confirm-reject" element={user ? <WHConfirmReject /> : <Navigate to="/login" />} />
             <Route path="rm-nearly-expire" element={user ? <RMNearlyExpirePage /> : <Navigate to="/login" />} />
-            <Route path="approval-wh-rejection" element={user ? <ApprovalWHRejectionPage /> : <Navigate to="/login" />} />
+            <Route path="approval-wh-rejection" element={user ? <RejectRMWHReceiving /> : <Navigate to="/login" />} />
             <Route path="cancelled-rm" element={user ? <CancelledRMPage /> : <Navigate to="/login" />} />
           </Route>
 

@@ -26,15 +26,15 @@ const fetchReasonsApi = async () => {
     return res.data
 }
 
-export const EditModalComponentRejectionInfo = ({ po_ReceivingId }) => {
+export const EditModalComponentRejectionInfo = ({ receivingId, sumQuantity }) => {
 
-    const { setSubmitDataTwo } = useContext(ReceivingContext)
+    const { setSubmitDataTwo, setSumQuantity } = useContext(ReceivingContext)
 
     const [reasons, setReasons] = useState([])
     const [quantity, setQuantity] = useState(null)
     const [remarks, setRemarks] = useState("")
     const [remarksName, setRemarksName] = useState("")
-    const [sumQuantity, setSumQuantity] = useState(null)
+    // const [sumQuantity, setSumQuantity] = useState(null)
     const [errors, setErrors] = useState({})
     const [finalData, setFinalData] = useState([])
 
@@ -56,14 +56,15 @@ export const EditModalComponentRejectionInfo = ({ po_ReceivingId }) => {
             let totalQuantity = finalData.map((q) => parseFloat(q.quantity))
             let sum = totalQuantity.reduce((a, b) => a + b)
             setSumQuantity(sum)
+        } else {
+            setSumQuantity(0)
         }
 
-    }, [sumQuantity])
+    }, [finalData, sumQuantity])
 
     useEffect(() => {
         setSubmitDataTwo(finalData)
     }, [finalData])
-
 
     const quantityHandler = (data) => {
         const newData = Number(data)
@@ -107,7 +108,7 @@ export const EditModalComponentRejectionInfo = ({ po_ReceivingId }) => {
         }
 
         const data = {
-            "po_receivingid": po_ReceivingId,
+            "pO_ReceivingId": receivingId,
             "quantity": quantity,
             "remarks": remarks,
             "remarksName": remarksName
@@ -117,7 +118,7 @@ export const EditModalComponentRejectionInfo = ({ po_ReceivingId }) => {
 
     const deleteRejectionHandler = (data) => {
         setFinalData(finalData.filter((row) =>
-            row.remarks !== data
+            row.remarksName !== data
         ))
     }
 
@@ -168,13 +169,11 @@ export const EditModalComponentRejectionInfo = ({ po_ReceivingId }) => {
                 </FormLabel>
             </Flex>
 
-            <Flex justifyContent='space-between'>
-                <HStack>
-                    <Text fontWeight='semibold' color='black'>
-                        Total Quantity: {sumQuantity}
-                    </Text>
-                </HStack>
-            </Flex>
+
+            <Text fontWeight='semibold' color='black'>
+                Total Quantity: {sumQuantity}
+            </Text>
+
 
             {
                 !finalData.length > 0 ? "" : (
@@ -197,7 +196,7 @@ export const EditModalComponentRejectionInfo = ({ po_ReceivingId }) => {
                                         <Button p={0}
                                             background='none'
                                             color='secondary'
-                                            onClick={() => deleteRejectionHandler(data.quantity)}
+                                            onClick={() => deleteRejectionHandler(data.remarksName)}
                                         >
                                             <AiFillMinusCircle fontSize='20px' />
                                         </Button>

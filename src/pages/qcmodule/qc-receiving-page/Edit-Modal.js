@@ -37,28 +37,6 @@ import { ReceivingContext } from '../../../context/ReceivingContext'
 
 const currentUser = decodeUser()
 
-const schema = yup.object().shape({
-  formData: yup.object().shape({
-    // id: yup.string(),
-    // pO_Number: yup.number().required(),
-    // pR_Number: yup.number().required(),
-    // pR_Date: yup.string().required("PR Date is required"),
-    // pO_Date: yup.string().required("PO Date is required"),
-    // itemCode: yup.string().required("Item Code is required"),
-    // itemDescription: yup.string().required("Item Description is required"),
-    // supplier: yup.string().required("Supplier is required"),
-    // uom: yup.string().required("UOM is required"),
-    // quantityOrdered: yup.string().required("Quantity Ordered is required"),
-    // actualGood: yup.string().required("Actual Good is required"),
-    // actualRemaining: yup.string().required("Actual Good Remaining is required"),
-    po_summary_id: yup.number(),
-    manufacturing_date: yup.string().required("Required field"),
-    expected_delivery: yup.number().required().typeError("Must be a number"),
-    expiry_date: yup.string().required("Required field"),
-    actual_delivered: yup.number().required().typeError("Must be a number"),
-    batch_no: yup.number().required().typeError("Must be a number")
-  })
-})
 
 export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo }) => {
 
@@ -67,6 +45,10 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo }) => {
   const [expiryDate, setExpiryDate] = useState(null)
   const [actualDelivered, setActualDelivered] = useState(null)
   const [batchNo, setBatchNo] = useState(null)
+
+  const [sumQuantity, setSumQuantity] = useState(0)
+  const [receivingId, setReceivingId] = useState(null)
+
   const [isLoading, setIsLoading] = useState(true)
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true)
   const [submitDataTwo, setSubmitDataTwo] = useState([])
@@ -74,7 +56,7 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo }) => {
   const toast = useToast()
 
   const { register, formState: { errors } } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(),
     mode: "onChange",
     defaultValues: {
       submitData: {
@@ -109,6 +91,12 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo }) => {
   }
 
   const expiryDateProvider = (data) => {
+    const day1 = new Date()
+    const day2 = data
+    const daysDifference = (day2.getTime() - day1.getTime()) / (1000 * 3600 * 24)
+    if (daysDifference <= 30) {
+      ToastComponent("Warning", "Item expires in 30 days", "warning", toast)
+    }
     setExpiryDate(data)
   }
 
@@ -121,12 +109,7 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo }) => {
   }
 
   const batchNoProvider = (data) => {
-    if (data && manufacturingDate && expiryDate && expectedDelivery && actualDelivered) {
-      setIsSubmitDisabled(false)
       setBatchNo(data)
-    } else {
-      setIsSubmitDisabled(true)
-    }
   }
 
   let submitDataOne = {
@@ -135,11 +118,12 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo }) => {
     expected_Delivery: Number(expectedDelivery),
     expiry_Date: moment(expiryDate).format("YYYY-MM-DD"),
     actual_Delivered: Number(actualDelivered),
-    batch_No: Number(batchNo)
+    batch_No: Number(batchNo),
+    totalReject: sumQuantity
   }
 
   return (
-    <ReceivingContext.Provider value={{ setSubmitDataTwo, setSubmitDataThree }}>
+    <ReceivingContext.Provider value={{ setSubmitDataTwo, setSubmitDataThree, setSumQuantity, setReceivingId }}>
       <Flex>
         <Modal size='6xl' isOpen={isOpen} onClose={() => { }}>
           <ModalOverlay />
@@ -288,10 +272,11 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo }) => {
                         Manufacturing Date
                       </FormLabel>
                       <DatePicker
-                        className='chakra-input css-7s3glp'
-                        selected={manufacturingDate}
                         onChange={(date) => manufacturingDateProvider(date)}
+                        maxDate={new Date()}
                         shouldCloseOnSelect={true}
+                        selected={manufacturingDate}
+                        className='chakra-input css-7s3glp'
                       />
                       {/* {manufacturingDate ? "" : <Text color='danger' fontSize='sm'>Manufacturing Date is required</Text>} */}
                     </VStack>
@@ -301,10 +286,12 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo }) => {
                         Expiry Date
                       </FormLabel>
                       <DatePicker
-                        className='chakra-input css-7s3glp'
-                        selected={expiryDate}
                         onChange={(date) => expiryDateProvider(date)}
+                        minDate={new Date()}
+                        disabled={!Boolean(manufacturingDate)}
+                        selected={expiryDate}
                         shouldCloseOnSelect={true}
+                        className='chakra-input css-7s3glp'
                       />
                       {/* {expiryDate ? "" : <Text color='danger' fontSize='sm'>Expiry Date is required</Text>} */}
                     </VStack>
@@ -361,7 +348,7 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo }) => {
                   </Flex>
 
                   {/* REJECTION INFORMATION */}
-                  <EditModalComponentRejectionInfo po_ReceivingId={submitDataOne.pO_Summary_Id} />
+                  <EditModalComponentRejectionInfo po_ReceivingId={submitDataOne.pO_Summary_Id} sumQuantity={sumQuantity} receivingId={receivingId} />
 
                 </Stack>
 
@@ -369,7 +356,14 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo }) => {
                 <Text fontWeight='hairline' textAlign='center'>Upon arrival of the vehicle of medication/material at unloading area inspect the following:</Text>
 
                 {/* Checklist  */}
-                <EditModalChecklist />
+                <EditModalChecklist 
+                manufacturingDate={manufacturingDate}
+                expiryDate={expiryDate}
+                expectedDelivery={expectedDelivery}
+                actualDelivered={actualDelivered}
+                batchNo={batchNo}
+                setIsSubmitDisabled={setIsSubmitDisabled}
+                />
 
               </PageScrollQCModal>
 
@@ -379,6 +373,8 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo }) => {
 
               {/* Submit */}
               <EditModalSubmit
+                sumQuantity={sumQuantity}
+                receivingId={receivingId}
                 po_ReceivingId={submitDataOne.pO_Summary_Id}
                 submitDataOne={submitDataOne}
                 submitDataTwo={submitDataTwo}
