@@ -38,38 +38,74 @@ import {
 import PageScroll from '../../components/PageScroll';
 import ApproveModal from './rm-nearly-expire-page/Approve-Modal';
 import RejectModal from './rm-nearly-expire-page/Reject-Modal';
+import ConfirmModal from './reject-rm-forwh-receiving/Confirm-Modal';
+import ReturnModal from './reject-rm-forwh-receiving/Return-Modal';
 
+const fetchRejectRMWHApi = async () => {
+  const res = await apiClient.get(`Warehouse/GetRejectMaterialsForWarehouse`);
+  return res.data
+}
 
 const RejectRMWHReceiving = () => {
 
+  const [rejectData, setRejectData] = useState([])
+  const [qcReceivingId, setQcReceivingId] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
+
+  const { isOpen: isConfirmModalOpen, onOpen: openConfirmModal, onClose: closeConfirmModal } = useDisclosure()
+  const { isOpen: isReturnModalOpen, onOpen: openReturnModal, onClose: closeReturnModal } = useDisclosure()
+
+  const fetchReject = () => {
+    fetchRejectRMWHApi().then(res => {
+      // setIsLoading(false)
+      setRejectData(res)
+      // setPageTotal(res.totalCount)
+    })
+  }
+
+  useEffect(() => {
+    fetchReject()
+
+    return () => {
+      setRejectData([])
+    }
+  }, []);
+
+  const confirmRejectedHandler = (data) => {
+    openConfirmModal()
+    setQcReceivingId(data)
+  }
+
+  const returnRejectedHandler = (data) => {
+    openReturnModal()
+    setQcReceivingId(data)
+  }
 
   return (
     <Flex p={5} w="full" flexDirection='column'>
       <Flex justifyContent='center'>
-        <Heading color='secondary' fontSize='xl' justifyContent='center'>Rejected Raw Materials for Warehouse Receiving</Heading>
+        <Heading color='secondary' fontSize='xl' justifyContent='c'>Warehouse Receiving Confirm Reject</Heading>
       </Flex>
 
       <Flex mb={2} justifyContent='space-between'>
         <HStack>
-          <InputGroup>
+          {/* <InputGroup>
             <InputLeftElement
               pointerEvents='none'
               children={<FaSearch color='gray.300' />}
             />
             <Input
-              // onChange={(e) => searchHandler(e.target.value)}
+              onChange={(e) => searchHandler(e.target.value)}
               type='text'
               placeholder='Search: PO Number'
               focusBorderColor='accent'
             />
-          </InputGroup>
-
+          </InputGroup> */}
         </HStack>
         <HStack>
           <Badge colorScheme='green'>
             <Text color='secondary'>
-              {/* Number of Records: {nearlyExpireData.expiry?.length} */}
+              Number of Records: {rejectData?.length}
             </Text>
           </Badge>
         </HStack>
@@ -92,6 +128,7 @@ const RejectRMWHReceiving = () => {
             <Table variant='striped' size="sm">
               <Thead>
                 <Tr bgColor="secondary" >
+                  {/* <Th color="white">ID</Th> */}
                   <Th color="white">PO NO.</Th>
                   <Th color="white">Item Code</Th>
                   <Th color="white">Description</Th>
@@ -107,39 +144,38 @@ const RejectRMWHReceiving = () => {
                 </Tr>
               </Thead>
               <Tbody>
-                {/* {
-                nearlyExpireData.expiry?.map((ne, i) =>
-                  <Tr key={i}>
-                    <Td>{ne.pO_Number}</Td>
-                    <Td>{ne.itemCode}</Td>
-                    <Td>{ne.itemDescription}</Td>
-                    <Td>{ne.supplier}</Td>
-                    <Td> uom </Td>
-                    <Td>{ne.quantityOrdered}</Td>
-                    <Td>{ne.actualGood}</Td>
-                    <Td>{ne.actualReject}</Td>
-                    <Td>{ne.receivingdate}</Td>
-                    <Td>{ne.remarkas}</Td>
+                {rejectData?.map(rd =>
+                  <Tr key={rd.id}>
+                    {/* <Td>{rd.id}</Td> */}
+                    <Td>{rd.pO_Number}</Td>
+                    <Td>{rd.itemCode}</Td>
+                    <Td>{rd.itemDescription}</Td>
+                    <Td>{rd.supplier}</Td>
+                    <Td>{rd.uom}</Td>
+                    <Td>{rd.quantityOrdered}</Td>
+                    <Td>{rd.actualGood}</Td>
+                    <Td>{rd.actualReject}</Td>
+                    <Td>{rd.receivingDate}</Td>
+                    <Td>{rd.remarks}</Td>
                     <Td>
                       <Button
-                        onClick={() => approveHandler(ne.receivingId)}
-                        color='white' bgColor='#3C8DBC' _hover={{ bgColor: 'secondary', color: 'white' }} size='xs'
+                        onClick={() => confirmRejectedHandler(rd.qcReceivingId)}
+                        color='white' colorScheme='blue' _hover={{ bgColor: 'secondary', color: 'white' }} size='xs'
                       >
                         Confirm
                       </Button>
                     </Td>
-
                     <Td>
                       <Button
-                        onClick={() => rejectHandler(ne.receivingId)}
-                        color='white' bgColor='danger' _hover={{ bgColor: 'secondary', color: 'white' }} size='xs'
+                        onClick={() => returnRejectedHandler(rd.qcReceivingId)}
+                        color='white' colorScheme='red' _hover={{ bgColor: 'secondary', color: 'white' }} size='xs'
                       >
                         Return
                       </Button>
                     </Td>
                   </Tr>
                 )
-                } */}
+                }
               </Tbody>
             </Table>
           )
@@ -147,6 +183,18 @@ const RejectRMWHReceiving = () => {
       </PageScroll>
 
       {/* Table data end */}
+      {/* 
+      {
+        isModalOpen && (
+          <ModalComponent
+            modalData={modalData}
+            isOpen={isModalOpen}
+            onClose={closeModal}
+            fetchWHReceiving={fetchWHReceiving}
+          />
+        )
+
+      } */}
 
       {/* <Flex justifyContent='end' mt={5}>
 
@@ -182,29 +230,29 @@ const RejectRMWHReceiving = () => {
             </PaginationContainer>
           </Pagination>
         </Stack>
-      </Flex>
+      </Flex> */}
 
       {
-        isApproveModalOpen && (
-          <ApproveModal
-            receivingId={receivingId}
-            fetchRMNearlyExpire={fetchRMNearlyExpire}
-            isOpen={isApproveModalOpen}
-            onClose={closeApproveModal}
+        isConfirmModalOpen && (
+          <ConfirmModal
+            qcReceivingId={qcReceivingId}
+            fetchReject={fetchReject}
+            isOpen={isConfirmModalOpen}
+            onClose={closeConfirmModal}
           />
         )
       }
 
       {
-        isRejectModalOpen && (
-          <RejectModal
-            receivingId={receivingId}
-            fetchRMNearlyExpire={fetchRMNearlyExpire}
-            isOpen={isRejectModalOpen}
-            onClose={closeRejectModal}
+        isReturnModalOpen && (
+          <ReturnModal
+            qcReceivingId={qcReceivingId}
+            fetchReject={fetchReject}
+            isOpen={isReturnModalOpen}
+            onClose={closeReturnModal}
           />
         )
-      } */}
+      }
 
     </Flex >
   )

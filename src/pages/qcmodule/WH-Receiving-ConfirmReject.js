@@ -34,32 +34,43 @@ import {
   PaginationPageGroup,
 } from '@ajna/pagination'
 import PageScroll from '../../components/PageScroll';
+import ViewingModal from './wh-receiving-confirm-reject/WH-Receiving-ConfirmReject-Modal';
 
-const fetchRejectRMWHApi = async () => {
-  const res = await apiClient.get(`Warehouse/GetRejectMaterialsForWarehouse`);
+const fetchRejectRMApi = async () => {
+  const res = await apiClient.get(`Receiving/GetAllWarehouseReceivingConfirmReject`);
   return res.data
 }
 
 const WHConfirmReject = () => {
 
-  const [rejectData, setRejectData] = useState([])
+  const [rejectedMaterialsData, setRejectedMaterialsData] = useState([])
+  const [viewingData, setViewingData] = useState([])
+  const [viewingId, setViewingId] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
 
-  const fetchReject = () => {
-    fetchRejectRMWHApi().then(res => {
+  const { isOpen: isViewingModalOpen, onOpen: openViewingModal, onClose: closeViewingModal } = useDisclosure()
+
+  const fetchRejectMaterials = () => {
+    fetchRejectRMApi().then(res => {
       // setIsLoading(false)
-      setRejectData(res)
+      setRejectedMaterialsData(res)
       // setPageTotal(res.totalCount)
     })
   }
 
   useEffect(() => {
-    fetchReject()
+    fetchRejectMaterials()
 
     return () => {
-      setRejectData([])
+      setRejectedMaterialsData([])
     }
   }, []);
+
+  const viewingHandler = (data, id) => {
+    setViewingData(data)
+    setViewingId(id)
+    openViewingModal()
+  }
 
   return (
     <Flex p={5} w="full" flexDirection='column'>
@@ -85,7 +96,7 @@ const WHConfirmReject = () => {
         <HStack>
           <Badge colorScheme='green'>
             <Text color='secondary'>
-              Number of Records: {rejectData?.length}
+              Number of Records: {rejectedMaterialsData?.length}
             </Text>
           </Badge>
         </HStack>
@@ -117,29 +128,29 @@ const WHConfirmReject = () => {
                   <Th color="white">Qty. Ordered</Th>
                   <Th color="white">Actual Good</Th>
                   <Th color="white">Actual Reject</Th>
-                  <Th color="white">Expiration Date</Th>
                   <Th color="white">Receiving Date</Th>
+                  <Th color="white">Confirm Date</Th>
                   <Th color="white">View</Th>
                 </Tr>
               </Thead>
               <Tbody>
-                {rejectData?.map(rd =>
-                  <Tr key={rd.id}>
-                    {/* <Td>{rd.id}</Td> */}
-                    <Td>{rd.pO_Number}</Td>
-                    <Td>{rd.itemCode}</Td>
-                    <Td>{rd.itemDescription}</Td>
-                    <Td>{rd.supplier}</Td>
-                    <Td>{rd.uom}</Td>
-                    <Td>{rd.quantityOrdered}</Td>
-                    <Td>{rd.actualGood}</Td>
-                    <Td>{rd.reject}</Td>
-                    <Td>{rd.receivingDate}</Td>
-                    <Td>{rd.confirmDate}</Td>
+                {rejectedMaterialsData?.map(rmd =>
+                  <Tr key={rmd.id}>
+                    {/* <Td>{rmd.id}</Td> */}
+                    <Td>{rmd.pO_Number}</Td>
+                    <Td>{rmd.itemCode}</Td>
+                    <Td>{rmd.itemDescription}</Td>
+                    <Td>{rmd.supplier}</Td>
+                    <Td>{rmd.uom}</Td>
+                    <Td>{rmd.quantityOrdered}</Td>
+                    <Td>{rmd.actualGood}</Td>
+                    <Td>{rmd.actualReject}</Td>
+                    <Td>{rmd.receivingDate}</Td>
+                    <Td>{rmd.confirmDate}</Td>
                     <Td>
                       <Button
-                        // onClick={() => cancelReceivingHandler(wh)}
-                        color='white' bgColor='blue' _hover={{ bgColor: 'secondary', color: 'white' }} size='xs'
+                        onClick={() => viewingHandler(rmd, rmd.id)}
+                        color='white' colorScheme='blue' _hover={{ bgColor: 'secondary', color: 'white' }} size='xs'
                       >
                         View
                       </Button>
@@ -203,6 +214,19 @@ const WHConfirmReject = () => {
         </Stack>
 
       </Flex> */}
+
+      {
+        isViewingModalOpen && (
+          <ViewingModal
+            viewingId={viewingId}
+            viewingData={viewingData}
+            isOpen={openViewingModal}
+            onClose={closeViewingModal}
+          />
+        )
+      }
+
+
     </Flex >
   )
 }

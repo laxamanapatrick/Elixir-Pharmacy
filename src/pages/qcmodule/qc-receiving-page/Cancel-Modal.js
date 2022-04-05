@@ -113,6 +113,7 @@ export const CancelModalComponent = ({ isOpen, onClose, poId, fetchPo }) => {
                             <Button
                                 colorScheme='blue' _hover={{ bgColor: 'accent' }}
                                 isLoading={isLoading}
+                                isDisabled={isDisabled}
                                 onClick={() => submitCancellation()}
                             >
                                 Yes
