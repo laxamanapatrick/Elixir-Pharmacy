@@ -91,7 +91,7 @@ const TransformationManagementModalViewing = ({
                                     <Th color="white">Item Code</Th>
                                     <Th color="white">Item Description</Th>
                                     <Th color="white">Quantity</Th>
-                                    <Th color="white">UOM</Th>
+                                    {/* <Th color="white">UOM</Th> */}
                                 </Tr>
                             </Thead>
                             <Tbody>
@@ -102,7 +102,7 @@ const TransformationManagementModalViewing = ({
                                         <Td>{recipe.requirementCode}</Td>
                                         <Td>{recipe.requirementDescription}</Td>
                                         <Td>{recipe.requirementQuantity}</Td>
-                                        <Td>{recipe.uom}</Td>
+                                        {/* <Td>{recipe.uom}</Td> */}
                                     </Tr>
                                 )}
                             </Tbody>

@@ -270,7 +270,7 @@ const TransformationManagementPage = ({ disableAddRecipehandler }) => {
                     <Td>{formula.addedBy}</Td>
                     <Td>
                       <Button
-                        disabled={formula.countFormula > 1 && true}
+                        disabled={formula.countFormula == true}
                         onClick={() => recipeHandler(formula.id, formula.itemCode, formula.itemDescription, formula.quantity)}
                         p={0} background='none' color='secondary'
                       >
@@ -278,7 +278,7 @@ const TransformationManagementPage = ({ disableAddRecipehandler }) => {
                       </Button>
 
                       <Button
-                        disabled={formula.countFormula <= 1 && true}
+                        disabled={formula.countFormula == false}
                         onClick={() => recipeViewing(formula.id, formula.itemCode, formula.itemDescription, formula.quantity)}
                         p={0} background='none' color='secondary'
                       >

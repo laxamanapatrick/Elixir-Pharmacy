@@ -72,6 +72,7 @@ const WHConfirmReject = () => {
     openViewingModal()
   }
 
+
   return (
     <Flex p={5} w="full" flexDirection='column'>
       <Flex justifyContent='center'>

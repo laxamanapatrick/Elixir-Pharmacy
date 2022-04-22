@@ -24,11 +24,11 @@ import PageScrollQCModal from '../../../components/PageScrollQCModal'
 import DateConverter from '../../../components/DateConverter'
 import moment from 'moment'
 import * as yup from 'yup'
-import { yupResolver } from '@hookform/resolvers/yup';
+import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import { ToastComponent } from '../../../components/Toast'
 import DatePicker from 'react-datepicker'
-import "react-datepicker/dist/react-datepicker.css";
+import "react-datepicker/dist/react-datepicker.css"
 import '../../../theme/styles/date-picker.css'
 import { EditModalComponentRejectionInfo } from './Edit-Modal-Rejection-Information'
 import { EditModalChecklist } from './Edit-Modal-Checklist'
@@ -95,7 +95,7 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo }) => {
     const day2 = data
     const daysDifference = (day2.getTime() - day1.getTime()) / (1000 * 3600 * 24)
     if (daysDifference <= 30) {
-      ToastComponent("Warning", "Item expires in 30 days", "warning", toast)
+      ToastComponent("Warning", "Item is about to expire", "warning", toast)
     }
     setExpiryDate(data)
   }
@@ -105,11 +105,18 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo }) => {
   }
 
   const actualDeliveredProvider = (data) => {
-    setActualDelivered(data)
+    const allowablePercent = editData.actualRemaining * 0.1
+    const allowableAmount = editData.actualRemaining + allowablePercent
+    if (data > allowableAmount) {
+      setActualDelivered("")
+      ToastComponent("Warning!", "Amount is greater than allowable", "warning", toast)
+    } else {
+      setActualDelivered(data)
+    }
   }
 
   const batchNoProvider = (data) => {
-      setBatchNo(data)
+    setBatchNo(data)
   }
 
   let submitDataOne = {
@@ -313,11 +320,13 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo }) => {
                     <FormLabel w='40%'>
                       Qty. Actual Delivered
                       <Input
-                        {...register("submitData.actual_delivered")}
+                        value={actualDelivered}
                         onChange={(e) => actualDeliveredProvider(e.target.value)}
+                        onWheel={(e) => e.target.blur()}
+                        type='number'
                         placeholder='Please enter quantity  (Required)'
                         bgColor='#ffffe0'
-                        type='number'
+                        // pattern="^\d*(\.\d{0,2})?$"
                       />
                       {/* {actualDelivered ? "" : <Text color='danger' fontSize='sm'>Actual delivered quantity is required</Text>} */}
                     </FormLabel>
@@ -356,13 +365,13 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo }) => {
                 <Text fontWeight='hairline' textAlign='center'>Upon arrival of the vehicle of medication/material at unloading area inspect the following:</Text>
 
                 {/* Checklist  */}
-                <EditModalChecklist 
-                manufacturingDate={manufacturingDate}
-                expiryDate={expiryDate}
-                expectedDelivery={expectedDelivery}
-                actualDelivered={actualDelivered}
-                batchNo={batchNo}
-                setIsSubmitDisabled={setIsSubmitDisabled}
+                <EditModalChecklist
+                  manufacturingDate={manufacturingDate}
+                  expiryDate={expiryDate}
+                  expectedDelivery={expectedDelivery}
+                  actualDelivered={actualDelivered}
+                  batchNo={batchNo}
+                  setIsSubmitDisabled={setIsSubmitDisabled}
                 />
 
               </PageScrollQCModal>

@@ -1,6 +1,6 @@
 //Modal for Transformation Management Recipe tagging
 
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import {
     Button,
     Flex,
@@ -45,6 +45,7 @@ const currentUser = decodeUser()
 // })
 
 const ModalComponent = ({ isOpen, onClose, formulaId, formulaItemCode, formulaItemDescription, formulaQuantity, fetchFormula }) => {
+
     const [raws, setRaws] = useState([])
     const [rmId, setRmId] = useState("")
     const [rawMaterialQuantity, setRawMaterialQuantity] = useState()
@@ -56,22 +57,12 @@ const ModalComponent = ({ isOpen, onClose, formulaId, formulaItemCode, formulaIt
     const [recipeData, setRecipeData] = useState([])
     const [isLoading, setisLoading] = useState(false)
     const [isDisabled, setIsDisabled] = useState(false)
+    const [addButtonDisabler, setAddButtonDisabler] = useState(false)
     const [isSubmitDisabled, setIsSubmitDisabled] = useState(true)
     const [errors, setErrors] = useState({
     })
+    const itemCodeDisplay = useRef(null)
     const toast = useToast()
-
-    // const { register, handleSubmit } = useForm({
-    //     resolver: yupResolver(modalSchema),
-    //     mode: "onChange",
-    //     defaultValues: {
-    //         formData: {
-    //             recipeData: [],
-    //         }
-    //     }
-    // })
-
-
 
     const fetchRawMaterialsApi = async () => {
         const res = await apiClient.get('RawMaterial/GetAllActiveRawMaterials')
@@ -131,6 +122,19 @@ const ModalComponent = ({ isOpen, onClose, formulaId, formulaItemCode, formulaIt
     }
 
     const rawMaterialQuantityHandler = (data) => {
+        if (data > formulaQuantity) {
+            setAddButtonDisabler(true)
+            ToastComponent("Warning!", "The quantity you provided is greater than the quantity needed", "warning", toast)
+            return
+        }
+        if (data < 0) {
+            setAddButtonDisabler(true)
+            ToastComponent("Warning!", "Negative values and zeroes are not allowed", "warning", toast)
+        }
+        else {
+            setAddButtonDisabler(false)
+        }
+
         setRawMaterialQuantity(data)
     }
 
@@ -163,13 +167,15 @@ const ModalComponent = ({ isOpen, onClose, formulaId, formulaItemCode, formulaIt
         const data = {
             "rmId": rmId,
             "itemCode": itemCode,
-            "rawMaterialQuantity": rawMaterialQuantity,
+            "rawMaterialQuantity": parseFloat(rawMaterialQuantity),
             "rawMaterialDescription": rawMaterialDescription,
             "uom": uom,
             "formulaId": formulaId
         }
         setRecipeData([...recipeData, data])
 
+        itemCodeDisplay.current.selectedIndex = 0
+        setRawMaterialQuantity("")
     }
 
     const deleteRecipeHandler = (deleteId) => {
@@ -209,7 +215,7 @@ const ModalComponent = ({ isOpen, onClose, formulaId, formulaItemCode, formulaIt
         <Modal
             size='5xl'
             isOpen={isOpen}
-            onClose={() => {}}
+            onClose={() => { }}
         >
 
             <ModalOverlay />
@@ -237,6 +243,7 @@ const ModalComponent = ({ isOpen, onClose, formulaId, formulaItemCode, formulaIt
                                 {
                                     raws.length > 0 ?
                                         (<Select
+                                            ref={itemCodeDisplay}
                                             placeholder='Select Item Code'
                                             w='60%'
                                             onChange={(e) => rawMaterialDescriptionHandler(e.target.value)}
@@ -254,10 +261,13 @@ const ModalComponent = ({ isOpen, onClose, formulaId, formulaItemCode, formulaIt
                                     Quantity:
                                 </Text>
                                 <Input
+                                    value={rawMaterialQuantity}
                                     type='number'
                                     isInvalid={errors.quantity}
                                     onChange={(e) => rawMaterialQuantityHandler(e.target.value)}
-                                    w='65%' placeholder='Enter Quantity' />
+                                    w='65%'
+                                    placeholder='Enter Quantity'
+                                />
                             </HStack>
 
                         </Flex>
@@ -277,7 +287,7 @@ const ModalComponent = ({ isOpen, onClose, formulaId, formulaItemCode, formulaIt
 
                             <Flex>
                                 <Button p={5}
-                                    disabled={isDisabled}
+                                    disabled={addButtonDisabler}
                                     onClick={recipeDataHandler}
                                     bgColor='secondary'
                                     color='white'

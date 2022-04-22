@@ -164,7 +164,7 @@ const QCReceivingPage = () => {
             <Table variant='striped' size='sm'>
               <Thead>
                 <Tr bgColor='secondary'>
-                  <Th color='white'>PO Summary Id</Th>
+                  {/* <Th color='white'>PO Summary Id</Th> */}
                   <Th color='white'>PO No.</Th>
                   <Th color='white'>Item Code</Th>
                   <Th color='white'>Description</Th>
@@ -181,7 +181,7 @@ const QCReceivingPage = () => {
                 {poData.posummary?.map(po =>
                   <Tr key={po.id}>
 
-                    <Td>{po.id}</Td>
+                    {/* <Td>{po.id}</Td> */}
                     <Td>{po.pO_Number}</Td>
                     <Td>{po.itemCode}</Td>
                     <Td>{po.itemDescription}</Td>

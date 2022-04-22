@@ -97,7 +97,7 @@ const RMWHReceivingPage = () => {
     setModalData(data)
     openModal()
   }
-  
+
   return (
     <Flex p={5} w="full" flexDirection='column'>
       <Flex justifyContent='center'>
@@ -146,7 +146,7 @@ const RMWHReceivingPage = () => {
             <Table variant='striped' size="sm">
               <Thead>
                 <Tr bgColor="secondary" >
-                  <Th color="white">ID</Th>
+                  {/* <Th color="white">ID</Th> */}
                   <Th color="white">PO NO.</Th>
                   <Th color="white">Item Code</Th>
                   <Th color="white">Description</Th>
@@ -162,7 +162,7 @@ const RMWHReceivingPage = () => {
               <Tbody>
                 {whData.warehouse?.map(wh =>
                   <Tr key={wh.id}>
-                    <Td>{wh.id}</Td>
+                    {/* <Td>{wh.id}</Td> */}
                     <Td>{wh.pO_Number}</Td>
                     <Td>{wh.itemCode}</Td>
                     <Td>{wh.itemDescription}</Td>

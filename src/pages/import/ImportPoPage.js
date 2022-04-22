@@ -58,7 +58,7 @@ const ImportPoPage = () => {
     fileRenderer(jsonData)
     if (data) {
       setIsDisabled(false)
-    } 
+    }
   }
 
   const resultArray = excelData.map(item => {
@@ -83,20 +83,23 @@ const ImportPoPage = () => {
 
   })
 
-
-
   const submitFile = (resultArray) => {
-    try {
-      setisLoading(true)
-      const res = apiClient.post('Import/AddNewPOManual', resultArray).then((res) => {
-        ToastComponent("Success!", "PO Imported", "success", toast)
-        setisLoading(false)
-        setIsDisabled(true)
-      }).catch(err => {
-        setisLoading(false)
-        ToastComponent("Error", err.response.data, "error", toast)
-      })
-    } catch (err) {
+    if (resultArray.length > 1) {
+      try {
+        setisLoading(true)
+        const res = apiClient.post('Import/AddNewPOManual', resultArray).then((res) => {
+          ToastComponent("Success!", "PO Imported", "success", toast)
+          setisLoading(false)
+          setIsDisabled(true)
+        }).catch(err => {
+          setisLoading(false)
+          ToastComponent("Error", err.response.data, "error", toast)
+        })
+      } catch (err) {
+        console.log(err)
+      }
+    } else {
+      ToastComponent("Error!", "No data provided, please check your import", "error", toast)
     }
   }
 

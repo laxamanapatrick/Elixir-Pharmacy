@@ -130,6 +130,7 @@ const ImportFormulationCodePage = () => {
 
 
   const submitFile = (resultArray) => {
+
     let hasError = false
 
     resultArray.forEach(item => {
@@ -143,28 +144,34 @@ const ImportFormulationCodePage = () => {
       return
     }
 
-    try {
-      setisLoading(true)
-      const res = apiClient.post('Import/AddNewFormulaManual',
-        resultArray.map(item => ({
-          transformationFormulaId: formulas.find(data => data.itemCode === item.formulaCode && data.version === item.version).id,
-          rawMaterialId: rawMaterials.find(data => data.itemCode === item.itemCodeInitial).id,
-          quantity: item.quantity,
-          formulaDescription: item.formulaDescription,
-          itemDescription: item.itemDescription,
-          version: item.version,
-          addedBy: currentUser.userName
-        }))
-      ).then((res) => {
-        ToastComponent("Success!", "Raw Materials Imported", "success", toast)
-        setisLoading(false)
-        setIsDisabled(true)
-      }).catch(err => {
-        setisLoading(false)
-        ToastComponent("Error", err.response.data, "error", toast)
-      })
-    } catch (err) {
-      console.log(err)
+    if (resultArray.length > 1) {
+
+      try {
+        setisLoading(true)
+        const res = apiClient.post('Import/AddNewFormulaManual',
+          resultArray.map(item => ({
+            transformationFormulaId: formulas.find(data => data.itemCode === item.formulaCode && data.version === item.version).id,
+            rawMaterialId: rawMaterials.find(data => data.itemCode === item.itemCodeInitial).id,
+            quantity: item.quantity,
+            formulaDescription: item.formulaDescription,
+            itemDescription: item.itemDescription,
+            version: item.version,
+            addedBy: currentUser.userName
+          }))
+        ).then((res) => {
+          ToastComponent("Success!", "Raw Materials Imported", "success", toast)
+          setisLoading(false)
+          setIsDisabled(true)
+        }).catch(err => {
+          setisLoading(false)
+          ToastComponent("Error!", err.response.data, "error", toast)
+        })
+      } catch (err) {
+        console.log(err)
+      }
+
+    } else {
+      ToastComponent("Error", "No data provided, please check your import", "error", toast)
     }
 
   }

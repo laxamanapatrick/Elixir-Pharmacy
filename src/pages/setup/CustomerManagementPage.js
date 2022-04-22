@@ -41,7 +41,7 @@ import { RiEditBoxFill } from 'react-icons/ri'
 import { GiChoice } from 'react-icons/gi'
 import { useDisclosure } from '@chakra-ui/react';
 import { ToastComponent } from '../../components/Toast';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { decodeUser } from '../../services/decode-user';
@@ -85,7 +85,7 @@ const CustomerManagementPage = () => {
   const [pageTotal, setPageTotal] = useState(undefined);
   const { isOpen: isDrawerOpen, onOpen: openDrawer, onClose: closeDrawer } = useDisclosure()
 
-  const { register, handleSubmit, formState: { errors, isValid }, setValue, reset } = useForm({
+  const { register, handleSubmit, control, formState: { errors, isValid }, setValue, reset } = useForm({
     resolver: yupResolver(schema),
     mode: "onChange",
     defaultValues: {
@@ -93,7 +93,7 @@ const CustomerManagementPage = () => {
         id: "",
         customerName: "",
         farmTypeId: "",
-        companyName: "",
+        companyName: "RDF",
         mobileNumber: "",
         leadMan: "",
         address: "",
@@ -164,7 +164,7 @@ const CustomerManagementPage = () => {
       id: cus.id,
       customerName: cus.customerName,
       farmTypeId: cus.farmTypeId,
-      companyName: cus.companyName,
+      companyName: "RDF",
       mobileNumber: cus.mobileNumber,
       leadMan: cus.leadMan,
       address: cus.address,
@@ -176,7 +176,7 @@ const CustomerManagementPage = () => {
     openDrawer()
     reset()
   }
-  
+
   return (
     <Flex p={5} w='full' flexDirection='column'>
       <Flex mb={2} justifyContent='space-between'>
@@ -306,6 +306,7 @@ const CustomerManagementPage = () => {
               isValid={isValid}
               handleSubmit={handleSubmit}
               fetchCustomer={fetchCustomer}
+              control={control}
             />
           )
         }
@@ -353,7 +354,7 @@ const CustomerManagementPage = () => {
 
 export default CustomerManagementPage;
 
-const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSubmit, fetchCustomer }) => {
+const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSubmit, fetchCustomer, control }) => {
   const [farms, setFarms] = useState([])
   const [isLoading, setisLoading] = useState(false)
   const [company, setCompany] = useState([{
@@ -457,18 +458,18 @@ const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSub
                 <Box>
                   <Stack>
                     <Text fontWeight='semibold'>Company Name:</Text>
-                    {
-                      company.length > 0 ? (<Select
-                        {...register("formData.companyName")}
-                        placeholder='Select Company Name'>
-                        {company.map((c, i) => (
-                          <option key={i} value={c.companyName}>{c.companyName}</option>
-
-                        ))}
-
-                      </Select>) : "loading"
-                    }
-
+                    <Controller
+                      control={control}
+                      name="formData.companyName"
+                      render={({ field: { onChange, value } }) => (
+                        <Input
+                          value={value}
+                          onChange={onChange}
+                          readOnly
+                          bgColor='gray.300'
+                        />
+                      )}
+                    />
                     <Text color="danger" fontSize="xs">{errors.formData?.companyName?.message}</Text>
                   </Stack>
                 </Box>

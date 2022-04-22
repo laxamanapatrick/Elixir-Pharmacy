@@ -22,25 +22,23 @@ import {
     useToast
 } from '@chakra-ui/react'
 import { AiFillMinusCircle } from 'react-icons/ai'
+import { IoIosAddCircle } from 'react-icons/io'
 import apiClient from '../../../services/apiClient'
 import { ToastComponent } from '../../../components/Toast'
-import { ReceivingContext } from '../../../context/ReceivingContext'
+import { WarehouseContext } from '../../../context/WarehouseContext'
 
 const fetchReasonsApi = async () => {
     const res = await apiClient.get('Reason/GetAllActiveReason')
     return res.data
 }
 
-export const EditModalComponentRejectionInfo = ({ receivingId, sumQuantity }) => {
+const ScannedModalRejection = ({ quantity, remarks, sumQuantity, receivingId }) => {
 
-    const { setSubmitDataTwo, setSumQuantity } = useContext(ReceivingContext)
+    const { setQuantity, setRemarks, setSumQuantity, setSubmitRejectData } = useContext(WarehouseContext)
 
     const [reasons, setReasons] = useState([])
-    const [quantity, setQuantity] = useState(undefined)
-    const [remarks, setRemarks] = useState("")
-    const [remarksName, setRemarksName] = useState("")
+    const [displayData, setDisplayData] = useState([])
     const [errors, setErrors] = useState({})
-    const [finalData, setFinalData] = useState([])
 
     const [showAddRow, setShowAddRow] = useState(null)
 
@@ -56,43 +54,32 @@ export const EditModalComponentRejectionInfo = ({ receivingId, sumQuantity }) =>
 
     useEffect(() => {
         fetchReason()
+
+        return () => {
+            setReasons([])
+        }
     }, [setReasons])
 
     useEffect(() => {
 
-        if (finalData.length) {
-            let totalQuantity = finalData.map((q) => parseFloat(q.quantity))
+        if (displayData.length) {
+            let totalQuantity = displayData.map((q) => parseFloat(q.quantity))
             let sum = totalQuantity.reduce((a, b) => a + b)
             setSumQuantity(sum)
-        } else {
+        }
+        else {
             setSumQuantity(0)
         }
 
-    }, [finalData, sumQuantity])
+    }, [displayData, sumQuantity])
 
     useEffect(() => {
-        setSubmitDataTwo(finalData)
-    }, [finalData])
-
-    const quantityHandler = (data) => {
-        const newData = Number(data)
-        setQuantity(newData)
-    }
-
-    const remarksHandler = (data) => {
-        if (data) {
-            const newData = JSON.parse(data)
-            setRemarks(newData.id)
-            setRemarksName(newData.reasonName)
-        }
-        else {
-            setRemarks("")
-        }
-    }
+        setSubmitRejectData(displayData)
+    }, [displayData])
 
     const addNewRowHandler = () => {
 
-        if (finalData.some((data) => data.remarks === remarks)) {
+        if (displayData.some((data) => data.remarks === remarks)) {
             ToastComponent("Error!", "Remarks description already added", "error", toast)
             return
         }
@@ -116,22 +103,28 @@ export const EditModalComponentRejectionInfo = ({ receivingId, sumQuantity }) =>
         }
 
         const data = {
-            "pO_ReceivingId": receivingId,
+            "warehouseReceivingId": receivingId,
             "quantity": quantity,
             "remarks": remarks,
-            "remarksName": remarksName
         }
-        setFinalData([...finalData, data])
+        setDisplayData([...displayData, data])
 
         remarksDisplay.current.selectedIndex = 0
         setQuantity("")
-
     }
 
     const deleteRejectionHandler = (data) => {
-        setFinalData(finalData.filter((row) =>
-            row.remarksName !== data
+        setDisplayData(displayData.filter((row) =>
+            row.remarks !== data
         ))
+    }
+
+    const addRowVisibility = (data) => {
+        if (data === true) {
+            setShowAddRow(true)
+        } else {
+            setShowAddRow(false)
+        }
     }
 
     return (
@@ -140,9 +133,9 @@ export const EditModalComponentRejectionInfo = ({ receivingId, sumQuantity }) =>
             <Accordion allowToggle>
                 <AccordionItem>
 
-                    <Flex justifyContent='space-between' mb={2} p={0.5} color='white' bgColor='secondary'>
+                    <Flex justifyContent='center' mb={2} p={0.5} color='white' bgColor='secondary'>
 
-                        <AccordionButton justifyContent='center' p={0} onClick={() => setShowAddRow(true)}>
+                        <AccordionButton justifyContent='center' p={0} onClick={() => addRowVisibility(true)}>
                             <Text>REJECTION INFORMATION <AccordionIcon /></Text>
                             <Flex p={0} m={0}></Flex>
                         </AccordionButton>
@@ -171,10 +164,11 @@ export const EditModalComponentRejectionInfo = ({ receivingId, sumQuantity }) =>
                                 Quantity
                                 <Input
                                     value={quantity}
-                                    onChange={(e) => quantityHandler(e.target.value)}
+                                    onChange={(e) => setQuantity(parseInt(e.target.value))}
+                                    onWheel={(e) => e.target.blur()}
+                                    type='number'
                                     isInvalid={errors.qty}
                                     placeholder='Quantity'
-                                    type='number'
                                     bgColor='#ffffe0'
                                 />
                             </FormLabel>
@@ -185,46 +179,45 @@ export const EditModalComponentRejectionInfo = ({ receivingId, sumQuantity }) =>
                                     reasons.length > 0 ?
                                         (<Select
                                             ref={remarksDisplay}
-                                            onChange={(e) => remarksHandler(e.target.value)}
+                                            onChange={(e) => setRemarks(e.target.value)}
                                             isInvalid={errors.rms}
                                             placeholder='Select Reason'
                                             bgColor='#ffffe0'
                                         >
                                             {reasons?.map(reason =>
-                                                <option key={reason.id} value={JSON.stringify(reason)}>{reason.reasonName}</option>
+                                                <option key={reason.id} value={reason.reasonName}>{reason.reasonName}</option>
                                             )}
                                         </Select>) : "Loading"
                                 }
                             </FormLabel>
                         </Flex>
 
-
                         <Text fontWeight='semibold' color='black'>
-                            Total Quantity: {sumQuantity}
+                            {/* Total Quantity: {sumQuantity} */}
                         </Text>
 
+
                         {
-                            !finalData.length > 0 ? "" : (
+                            !displayData.length > 0 ? "" : (
 
                                 <Table variant='striped' size="sm" mt={2}>
                                     <Thead>
                                         <Tr bgColor="secondary" >
                                             <Th color="white">Quantity</Th>
                                             <Th color="white">Remarks</Th>
-                                            <Th color="white"></Th>
+                                            <Th color="white">Remove</Th>
                                         </Tr>
                                     </Thead>
                                     <Tbody>
-                                        {finalData?.map((data, i) =>
+                                        {displayData?.map((data, i) =>
                                             <Tr key={i}>
                                                 <Td>{data.quantity}</Td>
-                                                <Td>{data.remarksName}</Td>
-                                                {/* <Td>{data.rawMaterialDescription}</Td> */}
+                                                <Td>{data.remarks}</Td>
                                                 <Td>
                                                     <Button p={0}
                                                         background='none'
                                                         color='secondary'
-                                                        onClick={() => deleteRejectionHandler(data.remarksName)}
+                                                        onClick={() => deleteRejectionHandler(data.remarks)}
                                                     >
                                                         <AiFillMinusCircle fontSize='20px' />
                                                     </Button>
@@ -242,5 +235,6 @@ export const EditModalComponentRejectionInfo = ({ receivingId, sumQuantity }) =>
         </Box>
 
     )
-
 }
+
+export default ScannedModalRejection

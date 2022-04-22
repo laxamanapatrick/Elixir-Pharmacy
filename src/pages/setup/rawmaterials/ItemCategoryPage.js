@@ -275,7 +275,7 @@ const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSub
                 <Box>
                   <FormLabel>Category Name:</FormLabel>
                   <Input
-                    placeholder='Please enter Department Name'
+                    placeholder='Please enter Item Category Name'
                     {...register("formData.itemCategoryName")}
                   />
                   <Text color="danger" fontSize="xs">{errors.formData?.itemCategoryName?.message}</Text>

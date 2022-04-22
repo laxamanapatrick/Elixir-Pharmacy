@@ -32,7 +32,7 @@ const ReturnModal = ({ qcReceivingId, fetchReject, isOpen, onClose }) => {
       setIsLoading(true)
       const res = apiClient.put(`Receiving/WarehouseReturnRejectbyQc/${qcReceivingId}`,
       {
-        qcReceivingId,
+        id: qcReceivingId,
         rejectedBy: currentUser.userName
       }
       ).then(res => {

@@ -125,29 +125,31 @@ const ImportRawMaterialsPage = () => {
   })
 
   const submitFile = () => {
-
-    try {
-      setisLoading(true)
-      const res = apiClient.post('Import/AddNewRawMaterialManual',
-        resultArray.map(item => ({
-          itemCode: item.itemCode,
-          itemDescription: item.itemDescription,
-          uomId: uomIdProvider?.id,
-          itemCategoryId: itemCategoryIdProvider?.id,
-          bufferLevel: item.bufferLevel,
-          addedBy: currentUser.userName
-        }))
-      ).then((res) => {
-        ToastComponent("Success!", "Raw Materials Imported", "success", toast)
-        setisLoading(false)
-        setIsDisabled(true)
-      }).catch(err => {
-        setisLoading(false)
-        ToastComponent("Error", err.response.data, "error", toast)
-      })
-    } catch (err) {
+    if (resultArray.length > 1) {
+      try {
+        setisLoading(true)
+        const res = apiClient.post('Import/AddNewRawMaterialManual',
+          resultArray.map(item => ({
+            itemCode: item.itemCode,
+            itemDescription: item.itemDescription,
+            uomId: uomIdProvider?.id,
+            itemCategoryId: itemCategoryIdProvider?.id,
+            bufferLevel: item.bufferLevel,
+            addedBy: currentUser.userName
+          }))
+        ).then((res) => {
+          ToastComponent("Success!", "Raw Materials Imported", "success", toast)
+          setisLoading(false)
+          setIsDisabled(true)
+        }).catch(err => {
+          setisLoading(false)
+          ToastComponent("Error", err.response.data, "error", toast)
+        })
+      } catch (err) {
+      }
+    } else {
+      ToastComponent("Error!", "No data provided, please check your import", "error", toast)
     }
-
   }
 
   return (

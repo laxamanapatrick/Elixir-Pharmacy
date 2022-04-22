@@ -10,9 +10,26 @@ export const EditModalSubmit = ({ isSubmitDisabled, receivingId, sumQuantity, su
 
     const [isLoading, setIsLoading] = useState(false)
     const toast = useToast()
-    const {onClose} = useDisclosure()
+    const { onClose } = useDisclosure()
 
     const firstSubmit = { ...submitDataOne, ...submitDataThree }
+    
+    // console.log(submitDataOne)
+    // console.log(firstSubmit)
+
+    // const firstSubmit = submitDataOne.map(first => {
+    //     return {
+    //         pO_Summary_Id: first.pO_Summary_Id,
+    //         manufacturing_Date: first.manufacturing_Date,
+    //         expected_Delivery: first.expected_Delivery,
+    //         expiry_Date: first.expiry_Date,
+    //         actual_Delivered: first.actual_Delivered,
+    //         batch_No: first.batch_No,
+    //         totalReject: first.totalReject,
+    //     }
+    // }, ...submitDataThree)
+
+    // console.log(firstSubmit)
 
     const submitEditedHandlder = () => {
         try {
@@ -32,12 +49,15 @@ export const EditModalSubmit = ({ isSubmitDisabled, receivingId, sumQuantity, su
                 const secondSubmit = submitDataTwo.map(data => {
                     return {
                         pO_ReceivingId: receivingIdWithoutUseContext,
-                        quantity: sumQuantity,
-                        remarks: data.remarksName
+                        quantity: data.quantity,
+                        remarks: data.remarksName,
                     }
                 })
 
                 if (sumQuantity > 0) {
+                    // console.log(firstSubmit.sumQuantity)
+                    // console.log(firstSubmit)
+                    // console.log(secondSubmit)
                     try {
                         const res = apiClient.put(`Receiving/RejectRawMaterialsByReceivingId`, secondSubmit)
                     } catch (err) {
