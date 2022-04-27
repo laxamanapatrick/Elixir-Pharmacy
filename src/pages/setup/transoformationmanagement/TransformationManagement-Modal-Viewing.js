@@ -3,7 +3,6 @@ import {
     Button,
     Flex,
     HStack,
-    Input,
     Modal,
     ModalBody,
     ModalCloseButton,
@@ -11,23 +10,17 @@ import {
     ModalFooter,
     ModalHeader,
     ModalOverlay,
-    Select,
     Table,
     Tbody,
     Td,
     Text,
     Th,
     Thead,
-    toast,
     Tr,
-    useToast,
     VStack
 } from '@chakra-ui/react'
 import PageScrollModal from '../../../components/PageScrollModal'
-import { AiFillMinusCircle } from 'react-icons/ai'
 import apiClient from '../../../services/apiClient'
-import TransformationManagementPage from '../TransformationManagementPage'
-
 
 const TransformationManagementModalViewing = ({
     formulaId,
@@ -37,6 +30,7 @@ const TransformationManagementModalViewing = ({
     isOpen,
     onClose
 }) => {
+
     const [recipes, setRecipes] = useState([])
 
     const fetchFormulationRequirementsApi = async () => {
@@ -58,13 +52,14 @@ const TransformationManagementModalViewing = ({
         <Modal
             size='5xl'
             isOpen={isOpen} onClose={() => {}}
+            isCentered
         >
 
             <ModalOverlay />
 
             <ModalContent>
                 <ModalHeader>
-                    <VStack><Text>Transformation Formula</Text></VStack>
+                    <VStack><Text>Transformation Formula Requirements</Text></VStack>
                 </ModalHeader>
                 <ModalCloseButton onClick={onClose} />
 
@@ -91,7 +86,6 @@ const TransformationManagementModalViewing = ({
                                     <Th color="white">Item Code</Th>
                                     <Th color="white">Item Description</Th>
                                     <Th color="white">Quantity</Th>
-                                    {/* <Th color="white">UOM</Th> */}
                                 </Tr>
                             </Thead>
                             <Tbody>
@@ -102,7 +96,6 @@ const TransformationManagementModalViewing = ({
                                         <Td>{recipe.requirementCode}</Td>
                                         <Td>{recipe.requirementDescription}</Td>
                                         <Td>{recipe.requirementQuantity}</Td>
-                                        {/* <Td>{recipe.uom}</Td> */}
                                     </Tr>
                                 )}
                             </Tbody>
@@ -117,9 +110,6 @@ const TransformationManagementModalViewing = ({
                     <Button variant='ghost' onClick={onClose}>Close</Button>
                 </ModalFooter>
             </ModalContent >
-            {/* <TransformationManagementPage 
-            recipes={recipes}
-            /> */}
         </Modal >
     )
 }

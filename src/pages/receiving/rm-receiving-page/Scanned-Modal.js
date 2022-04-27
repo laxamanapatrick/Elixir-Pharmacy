@@ -107,6 +107,7 @@ const ScannedModal = ({ receivingId , itemCodeData, setReceivingDate, setLotCate
                                 readOnly={true}
                                 _disabled={{ color: 'black' }}
                                 disabled={true}
+                                bgColor='gray.300'
                             />
                         </FormLabel>
 
@@ -131,6 +132,7 @@ const ScannedModal = ({ receivingId , itemCodeData, setReceivingDate, setLotCate
                                 readOnly={true}
                                 _disabled={{ color: 'black' }}
                                 disabled={true}
+                                bgColor='gray.300'
                             />
                         </FormLabel>
 
@@ -142,6 +144,7 @@ const ScannedModal = ({ receivingId , itemCodeData, setReceivingDate, setLotCate
                                 readOnly={true}
                                 _disabled={{ color: 'black' }}
                                 disabled={true}
+                                bgColor='gray.300'
                             />
                         </FormLabel>
                     </Flex>
@@ -154,6 +157,7 @@ const ScannedModal = ({ receivingId , itemCodeData, setReceivingDate, setLotCate
                                 readOnly={true}
                                 _disabled={{ color: 'black' }}
                                 disabled={true}
+                                bgColor='gray.300'
                             />
                         </FormLabel>
 
@@ -165,6 +169,7 @@ const ScannedModal = ({ receivingId , itemCodeData, setReceivingDate, setLotCate
                                 readOnly={true}
                                 _disabled={{ color: 'black' }}
                                 disabled={true}
+                                bgColor='gray.300'
                             />
                         </FormLabel>
                     </Flex>
@@ -177,6 +182,7 @@ const ScannedModal = ({ receivingId , itemCodeData, setReceivingDate, setLotCate
                                 readOnly={true}
                                 _disabled={{ color: 'black' }}
                                 disabled={true}
+                                bgColor='gray.300'
                             />
                         </FormLabel>
 
@@ -188,6 +194,7 @@ const ScannedModal = ({ receivingId , itemCodeData, setReceivingDate, setLotCate
                                 readOnly={true}
                                 _disabled={{ color: 'black' }}
                                 disabled={true}
+                                bgColor='gray.300'
                             />
                         </FormLabel>
                     </Flex>
@@ -206,6 +213,7 @@ const ScannedModal = ({ receivingId , itemCodeData, setReceivingDate, setLotCate
                                 readOnly={true}
                                 _disabled={{ color: 'black' }}
                                 disabled={true}
+                                bgColor='gray.300'
                             />
                         </FormLabel>
 
@@ -217,6 +225,7 @@ const ScannedModal = ({ receivingId , itemCodeData, setReceivingDate, setLotCate
                                 readOnly={true}
                                 _disabled={{ color: 'black' }}
                                 disabled={true}
+                                bgColor='gray.300'
                             />
                         </FormLabel>
                     </Flex>
@@ -235,6 +244,7 @@ const ScannedModal = ({ receivingId , itemCodeData, setReceivingDate, setLotCate
                                 readOnly={true}
                                 _disabled={{ color: 'black' }}
                                 disabled={true}
+                                bgColor='gray.300'
                             />
                         </FormLabel>
 
@@ -264,6 +274,7 @@ const ScannedModal = ({ receivingId , itemCodeData, setReceivingDate, setLotCate
                                 readOnly={true}
                                 _disabled={{ color: 'black' }}
                                 disabled={true}
+                                bgColor='gray.300'
                             />
                         </FormLabel>
 
@@ -274,6 +285,7 @@ const ScannedModal = ({ receivingId , itemCodeData, setReceivingDate, setLotCate
                                 readOnly={true}
                                 _disabled={{ color: 'black' }}
                                 disabled={true}
+                                bgColor='gray.300'
                             />
                         </FormLabel>
 
@@ -287,6 +299,7 @@ const ScannedModal = ({ receivingId , itemCodeData, setReceivingDate, setLotCate
                                 readOnly={true}
                                 _disabled={{ color: 'black' }}
                                 disabled={true}
+                                bgColor='gray.300'
                             />
                         </FormLabel>
 
@@ -294,10 +307,10 @@ const ScannedModal = ({ receivingId , itemCodeData, setReceivingDate, setLotCate
                             Actual Good
                             <Input
                                 value={actualGood}
-                                bgColor='#ffffe0'
                                 readOnly={true}
                                 _disabled={{ color: 'black' }}
                                 disabled={true}
+                                bgColor='gray.300'
                             />
                         </FormLabel>
 

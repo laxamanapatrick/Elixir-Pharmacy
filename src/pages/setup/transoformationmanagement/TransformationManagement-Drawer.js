@@ -24,12 +24,13 @@ import { ToastComponent } from '../../../components/Toast';
 
 
 const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSubmit, setValue, fetchFormula }) => {
+
     const [isLoading, setisLoading] = useState(false)
     const [rawMats, setRawMats] = useState([])
     const toast = useToast()
 
     const submitHandler = (data) => {
-        // try {
+        try {
             if (data.formData.id === "") {
                 delete data.formData["id"]
                 setisLoading(true)
@@ -43,21 +44,21 @@ const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSub
                     ToastComponent("Error", err.response.data, "error", toast)
                     data.formData.id = "" // add property id to objects for if condition
                 })
-            } 
-            // else {
-                // const res = apiClient.put(`Transformation/UpdateFormulaInfo/${data.formData.id}`, data.formData).then((res) => {
-                    // ToastComponent("Success!", "Formula Updated", "success", toast)
-                    // setisLoading(false)
-                    // fetchFormula()
-                    // onClose(onClose)
-            //     }).catch(err => {
-            //         ToastComponent("Update Failed", err.response.data, "warning", toast)
-            //     })
-            // }
+            }
+            else {
+                const res = apiClient.put(`Transformation/UpdateFormulaInfo/${data.formData.id}`, data.formData).then((res) => {
+                    ToastComponent("Success!", "Formula Updated", "success", toast)
+                    setisLoading(false)
+                    fetchFormula()
+                    onClose(onClose)
+                }).catch(err => {
+                    ToastComponent("Update Failed", err.response.data, "warning", toast)
+                })
+            }
 
-        // } 
-        // catch (err) {
-        // }
+        }
+        catch (err) {
+        }
     }
 
     const fetchRawMaterialsApi = () => {
@@ -112,6 +113,7 @@ const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSub
                                 <Box>
                                     <Stack>
                                         <Text fontWeight='semibold'>Item Code:</Text>
+
                                         {
                                             rawMats.length > 0 ?
                                                 (<Select

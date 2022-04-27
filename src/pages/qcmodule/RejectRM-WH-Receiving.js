@@ -1,6 +1,6 @@
 // Reject RM - Warehouse Receiving
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import {
   Badge,
   Button,
@@ -25,7 +25,6 @@ import {
 import apiClient from '../../services/apiClient';
 import { useDisclosure } from '@chakra-ui/react';
 import { decodeUser } from '../../services/decode-user';
-import { FaSearch } from 'react-icons/fa';
 import {
   Pagination,
   usePagination,
@@ -35,14 +34,17 @@ import {
   PaginationContainer,
   PaginationPageGroup,
 } from '@ajna/pagination'
+import { FaSearch } from 'react-icons/fa'
 import PageScroll from '../../components/PageScroll';
 import ApproveModal from './rm-nearly-expire-page/Approve-Modal';
 import RejectModal from './rm-nearly-expire-page/Reject-Modal';
 import ConfirmModal from './reject-rm-forwh-receiving/Confirm-Modal';
 import ReturnModal from './reject-rm-forwh-receiving/Return-Modal';
+import { NotificationContext } from '../../context/NotificationContext';
+import moment from 'moment';
 
-const fetchRejectRMWHApi = async () => {
-  const res = await apiClient.get(`Warehouse/GetRejectMaterialsForWarehouse`);
+const fetchRejectRMWHApi = async (pageNumber, pageSize, search) => {
+  const res = await apiClient.get(`Warehouse/GetAllRejectMaterialsFromWarehouseOrig?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${search}`);
   return res.data
 }
 
@@ -52,14 +54,29 @@ const RejectRMWHReceiving = () => {
   const [qcReceivingId, setQcReceivingId] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
 
+  const [search, setSearch] = useState("")
+  const [pageTotal, setPageTotal] = useState(undefined)
+
   const { isOpen: isConfirmModalOpen, onOpen: openConfirmModal, onClose: closeConfirmModal } = useDisclosure()
   const { isOpen: isReturnModalOpen, onOpen: openReturnModal, onClose: closeReturnModal } = useDisclosure()
 
+  const outerLimit = 2;
+  const innerLimit = 2;
+  const { currentPage, setCurrentPage, pagesCount, pages, setPageSize, pageSize } = usePagination({
+    total: pageTotal,
+    limits: {
+      outer: outerLimit,
+      inner: innerLimit,
+    },
+    initialState: { currentPage: 1, pageSize: 5 },
+  })
+
+
   const fetchReject = () => {
-    fetchRejectRMWHApi().then(res => {
-      // setIsLoading(false)
+    fetchRejectRMWHApi(currentPage, pageSize, search).then(res => {
+      setIsLoading(false)
       setRejectData(res)
-      // setPageTotal(res.totalCount)
+      setPageTotal(res.totalCount)
     })
   }
 
@@ -69,7 +86,20 @@ const RejectRMWHReceiving = () => {
     return () => {
       setRejectData([])
     }
-  }, []);
+  }, [currentPage, pageSize, search]);
+
+  const searchHandler = (inputValue) => {
+    setSearch(inputValue)
+  }
+
+  const handlePageChange = (nextPage) => {
+    setCurrentPage(nextPage)
+  }
+
+  const handlePageSizeChange = (e) => {
+    const pageSize = Number(e.target.value)
+    setPageSize(pageSize)
+  }
 
   const confirmRejectedHandler = (data) => {
     openConfirmModal()
@@ -81,6 +111,7 @@ const RejectRMWHReceiving = () => {
     setQcReceivingId(data)
   }
 
+
   return (
     <Flex p={5} w="full" flexDirection='column'>
       <Flex justifyContent='center'>
@@ -89,7 +120,7 @@ const RejectRMWHReceiving = () => {
 
       <Flex mb={2} justifyContent='space-between'>
         <HStack>
-          {/* <InputGroup>
+          <InputGroup>
             <InputLeftElement
               pointerEvents='none'
               children={<FaSearch color='gray.300' />}
@@ -100,7 +131,7 @@ const RejectRMWHReceiving = () => {
               placeholder='Search: PO Number'
               focusBorderColor='accent'
             />
-          </InputGroup> */}
+          </InputGroup>
         </HStack>
         <HStack>
           <Badge colorScheme='green'>
@@ -144,7 +175,7 @@ const RejectRMWHReceiving = () => {
                 </Tr>
               </Thead>
               <Tbody>
-                {rejectData?.map(rd =>
+                {rejectData.reject?.map(rd =>
                   <Tr key={rd.id}>
                     {/* <Td>{rd.id}</Td> */}
                     <Td>{rd.pO_Number}</Td>
@@ -155,7 +186,7 @@ const RejectRMWHReceiving = () => {
                     <Td>{rd.quantityOrdered}</Td>
                     <Td>{rd.actualGood}</Td>
                     <Td>{rd.actualReject}</Td>
-                    <Td>{rd.receivingDate}</Td>
+                    <Td>{moment(rd.receivingDate).format("MM-DD-YYYY")}</Td>
                     <Td>{rd.remarks}</Td>
                     <Td>
                       <Button
@@ -183,20 +214,8 @@ const RejectRMWHReceiving = () => {
       </PageScroll>
 
       {/* Table data end */}
-      {/* 
-      {
-        isModalOpen && (
-          <ModalComponent
-            modalData={modalData}
-            isOpen={isModalOpen}
-            onClose={closeModal}
-            fetchWHReceiving={fetchWHReceiving}
-          />
-        )
 
-      } */}
-
-      {/* <Flex justifyContent='end' mt={5}>
+      <Flex justifyContent='end' mt={5}>
 
         <Stack>
           <Pagination
@@ -230,7 +249,7 @@ const RejectRMWHReceiving = () => {
             </PaginationContainer>
           </Pagination>
         </Stack>
-      </Flex> */}
+      </Flex>
 
       {
         isConfirmModalOpen && (

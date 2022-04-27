@@ -38,12 +38,6 @@ import TransformationManagementModalViewing from './TransformationManagement-Mod
 
 const currentUser = decodeUser()
 
-// const modalSchema = yup.object().shape({
-//     formData: yup.object().shape({
-//         recipeData: yup.array().required()
-//     })
-// })
-
 const ModalComponent = ({ isOpen, onClose, formulaId, formulaItemCode, formulaItemDescription, formulaQuantity, fetchFormula }) => {
 
     const [raws, setRaws] = useState([])
@@ -59,8 +53,7 @@ const ModalComponent = ({ isOpen, onClose, formulaId, formulaItemCode, formulaIt
     const [isDisabled, setIsDisabled] = useState(false)
     const [addButtonDisabler, setAddButtonDisabler] = useState(false)
     const [isSubmitDisabled, setIsSubmitDisabled] = useState(true)
-    const [errors, setErrors] = useState({
-    })
+    const [errors, setErrors] = useState({})
     const itemCodeDisplay = useRef(null)
     const toast = useToast()
 

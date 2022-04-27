@@ -144,7 +144,7 @@ const ImportFormulationCodePage = () => {
       return
     }
 
-    if (resultArray.length > 1) {
+    if (resultArray.length > 0) {
 
       try {
         setisLoading(true)

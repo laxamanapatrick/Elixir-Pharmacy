@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button, Flex, HStack, Input, Skeleton, Stack, Text, useDisclosure, VStack } from '@chakra-ui/react';
+import {
+  Flex,
+  Input,
+} from '@chakra-ui/react';
 import ScannedModal from './rm-receiving-page/Scanned-Modal';
 import apiClient from '../../services/apiClient';
-import ScannedModalRejection from './rm-receiving-page/Scanned-Modal-Rejection';
 import ScannedModalSubmit from './rm-receiving-page/Scanned-Modal-Submit';
 import { SiCommonworkflowlanguage } from 'react-icons/si'
-import BarcodeScanner from './rm-receiving-page/Barcode-Scanner';
 import ItemNotFound from './rm-receiving-page/Item-Not-Found';
 import ProvideItemCode from './rm-receiving-page/Provide-Item-Code';
 import { WarehouseContext } from '../../context/WarehouseContext'
@@ -34,7 +35,8 @@ const RmReceivingPage = () => {
   const [receivingId, setReceivingId] = useState(null)
 
   const [isLoading, setIsLoading] = useState(true)
-  const { isOpen: isBarcodeScannerOpen, onOpen: openBarcodeScanner, onClose: closeBarcodeScanner } = useDisclosure()
+
+  // const { isOpen: isBarcodeScannerOpen, onOpen: openBarcodeScanner, onClose: closeBarcodeScanner } = useDisclosure()
 
   const fetchItemCodeData = () => {
     fetchItemCodeDataApi(code).then(res => {
@@ -51,31 +53,30 @@ const RmReceivingPage = () => {
     }
   }, [code])
 
-  // const itemHandler = (data) => {
-  //   setCode(data)
-  // }
-
-  const openScanner = () => {
-    openBarcodeScanner()
+  const itemHandler = (data) => {
+    setCode(data)
   }
 
+  // const openScanner = () => {
+  //   openBarcodeScanner()
+  // }
+
   return (
-    <WarehouseContext.Provider value={{ setQuantity, setRemarks, setSumQuantity, setSubmitRejectData, setReceivingId, setCode }}>
+    <WarehouseContext.Provider value={{ setQuantity, setRemarks, setSumQuantity, setSubmitRejectData, setReceivingId }}>
       <Flex p={5} w='full' flexDirection='column'>
 
         <Flex mb={2} justifyContent='start'>
           <Flex>
             <Input
-              value={code}
-              readOnly
-              // onChange={(e) => itemHandler(e.target.value)}
+              placeholder='Item Code'
+              onChange={(e) => itemHandler(e.target.value)}
             />
-            <SiCommonworkflowlanguage fontSize='40px' color='#33334C' />
+            {/* <SiCommonworkflowlanguage fontSize='40px' color='#33334C' />
             <Button
               onClick={() => openScanner()}
               bgColor='secondary' color='white' _hover={{ bgColor: 'accent' }}>
               Scan
-            </Button>
+            </Button> */}
           </Flex>
         </Flex>
 
@@ -126,7 +127,7 @@ const RmReceivingPage = () => {
 
         {/* Barcode Scanner */}
 
-        {
+        {/* {
           isBarcodeScannerOpen && (
             <BarcodeScanner
               isOpen={openBarcodeScanner}
@@ -134,7 +135,7 @@ const RmReceivingPage = () => {
               code={code}
             />
           )
-        }
+        } */}
 
       </Flex >
     </WarehouseContext.Provider>

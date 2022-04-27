@@ -1,6 +1,6 @@
 // Raw Materials Nearly Expire
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import {
   Badge,
   Button,
@@ -38,6 +38,7 @@ import {
 import PageScroll from '../../components/PageScroll';
 import ApproveModal from './rm-nearly-expire-page/Approve-Modal';
 import RejectModal from './rm-nearly-expire-page/Reject-Modal';
+import { NotificationContext } from '../../context/NotificationContext';
 
 const currentUser = decodeUser()
 

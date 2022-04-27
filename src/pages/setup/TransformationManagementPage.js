@@ -41,7 +41,8 @@ import {
   ModalCloseButton,
   ModalBody,
   ModalFooter,
-  PopoverHeader
+  PopoverHeader,
+  Tooltip
 } from '@chakra-ui/react';
 import apiClient from '../../services/apiClient';
 import { FcAddDatabase } from 'react-icons/fc'
@@ -69,6 +70,7 @@ import { AiOutlineFundView } from 'react-icons/ai';
 import DrawerComponent from './transoformationmanagement/TransformationManagement-Drawer';
 import ModalComponent from './transoformationmanagement/TransformationManagement-Modal';
 import TransformationManagementModalViewing from './transoformationmanagement/TransformationManagement-Modal-Viewing';
+import TransformationEditRecipeModal from './transoformationmanagement/Transformation-Edit-Recipe-Modal';
 
 const currentUser = decodeUser()
 
@@ -87,21 +89,26 @@ const fetchFormulaApi = async (pageNumber, pageSize, status, search) => {
   return res.data
 }
 
-const TransformationManagementPage = ({ disableAddRecipehandler }) => {
+const TransformationManagementPage = () => {
+
   const [formulas, setFormulas] = useState([])
   const [formulaId, setFormulaId] = useState()
   const [itemCode, setItemCode] = useState()
   const [itemDescription, setItemDescription] = useState()
-  const [disableAddRecipeButton, setDisableAddRecipeButton] = useState(false)
   const [quantity, setQuantity] = useState()
   const [isLoading, setIsLoading] = useState(true)
   const [status, setStatus] = useState(true)
   const [search, setSearch] = useState("")
+
+  const [recipeData, setrecipeData] = useState([])
+
   const toast = useToast()
+
   const [pageTotal, setPageTotal] = useState(undefined);
   const { isOpen: isDrawerOpen, onOpen: openDrawer, onClose: closeDrawer } = useDisclosure()
   const { isOpen: isModalOpen, onOpen: openModal, onClose: closeModal } = useDisclosure()
   const { isOpen: isViewingModalOpen, onOpen: openViewingModal, onClose: closeViewingModal } = useDisclosure()
+  const { isOpen: isEditRecipeOpen, onOpen: openEditRecipeModal, onClose: closeEditRecipeModal } = useDisclosure()
 
   const { register, handleSubmit, formState: { errors, isValid }, setValue, reset } = useForm({
     resolver: yupResolver(schema),
@@ -174,22 +181,26 @@ const TransformationManagementPage = ({ disableAddRecipehandler }) => {
     setSearch(inputValue)
   }
 
-  // const editHandler = (formula) => {
-  //   openDrawer()
-  //   setValue("formData", {
-  //     id: formula.id,
-  //     itemCode: formula.itemCode,
-  //     itemDescription: formula.itemDescription,
-  //     uom: formula.uom,
-  //     quantity: formula.quantity,
-  //     modifiedBy: currentUser.userName
-  //   })
-  // }
+  //Formula Code
+
+  const editHandler = (formula) => {
+    openDrawer()
+    setValue("formData", {
+      id: formula.id,
+      itemCode: formula.itemCode,
+      itemDescription: formula.itemDescription,
+      uom: formula.uom,
+      quantity: formula.quantity,
+      modifiedBy: currentUser.userName
+    })
+  }
 
   const newFormulaHandler = () => {
     openDrawer()
     reset()
   }
+
+  //Recipe
 
   const recipeHandler = (id, itemCode, itemDescription, quantity) => {
     setFormulaId(id)
@@ -205,6 +216,14 @@ const TransformationManagementPage = ({ disableAddRecipehandler }) => {
     setItemDescription(itemDescription)
     setQuantity(quantity)
     openViewingModal()
+  }
+
+  const editRecipeHandler = (id, itemCode, itemDescription, quantity) => {
+    setFormulaId(id)
+    setItemCode(itemCode)
+    setItemDescription(itemDescription)
+    setQuantity(quantity)
+    openEditRecipeModal()
   }
 
   return (
@@ -245,6 +264,7 @@ const TransformationManagementPage = ({ disableAddRecipehandler }) => {
             <Table variant='striped' size='sm'>
               <Thead>
                 <Tr bgColor='secondary'>
+                  <Th color='white'>Requirements</Th>
                   <Th color='white'>ID</Th>
                   <Th color='white'>Formula Code</Th>
                   <Th color='white'>Formula Description</Th>
@@ -253,13 +273,50 @@ const TransformationManagementPage = ({ disableAddRecipehandler }) => {
                   {/* <Th color='white'>UOM</Th> */}
                   <Th color='white'>Date Added</Th>
                   <Th color='white'>Added by</Th>
-                  <Th color='white'>Requirements</Th>
                   <Th color='white'>Actions</Th>
+                  {/* <Th color='white'>Edit</Th> */}
                 </Tr>
               </Thead>
               <Tbody>
                 {formulas.formula?.map(formula =>
                   <Tr key={formula.id}>
+
+                    <Td p={1}>
+                      <HStack>
+
+                        <Tooltip label="Add Recipe" placement='top' closeOnClick>
+                          <Button
+                            disabled={formula.countFormula == true}
+                            onClick={() => recipeHandler(formula.id, formula.itemCode, formula.itemDescription, formula.quantity)}
+                            p={0} bg='none'
+                          >
+                            <AiFillMedicineBox />
+                          </Button>
+                        </Tooltip>
+
+                        <Tooltip label="Edit Recipe" placement='top' closeOnClick>
+                          <Button
+                            disabled={formula.countFormula == false}
+                            onClick={() => editRecipeHandler(formula.id, formula.itemCode, formula.itemDescription, formula.quantity)}
+                            p={0} bg='none'
+                          >
+                            <RiEditBoxFill />
+                          </Button>
+                        </Tooltip>
+
+                        <Tooltip label="View Recipe" placement='top' closeOnClick>
+                          <Button
+                            disabled={formula.countFormula == false}
+                            onClick={() => recipeViewing(formula.id, formula.itemCode, formula.itemDescription, formula.quantity)}
+                            p={0} bg='none'
+                          >
+                            <AiOutlineFundView />
+                          </Button>
+                        </Tooltip>
+
+                      </HStack>
+                    </Td>
+
                     <Td>{formula.id}</Td>
                     <Td>{formula.itemCode}</Td>
                     <Td>{formula.itemDescription}</Td>
@@ -268,61 +325,62 @@ const TransformationManagementPage = ({ disableAddRecipehandler }) => {
                     {/* <Td>{formula.uom}</Td> */}
                     <Td>{formula.dateAdded}</Td>
                     <Td>{formula.addedBy}</Td>
-                    <Td>
-                      <Button
-                        disabled={formula.countFormula == true}
-                        onClick={() => recipeHandler(formula.id, formula.itemCode, formula.itemDescription, formula.quantity)}
-                        p={0} background='none' color='secondary'
-                      >
-                        <AiFillMedicineBox />
-                      </Button>
 
-                      <Button
-                        disabled={formula.countFormula == false}
-                        onClick={() => recipeViewing(formula.id, formula.itemCode, formula.itemDescription, formula.quantity)}
-                        p={0} background='none' color='secondary'
-                      >
-                        <AiOutlineFundView />
-                      </Button>
-                    </Td>
-                    <Td>
-                      <Flex>
-                        <HStack>
+                    <Td p={0}>
+                      <HStack>
 
-                          {/* <Button p={0} background='none' color='secondary' onClick={() => editHandler(formula)}>
-                            <RiEditBoxFill />
-                          </Button> */}
+                        <Flex>
+                          <HStack>
 
-                          <Popover>
-                            <PopoverTrigger>
-                              <Button p={0} background='none'><GiChoice /></Button>
-                            </PopoverTrigger>
-                            <Portal>
-                              <PopoverContent>
-                                <PopoverArrow />
-                                <PopoverCloseButton />
-                                <PopoverBody>
-                                  <VStack>
-                                    {formula.isActive === true ? <Text>Are you sure you want to set <br /> this formula inactive?</Text> : <Text>Are you sure you want to set <br /> this formula active?</Text>}
-                                    {/* <Select w='50%' placeholder='reason'>
+                            <Tooltip label="Edit Formula Code" placement='top' closeOnClick>
+                              <Button
+                                disabled={formula.countFormula == true}
+                                onClick={() => editHandler(formula)}
+                                p={0} bg='none'
+                              >
+                                <RiEditBoxFill />
+                              </Button>
+                            </Tooltip>
+
+                            <Popover>
+                              <PopoverTrigger>
+                                <Tooltip label="Change Status" placement='top' closeOnClick>
+                                  <Button
+                                    p={0} bg='none'
+                                  >
+                                    <GiChoice />
+                                  </Button>
+                                </Tooltip>
+                              </PopoverTrigger>
+                              <Portal>
+                                <PopoverContent>
+                                  <PopoverArrow />
+                                  <PopoverCloseButton />
+                                  <PopoverBody>
+                                    <VStack>
+                                      {formula.isActive === true ? <Text>Are you sure you want to set <br /> this formula inactive?</Text> : <Text>Are you sure you want to set <br /> this formula active?</Text>}
+                                      {/* <Select w='50%' placeholder='reason'>
                                       <option>test</option>
                                     </Select> */}
-                                    <Button
-                                      bgColor='secondary'
-                                      color='white'
-                                      _hover={{ bgColor: 'accent' }}
-                                      onClick={() => changeStatusHandler(formula.id, formula.isActive)}
-                                    >
-                                      Yes
-                                    </Button>
-                                  </VStack>
-                                </PopoverBody>
-                              </PopoverContent>
-                            </Portal>
-                          </Popover>
-                        </HStack>
-                      </Flex>
+                                      <Button
+                                        bgColor='secondary'
+                                        color='white'
+                                        _hover={{ bgColor: 'accent' }}
+                                        onClick={() => changeStatusHandler(formula.id, formula.isActive)}
+                                      >
+                                        Yes
+                                      </Button>
+                                    </VStack>
+                                  </PopoverBody>
+                                </PopoverContent>
+                              </Portal>
+                            </Popover>
+                          </HStack>
+                        </Flex>
+
+                      </HStack>
                     </Td>
+
                   </Tr>
                 )
                 }
@@ -376,6 +434,20 @@ const TransformationManagementPage = ({ disableAddRecipehandler }) => {
               isOpen={isViewingModalOpen}
               onClose={closeViewingModal}
               onOpen={openViewingModal}
+              formulaId={formulaId}
+              formulaItemCode={itemCode}
+              formulaItemDescription={itemDescription}
+              formulaQuantity={quantity}
+            />
+          )
+        }
+
+        {
+          isEditRecipeOpen && (
+            <TransformationEditRecipeModal
+              isOpen={isEditRecipeOpen}
+              onClose={closeEditRecipeModal}
+              onOpen={openEditRecipeModal}
               formulaId={formulaId}
               formulaItemCode={itemCode}
               formulaItemDescription={itemDescription}

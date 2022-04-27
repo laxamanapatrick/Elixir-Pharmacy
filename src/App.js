@@ -47,6 +47,7 @@ import ImportPoPage from './pages/import/ImportPoPage'
 import ImportOrderPage from './pages/import/ImportOrderPage'
 import ImportRawMaterialsPage from './pages/import/ImportRawMaterialsPage'
 import ImportFormulationCodePage from './pages/import/ImportFormulationCodePage'
+import ImportSupplier from './pages/import/ImportSupplier'
 
 import UserManagementPage from './pages/UserManagementPage';
 import UserAccountPage from './pages/usermanagement/UserAccountPage'
@@ -133,6 +134,7 @@ function App() {
             <Route path="import-order" element={user ? <ImportOrderPage /> : <Navigate to="/login" />} />
             <Route path="import-raw-materials" element={user ? <ImportRawMaterialsPage /> : <Navigate to="/login" />} />
             <Route path="import-formulation-code" element={user ? <ImportFormulationCodePage /> : <Navigate to="/login" />} />
+            <Route path="import-supplier" element={user ? <ImportSupplier /> : <Navigate to="/login" />} />
           </Route>
 
           <Route path="user-management" element={user ? <UserManagementPage /> : <Navigate to="/login" />}>

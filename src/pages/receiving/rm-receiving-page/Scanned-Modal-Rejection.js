@@ -26,6 +26,7 @@ import { IoIosAddCircle } from 'react-icons/io'
 import apiClient from '../../../services/apiClient'
 import { ToastComponent } from '../../../components/Toast'
 import { WarehouseContext } from '../../../context/WarehouseContext'
+import { useForm, Controller } from 'react-hook-form'
 
 const fetchReasonsApi = async () => {
     const res = await apiClient.get('Reason/GetAllActiveReason')
@@ -45,6 +46,15 @@ const ScannedModalRejection = ({ quantity, remarks, sumQuantity, receivingId }) 
     const remarksDisplay = useRef(null)
 
     const toast = useToast()
+
+    const { register } = useForm({
+        mode: "onChange",
+        defaultValues: {
+            formData: {
+                quantity: null,
+            }
+        }
+    })
 
     const fetchReason = async () => {
         fetchReasonsApi().then(res => {
@@ -109,8 +119,8 @@ const ScannedModalRejection = ({ quantity, remarks, sumQuantity, receivingId }) 
         }
         setDisplayData([...displayData, data])
 
-        remarksDisplay.current.selectedIndex = 0
         setQuantity("")
+        remarksDisplay.current.selectedIndex = ""
     }
 
     const deleteRejectionHandler = (data) => {
@@ -163,6 +173,7 @@ const ScannedModalRejection = ({ quantity, remarks, sumQuantity, receivingId }) 
                             <FormLabel w='40%'>
                                 Quantity
                                 <Input
+                                    {...register("formData.quantity")}
                                     value={quantity}
                                     onChange={(e) => setQuantity(parseInt(e.target.value))}
                                     onWheel={(e) => e.target.blur()}
@@ -171,6 +182,7 @@ const ScannedModalRejection = ({ quantity, remarks, sumQuantity, receivingId }) 
                                     placeholder='Quantity'
                                     bgColor='#ffffe0'
                                 />
+
                             </FormLabel>
 
                             <FormLabel w='40%'>

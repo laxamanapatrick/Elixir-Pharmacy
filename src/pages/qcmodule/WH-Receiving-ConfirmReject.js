@@ -1,6 +1,6 @@
 //Warehouse Receiving Confirm Reject
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import {
   Badge,
   Button,
@@ -35,6 +35,7 @@ import {
 } from '@ajna/pagination'
 import PageScroll from '../../components/PageScroll';
 import ViewingModal from './wh-receiving-confirm-reject/WH-Receiving-ConfirmReject-Modal';
+import { NotificationContext } from '../../context/NotificationContext';
 
 const fetchRejectRMApi = async () => {
   const res = await apiClient.get(`Receiving/GetAllWarehouseReceivingConfirmReject`);

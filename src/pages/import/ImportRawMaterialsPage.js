@@ -125,7 +125,7 @@ const ImportRawMaterialsPage = () => {
   })
 
   const submitFile = () => {
-    if (resultArray.length > 1) {
+    if (resultArray.length > 0) {
       try {
         setisLoading(true)
         const res = apiClient.post('Import/AddNewRawMaterialManual',

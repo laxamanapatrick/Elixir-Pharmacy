@@ -62,6 +62,7 @@ const currentUser = decodeUser()
 const schema = yup.object().shape({
   formData: yup.object().shape({
     id: yup.string(),
+    customerCode: yup.string().required("Customer Code is required"),
     customerName: yup.string().required("Customer Name is required"),
     farmTypeId: yup.string().required("Farm Type is required"),
     companyName: yup.string().required("Company Name is required"),
@@ -91,6 +92,7 @@ const CustomerManagementPage = () => {
     defaultValues: {
       formData: {
         id: "",
+        customerCode: "",
         customerName: "",
         farmTypeId: "",
         companyName: "RDF",
@@ -162,6 +164,7 @@ const CustomerManagementPage = () => {
     openDrawer()
     setValue("formData", {
       id: cus.id,
+      customerCode: cus.customerCode,
       customerName: cus.customerName,
       farmTypeId: cus.farmTypeId,
       companyName: "RDF",
@@ -221,6 +224,7 @@ const CustomerManagementPage = () => {
               <Thead>
                 <Tr bgColor='secondary'>
                   <Th color='white'>ID</Th>
+                  <Th color='white'>Customer Code</Th>
                   <Th color='white'>Customer Name</Th>
                   <Th color='white'>Type</Th>
                   <Th color='white'>Company</Th>
@@ -239,6 +243,7 @@ const CustomerManagementPage = () => {
                       key={cus.id}
                     >
                       <Td>{cus.id}</Td>
+                      <Td>{cus.customerCode}</Td>
                       <Td>{cus.customerName}</Td>
                       <Td>{cus.farmType}</Td>
                       <Td>{cus.companyName}</Td>
@@ -426,6 +431,15 @@ const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSub
             <DrawerBody>
 
               <Stack spacing='7px'>
+
+                <Box>
+                  <FormLabel>Customer Code:</FormLabel>
+                  <Input
+                    placeholder='Please enter Customer Code'
+                    {...register("formData.customerCode")}
+                  />
+                  <Text color="danger" fontSize="xs">{errors.formData?.customerCode?.message}</Text>
+                </Box>
 
                 <Box>
                   <FormLabel>Customer Name:</FormLabel>

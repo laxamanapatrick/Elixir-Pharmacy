@@ -105,7 +105,7 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo }) => {
   }
 
   const actualDeliveredProvider = (data) => {
-    const allowablePercent = editData.actualRemaining * 0.1
+    const allowablePercent = editData.quantityOrdered * 0.1
     const allowableAmount = editData.actualRemaining + allowablePercent
     if (data > allowableAmount) {
       setActualDelivered("")
@@ -163,6 +163,7 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo }) => {
                         readOnly={true}
                         _disabled={{ color: 'black' }}
                         disabled={true}
+                        bgColor='gray.300'
                       />
                     </FormLabel>
 
@@ -173,6 +174,7 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo }) => {
                         readOnly={true}
                         _disabled={{ color: 'black' }}
                         disabled={true}
+                        bgColor='gray.300'
                       />
                     </FormLabel>
                   </Flex>
@@ -185,6 +187,7 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo }) => {
                         readOnly={true}
                         _disabled={{ color: 'black' }}
                         disabled={true}
+                        bgColor='gray.300'
                       />
                     </FormLabel>
 
@@ -196,6 +199,7 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo }) => {
                         readOnly={true}
                         _disabled={{ color: 'black' }}
                         disabled={true}
+                        bgColor='gray.300'
                       />
                     </FormLabel>
                   </Flex>
@@ -214,6 +218,7 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo }) => {
                         readOnly={true}
                         _disabled={{ color: 'black' }}
                         disabled={true}
+                        bgColor='gray.300'
                       />
                     </FormLabel>
 
@@ -224,6 +229,7 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo }) => {
                         readOnly={true}
                         _disabled={{ color: 'black' }}
                         disabled={true}
+                        bgColor='gray.300'
                       />
                     </FormLabel>
                   </Flex>
@@ -236,6 +242,7 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo }) => {
                         readOnly={true}
                         _disabled={{ color: 'black' }}
                         disabled={true}
+                        bgColor='gray.300'
                       />
                     </FormLabel>
 
@@ -246,6 +253,7 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo }) => {
                         readOnly={true}
                         _disabled={{ color: 'black' }}
                         disabled={true}
+                        bgColor='gray.300'
                       />
                     </FormLabel>
                   </Flex>
@@ -258,6 +266,7 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo }) => {
                         readOnly={true}
                         _disabled={{ color: 'black' }}
                         disabled={true}
+                        bgColor='gray.300'
                       />
                     </FormLabel>
 
@@ -268,6 +277,7 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo }) => {
                         readOnly={true}
                         _disabled={{ color: 'black' }}
                         disabled={true}
+                        bgColor='gray.300'
                       />
                     </FormLabel>
 
@@ -285,7 +295,6 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo }) => {
                         selected={manufacturingDate}
                         className='chakra-input css-7s3glp'
                       />
-                      {/* {manufacturingDate ? "" : <Text color='danger' fontSize='sm'>Manufacturing Date is required</Text>} */}
                     </VStack>
 
                     <VStack spacing={-1.5} w='40%' mr={3}>
@@ -300,7 +309,6 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo }) => {
                         shouldCloseOnSelect={true}
                         className='chakra-input css-7s3glp'
                       />
-                      {/* {expiryDate ? "" : <Text color='danger' fontSize='sm'>Expiry Date is required</Text>} */}
                     </VStack>
                   </Flex>
 
@@ -314,21 +322,19 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo }) => {
                         bgColor='#ffffe0'
                         type='number'
                       />
-                      {/* {expectedDelivery ? "" : <Text color='danger' fontSize='sm'>Expected delivery quantity is required</Text>} */}
                     </FormLabel>
 
                     <FormLabel w='40%'>
                       Qty. Actual Delivered
                       <Input
-                        value={actualDelivered}
+                        {...register("submitData.actual_delivered")}
                         onChange={(e) => actualDeliveredProvider(e.target.value)}
                         onWheel={(e) => e.target.blur()}
                         type='number'
-                        placeholder='Please enter quantity  (Required)'
+                        placeholder='Please enter quantity (Required)'
                         bgColor='#ffffe0'
-                        // pattern="^\d*(\.\d{0,2})?$"
+                      // pattern="^\d*(\.\d{0,2})?$"
                       />
-                      {/* {actualDelivered ? "" : <Text color='danger' fontSize='sm'>Actual delivered quantity is required</Text>} */}
                     </FormLabel>
                   </Flex>
 
@@ -340,6 +346,7 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo }) => {
                         readOnly={true}
                         _disabled={{ color: 'black' }}
                         disabled={true}
+                        bgColor='gray.300'
                       />
                     </FormLabel>
 
@@ -352,7 +359,6 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo }) => {
                         bgColor='#ffffe0'
                         type='number'
                       />
-                      {/* {batchNo ? "" : <Text color='danger' fontSize='sm'>Batch number is required</Text>} */}
                     </FormLabel>
                   </Flex>
 

@@ -84,7 +84,7 @@ const ImportPoPage = () => {
   })
 
   const submitFile = (resultArray) => {
-    if (resultArray.length > 1) {
+    if (resultArray.length > 0) {
       try {
         setisLoading(true)
         const res = apiClient.post('Import/AddNewPOManual', resultArray).then((res) => {
@@ -151,8 +151,8 @@ const ImportPoPage = () => {
                     <Td>{ed.itemCode ? ed.itemCode : <Text fontWeight='semibold' color='danger'>Data missing. Please make sure correct excel file for PO is uploaded.</Text>}</Td>
                     <Td>{ed.itemDescription ? ed.itemDescription : <Text fontWeight='semibold' color='danger'>Data missing. Please make sure correct excel file for PO is uploaded.</Text>}</Td>
                     <Td>{ed.ordered ? ed.ordered : <Text fontWeight='semibold' color='danger'>Data missing. Please make sure correct excel file for PO is uploaded.</Text>}</Td>
-                    <Td>{ed.delivered ? ed.delivered : <Text fontWeight='semibold' color='danger'>Data missing. Please make sure correct excel file for PO is uploaded.</Text>}</Td>
-                    <Td>{ed.billed ? ed.billed : <Text fontWeight='semibold' color='danger'>Data missing. Please make sure correct excel file for PO is uploaded.</Text>}</Td>
+                    <Td>{ed.delivered < 0 ? <Text fontWeight='semibold' color='danger'>Data missing. Please make sure correct excel file for PO is uploaded.</Text> : ed.delivered}</Td>
+                    <Td>{ed.billed < 0 ? <Text fontWeight='semibold' color='danger'>Data missing. Please make sure correct excel file for PO is uploaded.</Text> : ed.billed}</Td>
                     <Td>{ed.uom ? ed.uom : <Text fontWeight='semibold' color='danger'>Data missing. Please make sure correct excel file for PO is uploaded.</Text>}</Td>
                     <Td>{ed.unitPrice ? ed.unitPrice : <Text fontWeight='semibold' color='danger'>Data missing. Please make sure correct excel file for PO is uploaded.</Text>}</Td>
                     <Td>{ed.vendorName ? ed.vendorName : <Text fontWeight='semibold' color='danger'>Data missing. Please make sure correct excel file for PO is uploaded.</Text>}</Td>

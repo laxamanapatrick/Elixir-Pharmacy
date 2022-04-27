@@ -62,7 +62,8 @@ const currentUser = decodeUser()
 const schema = yup.object().shape({
   formData: yup.object().shape({
     id: yup.string(),
-    farmName: yup.string().required("Farm is required"),
+    farmCode: yup.string().required("Farm Code is required"),
+    farmName: yup.string().required("Farm Name is required"),
   })
 })
 
@@ -82,6 +83,7 @@ const FarmPage = () => {
     defaultValues: {
       formData: {
         id: "",
+        farmCode: "",
         farmName: "",
         addedBy: currentUser.addedBy
       }
@@ -144,6 +146,7 @@ const FarmPage = () => {
               <Thead>
                 <Tr bgColor='secondary'>
                   <Th color='white'>Id</Th>
+                  <Th color='white'>Farm Code</Th>
                   <Th color='white'>Farm Name</Th>
                   <Th color='white'>Added By</Th>
                   <Th color='white'>Date Added</Th>
@@ -154,6 +157,7 @@ const FarmPage = () => {
                 {farms?.map(farm =>
                   <Tr key={farm.id}>
                     <Td>{farm.id}</Td>
+                    <Td>{}</Td>
                     <Td>{farm.farmName}</Td>
                     <Td>{farm.addedBy}</Td>
                     <Td>{farm.dateAdded}</Td>
@@ -267,6 +271,15 @@ const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSub
               <Stack spacing='7px'>
 
                 <Flex mt={1.5}></Flex>
+
+                <Box>
+                  <FormLabel>Farm Code:</FormLabel>
+                  <Input
+                    placeholder='Please enter Farm Code'
+                    {...register("formData.farmCode")}
+                  />
+                  <Text color="danger" fontSize="xs">{errors.formData?.farmCode?.message}</Text>
+                </Box>
 
                 <Box>
                   <FormLabel>Farm Name:</FormLabel>
