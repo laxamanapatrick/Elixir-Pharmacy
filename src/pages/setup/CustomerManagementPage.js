@@ -82,7 +82,11 @@ const CustomerManagementPage = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [status, setStatus] = useState(true)
   const [search, setSearch] = useState("")
+
+  const [codeDisable, setCodeDisable] = useState(false)
+
   const toast = useToast()
+
   const [pageTotal, setPageTotal] = useState(undefined);
   const { isOpen: isDrawerOpen, onOpen: openDrawer, onClose: closeDrawer } = useDisclosure()
 
@@ -173,9 +177,11 @@ const CustomerManagementPage = () => {
       address: cus.address,
       modifiedBy: currentUser.userName,
     })
+    setCodeDisable(true)
   }
 
   const newCustomerHandler = () => {
+    setCodeDisable(false)
     openDrawer()
     reset()
   }
@@ -312,6 +318,7 @@ const CustomerManagementPage = () => {
               handleSubmit={handleSubmit}
               fetchCustomer={fetchCustomer}
               control={control}
+              codeDisable={codeDisable}
             />
           )
         }
@@ -359,7 +366,7 @@ const CustomerManagementPage = () => {
 
 export default CustomerManagementPage;
 
-const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSubmit, fetchCustomer, control }) => {
+const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSubmit, fetchCustomer, control, codeDisable }) => {
   const [farms, setFarms] = useState([])
   const [isLoading, setisLoading] = useState(false)
   const [company, setCompany] = useState([{
@@ -435,6 +442,10 @@ const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSub
                 <Box>
                   <FormLabel>Customer Code:</FormLabel>
                   <Input
+                    disabled={codeDisable}
+                    readOnly={codeDisable}
+                    _disabled={{ color: 'black' }}
+                    bgColor={codeDisable && 'gray.300'}
                     placeholder='Please enter Customer Code'
                     {...register("formData.customerCode")}
                   />

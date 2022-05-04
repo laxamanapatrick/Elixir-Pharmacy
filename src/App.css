@@ -1,6 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Redressed&display=swap')
-
-.App {
+@import url('https://fonts.googleapis.com/css2?family=Redressed&display=swap') .App {
   text-align: center;
 }
 
@@ -34,6 +32,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }

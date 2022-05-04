@@ -175,7 +175,6 @@ export const EditModalComponentRejectionInfo = ({ receivingId, sumQuantity }) =>
                                     isInvalid={errors.qty}
                                     placeholder='Quantity'
                                     type='number'
-                                    bgColor='#ffffe0'
                                 />
                             </FormLabel>
 
@@ -188,7 +187,6 @@ export const EditModalComponentRejectionInfo = ({ receivingId, sumQuantity }) =>
                                             onChange={(e) => remarksHandler(e.target.value)}
                                             isInvalid={errors.rms}
                                             placeholder='Select Reason'
-                                            bgColor='#ffffe0'
                                         >
                                             {reasons?.map(reason =>
                                                 <option key={reason.id} value={JSON.stringify(reason)}>{reason.reasonName}</option>

@@ -132,6 +132,8 @@ const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSub
                                 <Box>
                                     <FormLabel>Item Code:</FormLabel>
                                     <Input
+                                        color='black'
+                                        bgColor='gray.300'
                                         readOnly={true}
                                         {...register("formData.itemCode")}
                                     />
@@ -141,6 +143,8 @@ const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSub
                                 <Box>
                                     <FormLabel>Item Description:</FormLabel>
                                     <Input
+                                        color='black'
+                                        bgColor='gray.300'
                                         readOnly={true}
                                         {...register("formData.itemDescription")}
                                     />
@@ -150,6 +154,8 @@ const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSub
                                 <Box>
                                     <FormLabel>UOM:</FormLabel>
                                     <Input
+                                        color='black'
+                                        bgColor='gray.300'
                                         readOnly={true}
                                         {...register("formData.uom")}
                                     />

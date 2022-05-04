@@ -38,7 +38,7 @@ import TransformationManagementModalViewing from './TransformationManagement-Mod
 
 const currentUser = decodeUser()
 
-const ModalComponent = ({ isOpen, onClose, formulaId, formulaItemCode, formulaItemDescription, formulaQuantity, fetchFormula }) => {
+const ModalComponent = ({ isOpen, onClose, formulaId, formulaItemCode, formulaItemDescription, formulaQuantity, fetchFormula, setTooltipValue }) => {
 
     const [raws, setRaws] = useState([])
     const [rmId, setRmId] = useState("")
@@ -202,6 +202,7 @@ const ModalComponent = ({ isOpen, onClose, formulaId, formulaItemCode, formulaIt
             })
         } catch (err) {
         }
+        setTooltipValue(true)
     }
 
     return (
@@ -221,7 +222,10 @@ const ModalComponent = ({ isOpen, onClose, formulaId, formulaItemCode, formulaIt
                         <Text fontSize='md'>Description: {formulaItemDescription}</Text>
                     </Flex>
                 </ModalHeader>
-                <ModalCloseButton onClick={onClose} />
+                <ModalCloseButton onClick={() => {
+                    setTooltipValue(true)
+                    onClose()
+                }} />
 
                 <ModalBody>
 
@@ -353,7 +357,15 @@ const ModalComponent = ({ isOpen, onClose, formulaId, formulaItemCode, formulaIt
                     >
                         Submit
                     </Button>
-                    <Button variant='ghost' onClick={onClose}>Close</Button>
+                    <Button
+                        variant='ghost'
+                        onClick={() => {
+                            onClose()
+                            setTooltipValue(true)
+                        }}
+                    >
+                        Close
+                    </Button>
                 </ModalFooter>
             </ModalContent >
         </Modal >

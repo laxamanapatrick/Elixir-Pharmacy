@@ -61,11 +61,8 @@ const AddRecipeConfirmation = ({ isOpen, onClose, formulaId, recipes, fetchRecip
         }
     }
 
-    console.log(formulaQuantity)
-
     const rawMaterialQuantityHandler = (data) => {
         let quantityValidator = parseInt(totalQuantityData) + parseInt(data)
-        console.log(quantityValidator)
         if (quantityValidator > formulaQuantity) {
             setYesButtonDisabler(true)
             ToastComponent("Warning!", "The quantity you provided is greater than the quantity needed", "warning", toast)

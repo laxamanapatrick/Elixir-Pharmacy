@@ -73,11 +73,15 @@ const fetchUomApi = async (pageNumber, pageSize, status, search) => {
 }
 
 const UomManagementPage = () => {
+
   const [uom, setUom] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [status, setStatus] = useState(true);
   const [search, setSearch] = useState("");
+  const [codeDisable, setCodeDisable] = useState(false)
+
   const toast = useToast()
+
   const [pageTotal, setPageTotal] = useState(undefined);
   const { isOpen: isDrawerOpen, onOpen: openDrawer, onClose: closeDrawer } = useDisclosure()
 
@@ -158,13 +162,14 @@ const UomManagementPage = () => {
       uoM_Description: uom.uoM_Description,
       modifiedBy: currentUser.userName,
     })
+    setCodeDisable(true)
   }
 
   const newUomHandler = () => {
+    setCodeDisable(false)
     openDrawer()
     reset()
   }
-
 
   return (
     <Flex p={5} w='full' flexDirection='column'>
@@ -176,7 +181,7 @@ const UomManagementPage = () => {
               pointerEvents='none'
               children={<FaSearch color='gray.300' />}
             />
-            <Input type='text' placeholder='Search: Description' 
+            <Input type='text' placeholder='Search: Description'
               onChange={(e) => searchHandler(e.target.value)}
               focusBorderColor='accent'
             />
@@ -186,7 +191,7 @@ const UomManagementPage = () => {
         <HStack>
           <Text>STATUS: </Text>
           <Select
-          onChange={(e) => statusHandler(e.target.value)}
+            onChange={(e) => statusHandler(e.target.value)}
           >
             <option value={true}>Active</option>
             <option value={false}>Inactive</option>
@@ -229,7 +234,7 @@ const UomManagementPage = () => {
                       <Flex>
                         <HStack>
                           <Button p={0} background='none' color='secondary'
-                          onClick={() => editHandler(uom)}
+                            onClick={() => editHandler(uom)}
                           >
                             <RiEditBoxFill />
                           </Button>
@@ -284,6 +289,7 @@ const UomManagementPage = () => {
               isValid={isValid}
               handleSubmit={handleSubmit}
               fetchUom={fetchUom}
+              codeDisable={codeDisable}
             />
           )
         }
@@ -331,7 +337,7 @@ const UomManagementPage = () => {
 
 export default UomManagementPage;
 
-const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSubmit, fetchUom }) => {
+const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSubmit, fetchUom, codeDisable }) => {
 
   const [isLoading, setisLoading] = useState(false)
   const toast = useToast()
@@ -346,9 +352,9 @@ const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSub
           setisLoading(false)
           fetchUom()
           onClose(onClose)
-        }).catch(err => {       
+        }).catch(err => {
           setisLoading(false)
-          ToastComponent("Error", err.response.data , "error", toast)
+          ToastComponent("Error", err.response.data, "error", toast)
           data.formData.id = "" // add property id to objects for if condition
         })
       } else {
@@ -386,6 +392,10 @@ const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSub
                 <Box>
                   <FormLabel>UOM Name:</FormLabel>
                   <Input
+                    disabled={codeDisable}
+                    readOnly={codeDisable}
+                    _disabled={{ color: 'black' }}
+                    bgColor={codeDisable && 'gray.300'}
                     placeholder='Please enter UOM Name'
                     {...register("formData.uoM_Code")}
                   />

@@ -104,8 +104,6 @@ const TransformationEditRecipeModal = ({
     openAddModal()
   }
 
-  console.log(totalQuantityData)
-
   return (
     <Modal
       size='5xl'

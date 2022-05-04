@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Box, Button, Flex, HStack, Input, Select, Table, Tbody, Td, Text, Th, Thead, Tr, useToast } from '@chakra-ui/react';
+import React, { useState, useRef } from 'react';
+import { Box, Button, Flex, HStack, Input, Select, Table, Tbody, Td, Text, Th, Thead, Tr, useDisclosure, useToast } from '@chakra-ui/react';
 import PageScrollImport from '../../components/PageScrollImport'
 import * as XLSX from 'xlsx'
 import apiClient from '../../services/apiClient'
@@ -7,6 +7,7 @@ import { ToastComponent } from '../../components/Toast'
 import DateConverter from '../../components/DateConverter'
 import moment from 'moment';
 import { decodeUser } from '../../services/decode-user';
+import ErrorList from './import-po/Error-List';
 
 const currentUser = decodeUser()
 
@@ -17,7 +18,16 @@ const ImportPoPage = () => {
   const [isLoading, setisLoading] = useState(false)
   const [isDisabled, setIsDisabled] = useState(true)
   const [sheetOptions, setSheetOptions] = useState([])
+
+  const [errorOpener, setErrorOpener] = useState(false)
+
+  const [errorData, setErrorData] = useState([])
+
   const toast = useToast()
+
+  const { isOpen: isErrorListOpen, onOpen: openErrorList, onClose: closeErrorList } = useDisclosure()
+
+  const fileClear = useRef()
 
   const fileRenderer = (jsonData) => {
     jsonData.forEach((row) => {
@@ -85,22 +95,35 @@ const ImportPoPage = () => {
 
   const submitFile = (resultArray) => {
     if (resultArray.length > 0) {
+
       try {
         setisLoading(true)
         const res = apiClient.post('Import/AddNewPOManual', resultArray).then((res) => {
           ToastComponent("Success!", "PO Imported", "success", toast)
           setisLoading(false)
           setIsDisabled(true)
+          fileClear.current.value = ""
+          setExcelData([])
         }).catch(err => {
           setisLoading(false)
-          ToastComponent("Error", err.response.data, "error", toast)
+          ToastComponent("Error", "Import Failed, Please check your fields.", "error", toast)
+          setErrorData(err.response.data)
+          if (err.response.data.availableImport) {
+            setErrorOpener(true)
+            openErrorList()
+          }
         })
       } catch (err) {
-        console.log(err)
+        ToastComponent("Error!", "Wrong excel format imported for PO", "error", toast)
       }
+
     } else {
       ToastComponent("Error!", "No data provided, please check your import", "error", toast)
     }
+  }
+
+  const openErrorModal = () => {
+    openErrorList()
   }
 
   return (
@@ -170,7 +193,9 @@ const ImportPoPage = () => {
               {/* <Text color='white'>Filename:</Text>
               <Input readOnly={true} w='full' pr='150px' bgColor='white' mr={1} placeholder={fileName} /> */}
 
-              <Input ml={1} w='47%' type='file' p={1} mr={.2} bgColor='white' onChange={(e) => fileHandler(e.target.files)} />
+              <Input 
+              ref={fileClear}
+              ml={1} w='47%' type='file' p={1} mr={.2} bgColor='white' onChange={(e) => fileHandler(e.target.files)} />
 
               <Select
                 onChange={(e) => sheetNumberHandlder(e.target.selectedIndex)}
@@ -188,20 +213,49 @@ const ImportPoPage = () => {
             </Flex>
             <HStack>
 
-              <Button
-                onClick={() => submitFile(resultArray)}
-                type='submit'
-                isLoading={isLoading}
-                isDisabled={isDisabled}
-                _hover={{ color: 'white', bgColor: 'accent' }}
-              >
-                Import
-              </Button>
+              {
+                errorOpener === true ? (
+                  <Button
+                    onClick={() => openErrorModal()}
+                    type='submit'
+                    isLoading={isLoading}
+                    isDisabled={isDisabled}
+                    _hover={{ color: 'white', bgColor: 'accent' }}
+                    color='danger'
+                  >
+                    Errors Found
+                  </Button>
+                )
+                  :
+                  (
+                    <Button
+                      onClick={() => submitFile(resultArray)}
+                      type='submit'
+                      isLoading={isLoading}
+                      isDisabled={isDisabled}
+                      _hover={{ color: 'white', bgColor: 'accent' }}
+                    >
+                      Import
+                    </Button>
+                  )
+              }
+
             </HStack>
           </Flex>
         </Box>
 
       </Flex>
+
+      {
+        isErrorListOpen && (
+          <ErrorList
+            isOpen={isErrorListOpen}
+            onClose={closeErrorList}
+            onOpen={openErrorList}
+            errorData={errorData}
+          />
+        )
+      }
 
     </Flex>
   )

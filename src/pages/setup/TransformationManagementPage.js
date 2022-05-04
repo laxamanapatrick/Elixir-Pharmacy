@@ -102,6 +102,8 @@ const TransformationManagementPage = () => {
 
   const [recipeData, setrecipeData] = useState([])
 
+  const [tooltipValue, setTooltipValue] = useState(false)
+
   const toast = useToast()
 
   const [pageTotal, setPageTotal] = useState(undefined);
@@ -207,6 +209,7 @@ const TransformationManagementPage = () => {
     setItemCode(itemCode)
     setItemDescription(itemDescription)
     setQuantity(quantity)
+    setTooltipValue(true)
     openModal()
   }
 
@@ -284,35 +287,44 @@ const TransformationManagementPage = () => {
                     <Td p={1}>
                       <HStack>
 
-                        <Tooltip label="Add Recipe" placement='top' closeOnClick>
-                          <Button
-                            disabled={formula.countFormula == true}
-                            onClick={() => recipeHandler(formula.id, formula.itemCode, formula.itemDescription, formula.quantity)}
-                            p={0} bg='none'
-                          >
-                            <AiFillMedicineBox />
-                          </Button>
-                        </Tooltip>
+                        {
+                          formula.countFormula === true ?
+                            (
+                              <Button
+                                disabled={formula.countFormula == false}
+                                hidden={formula.countFormula == false}
+                                onClick={() => editRecipeHandler(formula.id, formula.itemCode, formula.itemDescription, formula.quantity)}
+                                title='Edit Recipe'
+                                p={0} bg='none'
+                              >
+                                <RiEditBoxFill />
+                              </Button>
+                            )
+                            :
+                            (
+                              <Button
+                                disabled={formula.countFormula == true}
+                                hidden={formula.countFormula == true}
+                                onClick={() => recipeHandler(formula.id, formula.itemCode, formula.itemDescription, formula.quantity)}
+                                title='Add Recipe'
+                                p={0} bg='none'
+                              >
+                                <AiFillMedicineBox />
+                              </Button>
+                            )
+                        }
 
-                        <Tooltip label="Edit Recipe" placement='top' closeOnClick>
-                          <Button
-                            disabled={formula.countFormula == false}
-                            onClick={() => editRecipeHandler(formula.id, formula.itemCode, formula.itemDescription, formula.quantity)}
-                            p={0} bg='none'
-                          >
-                            <RiEditBoxFill />
-                          </Button>
-                        </Tooltip>
+                        {/* Redundant */}
 
-                        <Tooltip label="View Recipe" placement='top' closeOnClick>
-                          <Button
-                            disabled={formula.countFormula == false}
-                            onClick={() => recipeViewing(formula.id, formula.itemCode, formula.itemDescription, formula.quantity)}
-                            p={0} bg='none'
-                          >
-                            <AiOutlineFundView />
-                          </Button>
-                        </Tooltip>
+                        <Button
+                          disabled={true}
+                          hidden={true}
+                          onClick={() => recipeViewing(formula.id, formula.itemCode, formula.itemDescription, formula.quantity)}
+                          title='View Recipe'
+                          p={0} bg='none'
+                        >
+                          <AiOutlineFundView />
+                        </Button>
 
                       </HStack>
                     </Td>
@@ -332,25 +344,24 @@ const TransformationManagementPage = () => {
                         <Flex>
                           <HStack>
 
-                            <Tooltip label="Edit Formula Code" placement='top' closeOnClick>
-                              <Button
-                                disabled={formula.countFormula == true}
-                                onClick={() => editHandler(formula)}
-                                p={0} bg='none'
-                              >
-                                <RiEditBoxFill />
-                              </Button>
-                            </Tooltip>
+                            <Button
+                              disabled={formula.countFormula == true}
+                              hidden={formula.countFormula == true}
+                              onClick={() => editHandler(formula)}
+                              title='Edit Formula'
+                              p={0} bg='none'
+                            >
+                              <RiEditBoxFill />
+                            </Button>
 
                             <Popover>
                               <PopoverTrigger>
-                                <Tooltip label="Change Status" placement='top' closeOnClick>
-                                  <Button
-                                    p={0} bg='none'
-                                  >
-                                    <GiChoice />
-                                  </Button>
-                                </Tooltip>
+                                <Button
+                                  p={0} bg='none'
+                                  title='Change Status'
+                                >
+                                  <GiChoice />
+                                </Button>
                               </PopoverTrigger>
                               <Portal>
                                 <PopoverContent>
@@ -424,6 +435,7 @@ const TransformationManagementPage = () => {
               formulaItemDescription={itemDescription}
               formulaQuantity={quantity}
               fetchFormula={fetchFormula}
+              setTooltipValue={setTooltipValue}
             />
           )
         }
@@ -438,6 +450,7 @@ const TransformationManagementPage = () => {
               formulaItemCode={itemCode}
               formulaItemDescription={itemDescription}
               formulaQuantity={quantity}
+              fetchFormula={fetchFormula}
             />
           )
         }
@@ -452,6 +465,7 @@ const TransformationManagementPage = () => {
               formulaItemCode={itemCode}
               formulaItemDescription={itemDescription}
               formulaQuantity={quantity}
+              fetchFormula={fetchFormula}
             />
           )
         }

@@ -62,6 +62,7 @@ const currentUser = decodeUser()
 const schema = yup.object().shape({
   formData: yup.object().shape({
     id: yup.string(),
+    supplierCode: yup.string().required("Supplier Code is required"),
     supplierName: yup.string().required("Supplier Name is required"),
     supplierAddress: yup.string().required("Supplier Address is required"),
   })
@@ -77,7 +78,10 @@ const SupplierPage = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [status, setStatus] = useState(true)
   const [search, setSearch] = useState("")
+  const [codeDisable, setCodeDisable] = useState(false)
+
   const toast = useToast()
+
   const [pageTotal, setPageTotal] = useState(undefined);
   const { isOpen: isDrawerOpen, onOpen: openDrawer, onClose: closeDrawer } = useDisclosure()
 
@@ -87,6 +91,7 @@ const SupplierPage = () => {
     defaultValues: {
       formData: {
         id: "",
+        supplierCode: "",
         supplierName: "",
         supplierAddress: "",
         addedBy: currentUser.userName,
@@ -106,7 +111,7 @@ const SupplierPage = () => {
   })
 
   const fetchSupplier = () => {
-    fetchSupplierApi( currentPage, pageSize, status, search ).then(res => {
+    fetchSupplierApi(currentPage, pageSize, status, search).then(res => {
       setIsLoading(false)
       setSuppliers(res)
       setPageTotal(res.totalCount)
@@ -116,7 +121,7 @@ const SupplierPage = () => {
   useEffect(() => {
     fetchSupplier()
   }, [status, pageSize, currentPage, search])
-  
+
   const handlePageChange = (nextPage) => {
     setCurrentPage(nextPage)
   }
@@ -154,12 +159,15 @@ const SupplierPage = () => {
     openDrawer()
     setValue("formData", {
       id: sup.id,
+      supplierCode: sup.supplierCode,
       supplierName: sup.supplierName,
       supplierAddress: sup.supplierAddress,
     })
+    setCodeDisable(true)
   }
 
   const newSupplierHandler = () => {
+    setCodeDisable(false)
     openDrawer()
     reset()
   }
@@ -208,6 +216,7 @@ const SupplierPage = () => {
               <Thead>
                 <Tr bgColor='secondary'>
                   <Th color='white'>ID</Th>
+                  <Th color='white'>Supplier Code</Th>
                   <Th color='white'>Supplier Name</Th>
                   <Th color='white'>Address</Th>
                   <Th color='white'>Date Added</Th>
@@ -221,6 +230,7 @@ const SupplierPage = () => {
                     key={sup.id}
                   >
                     <Td>{sup.id}</Td>
+                    <Td>{sup.supplierCode}</Td>
                     <Td>{sup.supplierName}</Td>
                     <Td>{sup.supplierAddress}</Td>
                     <Td>{sup.dateAdded}</Td>
@@ -284,6 +294,7 @@ const SupplierPage = () => {
               isValid={isValid}
               handleSubmit={handleSubmit}
               fetchSupplier={fetchSupplier}
+              codeDisable={codeDisable}
             />
           )
         }
@@ -331,7 +342,7 @@ const SupplierPage = () => {
 
 export default SupplierPage;
 
-const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSubmit, fetchSupplier }) => {
+const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSubmit, fetchSupplier, codeDisable }) => {
   const [uom, setUom] = useState([])
   const [category, setCategory] = useState([])
   const [isLoading, setisLoading] = useState(false)
@@ -343,16 +354,16 @@ const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSub
         delete data.formData["id"]
         setisLoading(true)
         const res = apiClient.post("Supplier/AddNewSupplier", data.formData)
-        .then((res) => {
-          ToastComponent("Success", "Supplier created", "success", toast)
-          setisLoading(false)
-          fetchSupplier()
-          onClose(onClose)
-        }).catch(err => {
-          setisLoading(false)
-          ToastComponent("Error", err.response.data, "error", toast)
-          data.formData.id = "" // add property id to objects for if condition
-        })
+          .then((res) => {
+            ToastComponent("Success", "Supplier created", "success", toast)
+            setisLoading(false)
+            fetchSupplier()
+            onClose(onClose)
+          }).catch(err => {
+            setisLoading(false)
+            ToastComponent("Error", err.response.data, "error", toast)
+            data.formData.id = "" // add property id to objects for if condition
+          })
       } else {
         const res = apiClient.put(`Supplier/UpdateSupplier/${data.formData.id}`, data.formData).then((res) => {
           ToastComponent("Success", "Supplier Updated", "success", toast)
@@ -416,6 +427,19 @@ const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSub
             <DrawerBody>
 
               <Stack spacing='7px'>
+
+                <Box>
+                  <FormLabel>Supplier Code:</FormLabel>
+                  <Input
+                    disabled={codeDisable}
+                    readOnly={codeDisable}
+                    _disabled={{ color: 'black' }}
+                    bgColor={codeDisable && 'gray.300'}
+                    placeholder='Please enter Supplier Code'
+                    {...register("formData.supplierCode")}
+                  />
+                  <Text color="danger" fontSize="xs">{errors.formData?.supplierCode?.message}</Text>
+                </Box>
 
                 <Box>
                   <FormLabel>Supplier Name:</FormLabel>

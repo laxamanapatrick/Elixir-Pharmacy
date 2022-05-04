@@ -75,6 +75,8 @@ const fetchFarmApi = async () => {
 const FarmPage = () => {
   const [farms, setFarms] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+  const [codeDisable, setCodeDisable] = useState(false)
+
   const { isOpen: isDrawerOpen, onOpen: openDrawer, onClose: closeDrawer } = useDisclosure()
 
   const { register, handleSubmit, formState: { errors, isValid }, setValue, reset } = useForm({
@@ -107,12 +109,14 @@ const FarmPage = () => {
     openDrawer();
     setValue("formData", {
       id: farm.id,
+      farmCode: farm.farmCode,
       farmName: farm.farmName,
     }, { shouldValidate: true })
-
+    setCodeDisable(true)
   }
 
   const newFarmHandler = () => {
+    setCodeDisable(false)
     openDrawer()
     reset()
   }
@@ -157,7 +161,7 @@ const FarmPage = () => {
                 {farms?.map(farm =>
                   <Tr key={farm.id}>
                     <Td>{farm.id}</Td>
-                    <Td>{}</Td>
+                    <Td>{farm.farmCode}</Td>
                     <Td>{farm.farmName}</Td>
                     <Td>{farm.addedBy}</Td>
                     <Td>{farm.dateAdded}</Td>
@@ -208,6 +212,7 @@ const FarmPage = () => {
               isValid={isValid}
               handleSubmit={handleSubmit}
               fetchFarm={fetchFarm}
+              codeDisable={codeDisable}
             />
           )
         }
@@ -218,7 +223,7 @@ const FarmPage = () => {
 
 export default FarmPage
 
-const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSubmit, fetchFarm }) => {
+const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSubmit, fetchFarm, codeDisable }) => {
   const [isLoading, setisLoading] = useState(false)
   const toast = useToast()
 
@@ -275,6 +280,10 @@ const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSub
                 <Box>
                   <FormLabel>Farm Code:</FormLabel>
                   <Input
+                    disabled={codeDisable}
+                    readOnly={codeDisable}
+                    _disabled={{ color: 'black' }}
+                    bgColor={codeDisable && 'gray.300'}
                     placeholder='Please enter Farm Code'
                     {...register("formData.farmCode")}
                   />

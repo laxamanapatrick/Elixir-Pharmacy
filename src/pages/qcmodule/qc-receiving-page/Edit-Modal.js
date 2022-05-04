@@ -320,6 +320,7 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo }) => {
                         onChange={(e) => expectedDeliveryProvider(e.target.value)}
                         placeholder='Please provide quantity of expected delivery  (Required)'
                         bgColor='#ffffe0'
+                        onWheel={(e) => e.target.blur()}
                         type='number'
                       />
                     </FormLabel>
@@ -357,6 +358,7 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo }) => {
                         onChange={(e) => batchNoProvider(e.target.value)}
                         placeholder='Please provide batch number (Required)'
                         bgColor='#ffffe0'
+                        onWheel={(e) => e.target.blur()}
                         type='number'
                       />
                     </FormLabel>

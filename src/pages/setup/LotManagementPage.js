@@ -115,7 +115,11 @@ const LotManagementPage = () => {
 
   useEffect(() => {
     fetchLot()
-  }, [status, pageSize, currentPage, search])
+
+    return () => {
+      setLots([])
+    }
+  }, [status, pageSize, currentPage, search])  
 
   const handlePageChange = (nextPage) => {
     setCurrentPage(nextPage)

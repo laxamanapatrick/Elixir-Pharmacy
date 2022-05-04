@@ -81,6 +81,8 @@ const RawMaterialsPage = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [status, setStatus] = useState(true)
   const [search, setSearch] = useState("")
+  const [codeDisable, setCodeDisable] = useState(false)
+
   const toast = useToast()
   const [pageTotal, setPageTotal] = useState(undefined);
   const { isOpen: isDrawerOpen, onOpen: openDrawer, onClose: closeDrawer } = useDisclosure()
@@ -168,9 +170,11 @@ const RawMaterialsPage = () => {
       bufferLevel: raw.bufferLevel,
       modifiedBy: currentUser.userName,
     })
+    setCodeDisable(true)
   }
 
   const newRawsHandler = () => {
+    setCodeDisable(false)
     openDrawer()
     reset()
   }
@@ -302,6 +306,7 @@ const RawMaterialsPage = () => {
               isValid={isValid}
               handleSubmit={handleSubmit}
               fetchRaw={fetchRaw}
+              codeDisable={codeDisable}
             />
           )
         }
@@ -351,7 +356,7 @@ const RawMaterialsPage = () => {
 export default RawMaterialsPage;
 
 
-const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSubmit, fetchRaw }) => {
+const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSubmit, fetchRaw, codeDisable }) => {
   const [uom, setUom] = useState([])
   const [category, setCategory] = useState([])
   const [isLoading, setisLoading] = useState(false)
@@ -439,6 +444,10 @@ const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSub
                 <Box>
                   <FormLabel>Item Code:</FormLabel>
                   <Input
+                    disabled={codeDisable}
+                    readOnly={codeDisable}
+                    _disabled={{ color: 'black' }}
+                    bgColor={codeDisable && 'gray.300'}
                     placeholder='Please enter Item Code'
                     {...register("formData.itemCode")}
                   />

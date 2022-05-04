@@ -39,7 +39,7 @@ const fetchLotCategoryApi = async () => {
     return res.data
 }
 
-const ScannedModal = ({ receivingId , itemCodeData, setReceivingDate, setLotCategory, setActualGood, quantity, remarks, sumQuantity, actualGood }) => {
+const ScannedModal = ({ receivingId, itemCodeData, setReceivingDate, setLotCategory, setActualGood, quantity, remarks, sumQuantity, actualGood }) => {
 
     const [receivingDateDisplay, setReceivingDateDisplay] = useState(null)
     const [lotCategories, setLotCategories] = useState([])
@@ -82,9 +82,14 @@ const ScannedModal = ({ receivingId , itemCodeData, setReceivingDate, setLotCate
     }, [sumQuantity])
 
     const receivingDateProvider = (data) => {
-        setReceivingDateDisplay(data)
-        const newData = moment(data).format("YYYY-MM-DD")
-        setReceivingDate(newData)
+        if (data) {
+            setReceivingDateDisplay(data)
+            const newData = moment(data).format("YYYY-MM-DD")
+            setReceivingDate(newData)
+        } else {
+            setReceivingDateDisplay(null)
+            setReceivingDate(null)
+        }
     }
 
     return (
@@ -317,7 +322,10 @@ const ScannedModal = ({ receivingId , itemCodeData, setReceivingDate, setLotCate
                     </Flex>
 
                     {/* REJECTION INFORMATION */}
-                    <ScannedModalRejection quantity={quantity} remarks={remarks} sumQuantity={sumQuantity} receivingId={receivingId} />
+                    <ScannedModalRejection
+                        actualGood={actualGood}
+                        quantity={quantity} remarks={remarks} sumQuantity={sumQuantity} receivingId={receivingId}
+                    />
 
                 </Stack>
 

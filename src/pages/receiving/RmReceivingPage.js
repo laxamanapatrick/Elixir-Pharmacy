@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {
+  Button,
   Flex,
+  HStack,
   Input,
 } from '@chakra-ui/react';
 import ScannedModal from './rm-receiving-page/Scanned-Modal';
@@ -10,6 +12,7 @@ import { SiCommonworkflowlanguage } from 'react-icons/si'
 import ItemNotFound from './rm-receiving-page/Item-Not-Found';
 import ProvideItemCode from './rm-receiving-page/Provide-Item-Code';
 import { WarehouseContext } from '../../context/WarehouseContext'
+import { FcSearch } from 'react-icons/fc'
 
 const fetchItemCodeDataApi = async (code) => {
   const res = await apiClient.get(`Warehouse/ScanBarcode/${code}`)
@@ -19,13 +22,15 @@ const fetchItemCodeDataApi = async (code) => {
 const RmReceivingPage = () => {
 
   const [code, setCode] = useState("")
+  const [displayCode, setDisplayCode] = useState("")
+
   const [itemCodeData, setItemCodeData] = useState([])
 
   const [receivingDate, setReceivingDate] = useState([])
   const [lotCategory, setLotCategory] = useState("")
   const [actualGood, setActualGood] = useState(0)
 
-  const [quantity, setQuantity] = useState(0)
+  const [quantity, setQuantity] = useState("")
   const [remarks, setRemarks] = useState("")
 
   const [sumQuantity, setSumQuantity] = useState(0)
@@ -54,12 +59,12 @@ const RmReceivingPage = () => {
   }, [code])
 
   const itemHandler = (data) => {
-    setCode(data)
+    setDisplayCode(data)
   }
 
-  // const openScanner = () => {
-  //   openBarcodeScanner()
-  // }
+  const scanHandler = () => {
+    setCode(displayCode)
+  }
 
   return (
     <WarehouseContext.Provider value={{ setQuantity, setRemarks, setSumQuantity, setSubmitRejectData, setReceivingId }}>
@@ -68,15 +73,18 @@ const RmReceivingPage = () => {
         <Flex mb={2} justifyContent='start'>
           <Flex>
             <Input
+              value={displayCode}
               placeholder='Item Code'
               onChange={(e) => itemHandler(e.target.value)}
             />
-            {/* <SiCommonworkflowlanguage fontSize='40px' color='#33334C' />
-            <Button
-              onClick={() => openScanner()}
-              bgColor='secondary' color='white' _hover={{ bgColor: 'accent' }}>
-              Scan
-            </Button> */}
+            <HStack ml={2}>
+              <Button
+                onClick={() => scanHandler()}
+                bgColor='secondary' color='white' _hover={{ bgColor: 'accent' }}>
+                Search
+              </Button>
+              <FcSearch fontSize='40px' />
+            </HStack>
           </Flex>
         </Flex>
 
@@ -120,6 +128,7 @@ const RmReceivingPage = () => {
               actualGood={actualGood}
               sumQuantity={sumQuantity}
               submitRejectData={submitRejectData}
+              itemCodeData={itemCodeData}
               fetchItemCodeData={fetchItemCodeData}
             />
           )

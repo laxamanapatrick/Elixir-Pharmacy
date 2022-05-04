@@ -33,7 +33,7 @@ const fetchReasonsApi = async () => {
     return res.data
 }
 
-const ScannedModalRejection = ({ quantity, remarks, sumQuantity, receivingId }) => {
+const ScannedModalRejection = ({ quantity, remarks, sumQuantity, receivingId, actualGood }) => {
 
     const { setQuantity, setRemarks, setSumQuantity, setSubmitRejectData } = useContext(WarehouseContext)
 
@@ -137,6 +137,19 @@ const ScannedModalRejection = ({ quantity, remarks, sumQuantity, receivingId }) 
         }
     }
 
+    const quantityHandler = (data) => {
+        if (data) {
+            if (data >= actualGood) {
+                ToastComponent("Warning", "You are providing a value greater than or equal to your Actual Good!", "warning", toast)
+                setQuantity("")
+            } else {
+                setQuantity(data)
+            }
+        } else {
+            setQuantity("")
+        }
+    }
+
     return (
         <Box>
 
@@ -175,12 +188,11 @@ const ScannedModalRejection = ({ quantity, remarks, sumQuantity, receivingId }) 
                                 <Input
                                     {...register("formData.quantity")}
                                     value={quantity}
-                                    onChange={(e) => setQuantity(parseInt(e.target.value))}
+                                    onChange={(e) => quantityHandler(parseInt(e.target.value))}
                                     onWheel={(e) => e.target.blur()}
                                     type='number'
                                     isInvalid={errors.qty}
                                     placeholder='Quantity'
-                                    bgColor='#ffffe0'
                                 />
 
                             </FormLabel>
@@ -194,7 +206,6 @@ const ScannedModalRejection = ({ quantity, remarks, sumQuantity, receivingId }) 
                                             onChange={(e) => setRemarks(e.target.value)}
                                             isInvalid={errors.rms}
                                             placeholder='Select Reason'
-                                            bgColor='#ffffe0'
                                         >
                                             {reasons?.map(reason =>
                                                 <option key={reason.id} value={reason.reasonName}>{reason.reasonName}</option>

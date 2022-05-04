@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Box, Button, Flex, HStack, Input, Select, Table, Tbody, Td, Text, Th, Thead, Tr, useToast } from '@chakra-ui/react';
 import PageScrollImport from '../../components/PageScrollImport'
 import * as XLSX from 'xlsx'
@@ -31,6 +31,8 @@ const ImportFormulationCodePage = () => {
   const [isDisabled, setIsDisabled] = useState(true)
   const [sheetOptions, setSheetOptions] = useState([])
   const toast = useToast()
+
+  const fileClear = useRef()
 
   const fetchFormula = () => {
     fetchFormulaApi().then(res => {
@@ -162,6 +164,8 @@ const ImportFormulationCodePage = () => {
           ToastComponent("Success!", "Raw Materials Imported", "success", toast)
           setisLoading(false)
           setIsDisabled(true)
+          fileClear.current.value = ""
+          setExcelData([])
         }).catch(err => {
           setisLoading(false)
           ToastComponent("Error!", err.response.data, "error", toast)
@@ -228,7 +232,9 @@ const ImportFormulationCodePage = () => {
 
             <Flex w='50%' justifyContent='start'>
 
-              <Input ml={1} w='47%' type='file' p={1} mr={.2} bgColor='white' onChange={(e) => fileHandler(e.target.files)} />
+              <Input 
+              ref={fileClear}
+              ml={1} w='47%' type='file' p={1} mr={.2} bgColor='white' onChange={(e) => fileHandler(e.target.files)} />
 
               <Select
                 onChange={(e) => sheetNumberHandlder(e.target.selectedIndex)}
