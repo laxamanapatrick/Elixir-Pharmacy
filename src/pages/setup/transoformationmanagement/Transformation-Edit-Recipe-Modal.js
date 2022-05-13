@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {
+  Box,
   Button,
   Flex,
   HStack,
@@ -27,6 +28,10 @@ import { AiFillMinusCircle } from 'react-icons/ai'
 import { IoIosAddCircle } from 'react-icons/io'
 import DeleteRecipeConfirmation from './edit-recipe/Delete-Recipe-Confirmation'
 import AddRecipeConfirmation from './edit-recipe/Add-Recipe-Confirmation'
+import { RiFileList3Fill } from 'react-icons/ri'
+import RemovedItems from './edit-recipe/Removed-Items'
+import EditQuantityModal from './edit-recipe/Edit-Quantity-Modal'
+import Ask from './edit-recipe/Ask'
 
 const TransformationEditRecipeModal = ({
   formulaId,
@@ -34,7 +39,8 @@ const TransformationEditRecipeModal = ({
   formulaItemDescription,
   formulaQuantity,
   isOpen,
-  onClose
+  onClose,
+  setQh
 }) => {
 
   const [recipes, setRecipes] = useState([])
@@ -47,8 +53,12 @@ const TransformationEditRecipeModal = ({
   const [addRecipeDisabler, setAddRecipeDisabler] = useState(false)
   const [saveDisabler, setSaveDisabler] = useState(true)
 
+  const [quantity, setQuantity] = useState(null)
+
   const { isOpen: isDeleteConfirmationOpen, onOpen: openDeleteConfirmation, onClose: closeDeleteConfirmation } = useDisclosure()
   const { isOpen: isAddModalOpen, onOpen: openAddModal, onClose: closeAddModal } = useDisclosure()
+  const { isOpen: isRemovedItemsOpen, onOpen: openRemovedItems, onClose: closeRemovedItems } = useDisclosure()
+  const { isOpen: isEditQuantityOpen, onOpen: openEditQuantity, onClose: closeEditQuantity } = useDisclosure()
 
   const fetchFormulationRequirementsApi = async () => {
     const res = await apiClient.get(`Transformation/GetAllFormulaWithRequirementByFormulaId/${formulaId}`)
@@ -104,6 +114,27 @@ const TransformationEditRecipeModal = ({
     openAddModal()
   }
 
+  const removedItemHandler = () => {
+    openRemovedItems()
+  }
+
+  const editQuantityHandler = (id, quantity) => {
+    setRequirementId(id)
+    setQuantity(quantity)
+    openEditQuantity()
+  }
+
+  const { isOpen: isAskOpen, onOpen: openAsk, onClose: closeAsk } = useDisclosure()
+  const closeHandler = () => {
+    if (formulaQuantity != currentQuantity) {
+      setQh(currentQuantity)
+      openAsk()
+    } else {
+      setQh(currentQuantity)
+      onClose()
+    }
+  }
+
   return (
     <Modal
       size='5xl'
@@ -119,8 +150,7 @@ const TransformationEditRecipeModal = ({
         </ModalHeader>
 
         <ModalCloseButton
-          onClick={onClose}
-          disabled={saveDisabler}
+          onClick={closeHandler}
         />
 
         <ModalBody>
@@ -159,7 +189,7 @@ const TransformationEditRecipeModal = ({
                   <Th color="white">ID</Th>
                   <Th color="white">Item Code</Th>
                   <Th color="white">Item Description</Th>
-                  <Th color="white">Quantity</Th>
+                  <Th color="white">Quantity (editable)</Th>
                   <Th color="white">Remove</Th>
                 </Tr>
               </Thead>
@@ -170,7 +200,14 @@ const TransformationEditRecipeModal = ({
                     <Td>{recipe.requirementId}</Td>
                     <Td>{recipe.requirementCode}</Td>
                     <Td>{recipe.requirementDescription}</Td>
-                    <Td>{recipe.requirementQuantity}</Td>
+                    <Td>
+                      <Button
+                        onClick={() => editQuantityHandler(recipe.requirementId, recipe.requirementQuantity)}
+                        p={0} background='none'
+                      >
+                        {recipe.requirementQuantity}
+                      </Button>
+                    </Td>
                     <Td>
                       <Button
                         onClick={() => deleteItemHandler(recipe.requirementId)}
@@ -185,6 +222,14 @@ const TransformationEditRecipeModal = ({
                 )}
               </Tbody>
             </Table>
+            <Box mt={5} mb={5}>
+              <Button
+                onClick={() => removedItemHandler()}
+                bgColor='secondary' color='white' size='sm' _hover={{ bgColor: 'accent' }}
+              >
+                <Text mr={2}>List of removed items</Text> <RiFileList3Fill fontSize='22px' />
+              </Button>
+            </Box>
           </PageScrollModal>
 
           <Text>Quantity Needed: {formulaQuantity}</Text>
@@ -196,7 +241,7 @@ const TransformationEditRecipeModal = ({
         <ModalFooter>
           <Button
             disabled={saveDisabler}
-            variant='ghost' onClick={onClose}
+            variant='ghost' onClick={closeHandler}
           >
             Save
           </Button>
@@ -226,6 +271,44 @@ const TransformationEditRecipeModal = ({
             fetchRecipeTable={fetchRecipe}
             recipes={recipes}
             totalQuantityData={totalQuantityData}
+          />
+        )
+      }
+
+      {
+        isRemovedItemsOpen && (
+          <RemovedItems
+            formulaId={formulaId}
+            fetchRecipe={fetchRecipe}
+            isOpen={isRemovedItemsOpen}
+            onClose={closeRemovedItems}
+            onOpen={openRemovedItems}
+            currentQuantity={currentQuantity}
+            formulaQuantity={formulaQuantity}
+          />
+        )
+      }
+
+      {
+        isEditQuantityOpen && (
+          <EditQuantityModal
+            isOpen={isEditQuantityOpen}
+            onClose={closeEditQuantity}
+            id={requirementId}
+            quantity={quantity}
+            fetchRecipe={fetchRecipe}
+            currentQuantity={currentQuantity}
+            formulaQuantity={formulaQuantity}
+          />
+        )
+      }
+
+      {
+        isAskOpen && (
+          <Ask
+            isOpen={isAskOpen}
+            onClose={closeAsk}
+            onCloseEditModal={onClose}
           />
         )
       }

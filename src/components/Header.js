@@ -28,7 +28,7 @@ export const Header = (props) => {
     return <Flex bgColor='primary' h='54px' justifyContent='space-between' pl={2} pr={2} alignItems='center'>
         <HStack>
             <FiMenu color='#87CEAA' size='24px' cursor='pointer' onClick={sideBarHandler} />
-            <Text color='white' fontWeight='normal' fontSize='sm'>Date: {moment().format('MMMM DD YYYY, h:mm:ss a')}</Text>
+            <Text color='white' fontWeight='normal' fontSize='sm'>Date: {moment().format('MMMM DD YYYY')}</Text>
         </HStack>
         <HStack>
             <Box p={2} borderRight='1px' borderColor='primary' cursor='pointer'>

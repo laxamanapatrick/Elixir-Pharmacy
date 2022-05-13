@@ -33,6 +33,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import moment from 'moment'
 import DatePicker from 'react-datepicker'
 import apiClient from '../../../services/apiClient'
+// import 'react-datepicker/dist/react-datepicker.css'
 
 const fetchLotCategoryApi = async () => {
     const res = await apiClient.get('Lot/GetAllLotCategories')
@@ -124,7 +125,8 @@ const ScannedModal = ({ receivingId, itemCodeData, setReceivingDate, setLotCateg
                                 maxDate={new Date()}
                                 shouldCloseOnSelect
                                 selected={receivingDateDisplay}
-                                className='chakra-input css-7s3glp'
+                                // className='chakra-input css-7s3glp'
+                                // wrapperClassName='datePicker'
                             />
                         </FormLabel>
                     </Flex>

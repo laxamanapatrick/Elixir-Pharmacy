@@ -1,10 +1,11 @@
-import React, { useRef } from 'react'
+import React, { useRef, useEffect, useContext } from 'react'
 import {
     Box,
     Button,
     Flex,
     FormLabel,
     HStack,
+    Image,
     Input,
     Modal,
     ModalBody,
@@ -14,13 +15,22 @@ import {
     ModalHeader,
     ModalOverlay,
     Stack,
-    Text
+    Table,
+    Tbody,
+    Td,
+    Text,
+    Th,
+    Thead,
+    Tr,
+    VStack
 } from '@chakra-ui/react'
-import PageScrollModal from '../../../components/PageScrollModal'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import moment from 'moment'
-import ReactToPrint from 'react-to-print'
+import { useReactToPrint } from 'react-to-print';
+import PageScrollImport from '../../../components/PageScrollImport'
+import Barcode from 'react-barcode';
+import { WarehouseContext } from '../../../context/WarehouseContext'
 
 const PrintList = ({
     itemCodeData,
@@ -29,308 +39,154 @@ const PrintList = ({
     actualGood,
     sumQuantity,
     submitRejectData,
+    receivingId,
     isOpen, onClose }) => {
+
+    const { setButtonChanger, setDisplayCode, setCode } = useContext(WarehouseContext)
 
     const componentRef = useRef()
 
-    const { register } = useForm({
-        resolver: yupResolver(),
-        mode: "onChange",
-        defaultValues: {
-            displayData: {
-                itemCode: itemCodeData.itemCode,
-                receivingDate: moment(receivingDate).format("MM/DD/YYYY"),
-                itemDescription: itemCodeData.itemDescription,
-                manufacturingDate: moment(itemCodeData.manufacturingDate).format("MM/DD/YYYY"),
-                supplier: itemCodeData.supplier,
-                expiration: moment(itemCodeData.expiration).format("MM/DD/YYYY"),
-                pO_Number: itemCodeData.pO_Number,
-                expirationDays: itemCodeData.expirationDays,
-                actualDelivered: itemCodeData.expectedDelivery,
-                qtyGood: itemCodeData.actualDelivered,
-                uom: itemCodeData.uom,
-                lotCategory: lotCategory,
-                totalStock: itemCodeData.totalStock,
-                updatedStock: parseInt(itemCodeData.totalStock) + parseInt(itemCodeData.actualDelivered),
-                actualReject: sumQuantity,
-                actualGood: actualGood,
-            }
-        }
-    })
+    const handlePrint = useReactToPrint({
+        content: () => componentRef.current,
+    });
+
+    const displayData = {
+        "Date": moment().format("MM/DD/YYYY, h:mm:ss a"),
+        "Receiving Id": receivingId,
+        // "PO Number": itemCodeData.pO_Number,
+        "Item Code": itemCodeData.itemCode,
+        "Item Description": itemCodeData.itemDescription,
+        "UOM": itemCodeData.uom,
+        "Supplier": itemCodeData.supplier,
+        "Quantity Good": itemCodeData.actualDelivered,
+        "Receiving Date": moment(receivingDate).format("MM/DD/YYYY"),
+        "Expiration Date": moment(itemCodeData.expiration).format("MM/DD/YYYY"),
+        "Lot Category": lotCategory,
+        // "Manufacturing Date": moment(itemCodeData.manufacturingDate).format("MM/DD/YYYY"),
+        // "Days of Expiration": itemCodeData.expirationDays,
+        // "Actual Delivered": itemCodeData.expectedDelivery,
+        // "Total Stock": itemCodeData.totalStock,
+        // "Updated Stock": parseInt(itemCodeData.totalStock) + parseInt(itemCodeData.actualDelivered),
+        // "Actual Good": actualGood,
+        // "Actual Reject": sumQuantity,
+    }
 
     // console.log("Item Code Data:", itemCodeData)
     // console.log("Receiving Date:", receivingDate)
     // console.log("Lot Category:", lotCategory)
     // console.log("Actual Good:", actualGood)
     // console.log("Total Reject:", sumQuantity)
-    // console.log("Reject Data:", submitRejectData)
+    // console.log("Reject Data:", submitRejectData)\
+
+    const closeHandler = () => {
+        setButtonChanger(false)
+        setDisplayCode("")
+        setCode("")
+        onClose()
+    }
 
     return (
-        <Modal isOpen={isOpen} onClose={() => { }} isCentered size='4xl'>
+        <Modal isOpen={isOpen} onClose={() => { }} isCentered size='md'>
             <ModalOverlay />
             <ModalContent>
+
                 <ModalHeader>
                     <Flex justifyContent='center'>
                         <Text>Print Preview</Text>
                     </Flex>
                 </ModalHeader>
-                <ModalCloseButton onClick={onClose} />
+
+                <ModalCloseButton onClick={closeHandler} />
+
                 <ModalBody>
 
-                    <PageScrollModal>
-                        <Stack spacing={5} ref={componentRef} mx={2}>
+                    <PageScrollImport>
 
-                            {/* RAW MATERIALS INFORMATION */}
+                            <VStack spacing={0} justifyContent='center' ref={componentRef}>
 
-                            <Flex justifyContent='center' p={1}>
-                                <Text>RAW MATERIALS INFORMATION</Text>
-                            </Flex>
-
-                            <Flex justifyContent='space-between'>
-                                <FormLabel w='40%'>
-                                    Item Code
-                                    <Input
-                                        {...register("displayData.itemCode")}
-                                        readOnly={true}
-                                        _disabled={{ color: 'black' }}
-                                        disabled={true}
+                                <VStack spacing={0} justifyContent='start'>
+                                    <Image
+                                        src='/images/RDF Logo.png'
+                                        w='20%' ml={3}
                                     />
-                                </FormLabel>
+                                    <Text fontSize='xs' ml={2}>Purok 6, Brgy. Lara, City of San Fernando, Pampanga, Philippines</Text>
+                                </VStack>
 
-                                <FormLabel w='40%'>
-                                    Receiving Date
-                                    <Input
-                                        {...register("displayData.receivingDate")}
-                                        readOnly={true}
-                                        _disabled={{ color: 'black' }}
-                                        disabled={true}
-                                    />
-                                </FormLabel>
-                            </Flex>
 
-                            <Flex justifyContent='space-between'>
-                                <FormLabel w='40%'>
-                                    Description
-                                    <Input
-                                        {...register("displayData.itemDescription")}
-                                        readOnly={true}
-                                        _disabled={{ color: 'black' }}
-                                        disabled={true}
-                                    />
-                                </FormLabel>
+                                <Flex mt={2} w='90%' justifyContent='center'>
+                                    <Text fontSize='25px' fontWeight='semibold' ml={4}>Raw Materials</Text>
+                                </Flex>
 
-                                <FormLabel w='40%'>
-                                    Manufacturing Date
-                                    <Input
-                                        {...register("displayData.manufacturingDate")}
-                                        readOnly={true}
-                                        _disabled={{ color: 'black' }}
-                                        disabled={true}
-                                    />
-                                </FormLabel>
-                            </Flex>
-
-                            <Flex justifyContent='space-between'>
-                                <FormLabel w='40%'>
-                                    Supplier
-                                    <Input
-                                        {...register("displayData.supplier")}
-                                        readOnly={true}
-                                        _disabled={{ color: 'black' }}
-                                        disabled={true}
-                                    />
-                                </FormLabel>
-
-                                <FormLabel w='40%'>
-                                    Expiration
-                                    <Input
-                                        {...register("displayData.expiration")}
-                                        readOnly={true}
-                                        _disabled={{ color: 'black' }}
-                                        disabled={true}
-                                    />
-                                </FormLabel>
-                            </Flex>
-
-                            <Flex justifyContent='space-between'>
-                                <FormLabel w='40%'>
-                                    PO NO.
-                                    <Input
-                                        {...register("displayData.pO_Number")}
-                                        readOnly={true}
-                                        _disabled={{ color: 'black' }}
-                                        disabled={true}
-                                    />
-                                </FormLabel>
-
-                                <FormLabel w='40%'>
-                                    Days of Expiry
-                                    <Input
-                                        {...register("displayData.expirationDays")}
-                                        readOnly={true}
-                                        _disabled={{ color: 'black' }}
-                                        disabled={true}
-                                    />
-                                </FormLabel>
-                            </Flex>
-
-                            {/* QA RECEIVING INFORMATION */}
-
-                            <Flex justifyContent='center' p={1}>
-                                <Text>QA RECEIVING INFORMATION</Text>
-                            </Flex>
-
-                            <Flex justifyContent='space-between'>
-                                <FormLabel w='40%'>
-                                    Actual Delivered
-                                    <Input
-                                        {...register("displayData.actualDelivered")}
-                                        readOnly={true}
-                                        _disabled={{ color: 'black' }}
-                                        disabled={true}
-                                    />
-                                </FormLabel>
-
-                                <FormLabel w='40%'>
-                                    Qty. Good
-                                    <Input
-                                        {...register("displayData.qtyGood")}
-                                        readOnly={true}
-                                        _disabled={{ color: 'black' }}
-                                        disabled={true}
-                                    />
-                                </FormLabel>
-                            </Flex>
-
-                            {/* PHARMACY WAREHOUSE RAW MATERIALS RECEIVING INFORMATION */}
-
-                            <Flex justifyContent='center' p={1}>
-                                <Text>PHARMACY WAREHOUSE RAW MATERIALS RECEIVING INFORMATION</Text>
-                            </Flex>
-
-                            <Flex justifyContent='space-between'>
-                                <FormLabel w='40%'>
-                                    UOM
-                                    <Input
-                                        {...register("displayData.uom")}
-                                        readOnly={true}
-                                        _disabled={{ color: 'black' }}
-                                        disabled={true}
-                                    />
-                                </FormLabel>
-
-                                <FormLabel w='40%'>
-                                    LOT Name
-                                    <Input
-                                        {...register("displayData.lotCategory")}
-                                        readOnly={true}
-                                        _disabled={{ color: 'black' }}
-                                        disabled={true}
-                                    />
-                                </FormLabel>
-                            </Flex>
-
-                            <Flex justifyContent='space-between'>
-                                <FormLabel w='40%'>
-                                    Total Stock
-                                    <Input
-                                        {...register("displayData.totalStock")}
-                                        readOnly={true}
-                                        _disabled={{ color: 'black' }}
-                                        disabled={true}
-                                    />
-                                </FormLabel>
-
-                                <FormLabel w='40%'>
-                                    Updated Stock
-                                    <Input
-                                        {...register("displayData.updatedStock")}
-                                        readOnly={true}
-                                        _disabled={{ color: 'black' }}
-                                        disabled={true}
-                                    />
-                                </FormLabel>
-                            </Flex>
-
-                            <Flex justifyContent='space-between'>
-                                <FormLabel w='40%'>
-                                    Actual Reject
-                                    <Input
-                                        {...register("displayData.actualReject")}
-                                        readOnly={true}
-                                        _disabled={{ color: 'black' }}
-                                        disabled={true}
-                                    />
-                                </FormLabel>
-
-                                <FormLabel w='40%'>
-                                    Actual Good
-                                    <Input
-                                        {...register("displayData.actualGood")}
-                                        readOnly={true}
-                                        _disabled={{ color: 'black' }}
-                                        disabled={true}
-                                    />
-                                </FormLabel>
-                            </Flex>
-
-                            {/* Rejection Data */}
-
-                            <Flex justifyContent='center' p={1}>
-                                <Text>Rejected Materials</Text>
-                            </Flex>
-                            {
-                                submitRejectData?.map((r, i) => (
-
-                                    <Flex justifyContent='space-between' key={i}>
-                                        <FormLabel w='40%'>
-                                            Quantity
-                                            <Input
-                                                value={r.quantity}
-                                                readOnly={true}
-                                                _disabled={{ color: 'black' }}
-                                                disabled={true}
-                                            />
-                                        </FormLabel>
-
-                                        <FormLabel w='40%'>
-                                            Remarks
-                                            <Input
-                                                value={r.remarks}
-                                                readOnly={true}
-                                                _disabled={{ color: 'black' }}
-                                                disabled={true}
-                                            />
-                                        </FormLabel>
+                                {Object.keys(displayData)?.map((key, i) =>
+                                    <Flex w='full' justifyContent='center' key={i}>
+                                        <Flex ml='5%' w='full'>
+                                            <Flex>
+                                                <Text fontWeight='semibold' fontSize='10px'>{key}:</Text>
+                                            </Flex>
+                                        </Flex>
+                                        <Flex w='full'>
+                                            <Flex>
+                                                <Text fontWeight='semibold' fontSize='10px'>{displayData[key]}</Text>
+                                            </Flex>
+                                        </Flex>
                                     </Flex>
+                                )}
 
-                                ))
-                            }
-                        </Stack>
-                    </PageScrollModal>
+                                <VStack spacing={0} w='90%' ml={4} justifyContent='center'>
+                                    <Barcode width={3} height={75} value={receivingId} />
+                                </VStack>
+
+                                <Flex w='full'></Flex>
+
+                            </VStack>
+
+                    </PageScrollImport>
 
                 </ModalBody>
 
                 <ModalFooter>
-                    <ReactToPrint
-                        trigger={
-                            () =>
-                                <Button
-                                    // onClick={handlePrint}
-                                    colorScheme='blue' _hover={{ bgColor: 'accent' }} mr={3}
-                                >
-                                    Print
-                                </Button>
-                        }
-                        content={() => componentRef.current}
-                    />
-                    {/* <SamplePrint  /> */}
-
+                    <Button
+                        onClick={handlePrint}
+                        colorScheme='blue' _hover={{ bgColor: 'accent' }} mr={3}
+                    >
+                        Re-Print
+                    </Button>
+                    <Button onClick={closeHandler}>Close</Button>
                 </ModalFooter>
 
-            </ModalContent>
-        </Modal>
+            </ModalContent >
+        </Modal >
     )
 }
 
 export default PrintList
+
+
+
+
+
+{/* {submitRejectData.length > 0 ? (
+                                <>
+                                    <Flex border='1px' w='90%' justifyContent='center'>
+                                        <Text fontWeight='semibold' ml={4}>Rejection Data</Text>
+                                    </Flex>
+                                    <Flex w='60%' justifyContent='space-between'>
+                                        <Flex>
+                                            <Text fontWeight='semibold'>Quantity</Text>
+                                        </Flex>
+                                        <Flex>
+                                            <Text fontWeight='semibold'>Reason</Text>
+                                        </Flex>
+                                    </Flex>
+                                </>
+                            ) : ""}
+                            {submitRejectData?.map((rej, x) =>
+                                <Flex w='60%' justifyContent='space-between' borderBottom='1px' key={x}>
+                                    <Flex>
+                                        <Text>{rej.quantity}</Text>
+                                    </Flex>
+                                    <Flex>
+                                        <Text>{rej.remarks}</Text>
+                                    </Flex>
+                                </Flex>
+                            )} */}

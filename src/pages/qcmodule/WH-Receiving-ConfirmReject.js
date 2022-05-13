@@ -10,6 +10,7 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  Select,
   Skeleton,
   Stack,
   Table,
@@ -37,8 +38,8 @@ import PageScroll from '../../components/PageScroll';
 import ViewingModal from './wh-receiving-confirm-reject/WH-Receiving-ConfirmReject-Modal';
 import { NotificationContext } from '../../context/NotificationContext';
 
-const fetchRejectRMApi = async () => {
-  const res = await apiClient.get(`Receiving/GetAllWarehouseReceivingConfirmReject`);
+const fetchRejectRMApi = async (pageNumber, pageSize, search) => {
+  const res = await apiClient.get(`Receiving/GetAllWarehouseConfirmRejectWithPaginationOrig?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${search}`);
   return res.data
 }
 
@@ -49,10 +50,24 @@ const WHConfirmReject = () => {
   const [viewingId, setViewingId] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
 
+  const [pageTotal, setPageTotal] = useState(undefined)
+  const [search, setSearch] = useState("")
+
   const { isOpen: isViewingModalOpen, onOpen: openViewingModal, onClose: closeViewingModal } = useDisclosure()
 
+  const outerLimit = 2;
+  const innerLimit = 2;
+  const { currentPage, setCurrentPage, pagesCount, pages, setPageSize, pageSize } = usePagination({
+    total: pageTotal,
+    limits: {
+      outer: outerLimit,
+      inner: innerLimit,
+    },
+    initialState: { currentPage: 1, pageSize: 5 },
+  })
+
   const fetchRejectMaterials = () => {
-    fetchRejectRMApi().then(res => {
+    fetchRejectRMApi(currentPage, pageSize, search).then(res => {
       // setIsLoading(false)
       setRejectedMaterialsData(res)
       // setPageTotal(res.totalCount)
@@ -65,14 +80,26 @@ const WHConfirmReject = () => {
     return () => {
       setRejectedMaterialsData([])
     }
-  }, []);
+  }, [pageSize, currentPage, search]);
+
+  const handlePageChange = (nextPage) => {
+    setCurrentPage(nextPage)
+  }
+
+  const handlePageSizeChange = (e) => {
+    const pageSize = Number(e.target.value)
+    setPageSize(pageSize)
+  }
+
+  const searchHandler = (inputValue) => {
+    setSearch(inputValue)
+  }
 
   const viewingHandler = (data, id) => {
     setViewingData(data)
     setViewingId(id)
     openViewingModal()
   }
-
 
   return (
     <Flex p={5} w="full" flexDirection='column'>
@@ -82,7 +109,7 @@ const WHConfirmReject = () => {
 
       <Flex mb={2} justifyContent='space-between'>
         <HStack>
-          {/* <InputGroup>
+          <InputGroup>
             <InputLeftElement
               pointerEvents='none'
               children={<FaSearch color='gray.300' />}
@@ -93,12 +120,12 @@ const WHConfirmReject = () => {
               placeholder='Search: PO Number'
               focusBorderColor='accent'
             />
-          </InputGroup> */}
+          </InputGroup>
         </HStack>
         <HStack>
           <Badge colorScheme='green'>
             <Text color='secondary'>
-              Number of Records: {rejectedMaterialsData?.length}
+              Number of Records: {rejectedMaterialsData?.reject?.length}
             </Text>
           </Badge>
         </HStack>
@@ -136,7 +163,7 @@ const WHConfirmReject = () => {
                 </Tr>
               </Thead>
               <Tbody>
-                {rejectedMaterialsData?.map(rmd =>
+                {rejectedMaterialsData?.reject?.map(rmd =>
                   <Tr key={rmd.id}>
                     {/* <Td>{rmd.id}</Td> */}
                     <Td>{rmd.pO_Number}</Td>
@@ -167,20 +194,19 @@ const WHConfirmReject = () => {
       </PageScroll>
 
       {/* Table data end */}
-      {/* 
+
       {
-        isModalOpen && (
-          <ModalComponent
-            modalData={modalData}
-            isOpen={isModalOpen}
-            onClose={closeModal}
-            fetchWHReceiving={fetchWHReceiving}
+        isViewingModalOpen && (
+          <ViewingModal
+            viewingId={viewingId}
+            viewingData={viewingData}
+            isOpen={openViewingModal}
+            onClose={closeViewingModal}
           />
         )
+      }
 
-      } */}
-
-      {/* <Flex justifyContent='end' mt={5}>
+      <Flex justifyContent='end' mt={5}>
 
         <Stack>
           <Pagination
@@ -215,18 +241,7 @@ const WHConfirmReject = () => {
           </Pagination>
         </Stack>
 
-      </Flex> */}
-
-      {
-        isViewingModalOpen && (
-          <ViewingModal
-            viewingId={viewingId}
-            viewingData={viewingData}
-            isOpen={openViewingModal}
-            onClose={closeViewingModal}
-          />
-        )
-      }
+      </Flex>
 
 
     </Flex >

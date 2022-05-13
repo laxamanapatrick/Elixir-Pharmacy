@@ -31,21 +31,22 @@ const QcModulePage = () => {
     }, [])
 
     return (
-            <Flex flexDirection='column' width='full'>
-                <Flex bgColor='secondary'>
-                    {
-                        selectedMenu && (
-                            <Navbar
-                                menus={selectedMenu}
-                                notification={notification}
-                            />
-                        )
-                    }
-                </Flex>
-                <Flex>
-                    <Outlet />
-                </Flex>
+        <Flex flexDirection='column' width='full'>
+            <Flex bgColor='secondary'>
+                {
+                    selectedMenu && (
+                        <Navbar
+                            menus={selectedMenu}
+                            notification={notification}
+                            fetchNotification={fetchNotification}
+                        />
+                    )
+                }
             </Flex>
+            <Flex>
+                <Outlet />
+            </Flex>
+        </Flex>
     )
 };
 

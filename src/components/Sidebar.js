@@ -1,9 +1,10 @@
-import { Flex, Box, Image, Text, Button } from '@chakra-ui/react';
+import { Flex, Box, Image, Text, Button, useMediaQuery, HStack } from '@chakra-ui/react';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Context } from '../context/Context';
 import apiClient from '../services/apiClient';
 import { decodeUser } from '../services/decode-user';
+import { HiOutlineArrowCircleRight } from 'react-icons/hi'
 
 const currentUser = decodeUser()
 
@@ -68,19 +69,26 @@ const Sidebar = () => {
     }
 
     return (
-        <Flex flexDirection='column' justifyContent='space-between' bgColor='secondary' width='15rem' h='100vh' borderColor='primary' borderRight='1px'>
+        <Flex
+            h='100vh'
+            flexDirection='column' justifyContent='space-between' bgColor='secondary' width='15rem' borderColor='primary' borderRight='1px'
+        >
             <Flex flexDirection="column">
                 <SidebarHeader />
                 {tagModules?.map((modName) => (
                     <Link to={modName.path} key={modName.mainMenuId}>
                         <Box
                             onClick={() => selectedMenuHandler(modName)}
-                            bgColor={pathname.includes(modName.path) ? 'accent' : 'secondary'} p={2} borderBottom='1px' borderColor='primary' cursor='pointer' _hover={{ bgColor: 'accent' }}>
-                            <Text
-                                color='white'
-                            >
-                                {modName.mainMenu}
-                            </Text>
+                            bgColor={pathname.includes(modName.path) ? 'accent' : 'secondary'} p={2} borderBottom='1px' borderColor='primary' cursor='pointer' _hover={{ bgColor: 'accent' }}
+                        >
+                            <HStack>
+                                <Text
+                                    color='white'
+                                >
+                                    {modName.mainMenu}
+                                </Text>
+                                <HiOutlineArrowCircleRight hidden={!pathname.includes(modName.path) ? '6px 3px 3px' : ''} color='white' />
+                            </HStack>
                         </Box>
                     </Link>
                 ))}

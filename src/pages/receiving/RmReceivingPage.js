@@ -41,6 +41,8 @@ const RmReceivingPage = () => {
 
   const [isLoading, setIsLoading] = useState(true)
 
+  const [buttonChanger, setButtonChanger] = useState(false)
+
   // const { isOpen: isBarcodeScannerOpen, onOpen: openBarcodeScanner, onClose: closeBarcodeScanner } = useDisclosure()
 
   const fetchItemCodeData = () => {
@@ -67,7 +69,7 @@ const RmReceivingPage = () => {
   }
 
   return (
-    <WarehouseContext.Provider value={{ setQuantity, setRemarks, setSumQuantity, setSubmitRejectData, setReceivingId }}>
+    <WarehouseContext.Provider value={{ setQuantity, setRemarks, setSumQuantity, setSubmitRejectData, setReceivingId, setButtonChanger, setDisplayCode, setCode }}>
       <Flex p={5} w='full' flexDirection='column'>
 
         <Flex mb={2} justifyContent='start'>
@@ -91,30 +93,33 @@ const RmReceivingPage = () => {
         {/* Data Display when Scanned or item Code provided */}
 
         {
-          !code ? <ProvideItemCode /> :
-            // isLoading ? (
-            //   <Stack width="full">
-            //     <Skeleton height='20px' />
-            //     <Skeleton height='20px' />
-            //     <Skeleton height='20px' />
-            //     <Skeleton height='20px' />
-            //     <Skeleton height='20px' />
-            //     <Skeleton height='20px' />
-            //   </Stack>
-            // ) 
-            // :
-            code != itemCodeData.itemCode ? <ItemNotFound /> :
-              <ScannedModal
-                itemCodeData={itemCodeData}
-                setReceivingDate={setReceivingDate}
-                setLotCategory={setLotCategory}
-                setActualGood={setActualGood}
-                quantity={quantity}
-                remarks={remarks}
-                sumQuantity={sumQuantity}
-                actualGood={actualGood}
-                receivingId={receivingId}
-              />
+
+          buttonChanger === true ? "" :
+            !code ? <ProvideItemCode /> :
+              // isLoading ? (
+              //   <Stack width="full">
+              //     <Skeleton height='20px' />
+              //     <Skeleton height='20px' />
+              //     <Skeleton height='20px' />
+              //     <Skeleton height='20px' />
+              //     <Skeleton height='20px' />
+              //     <Skeleton height='20px' />
+              //   </Stack>
+              // ) 
+              // :
+              code != itemCodeData.itemCode ? <ItemNotFound /> :
+                <ScannedModal
+                  itemCodeData={itemCodeData}
+                  setReceivingDate={setReceivingDate}
+                  setLotCategory={setLotCategory}
+                  setActualGood={setActualGood}
+                  quantity={quantity}
+                  remarks={remarks}
+                  sumQuantity={sumQuantity}
+                  actualGood={actualGood}
+                  receivingId={receivingId}
+                  buttonChanger={buttonChanger}
+                />
         }
 
         {/* Save Button */}
@@ -130,6 +135,8 @@ const RmReceivingPage = () => {
               submitRejectData={submitRejectData}
               itemCodeData={itemCodeData}
               fetchItemCodeData={fetchItemCodeData}
+              receivingId={receivingId}
+              buttonChanger={buttonChanger}
             />
           )
         }

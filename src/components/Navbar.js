@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { Badge, Box, Flex, HStack, Text } from '@chakra-ui/react';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -40,7 +40,7 @@ const Navbar = ({ menus, notification }) => {
                     <Box
                         p={2} borderRight='1px' borderBottom='1px' borderColor='primary' cursor='pointer'
                         bgColor={pathname.includes(sub.path) ? 'accent' : 'secondary'}
-                        boxShadow={pathname.includes(sub.path) ? '6px 6px' : ''}
+                        boxShadow={pathname.includes(sub.path) ? '0 6px 6px' : ''}
                         _hover={{ bgColor: 'accent' }}
                     >
                         <HStack>

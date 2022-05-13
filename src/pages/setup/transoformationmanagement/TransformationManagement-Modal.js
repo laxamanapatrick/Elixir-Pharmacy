@@ -361,7 +361,6 @@ const ModalComponent = ({ isOpen, onClose, formulaId, formulaItemCode, formulaIt
                         variant='ghost'
                         onClick={() => {
                             onClose()
-                            setTooltipValue(true)
                         }}
                     >
                         Close

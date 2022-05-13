@@ -37,7 +37,13 @@ import ApprovalPage from './pages/ordering/ApprovalPage'
 import OrderSummaryPage from './pages/ordering/OrderSummaryPage'
 
 import TransformationPage from './pages/TransformationPage';
+
 import TransformationPlanningPage from './pages/transformation/TransformationPlanningPage'
+import AddRequest from './pages/transformation/transformation-planning/Add-Request';
+import StatusOfRequest from './pages/transformation/transformation-planning/Status-Of-Request';
+import RequestReject from './pages/transformation/transformation-planning/Request-Reject';
+
+
 import ApprovalRequestPage from './pages/transformation/ApprovalRequestPage'
 import PreparationPage from './pages/transformation/PreparationPage'
 import MixingPage from './pages/transformation/MixingPage'
@@ -68,6 +74,7 @@ import TransformationManagementPage from './pages/setup/TransformationManagement
 import ReasonPage from './pages/setup/ReasonPage'
 
 import ReportsPage from './pages/ReportsPage';
+import AppScroll from './components/AppScroll';
 
 
 function App() {
@@ -123,7 +130,11 @@ function App() {
           </Route>
 
           <Route path="transformation" element={user ? <TransformationPage /> : <Navigate to="/login" />}>
-            <Route path="transformation-planning" element={user ? <TransformationPlanningPage /> : <Navigate to="/login" />} />
+            <Route path="transformation-planning" element={user ? <TransformationPlanningPage /> : <Navigate to="/login" />}>
+              <Route path="add-request" element={user ? <AddRequest /> : <Navigate to="/login" />} />
+              <Route path="status-of-request" element={user ? <StatusOfRequest /> : <Navigate to="/login" />} />
+              <Route path="request-reject" element={user ? <RequestReject /> : <Navigate to="/login" />} />
+            </Route>
             <Route path="approval-request" element={user ? <ApprovalRequestPage /> : <Navigate to="/login" />} />
             <Route path="preparation" element={user ? <PreparationPage /> : <Navigate to="/login" />} />
             <Route path="mixing" element={user ? <MixingPage /> : <Navigate to="/login" />} />
@@ -170,22 +181,22 @@ function Layout({ isSidebarVisible, sideBarHandler }) {
 
 
   return (
-
     <Flex bgColor='white' h='100vh'>
 
       {!isSidebarVisible && (
 
         <Sidebar />
       )}
-      <Flex w='full' bgColor='gray.300' flexDirection='column'>
-        <Header sideBarHandler={sideBarHandler} />
+      <AppScroll>
+        <Flex w='full' bgColor='gray.300' flexDirection='column'>
+          <Header sideBarHandler={sideBarHandler} />
 
-        <Flex bgColor='white' h='100%' >
-          <Outlet />
+          <Flex bgColor='white' h='100%' >
+            <Outlet />
+          </Flex>
         </Flex>
-      </Flex>
-    </Flex>
-
+      </AppScroll>
+    </Flex >
   );
 }
 

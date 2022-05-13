@@ -100,9 +100,7 @@ const TransformationManagementPage = () => {
   const [status, setStatus] = useState(true)
   const [search, setSearch] = useState("")
 
-  const [recipeData, setrecipeData] = useState([])
-
-  const [tooltipValue, setTooltipValue] = useState(false)
+  const [qh, setQh] = useState(null)
 
   const toast = useToast()
 
@@ -209,7 +207,7 @@ const TransformationManagementPage = () => {
     setItemCode(itemCode)
     setItemDescription(itemDescription)
     setQuantity(quantity)
-    setTooltipValue(true)
+    // setTooltipValue(true)
     openModal()
   }
 
@@ -252,6 +250,7 @@ const TransformationManagementPage = () => {
         </HStack>
 
       </Flex>
+      
       <PageScroll>
         {
           isLoading ? (
@@ -291,6 +290,7 @@ const TransformationManagementPage = () => {
                           formula.countFormula === true ?
                             (
                               <Button
+                                bgColor={qh != formula.quantity ? 'danger' : 'none'}
                                 disabled={formula.countFormula == false}
                                 hidden={formula.countFormula == false}
                                 onClick={() => editRecipeHandler(formula.id, formula.itemCode, formula.itemDescription, formula.quantity)}
@@ -345,8 +345,8 @@ const TransformationManagementPage = () => {
                           <HStack>
 
                             <Button
-                              disabled={formula.countFormula == true}
-                              hidden={formula.countFormula == true}
+                              // disabled={formula.countFormula == true}
+                              // hidden={formula.countFormula == true}
                               onClick={() => editHandler(formula)}
                               title='Edit Formula'
                               p={0} bg='none'
@@ -435,7 +435,7 @@ const TransformationManagementPage = () => {
               formulaItemDescription={itemDescription}
               formulaQuantity={quantity}
               fetchFormula={fetchFormula}
-              setTooltipValue={setTooltipValue}
+            // setTooltipValue={setTooltipValue}
             />
           )
         }
@@ -466,6 +466,7 @@ const TransformationManagementPage = () => {
               formulaItemDescription={itemDescription}
               formulaQuantity={quantity}
               fetchFormula={fetchFormula}
+              setQh={setQh}
             />
           )
         }

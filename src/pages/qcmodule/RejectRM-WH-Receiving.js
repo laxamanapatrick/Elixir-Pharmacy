@@ -136,7 +136,7 @@ const RejectRMWHReceiving = () => {
         <HStack>
           <Badge colorScheme='green'>
             <Text color='secondary'>
-              Number of Records: {rejectData?.length}
+              Number of Records: {rejectData?.reject?.length}
             </Text>
           </Badge>
         </HStack>

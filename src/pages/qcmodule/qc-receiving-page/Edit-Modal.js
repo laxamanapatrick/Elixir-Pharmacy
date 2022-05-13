@@ -293,7 +293,7 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo }) => {
                         maxDate={new Date()}
                         shouldCloseOnSelect={true}
                         selected={manufacturingDate}
-                        className='chakra-input css-7s3glp'
+                        // className='chakra-input css-7s3glp'
                       />
                     </VStack>
 
@@ -307,7 +307,7 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo }) => {
                         disabled={!Boolean(manufacturingDate)}
                         selected={expiryDate}
                         shouldCloseOnSelect={true}
-                        className='chakra-input css-7s3glp'
+                        // className='chakra-input css-7s3glp'
                       />
                     </VStack>
                   </Flex>
