@@ -1,7 +1,8 @@
 //Approval Request
 
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import {
+  Badge,
   Flex,
   Heading,
   HStack,
@@ -15,19 +16,41 @@ import {
   Tr,
   VStack
 } from '@chakra-ui/react'
+import apiClient from '../../../services/apiClient'
 import PageScrollTransformation from '../../../components/PageScroll-Transformation'
 
-export const ListofRequest = () => {
+export const ListofRequest = ({ setTransformId, transformId, setStatus, requests }) => {
+
+  const statusHandler = (data) => {
+    setStatus(data)
+  }
+
+  const requirementsHandler = (data) => {
+    setTransformId(data)
+  }
+
   return (
     <Flex w='90%' flexDirection='column' mt={3}>
-      <Flex justifyContent='start' mb={3}>
+
+      <Flex justifyContent='space-between' mb={3}>
         <HStack>
           <Text>STATUS:</Text>
-          <Select fontSize='sm'>
-            <option>PENDING</option>
+          <Select bgColor='#ffffe0' fontSize='sm' onChange={(e) => statusHandler(e.target.value)}>
+            <option value='pending'>PENDING</option>
+            {/* <option value='approve'>APPROVE</option>
+            <option value='reject'>REJECT</option> */}
           </Select>
         </HStack>
+        <HStack>
+          {
+            transformId &&
+            <Badge colorScheme='green'>
+              <Text color='secondary'>SELECTED: {transformId ? transformId : ''}</Text>
+            </Badge>
+          }
+        </HStack>
       </Flex>
+
       <Flex justifyContent='center' bgColor='secondary' p={1}>
         <Heading color='white' fontSize='l' fontWeight='semibold'>List of Request</Heading>
       </Flex>
@@ -49,186 +72,22 @@ export const ListofRequest = () => {
               </Tr>
             </Thead>
             <Tbody>
-              <Tr>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-              </Tr>
-              <Tr>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-              </Tr>
-              <Tr>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-              </Tr>
-              <Tr>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-              </Tr>
-              <Tr>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-              </Tr>
-              <Tr>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-              </Tr>
-              <Tr>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-              </Tr>
-              <Tr>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-              </Tr>
-              <Tr>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-              </Tr>
-              <Tr>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-              </Tr>
-              <Tr>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-              </Tr>
-              <Tr>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-              </Tr>
-              <Tr>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-              </Tr>
-              <Tr>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-              </Tr>
-              <Tr>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-                <Td>Laman</Td>
-              </Tr>
+              {
+                requests?.map((r, i) =>
+                  <Tr key={i} onClick={() => requirementsHandler(r.id)}>
+                    <Td>{r.line}</Td>
+                    <Td>{r.id}</Td>
+                    <Td>{r.itemCode}</Td>
+                    <Td>{r.itemDescription}</Td>
+                    <Td>{r.uom}</Td>
+                    <Td>{r.batch}</Td>
+                    <Td>{r.version}</Td>
+                    <Td>{r.quantity}</Td>
+                    <Td>{r.prodPlan}</Td>
+                    <Td>{r.addedBy}</Td>
+                  </Tr>
+                )
+              }
             </Tbody>
           </Table>
         </PageScrollTransformation>

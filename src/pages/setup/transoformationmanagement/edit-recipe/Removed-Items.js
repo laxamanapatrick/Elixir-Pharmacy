@@ -25,7 +25,7 @@ import PageScrollModal from '../../../../components/PageScrollModal'
 import { RiArrowGoBackFill } from 'react-icons/ri'
 import ReturnRemovedItemsConfirmation from './Return-Removed-Items-Confirmation'
 
-const RemovedItems = ({ formulaId, isOpen, onClose, fetchRecipe, currentQuantity, formulaQuantity }) => {
+const RemovedItems = ({ formulaId, isOpen, onClose, fetchRecipe, currentQuantity, formulaQuantity, fetchFormula }) => {
 
     const [removedItems, setRemovedItems] = useState([])
     const [materialId, setMaterialId] = useState(null)
@@ -52,6 +52,7 @@ const RemovedItems = ({ formulaId, isOpen, onClose, fetchRecipe, currentQuantity
     const returnItemHandler = (id, quantity) => {
         setMaterialId(id)
         setQuantity(quantity)
+        fetchFormula()
         openReturn()
     }
 
@@ -122,6 +123,7 @@ const RemovedItems = ({ formulaId, isOpen, onClose, fetchRecipe, currentQuantity
                         quantity={quantity}
                         currentQuantity={currentQuantity}
                         formulaQuantity={formulaQuantity}
+                        fetchFormula={fetchFormula}
                     />
                 )
             }

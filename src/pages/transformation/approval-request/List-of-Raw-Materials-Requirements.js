@@ -1,6 +1,6 @@
 // Status of Request
 
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import {
     Flex,
     Heading,
@@ -14,9 +14,15 @@ import {
     Tr,
     VStack
 } from '@chakra-ui/react'
+import apiClient from '../../../services/apiClient'
 import PageScrollTransformation from '../../../components/PageScroll-Transformation'
 
-export const ListofRawMaterialsRequirements = () => {
+
+
+export const ListofRawMaterialsRequirements = ({ transformId, requirements }) => {
+
+
+
     return (
         <Flex w='90%' flexDirection='column' mt={3}>
             <Flex justifyContent='center' bgColor='secondary' p={1}>
@@ -40,150 +46,22 @@ export const ListofRawMaterialsRequirements = () => {
                             </Tr>
                         </Thead>
                         <Tbody>
-                            <Tr>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                            </Tr>
-                            <Tr>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                            </Tr>
-                            <Tr>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                            </Tr>
-                            <Tr>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                            </Tr>
-                            <Tr>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                            </Tr>
-                            <Tr>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                            </Tr>
-                            <Tr>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                            </Tr>
-
-                            <Tr>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                            </Tr>
-                            <Tr>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                            </Tr><Tr>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                            </Tr>
-                            <Tr>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                            </Tr>
-                            <Tr>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                            </Tr>
+                            {
+                                requirements?.map((r, i) =>
+                                    <Tr key={i}>
+                                        <Td>{r.line}</Td>
+                                        <Td>{transformId}</Td>
+                                        <Td>{r.itemCode}</Td>
+                                        <Td>{r.itemDescription}</Td>
+                                        <Td>{r.uom}</Td>
+                                        <Td>{r.batch}</Td>
+                                        <Td>{r.version}</Td>
+                                        <Td>{r.quantity}</Td>
+                                        <Td>{r.prodPlan}</Td>
+                                        <Td>{r.addedBy}</Td>
+                                    </Tr>
+                                )
+                            }
                         </Tbody>
                     </Table>
                 </PageScrollTransformation>

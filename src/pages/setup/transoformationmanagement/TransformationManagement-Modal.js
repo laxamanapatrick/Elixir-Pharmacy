@@ -202,7 +202,6 @@ const ModalComponent = ({ isOpen, onClose, formulaId, formulaItemCode, formulaIt
             })
         } catch (err) {
         }
-        setTooltipValue(true)
     }
 
     return (
@@ -223,7 +222,6 @@ const ModalComponent = ({ isOpen, onClose, formulaId, formulaItemCode, formulaIt
                     </Flex>
                 </ModalHeader>
                 <ModalCloseButton onClick={() => {
-                    setTooltipValue(true)
                     onClose()
                 }} />
 

@@ -3,7 +3,7 @@ import { Button, ButtonGroup, Flex, Input, Modal, ModalBody, ModalCloseButton, M
 import apiClient from '../../../../services/apiClient'
 import { ToastComponent } from '../../../../components/Toast'
 
-const EditQuantityModal = ({ isOpen, onClose, id, quantity, fetchRecipe, currentQuantity, formulaQuantity }) => {
+const EditQuantityModal = ({ isOpen, onClose, id, quantity, fetchRecipe, currentQuantity, formulaQuantity, fetchFormula }) => {
 
     const [newQuantity, setNewQuantity] = useState(quantity)
     const toast = useToast()
@@ -31,6 +31,7 @@ const EditQuantityModal = ({ isOpen, onClose, id, quantity, fetchRecipe, current
                 .then(res => {
                     ToastComponent("Success!", "Quantity Updated", "success", toast)
                     fetchRecipe()
+                    fetchFormula()
                     onClose()
                 })
                 .catch(err => {

@@ -53,8 +53,10 @@ const RmReceivingPage = () => {
   }
 
   useEffect(() => {
-    fetchItemCodeData()
-
+    if (code) {
+      fetchItemCodeData()
+    }
+    
     return () => {
       setItemCodeData([])
     }

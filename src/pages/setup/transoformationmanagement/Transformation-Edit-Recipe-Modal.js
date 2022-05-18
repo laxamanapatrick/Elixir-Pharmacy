@@ -40,7 +40,7 @@ const TransformationEditRecipeModal = ({
   formulaQuantity,
   isOpen,
   onClose,
-  setQh
+  fetchFormula
 }) => {
 
   const [recipes, setRecipes] = useState([])
@@ -127,10 +127,9 @@ const TransformationEditRecipeModal = ({
   const { isOpen: isAskOpen, onOpen: openAsk, onClose: closeAsk } = useDisclosure()
   const closeHandler = () => {
     if (formulaQuantity != currentQuantity) {
-      setQh(currentQuantity)
+      fetchFormula()
       openAsk()
     } else {
-      setQh(currentQuantity)
       onClose()
     }
   }
@@ -256,6 +255,7 @@ const TransformationEditRecipeModal = ({
             onOpen={openDeleteConfirmation}
             requirementId={requirementId}
             fetchRecipeTable={fetchRecipe}
+            fetchFormula={fetchFormula}
           />
         )
       }
@@ -271,6 +271,7 @@ const TransformationEditRecipeModal = ({
             fetchRecipeTable={fetchRecipe}
             recipes={recipes}
             totalQuantityData={totalQuantityData}
+            fetchFormula={fetchFormula}
           />
         )
       }
@@ -285,6 +286,7 @@ const TransformationEditRecipeModal = ({
             onOpen={openRemovedItems}
             currentQuantity={currentQuantity}
             formulaQuantity={formulaQuantity}
+            fetchFormula={fetchFormula}
           />
         )
       }
@@ -299,6 +301,7 @@ const TransformationEditRecipeModal = ({
             fetchRecipe={fetchRecipe}
             currentQuantity={currentQuantity}
             formulaQuantity={formulaQuantity}
+            fetchFormula={fetchFormula}
           />
         )
       }
@@ -309,6 +312,7 @@ const TransformationEditRecipeModal = ({
             isOpen={isAskOpen}
             onClose={closeAsk}
             onCloseEditModal={onClose}
+            fetchFormula={fetchFormula}
           />
         )
       }

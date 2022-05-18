@@ -81,7 +81,7 @@ const Sidebar = () => {
                             onClick={() => selectedMenuHandler(modName)}
                             bgColor={pathname.includes(modName.path) ? 'accent' : 'secondary'} p={2} borderBottom='1px' borderColor='primary' cursor='pointer' _hover={{ bgColor: 'accent' }}
                         >
-                            <HStack>
+                            <HStack justifyContent='space-between'>
                                 <Text
                                     color='white'
                                 >

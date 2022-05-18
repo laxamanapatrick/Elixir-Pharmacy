@@ -19,7 +19,7 @@ import { IoIosAddCircle } from 'react-icons/io'
 import apiClient from '../../../../services/apiClient'
 import { ToastComponent } from '../../../../components/Toast'
 
-const AddRecipeConfirmation = ({ isOpen, onClose, formulaId, recipes, fetchRecipeTable, formulaQuantity, totalQuantityData }) => {
+const AddRecipeConfirmation = ({ isOpen, onClose, formulaId, recipes, fetchRecipeTable, formulaQuantity, totalQuantityData, fetchFormula }) => {
 
     const [raws, setRaws] = useState([])
     const [rawMaterialId, setRawMaterialId] = useState(null)
@@ -114,6 +114,7 @@ const AddRecipeConfirmation = ({ isOpen, onClose, formulaId, recipes, fetchRecip
                 ToastComponent("Success!", "Raw Material Added", "success", toast)
                 // setisLoading(false)
                 fetchRecipeTable()
+                fetchFormula()
                 onClose(onClose)
             }).catch(err => {
                 // setisLoading(false)

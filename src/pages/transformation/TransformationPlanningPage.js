@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
 import {
+  Box,
   Button,
   Flex,
-  HStack
+  HStack,
+  Stack
 } from '@chakra-ui/react'
+import { IoMdNotificationsOutline } from 'react-icons/io'
 import { Link } from 'react-router-dom'
 import AddRequest from './transformation-planning/Add-Request'
 import StatusOfRequest from './transformation-planning/Status-Of-Request'
@@ -16,7 +19,7 @@ const TransformationPlanningPage = () => {
 
   return (
     <Flex px={5} pt={5} pb={0} w='full' flexDirection='column'>
-      <Flex w='50%'>
+      <Flex w='full' justifyContent='space-between'>
         <HStack spacing={0}>
           <Button
             bgColor={navigation === 1 ? 'secondary' : ''}
@@ -46,26 +49,35 @@ const TransformationPlanningPage = () => {
             <Link to='/transformation/transformation-planning/request-reject'>Request Reject</Link>
           </Button>
         </HStack>
+
+        <Button
+          background='none'
+          color='secondary'
+          size='xs'
+          onClick={() => setNavigation(3)}
+        >
+          <Link to='/transformation/transformation-planning/request-reject'><IoMdNotificationsOutline fontSize='25px' /></Link>
+        </Button>
       </Flex>
       <Flex border='1px' borderColor='gray.300'>
         {/* <PageScrollTransformation> */}
-          {navigation === 1 ?
+        {navigation === 1 ?
+          (
+            <AddRequest />
+          )
+          :
+          navigation === 2 ?
             (
-              <AddRequest />
+              <StatusOfRequest />
             )
             :
-            navigation === 2 ?
+            navigation === 3 ?
               (
-                <StatusOfRequest />
+                <RequestReject />
               )
               :
-              navigation === 3 ?
-                (
-                  <RequestReject />
-                )
-                :
-                ""
-          }
+              ""
+        }
         {/* </PageScrollTransformation> */}
       </Flex>
     </Flex >

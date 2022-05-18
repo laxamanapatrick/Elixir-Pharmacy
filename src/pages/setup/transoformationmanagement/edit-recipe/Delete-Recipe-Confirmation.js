@@ -17,7 +17,7 @@ import { BsFillQuestionOctagonFill } from 'react-icons/bs'
 import apiClient from '../../../../services/apiClient'
 import { ToastComponent } from '../../../../components/Toast'
 
-const DeleteRecipeConfirmation = ({ isOpen, onClose, requirementId, fetchRecipeTable }) => {
+const DeleteRecipeConfirmation = ({ isOpen, onClose, requirementId, fetchRecipeTable, fetchFormula }) => {
 
     const toast = useToast()
 
@@ -25,6 +25,7 @@ const DeleteRecipeConfirmation = ({ isOpen, onClose, requirementId, fetchRecipeT
         try {
             const res = apiClient.put(`Transformation/InActiveRequirements/${requirementId}`, { id: requirementId }).then((res) => {
                 ToastComponent("Success!", "Item has been removed", "success", toast)
+                fetchFormula()
                 fetchRecipeTable()
                 onClose()
             }).catch(err => {

@@ -29,7 +29,6 @@ import { useForm } from 'react-hook-form'
 import { ToastComponent } from '../../../components/Toast'
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css"
-import '../../../theme/styles/date-picker.css'
 import { EditModalComponentRejectionInfo } from './Edit-Modal-Rejection-Information'
 import { EditModalChecklist } from './Edit-Modal-Checklist'
 import { EditModalSubmit } from './Edit-Modal-Submit'

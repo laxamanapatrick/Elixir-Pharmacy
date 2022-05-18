@@ -250,7 +250,7 @@ const TransformationManagementPage = () => {
         </HStack>
 
       </Flex>
-      
+
       <PageScroll>
         {
           isLoading ? (
@@ -290,11 +290,11 @@ const TransformationManagementPage = () => {
                           formula.countFormula === true ?
                             (
                               <Button
-                                bgColor={qh != formula.quantity ? 'danger' : 'none'}
+                                bgColor={formula.countQuantity != formula.quantity ? 'danger' : ''}
                                 disabled={formula.countFormula == false}
                                 hidden={formula.countFormula == false}
                                 onClick={() => editRecipeHandler(formula.id, formula.itemCode, formula.itemDescription, formula.quantity)}
-                                title='Edit Recipe'
+                                title={formula.countQuantity != formula.quantity ? 'Requirements Incomplete' : 'Edit Requirements'}
                                 p={0} bg='none'
                               >
                                 <RiEditBoxFill />
@@ -435,7 +435,6 @@ const TransformationManagementPage = () => {
               formulaItemDescription={itemDescription}
               formulaQuantity={quantity}
               fetchFormula={fetchFormula}
-            // setTooltipValue={setTooltipValue}
             />
           )
         }
@@ -466,7 +465,6 @@ const TransformationManagementPage = () => {
               formulaItemDescription={itemDescription}
               formulaQuantity={quantity}
               fetchFormula={fetchFormula}
-              setQh={setQh}
             />
           )
         }

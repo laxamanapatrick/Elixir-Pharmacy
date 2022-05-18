@@ -2,10 +2,11 @@ import React from 'react'
 import { Button, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, VStack } from '@chakra-ui/react'
 import { BsFillQuestionOctagonFill } from 'react-icons/bs'
 
-const Ask = ({ isOpen, onClose, onCloseEditModal }) => {
+const Ask = ({ isOpen, onClose, onCloseEditModal, fetchFormula }) => {
 
 
     const closeSubmit = () => {
+        fetchFormula()
         onClose()
         onCloseEditModal()
     }
