@@ -20,12 +20,10 @@ import { RiEditBoxFill } from 'react-icons/ri'
 import EditModalReject from './Edit-Modal-Reject'
 import PageScrollTransformation from '../../../../components/PageScroll-Transformation'
 
-export const ListofReject = () => {
+export const ListofReject = ({ rejects, setTransformId, transformId }) => {
 
-    const { isOpen: isEditOpen, onOpen: openEdit, onClose: closeEdit } = useDisclosure()
-
-    const editHandler = () => {
-        openEdit()
+    const requirementsHandler = (data) => {
+        setTransformId(data)
     }
 
     return (
@@ -35,7 +33,7 @@ export const ListofReject = () => {
             </Flex>
             <Flex>
                 <PageScrollTransformation minHeight='100px' maxHeight='280px'>
-                    <Table variant='striped' size='sm'>
+                    <Table variant='simple' size='sm'>
                         <Thead bgColor='secondary'>
                             <Tr>
                                 <Th color='white'>Line</Th>
@@ -48,149 +46,26 @@ export const ListofReject = () => {
                                 <Th color='white'>Quantity</Th>
                                 <Th color='white'>Prod Plan</Th>
                                 <Th color='white'>Request By</Th>
-                                <Th color='white'>Edit</Th>
                             </Tr>
                         </Thead>
                         <Tbody>
-                            <Tr>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>
-                                    <Button
-                                        onClick={() => editHandler()}
-                                        p={0} background='none' color='secondary' size='sm'>
-                                        <RiEditBoxFill />
-                                    </Button>
-                                </Td>
-                            </Tr>
-                            <Tr>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                            </Tr>
-                            <Tr>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                            </Tr>
-                            <Tr>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                            </Tr>
-                            <Tr>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                            </Tr>
-                            <Tr>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                            </Tr>
-                            <Tr>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                            </Tr>
-                            <Tr>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                            </Tr>
-                            <Tr>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                            </Tr>
-                            <Tr>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                            </Tr>
-                            <Tr>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                                <Td>Laman</Td>
-                            </Tr>
+                            {rejects?.map((reject, i) =>
+                                <Tr key={i} onClick={(e) => requirementsHandler(reject.id)}
+                                    cursor='pointer'
+                                    bgColor={transformId === reject.id ? 'table_accent' : 'none'}
+                                >
+                                    <Td>{i + 1}</Td>
+                                    <Td>{reject.id}</Td>
+                                    <Td>{reject.itemCode}</Td>
+                                    <Td>{reject.itemDescription}</Td>
+                                    <Td>{reject.uom}</Td>
+                                    <Td>{reject.batch}</Td>
+                                    <Td>{reject.version}</Td>
+                                    <Td>{reject.quantity}</Td>
+                                    <Td>{reject.prodPlan}</Td>
+                                    <Td>{reject.addedBy}</Td>
+                                </Tr>
+                            )}
                         </Tbody>
                     </Table>
                 </PageScrollTransformation>
@@ -199,15 +74,6 @@ export const ListofReject = () => {
                 <Text fontSize='xs'>Showing entries</Text>
             </Flex>
 
-            {
-                isEditOpen && (
-                    <EditModalReject
-                        isOpen={isEditOpen}
-                        onClose={closeEdit}
-                    />
-                )
-            }
-
-        </Flex>
+        </Flex >
     )
 }

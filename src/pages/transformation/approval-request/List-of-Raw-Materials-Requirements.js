@@ -47,20 +47,22 @@ export const ListofRawMaterialsRequirements = ({ transformId, requirements }) =>
                         </Thead>
                         <Tbody>
                             {
-                                requirements?.map((r, i) =>
-                                    <Tr key={i}>
-                                        <Td>{r.line}</Td>
-                                        <Td>{transformId}</Td>
-                                        <Td>{r.itemCode}</Td>
-                                        <Td>{r.itemDescription}</Td>
-                                        <Td>{r.uom}</Td>
-                                        <Td>{r.batch}</Td>
-                                        <Td>{r.version}</Td>
-                                        <Td>{r.quantity}</Td>
-                                        <Td>{r.prodPlan}</Td>
-                                        <Td>{r.addedBy}</Td>
-                                    </Tr>
-                                )
+                                transformId ?
+                                    requirements?.map((r, i) =>
+                                        <Tr key={i}>
+                                            <Td>{i + 1}</Td>
+                                            <Td>{transformId}</Td>
+                                            <Td>{r.itemCode}</Td>
+                                            <Td>{r.itemDescription}</Td>
+                                            <Td>{r.uom}</Td>
+                                            <Td>{r.batch}</Td>
+                                            <Td>{r.version}</Td>
+                                            <Td>{r.quantity}</Td>
+                                            <Td>{r.prodPlan}</Td>
+                                            <Td>{r.addedBy}</Td>
+                                        </Tr>
+                                    )
+                                    : null
                             }
                         </Tbody>
                     </Table>

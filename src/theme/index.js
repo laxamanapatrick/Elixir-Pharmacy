@@ -9,6 +9,7 @@ const theme = extendTheme({
         warning: "#eed202",
         success: "#48bb78",
         danger: "#f56565",
+        table_accent: "#daf5ee"
     },
     components: {
         Input: {

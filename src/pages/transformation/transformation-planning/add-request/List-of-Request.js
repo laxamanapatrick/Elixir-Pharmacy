@@ -71,9 +71,10 @@ export const ListofRequest = ({ setTransformId, transformId, requests, fetchRequ
                                 requests?.map((r, i) =>
                                     <Tr
                                         key={i} onClick={() => requirementsHandler(r.id)}
-                                        bgColor={r.id === transformId ? '#42f2f5' : 'none'}
+                                        bgColor={r.id === transformId ? 'table_accent' : 'none'}
+                                        cursor='pointer'
                                     >
-                                        <Td>{r.line}</Td>
+                                        <Td>{i+1}</Td>
                                         <Td>{r.id}</Td>
                                         <Td>{r.itemCode}</Td>
                                         <Td>{r.itemDescription}</Td>

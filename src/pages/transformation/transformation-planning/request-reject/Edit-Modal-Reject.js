@@ -19,14 +19,14 @@ import {
 } from '@chakra-ui/react'
 import DatePicker from 'react-datepicker'
 
-const EditModalReject = ({ isOpen, onClose }) => {
+const EditModalReject = ({ isOpen, onClose, transformId, rejects }) => {
     return (
         <Modal isOpen={isOpen} onClose={() => { }} isCentered size='4xl'>
             <ModalOverlay />
             <ModalContent>
                 <ModalHeader>
                     <HStack justifyContent='center'>
-                        <Text fontSize='l' fontWeight='semibold'>Raw Materials Information</Text>
+                        <Text fontSize='l' fontWeight='semibold'>Edit Raw Materials Information</Text>
                     </HStack>
                 </ModalHeader>
                 <ModalCloseButton onClick={onClose} />

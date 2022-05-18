@@ -21,12 +21,22 @@ import PageScrollTransformation from '../../../components/PageScroll-Transformat
 
 export const ListofRequest = ({ setTransformId, transformId, setStatus, requests }) => {
 
+  const [count, setCount] = useState(0)
+
   const statusHandler = (data) => {
-    setStatus(data)
+    if (data) {
+      setStatus(data)
+    } else {
+      setStatus("pending")
+    }
   }
 
   const requirementsHandler = (data) => {
-    setTransformId(data)
+    if (data) {
+      setTransformId(data)
+    } else {
+      setTransformId("")
+    }
   }
 
   return (
@@ -56,7 +66,7 @@ export const ListofRequest = ({ setTransformId, transformId, setStatus, requests
       </Flex>
       <Flex>
         <PageScrollTransformation minHeight='100px' maxHeight='270px'>
-          <Table variant='striped' size='sm'>
+          <Table variant='simple' size='sm'>
             <Thead bgColor='secondary'>
               <Tr>
                 <Th color='white'>Line</Th>
@@ -74,8 +84,12 @@ export const ListofRequest = ({ setTransformId, transformId, setStatus, requests
             <Tbody>
               {
                 requests?.map((r, i) =>
-                  <Tr key={i} onClick={() => requirementsHandler(r.id)}>
-                    <Td>{r.line}</Td>
+                  <Tr
+                    key={i} onClick={() => requirementsHandler(r.id)}
+                    bgColor={transformId === r.id ? 'table_accent' : 'none'}
+                    cursor='pointer'
+                  >
+                    <Td>{i + 1}</Td>
                     <Td>{r.id}</Td>
                     <Td>{r.itemCode}</Td>
                     <Td>{r.itemDescription}</Td>

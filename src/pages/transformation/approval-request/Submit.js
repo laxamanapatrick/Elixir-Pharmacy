@@ -47,12 +47,15 @@ export const Submit = ({ transformId, setTransformId, fetchRequestByStatus, fetc
 
     const submitApproveHandler = () => {
         try {
-            const res = apiClient.put(`Planning/ApproveTransformRequest/${transformId}`, { id: transformId })
+            const res = apiClient.put(`Planning/ApproveTransformRequest/${transformId}`,
+                {
+                    id: transformId
+                })
                 .then(res => {
                     ToastComponent("Success", `Item with Transformation ID of ${transformId} has been approved.`, "success", toast)
-                    fetchRequestByStatus()
-                    fetchRequirements()
                     setTransformId("")
+                    fetchRequirements()
+                    fetchRequestByStatus()
                     closeApprove()
                 })
                 .catch(err => {
@@ -71,9 +74,9 @@ export const Submit = ({ transformId, setTransformId, fetchRequestByStatus, fetc
                 })
                 .then(res => {
                     ToastComponent("Success", `Item with Transformation ID of ${transformId} has been rejected.`, "success", toast)
-                    fetchRequestByStatus()
-                    fetchRequirements()
                     setTransformId("")
+                    fetchRequirements()
+                    fetchRequestByStatus()
                     closeReject()
                 })
                 .catch(err => {

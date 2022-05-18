@@ -65,7 +65,7 @@ export const RawMaterialsInformation = ({ formulas, setCode, codeData, fetchRequ
         } else {
             setCode("")
         }
-        setValue('formData.version', '')
+        setValue('formData.version', "")
         setValue('formData.itemDescription', "")
         setValue('formData.uom', "")
         setValue('formData.batch', "")

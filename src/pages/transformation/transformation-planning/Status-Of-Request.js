@@ -9,7 +9,7 @@ const StatusOfRequest = () => {
 
   return (
     <VStack spacing={5} w='full' h='auto'>
-      <ListofRequest setTransformId={setTransformId} />
+      <ListofRequest setTransformId={setTransformId} transformId={transformId} />
       <ListofRawMaterialsRequirements transformId={transformId} />
     </VStack>
   )

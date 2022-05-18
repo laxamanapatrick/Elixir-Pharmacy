@@ -23,7 +23,7 @@ const fetchRequestByStatusApi = async (status) => {
   return res.data
 }
 
-export const ListofRequest = ({ setTransformId }) => {
+export const ListofRequest = ({ setTransformId, transformId }) => {
 
   const [status, setStatus] = useState("pending")
   const [requests, setRequests] = useState([])
@@ -59,7 +59,8 @@ export const ListofRequest = ({ setTransformId }) => {
           <Select bgColor='#ffffe0' fontSize='sm' onChange={(e) => statusHandler(e.target.value)}>
             <option value='pending'>PENDING</option>
             <option value='approved'>APPROVED</option>
-            <option value='reject'>REJECT</option>
+            <option value='rejected'>REJECTED</option>
+            <option value='cancelled'>CANCELLED</option>
           </Select>
         </HStack>
       </Flex>
@@ -68,7 +69,7 @@ export const ListofRequest = ({ setTransformId }) => {
       </Flex>
       <Flex>
         <PageScrollTransformation minHeight='100px' maxHeight='270px'>
-          <Table variant='striped' size='sm'>
+          <Table variant='simple' size='sm'>
             <Thead bgColor='secondary'>
               <Tr>
                 <Th color='white'>Line</Th>
@@ -86,8 +87,12 @@ export const ListofRequest = ({ setTransformId }) => {
             <Tbody>
               {
                 requests?.map((r, i) =>
-                  <Tr key={i} onClick={() => requirementsHandler(r.id)}>
-                    <Td>{r.line}</Td>
+                  <Tr
+                    key={i} onClick={() => requirementsHandler(r.id)}
+                    bgColor={r.id === transformId ? 'table_accent' : 'none'}
+                    cursor='pointer'
+                  >
+                    <Td>{i+1}</Td>
                     <Td>{r.id}</Td>
                     <Td>{r.itemCode}</Td>
                     <Td>{r.itemDescription}</Td>
@@ -105,7 +110,7 @@ export const ListofRequest = ({ setTransformId }) => {
         </PageScrollTransformation>
       </Flex>
       <Flex justifyContent='start' mt={1}>
-        <Text fontSize='xs'>Showing entries</Text>
+      <Text fontSize='xs'>Number of entries: {requests?.length}</Text>
       </Flex>
     </Flex>
   )

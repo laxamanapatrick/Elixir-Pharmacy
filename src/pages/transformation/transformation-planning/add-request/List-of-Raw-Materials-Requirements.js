@@ -44,7 +44,7 @@ export const ListofRawMaterialsRequirements = ({ transformId, requirements }) =>
                                     {
                                         requirements?.map((r, i) =>
                                             <Tr key={i}>
-                                                <Td>{r.line}</Td>
+                                                <Td>{i+1}</Td>
                                                 <Td>{transformId}</Td>
                                                 <Td>{r.itemCode}</Td>
                                                 <Td>{r.itemDescription}</Td>

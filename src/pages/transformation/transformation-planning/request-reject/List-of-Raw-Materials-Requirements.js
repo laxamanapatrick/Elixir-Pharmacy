@@ -18,7 +18,8 @@ import {
 } from '@chakra-ui/react'
 import PageScrollTransformation from '../../../../components/PageScroll-Transformation'
 
-export const ListofRawMaterialsRequirements = () => {
+export const ListofRawMaterialsRequirements = ({ requirements, transformId }) => {
+
     return (
         <>
             <Flex w='90%' flexDirection='column' mt={3}>
@@ -43,102 +44,24 @@ export const ListofRawMaterialsRequirements = () => {
                                 </Tr>
                             </Thead>
                             <Tbody>
-                                <Tr>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                </Tr>
-                                <Tr>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                </Tr>
-                                <Tr>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                </Tr>
-                                <Tr>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                </Tr>
-                                <Tr>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                </Tr>
-                                <Tr>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                </Tr>
-                                <Tr>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                </Tr>
-                                <Tr>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                    <Td>Laman</Td>
-                                </Tr>
+                                {
+                                    transformId ?
+                                        requirements?.map((r, i) =>
+                                            <Tr key={i}>
+                                                <Td>{i + 1}</Td>
+                                                <Td>{transformId}</Td>
+                                                <Td>{r.itemCode}</Td>
+                                                <Td>{r.itemDescription}</Td>
+                                                <Td>{r.uom}</Td>
+                                                <Td>{r.batch}</Td>
+                                                <Td>{r.version}</Td>
+                                                <Td>{r.quantity}</Td>
+                                                <Td>{r.prodPlan}</Td>
+                                                <Td>{r.addedBy}</Td>
+                                            </Tr>
+                                        )
+                                        : null
+                                }
                             </Tbody>
                         </Table>
                     </PageScrollTransformation>
@@ -146,14 +69,6 @@ export const ListofRawMaterialsRequirements = () => {
                 <Flex justifyContent='start' mt={1}>
                     <Text fontSize='xs'>Showing entries</Text>
                 </Flex>
-            </Flex>
-
-            <Flex justifyContent='end' w='90%' bgColor='gray.200'>
-                <ButtonGroup size='xs'>
-                    <Button colorScheme='blue'>REQUEST</Button>
-                    {/* <Button bgColor='warning' color='white'>EDIT</Button> */}
-                    <Button colorScheme='red'>CANCEL</Button>
-                </ButtonGroup>
             </Flex>
         </>
     )

@@ -64,7 +64,7 @@ export const ListofRawMaterialsRequirements = ({ transformId }) => {
                             {transformId ?
                                 requirements?.map((r, i) =>
                                     <Tr key={i}>
-                                        <Td>{r.line}</Td>
+                                        <Td>{i+1}</Td>
                                         <Td>{transformId}</Td>
                                         <Td>{r.itemCode}</Td>
                                         <Td>{r.itemDescription}</Td>
@@ -83,7 +83,7 @@ export const ListofRawMaterialsRequirements = ({ transformId }) => {
                 </PageScrollTransformation>
             </Flex>
             <Flex justifyContent='start' mt={1}>
-                <Text fontSize='xs'>Showing entries</Text>
+                <Text fontSize='xs'>Number of entries: {requirements?.length}</Text>
             </Flex>
         </Flex>
     )
