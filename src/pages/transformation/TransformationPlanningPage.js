@@ -1,21 +1,51 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
+  Badge,
   Box,
   Button,
   Flex,
   HStack,
-  Stack
+  Stack,
+  Text
 } from '@chakra-ui/react'
 import { IoMdNotificationsOutline } from 'react-icons/io'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import AddRequest from './transformation-planning/Add-Request'
 import StatusOfRequest from './transformation-planning/Status-Of-Request'
 import RequestReject from './transformation-planning/Request-Reject'
 import PageScrollTransformation from '../../components/PageScroll-Transformation'
+import apiClient from '../../services/apiClient'
+
+const fetchNotificationApi = async () => {
+  const res = await apiClient.get(`Receiving/GetNotification`)
+  return res.data
+}
 
 const TransformationPlanningPage = () => {
 
   const [navigation, setNavigation] = useState(null)
+
+  const [notification, setNotification] = useState([])
+  const { pathname } = useLocation()
+
+  const fetchNotification = () => {
+    fetchNotificationApi().then(res => {
+      setNotification(res)
+    })
+  }
+
+  useEffect(() => {
+    fetchNotification()
+
+    return () => {
+      setNotification([])
+    }
+  }, [])
+
+  const navBars = {
+    title: 'Request Reject',
+    notifcation: notification?.rejectRequest?.requestrejectcount,
+  }
 
   return (
     <Flex px={5} pt={5} pb={0} w='full' flexDirection='column'>
@@ -46,18 +76,30 @@ const TransformationPlanningPage = () => {
             border='1px' borderColor='gray.300' size='sm'
             onClick={() => setNavigation(3)}
           >
-            <Link to='/transformation/transformation-planning/request-reject'>Request Reject</Link>
+            <Link to='/transformation/transformation-planning/request-reject'>
+              <HStack>
+                <Text>Request Reject</Text>
+                {
+                  !pathname.includes('/transformation/transformation-planning/request -reject')
+                    ?
+                    'Request Reject' === navBars.title && <Badge bgColor='danger'><Text color='white'>{navBars.notifcation}</Text></Badge>
+                    :
+                    ''
+                }
+              </HStack>
+            </Link>
           </Button>
         </HStack>
 
-        <Button
+        {/* <Button
           background='none'
           color='secondary'
           size='xs'
           onClick={() => setNavigation(3)}
         >
           <Link to='/transformation/transformation-planning/request-reject'><IoMdNotificationsOutline fontSize='25px' /></Link>
-        </Button>
+        </Button> */}
+
       </Flex>
       <Flex border='1px' borderColor='gray.300'>
         {/* <PageScrollTransformation> */}

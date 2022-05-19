@@ -129,6 +129,10 @@ export const CancelModal = ({ cancelId, isOpen, onClose, fetchRequests, fetchReq
             fetchReasons()
         } catch (error) {
         }
+
+        return () => {
+            setReasons([])
+        }
     }, []);
 
     const remarksHandler = (data) => {

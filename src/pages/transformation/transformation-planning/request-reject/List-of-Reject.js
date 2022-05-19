@@ -20,10 +20,11 @@ import { RiEditBoxFill } from 'react-icons/ri'
 import EditModalReject from './Edit-Modal-Reject'
 import PageScrollTransformation from '../../../../components/PageScroll-Transformation'
 
-export const ListofReject = ({ rejects, setTransformId, transformId }) => {
+export const ListofReject = ({ rejects, setTransformId, transformId, setEditData }) => {
 
     const requirementsHandler = (data) => {
-        setTransformId(data)
+        setEditData(data)
+        setTransformId(data.id)
     }
 
     return (
@@ -50,7 +51,7 @@ export const ListofReject = ({ rejects, setTransformId, transformId }) => {
                         </Thead>
                         <Tbody>
                             {rejects?.map((reject, i) =>
-                                <Tr key={i} onClick={(e) => requirementsHandler(reject.id)}
+                                <Tr key={i} onClick={(e) => requirementsHandler(reject)}
                                     cursor='pointer'
                                     bgColor={transformId === reject.id ? 'table_accent' : 'none'}
                                 >

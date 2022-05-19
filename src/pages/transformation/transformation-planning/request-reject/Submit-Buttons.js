@@ -4,8 +4,8 @@ import EditModalReject from './Edit-Modal-Reject'
 import CancelSubmit from './Cancel-Submit'
 import RequestRejectSubmit from './Request-Reject-Submit'
 
-const SubmitButtons = ({ transformId, setTransformId, rejects, fetchRejected, fetchRequirements }) => {
-
+const SubmitButtons = ({ transformId, setTransformId, rejects, fetchRejected, fetchRequirements, editData }) => {
+    
     const { isOpen: isRequestOpen, onOpen: openRequest, onClose: closeRequest } = useDisclosure()
     const { isOpen: isEditOpen, onOpen: openEdit, onClose: closeEdit } = useDisclosure()
     const { isOpen: isCancelOpen, onOpen: openCancel, onClose: closeCancel } = useDisclosure()
@@ -14,7 +14,7 @@ const SubmitButtons = ({ transformId, setTransformId, rejects, fetchRejected, fe
         openRequest()
     }
 
-    const editHandler = () => {
+    const editHandler = (data) => {
         openEdit()
     }
 
@@ -25,8 +25,8 @@ const SubmitButtons = ({ transformId, setTransformId, rejects, fetchRejected, fe
     return (
         <Flex justifyContent='end' w='90%' bgColor='gray.200'>
             <ButtonGroup size='xs'>
-                <Button colorScheme='blue' disabled={!transformId} onClick={requestHandler}>REQUEST</Button>
-                <Button bgColor='warning' disabled={!transformId} color='white' onClick={editHandler}>EDIT</Button>
+                {/* <Button colorScheme='green' disabled={!transformId} onClick={requestHandler}>REQUEST</Button> */}
+                <Button px={5} colorScheme='blue' disabled={!transformId} color='white' onClick={editHandler}>EDIT</Button>
                 <Button colorScheme='red' disabled={!transformId} onClick={cancelHandler}>CANCEL</Button>
             </ButtonGroup>
 
@@ -49,9 +49,11 @@ const SubmitButtons = ({ transformId, setTransformId, rejects, fetchRejected, fe
                         isOpen={isEditOpen}
                         onClose={closeEdit}
                         transformId={transformId}
+                        setTransformId={setTransformId}
                         rejects={rejects}
                         fetchRejected={fetchRejected}
                         fetchRequirements={fetchRequirements}
+                        editData={editData}
                     />
                 )
             }

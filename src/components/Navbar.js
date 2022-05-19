@@ -30,6 +30,10 @@ const Navbar = ({ menus, notification }) => {
         {
             title: 'Warehouse Confirm Reject',
             notifcation: notification?.confirmReject?.confirmrejectcount,
+        },
+        {
+            title: 'Approval Request',
+            notifcation: notification?.approvalRequest?.approvalrequestcount,
         }
     ]
 

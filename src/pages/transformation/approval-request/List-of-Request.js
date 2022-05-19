@@ -107,7 +107,7 @@ export const ListofRequest = ({ setTransformId, transformId, setStatus, requests
         </PageScrollTransformation>
       </Flex>
       <Flex justifyContent='start' mt={1}>
-        <Text fontSize='xs'>Showing entries</Text>
+        <Text fontSize='xs'>Number of entries {requests?.length}</Text>
       </Flex>
     </Flex>
   )

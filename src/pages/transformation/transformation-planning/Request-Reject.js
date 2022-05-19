@@ -12,6 +12,8 @@ const RequestReject = () => {
   const [rejects, setRejects] = useState([])
   const [requirements, setRequirements] = useState([])
 
+  const [editData, setEditData] = useState([])
+
   const fetchRejectedApi = async (status) => {
     const res = await apiClient.get(`Planning/GetAllPendingRequest?status=${status}`)
     return res.data
@@ -36,6 +38,10 @@ const RequestReject = () => {
 
   useEffect(() => {
     fetchRejected()
+
+    return () => {
+      setRejects([])
+    }
   }, [status])
 
 
@@ -43,13 +49,17 @@ const RequestReject = () => {
     if (transformId) {
       fetchRequirements()
     }
+
+    return () => {
+      setRequirements([])
+    }
   }, [transformId])
 
   return (
     <VStack spacing={5} w='full' h='auto'>
-      <ListofReject rejects={rejects} setTransformId={setTransformId} transformId={transformId} />
+      <ListofReject rejects={rejects} setTransformId={setTransformId} transformId={transformId} setEditData={setEditData} />
       <ListofRawMaterialsRequirements requirements={requirements} transformId={transformId} />
-      <SubmitButtons transformId={transformId} setTransformId={setTransformId} rejects={rejects} fetchRejected={fetchRejected} fetchRequirements={fetchRequirements} />
+      <SubmitButtons transformId={transformId} setTransformId={setTransformId} fetchRejected={fetchRejected} fetchRequirements={fetchRequirements} editData={editData} />
     </VStack>
   )
 }

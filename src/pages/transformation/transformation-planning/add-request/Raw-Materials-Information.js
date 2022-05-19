@@ -9,6 +9,7 @@ import {
     Select,
     Text,
     useToast,
+    useDisclosure,
     VStack
 } from '@chakra-ui/react'
 import DatePicker from 'react-datepicker'
@@ -19,6 +20,7 @@ import * as yup from "yup";
 import { ToastComponent } from '../../../../components/Toast'
 import moment from 'moment'
 import { decodeUser } from '../../../../services/decode-user'
+import ErrorModal from './Error-Modal'
 
 const currentUser = decodeUser()
 
@@ -39,7 +41,11 @@ export const RawMaterialsInformation = ({ formulas, setCode, codeData, fetchRequ
     const resetCode = useRef()
     const resetVersion = useRef()
 
+    const [errorData, setErrorData] = useState([])
+
     const toast = useToast()
+
+    const { isOpen: isErrorOpen, onOpen: openError, onClose: closeError } = useDisclosure()
 
     const { reset, handleSubmit, control, watch, getValues, setValue, formState: { errors, isValid } } = useForm({
         resolver: yupResolver(schema),
@@ -49,7 +55,7 @@ export const RawMaterialsInformation = ({ formulas, setCode, codeData, fetchRequ
                 itemCode: "",
                 itemDescription: "",
                 uom: "",
-                prodPlan: "",
+                prodPlan: new Date(),
                 version: "",
                 batch: "",
                 quantity: "",
@@ -66,6 +72,7 @@ export const RawMaterialsInformation = ({ formulas, setCode, codeData, fetchRequ
             setCode("")
         }
         setValue('formData.version', "")
+        // setValue('formData.prodPlan', "")
         setValue('formData.itemDescription', "")
         setValue('formData.uom', "")
         setValue('formData.batch', "")
@@ -111,171 +118,186 @@ export const RawMaterialsInformation = ({ formulas, setCode, codeData, fetchRequ
                 reset()
 
             }).catch(err => {
-                ToastComponent("Error", err.response.data, "error", toast)
+                ToastComponent("Error", "Request Failed", "error", toast)
+                setErrorData(err.response.data.outofStock)
+                if (err.response) {
+                    openError()
+                }
             })
         } catch (err) {
         }
     }
 
     return (
-        <Flex w='90%' flexDirection='column'>
-            <Flex justifyContent='center' bgColor='secondary' p={1}>
-                <Heading color='white' fontSize='l' fontWeight='semibold'>Raw Materials Information</Heading>
+        <>
+            <Flex w='90%' flexDirection='column'>
+                <Flex justifyContent='center' bgColor='secondary' p={1}>
+                    <Heading color='white' fontSize='l' fontWeight='semibold'>Raw Materials Information</Heading>
+                </Flex>
+
+                <form onSubmit={handleSubmit(submitHandler)}>
+                    <Flex justifyContent='space-between' mt={3}>
+                        <VStack>
+                            <HStack w='full'>
+
+                                <Text fontSize='xs' fontWeight='semibold' w='40%'>
+                                    Item Code:
+                                </Text>
+                                <Controller
+                                    name='formData.itemCode'
+                                    control={control}
+                                    render={
+                                        ({
+                                            field: { onChange },
+                                        }) => (
+                                            formulas.length > 0 ? (
+                                                <Select
+                                                    onChange={onChange}
+                                                    placeholder='Item Code' bgColor='#ffffe0'
+                                                    ref={resetCode}
+                                                >
+                                                    {formulas?.map((formula, i) => (
+                                                        <option key={i} value={formula.itemCode}>{formula.itemCode}</option>
+                                                    ))}
+                                                </Select>
+                                            ) : "loading"
+                                        )
+                                    }
+                                />
+                            </HStack>
+                            <HStack w='full'>
+                                <Text fontSize='xs' fontWeight='semibold' w='40%'>
+                                    Version:
+                                </Text>
+                                <Controller
+                                    name='formData.version'
+                                    control={control}
+                                    render={
+                                        ({
+                                            field: { onChange }
+                                        }) => (
+                                            codeData.length > 0 ? (
+                                                <Select
+                                                    onChange={onChange}
+                                                    ref={resetVersion}
+                                                    placeholder='Version'
+                                                    bgColor='#ffffe0'
+                                                >
+                                                    {codeData?.map((cd, i) => (
+                                                        <option key={i} value={cd.version}>{cd.version}</option>
+                                                    ))}
+                                                </Select>
+                                            ) : <Input disabled bgColor='#ffffe0' title='Item code is required' />
+                                        )
+                                    }
+                                />
+                            </HStack>
+                            <HStack w='full'>
+                                <Text fontSize='xs' fontWeight='semibold' w='40%'>
+                                    Prod Plan:
+                                </Text>
+                                <Controller
+                                    name='formData.prodPlan'
+                                    control={control}
+                                    render={
+                                        ({
+                                            field: { onChange, value },
+                                        }) => (
+                                            <DatePicker
+                                                minDate={new Date()}
+                                                onChange={onChange}
+                                                selected={value}
+                                            />
+                                        )
+                                    }
+                                />
+                            </HStack>
+                            <HStack w='full'>
+                                <Text fontSize='xs' fontWeight='semibold' w='40%'>
+                                    Batch:
+                                </Text>
+                                <Controller
+                                    name='formData.batch'
+                                    control={control}
+                                    render={
+                                        ({
+                                            field: { onChange, value }
+                                        }) => (
+                                            <Input bgColor='#ffffe0' onChange={onChange} value={value} />
+                                        )
+                                    }
+                                />
+                            </HStack>
+                        </VStack>
+                        <VStack>
+                            <HStack w='full'>
+                                <Text fontSize='xs' fontWeight='semibold' w='40%'>
+                                    Item Description:
+                                </Text>
+                                <Controller
+                                    name='formData.itemDescription'
+                                    control={control}
+                                    render={
+                                        ({
+                                            field: { onChange, value }
+                                        }) => (
+                                            <Input bgColor='gray.200' onChange={onChange} value={value} readOnly />
+                                        )
+                                    }
+                                />
+                            </HStack>
+                            <HStack w='full'>
+                                <Text fontSize='xs' fontWeight='semibold' w='40%'>
+                                    UOM:
+                                </Text>
+                                <Controller
+                                    name='formData.uom'
+                                    control={control}
+                                    render={
+                                        ({
+                                            field: { onChange, value }
+                                        }) => (
+                                            <Input bgColor='gray.200' onChange={onChange} value={value} readOnly />
+                                        )
+                                    }
+                                />
+                            </HStack>
+                            <HStack w='full'>
+                                <Text fontSize='xs' fontWeight='semibold' w='40%'>
+                                    Quantity:
+                                </Text>
+                                <Controller
+                                    name='formData.quantity'
+                                    control={control}
+                                    render={
+                                        ({
+                                            field: { onChange, value }
+                                        }) => (
+                                            <Input bgColor='gray.200' onChange={onChange} value={value} readOnly />
+                                        )
+                                    }
+                                />
+                            </HStack>
+                        </VStack>
+                    </Flex>
+
+                    <Flex justifyContent='end' mt={6} w='full' bgColor='gray.200'>
+                        <ButtonGroup size='xs'>
+                            <Button colorScheme='blue' type='submit' disabled={!isValid}>REQUEST</Button>
+                            <Button colorScheme='yellow' onClick={clearHandler}>Clear</Button>
+                        </ButtonGroup>
+                    </Flex>
+                </form>
             </Flex>
-
-            <form onSubmit={handleSubmit(submitHandler)}>
-                <Flex justifyContent='space-between' mt={3}>
-                    <VStack>
-                        <HStack w='full'>
-
-                            <Text fontSize='xs' fontWeight='semibold' w='40%'>
-                                Item Code:
-                            </Text>
-                            <Controller
-                                name='formData.itemCode'
-                                control={control}
-                                render={
-                                    ({
-                                        field: { onChange },
-                                    }) => (
-                                        formulas.length > 0 ? (
-                                            <Select
-                                                onChange={onChange}
-                                                placeholder='Item Code' bgColor='#ffffe0'
-                                                ref={resetCode}
-                                            >
-                                                {formulas?.map((formula, i) => (
-                                                    <option key={i} value={formula.itemCode}>{formula.itemCode}</option>
-                                                ))}
-                                            </Select>
-                                        ) : "loading"
-                                    )
-                                }
-                            />
-                        </HStack>
-                        <HStack w='full'>
-                            <Text fontSize='xs' fontWeight='semibold' w='40%'>
-                                Version:
-                            </Text>
-                            <Controller
-                                name='formData.version'
-                                control={control}
-                                render={
-                                    ({
-                                        field: { onChange }
-                                    }) => (
-                                        codeData.length > 0 ? (
-                                            <Select
-                                                onChange={onChange}
-                                                ref={resetVersion}
-                                                placeholder='Version'
-                                                bgColor='#ffffe0'
-                                            >
-                                                {codeData?.map((cd, i) => (
-                                                    <option key={i} value={cd.version}>{cd.version}</option>
-                                                ))}
-                                            </Select>
-                                        ) : <Input disabled bgColor='#ffffe0' title='Item code is required' />
-                                    )
-                                }
-                            />
-                        </HStack>
-                        <HStack w='full'>
-                            <Text fontSize='xs' fontWeight='semibold' w='40%'>
-                                Prod Plan:
-                            </Text>
-                            <Controller
-                                name='formData.prodPlan'
-                                control={control}
-                                render={
-                                    ({
-                                        field: { onChange, value },
-                                    }) => (
-                                        <DatePicker
-                                            minDate={new Date()}
-                                            onChange={onChange}
-                                            selected={value}
-                                        />
-                                    )
-                                }
-                            />
-                        </HStack>
-                        <HStack w='full'>
-                            <Text fontSize='xs' fontWeight='semibold' w='40%'>
-                                Batch:
-                            </Text>
-                            <Controller
-                                name='formData.batch'
-                                control={control}
-                                render={
-                                    ({
-                                        field: { onChange, value }
-                                    }) => (
-                                        <Input bgColor='#ffffe0' onChange={onChange} value={value} />
-                                    )
-                                }
-                            />
-                        </HStack>
-                    </VStack>
-                    <VStack>
-                        <HStack w='full'>
-                            <Text fontSize='xs' fontWeight='semibold' w='40%'>
-                                Item Description:
-                            </Text>
-                            <Controller
-                                name='formData.itemDescription'
-                                control={control}
-                                render={
-                                    ({
-                                        field: { onChange, value }
-                                    }) => (
-                                        <Input bgColor='gray.200' onChange={onChange} value={value} readOnly />
-                                    )
-                                }
-                            />
-                        </HStack>
-                        <HStack w='full'>
-                            <Text fontSize='xs' fontWeight='semibold' w='40%'>
-                                UOM:
-                            </Text>
-                            <Controller
-                                name='formData.uom'
-                                control={control}
-                                render={
-                                    ({
-                                        field: { onChange, value }
-                                    }) => (
-                                        <Input bgColor='gray.200' onChange={onChange} value={value} readOnly />
-                                    )
-                                }
-                            />
-                        </HStack>
-                        <HStack w='full'>
-                            <Text fontSize='xs' fontWeight='semibold' w='40%'>
-                                Quantity:
-                            </Text>
-                            <Controller
-                                name='formData.quantity'
-                                control={control}
-                                render={
-                                    ({
-                                        field: { onChange, value }
-                                    }) => (
-                                        <Input bgColor='gray.200' onChange={onChange} value={value} readOnly />
-                                    )
-                                }
-                            />
-                        </HStack>
-                    </VStack>
-                </Flex>
-
-                <Flex justifyContent='end' mt={6} w='full' bgColor='gray.200'>
-                    <ButtonGroup size='xs'>
-                        <Button colorScheme='blue' type='submit' disabled={!isValid}>REQUEST</Button>
-                        <Button colorScheme='yellow' onClick={clearHandler}>Clear</Button>
-                    </ButtonGroup>
-                </Flex>
-            </form>
-        </Flex>
+            {
+                isErrorOpen && (
+                    <ErrorModal
+                        isOpen={isErrorOpen}
+                        onClose={closeError}
+                        errorData={errorData}
+                    />
+                )
+            }
+        </>
     )
 }

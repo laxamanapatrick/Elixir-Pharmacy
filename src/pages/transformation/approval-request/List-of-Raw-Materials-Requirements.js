@@ -69,7 +69,7 @@ export const ListofRawMaterialsRequirements = ({ transformId, requirements }) =>
                 </PageScrollTransformation>
             </Flex>
             <Flex justifyContent='start' mt={1}>
-                <Text fontSize='xs'>Showing entries</Text>
+                <Text fontSize='xs'>Number of entries {requirements?.length}</Text>
             </Flex>
         </Flex>
     )
