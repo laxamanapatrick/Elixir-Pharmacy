@@ -5,7 +5,7 @@ import { ListofRawMaterialsRequirements } from './request-reject/List-of-Raw-Mat
 import apiClient from '../../../services/apiClient'
 import SubmitButtons from './request-reject/Submit-Buttons'
 
-const RequestReject = () => {
+const RequestReject = ({ fetchNotification }) => {
 
   const [transformId, setTransformId] = useState("")
   const [status, setStatus] = useState("rejected")
@@ -26,7 +26,7 @@ const RequestReject = () => {
   }
 
   const fetchRequirementsApi = async (transformId) => {
-    const res = await apiClient.get(`Planning/GetAllPendingRequestWithRequirements/${transformId}`)
+    const res = await apiClient.get(`Planning/GetAllRejectRequirementsStatus/${transformId}`)
     return res.data
   }
 
@@ -59,7 +59,7 @@ const RequestReject = () => {
     <VStack spacing={5} w='full' h='auto'>
       <ListofReject rejects={rejects} setTransformId={setTransformId} transformId={transformId} setEditData={setEditData} />
       <ListofRawMaterialsRequirements requirements={requirements} transformId={transformId} />
-      <SubmitButtons transformId={transformId} setTransformId={setTransformId} fetchRejected={fetchRejected} fetchRequirements={fetchRequirements} editData={editData} />
+      <SubmitButtons transformId={transformId} setTransformId={setTransformId} fetchRejected={fetchRejected} fetchRequirements={fetchRequirements} editData={editData} fetchNotification={fetchNotification} />
     </VStack>
   )
 }

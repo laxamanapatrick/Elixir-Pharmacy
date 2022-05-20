@@ -17,14 +17,25 @@ import {
 import PageScrollTransformation from '../../../../components/PageScroll-Transformation'
 import apiClient from '../../../../services/apiClient'
 
-const fetchRequirementsApi = async (transformId) => {
-    const res = await apiClient.get(`Planning/GetAllPendingRequestWithRequirements/${transformId}`)
-    return res.data
-}
 
-export const ListofRawMaterialsRequirements = ({ transformId }) => {
+export const ListofRawMaterialsRequirements = ({ transformId, status }) => {
 
     const [requirements, setRequirements] = useState([])
+
+    const fetchRequirementsApi = async (transformId) => {
+        if (status === 'rejected') {
+            const res = await apiClient.get(`Planning/GetAllRejectRequirementsStatus/${transformId}`)
+            return res.data
+        }
+        if (status === 'cancelled') {
+            const res = await apiClient.get(`Planning/GetAllCancelRequirementsStatus/${transformId}`)
+            return res.data
+        }
+        else {
+            const res = await apiClient.get(`Planning/GetAllPendingRequestWithRequirements/${transformId}`)
+            return res.data
+        }
+    }
 
     const fetchRequirements = () => {
         fetchRequirementsApi(transformId).then(res => {
@@ -64,7 +75,7 @@ export const ListofRawMaterialsRequirements = ({ transformId }) => {
                             {transformId ?
                                 requirements?.map((r, i) =>
                                     <Tr key={i}>
-                                        <Td>{i+1}</Td>
+                                        <Td>{i + 1}</Td>
                                         <Td>{transformId}</Td>
                                         <Td>{r.itemCode}</Td>
                                         <Td>{r.itemDescription}</Td>

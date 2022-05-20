@@ -4,7 +4,7 @@ import EditModalReject from './Edit-Modal-Reject'
 import CancelSubmit from './Cancel-Submit'
 import RequestRejectSubmit from './Request-Reject-Submit'
 
-const SubmitButtons = ({ transformId, setTransformId, rejects, fetchRejected, fetchRequirements, editData }) => {
+const SubmitButtons = ({ transformId, setTransformId, rejects, fetchRejected, fetchRequirements, editData, fetchNotification }) => {
     
     const { isOpen: isRequestOpen, onOpen: openRequest, onClose: closeRequest } = useDisclosure()
     const { isOpen: isEditOpen, onOpen: openEdit, onClose: closeEdit } = useDisclosure()
@@ -39,6 +39,7 @@ const SubmitButtons = ({ transformId, setTransformId, rejects, fetchRejected, fe
                         fetchRejected={fetchRejected}
                         fetchRequirements={fetchRequirements}
                         setTransformId={setTransformId}
+                        fetchNotification={fetchNotification}
                     />
                 )
             }
@@ -54,6 +55,7 @@ const SubmitButtons = ({ transformId, setTransformId, rejects, fetchRejected, fe
                         fetchRejected={fetchRejected}
                         fetchRequirements={fetchRequirements}
                         editData={editData}
+                        fetchNotification={fetchNotification}
                     />
                 )
             }
@@ -67,6 +69,7 @@ const SubmitButtons = ({ transformId, setTransformId, rejects, fetchRejected, fe
                         fetchRejected={fetchRejected}
                         fetchRequirements={fetchRequirements}
                         setTransformId={setTransformId}
+                        fetchNotification={fetchNotification}
                     />
                 )
             }

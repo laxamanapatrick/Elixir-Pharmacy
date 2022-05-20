@@ -15,22 +15,25 @@ import {
     Td,
     Thead,
     Th,
+    Text,
+    Box,
 } from '@chakra-ui/react'
+import { CgDanger } from 'react-icons/cg'
 
 const ErrorModal = ({ isOpen, onClose, errorData }) => {
 
-    console.log(errorData)
-
     return (
-        <Modal isCentered size='4xl' isOpen={isOpen} onClose={onClose}>
+        <Modal isCentered size='4xl' isOpen={isOpen} onClose={() => {}}>
             <ModalOverlay />
             <ModalContent>
                 <ModalHeader>
-                    <Flex justifyContent='center'>
-                        Out of Stock
+                    <Flex justifyContent='space-between'>
+                        <CgDanger fontSize='30px' color='red' />
+                        <Text>Out of Stock</Text>
+                        <Box></Box>
                     </Flex>
                 </ModalHeader>
-                <ModalCloseButton />
+                <ModalCloseButton onClick={onClose} />
                 <ModalBody>
                     <Table>
                         <Thead>

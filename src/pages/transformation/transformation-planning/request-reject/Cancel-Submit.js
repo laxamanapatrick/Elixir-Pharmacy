@@ -22,7 +22,7 @@ import { BsFillQuestionOctagonFill } from 'react-icons/bs'
 import apiClient from '../../../../services/apiClient'
 import {ToastComponent} from '../../../../components/Toast'
 
-const CancelSubmit = ({ isOpen, onClose, transformId, setTransformId, fetchRejected, fetchRequirements }) => {
+const CancelSubmit = ({ isOpen, onClose, transformId, setTransformId, fetchRejected, fetchRequirements, fetchNotification }) => {
 
     const [reasons, setReasons] = useState([])
     const [cancelRemarks, setCancelRemarks] = useState([])
@@ -61,6 +61,7 @@ const CancelSubmit = ({ isOpen, onClose, transformId, setTransformId, fetchRejec
                         setTransformId("")
                         fetchRejected()
                         fetchRequirements()
+                        fetchNotification()
                         onClose()
                     })
                     .catch(err => {

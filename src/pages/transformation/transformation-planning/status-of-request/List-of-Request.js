@@ -18,14 +18,14 @@ import {
 import PageScrollTransformation from '../../../../components/PageScroll-Transformation'
 import apiClient from '../../../../services/apiClient'
 
-const fetchRequestByStatusApi = async (status) => {
-  const res = await apiClient.get(`Planning/GetAllPendingRequest?status=${status}`)
-  return res.data
-}
 
-export const ListofRequest = ({ setTransformId, transformId }) => {
+export const ListofRequest = ({ setTransformId, transformId, status, setStatus }) => {
+  
+  const fetchRequestByStatusApi = async (status) => {
+    const res = await apiClient.get(`Planning/GetAllPendingRequest?status=${status}`)
+    return res.data
+  }
 
-  const [status, setStatus] = useState("pending")
   const [requests, setRequests] = useState([])
 
   const fetchRequestByStatus = () => {

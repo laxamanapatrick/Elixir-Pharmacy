@@ -6,11 +6,12 @@ import { ListofRequest } from './status-of-request/List-of-Request'
 const StatusOfRequest = () => {
 
   const [transformId, setTransformId] = useState("")
+  const [status, setStatus] = useState("pending")
 
   return (
     <VStack spacing={5} w='full' h='auto'>
-      <ListofRequest setTransformId={setTransformId} transformId={transformId} />
-      <ListofRawMaterialsRequirements transformId={transformId} />
+      <ListofRequest setTransformId={setTransformId} transformId={transformId} status={status} setStatus={setStatus} />
+      <ListofRawMaterialsRequirements transformId={transformId} status={status} />
     </VStack>
   )
 }

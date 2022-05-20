@@ -16,7 +16,8 @@ import {
     Select,
     Text,
     VStack,
-    useToast
+    useToast,
+    useDisclosure
 } from '@chakra-ui/react'
 import DatePicker from 'react-datepicker'
 import { useForm, Controller } from 'react-hook-form'
@@ -26,6 +27,7 @@ import { decodeUser } from '../../../../services/decode-user';
 import { ToastComponent } from '../../../../components/Toast';
 import apiClient from '../../../../services/apiClient';
 import moment from 'moment';
+import ErrorModal from '../add-request/Error-Modal';
 
 const currentUser = decodeUser()
 
@@ -41,16 +43,19 @@ const schema = yup.object().shape({
     })
 })
 
-const EditModalReject = ({ isOpen, onClose, transformId, setTransformId, editData, fetchRejected, fetchRequirements }) => {
+const EditModalReject = ({ isOpen, onClose, transformId, setTransformId, editData, fetchRejected, fetchRequirements, fetchNotification }) => {
 
     const [formulas, setFormulas] = useState([])
     const [code, setCode] = useState("")
     const [codeData, setCodeData] = useState([])
+    const [errorData, setErrorData] = useState([])
 
     const resetCode = useRef()
     const resetVersion = useRef()
 
     const toast = useToast()
+
+    const { isOpen: isErrorOpen, onOpen: openError, onClose: closeError } = useDisclosure()
 
     const { reset, handleSubmit, control, watch, getValues, setValue, formState: { errors, isValid } } = useForm({
         resolver: yupResolver(schema),
@@ -162,9 +167,14 @@ const EditModalReject = ({ isOpen, onClose, transformId, setTransformId, editDat
                 setTransformId("")
                 fetchRejected()
                 fetchRequirements()
+                fetchNotification()
                 onClose()
             }).catch(err => {
                 ToastComponent("Error", "Edit Failed", "error", toast)
+                setErrorData(err.response.data.outofStock)
+                if (err.response) {
+                    openError()
+                }
             })
         } catch (err) {
         }
@@ -337,6 +347,16 @@ const EditModalReject = ({ isOpen, onClose, transformId, setTransformId, editDat
                     </ModalFooter>
                 </form>
             </ModalContent>
+
+            {
+                isErrorOpen && (
+                    <ErrorModal
+                        isOpen={isErrorOpen}
+                        onClose={closeError}
+                        errorData={errorData}
+                    />
+                )
+            }
 
         </Modal >
     )

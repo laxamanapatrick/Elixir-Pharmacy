@@ -115,7 +115,7 @@ const TransformationPlanningPage = () => {
             :
             navigation === 3 ?
               (
-                <RequestReject />
+                <RequestReject fetchNotification={fetchNotification} />
               )
               :
               ""
