@@ -23,7 +23,7 @@ import { CgDanger } from 'react-icons/cg'
 const ErrorModal = ({ isOpen, onClose, errorData }) => {
 
     return (
-        <Modal isCentered size='4xl' isOpen={isOpen} onClose={() => {}}>
+        <Modal isCentered size='4xl' isOpen={isOpen} onClose={() => { }}>
             <ModalOverlay />
             <ModalContent>
                 <ModalHeader>
@@ -39,7 +39,8 @@ const ErrorModal = ({ isOpen, onClose, errorData }) => {
                         <Thead>
                             <Tr>
                                 <Th>Item Code</Th>
-                                <Th>Stock Left</Th>
+                                <Th>Quantity per batch</Th>
+                                <Th>Stock on hand</Th>
                                 <Th>Stock needed for this request</Th>
                             </Tr>
                         </Thead>
@@ -49,6 +50,10 @@ const ErrorModal = ({ isOpen, onClose, errorData }) => {
                                     <Tr key={i}>
                                         <Td>{ed.itemCode}</Td>
                                         <Td>{ed.quantity}</Td>
+                                        <Td
+
+                                        >
+                                            {ed.warehouseStock}</Td>
                                         <Td>{ed.quantityNeeded}</Td>
                                     </Tr>
                                 )

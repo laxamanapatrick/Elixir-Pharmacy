@@ -31,7 +31,7 @@ const schema = yup.object().shape({
         uom: yup.string(),
         prodPlan: yup.date().required(),
         version: yup.number().required().typeError(),
-        batch: yup.number().required().typeError(),
+        batch: yup.number().required().typeError("Must be a number"),
         quantity: yup.number(),
     })
 })
@@ -95,6 +95,10 @@ export const RawMaterialsInformation = ({ formulas, setCode, codeData, fetchRequ
     }
 
     const submitHandler = (data) => {
+        if (data.formData.batch < 0) {
+            ToastComponent("Error!", "Negative values are not allowed.", "error", toast)
+            return
+        }
         try {
             const res = apiClient.post('Planning/AddNewTransformationRequest', data.formData).then((res) => {
                 ToastComponent("Success", "Request has been submitted", "success", toast)
@@ -216,17 +220,20 @@ export const RawMaterialsInformation = ({ formulas, setCode, codeData, fetchRequ
                                 <Text fontSize='xs' fontWeight='semibold' w='40%'>
                                     Batch:
                                 </Text>
-                                <Controller
-                                    name='formData.batch'
-                                    control={control}
-                                    render={
-                                        ({
-                                            field: { onChange, value }
-                                        }) => (
-                                            <Input bgColor='#ffffe0' onChange={onChange} value={value} />
-                                        )
-                                    }
-                                />
+                                <VStack spacing={0} w='full'>
+                                    <Controller
+                                        name='formData.batch'
+                                        control={control}
+                                        render={
+                                            ({
+                                                field: { onChange, value }
+                                            }) => (
+                                                <Input bgColor='#ffffe0' onChange={onChange} value={value} />
+                                            )
+                                        }
+                                    />
+                                    <Text color="danger" fontSize="xs">{errors.formData?.batch?.message}</Text>
+                                </VStack>
                             </HStack>
                         </VStack>
                         <VStack>

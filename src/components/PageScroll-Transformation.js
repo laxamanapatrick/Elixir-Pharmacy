@@ -3,7 +3,8 @@ import { Box, Flex, VStack } from '@chakra-ui/react';
 
 const PageScrollTransformation = ({ children, minHeight, maxHeight }) => {
     return (
-        <Box w="full" overflowY="auto" overflowX="auto" m={0.5}
+        <Box overflowY="auto" overflowX="auto" m={0.5}
+            w="full"
             minHeight={minHeight}
             maxHeight={maxHeight}
             sx={{
@@ -18,7 +19,7 @@ const PageScrollTransformation = ({ children, minHeight, maxHeight }) => {
                 },
             }}
         >
-                {children}
+            {children}
         </Box>
     )
 };

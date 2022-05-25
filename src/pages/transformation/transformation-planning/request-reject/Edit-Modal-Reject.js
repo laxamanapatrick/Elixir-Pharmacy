@@ -66,7 +66,7 @@ const EditModalReject = ({ isOpen, onClose, transformId, setTransformId, editDat
                 itemCode: "",
                 itemDescription: "",
                 uom: "",
-                prodPlan: moment("").format("YYYY-MM-DD"),
+                prodPlan: new Date(),
                 version: "",
                 batch: "",
                 quantity: "",
@@ -124,8 +124,6 @@ const EditModalReject = ({ isOpen, onClose, transformId, setTransformId, editDat
         }
     }, [code])
 
-    // console.log(watch('formData'))
-
     useEffect(() => {
         const itemCode = getValues('formData.itemCode')
         if (itemCode) {
@@ -135,7 +133,7 @@ const EditModalReject = ({ isOpen, onClose, transformId, setTransformId, editDat
             setCode("")
         }
         setValue('formData.version', "")
-        setValue('formData.prodPlan', "")
+        // setValue('formData.prodPlan', "")
         setValue('formData.itemDescription', "")
         setValue('formData.uom', "")
         setValue('formData.batch', "")
@@ -153,6 +151,10 @@ const EditModalReject = ({ isOpen, onClose, transformId, setTransformId, editDat
     }, [watch('formData.version')])
 
     const submitHandler = (data) => {
+        if (data.formData.batch < 0) {
+            ToastComponent("Error!", "Negative values are not allowed.", "error", toast)
+            return
+        }
         try {
             const res = apiClient.put(`Planning/EditTransformationRequest/${transformId}`,
                 {
@@ -180,6 +182,11 @@ const EditModalReject = ({ isOpen, onClose, transformId, setTransformId, editDat
         }
     }
 
+    // console.log(editData)
+    // console.log(watch('formData'))
+    // const res = codeData.filter(item => item.version === 1)
+    // console.log("Code Data", res)
+
     return (
         <Modal isOpen={isOpen} onClose={() => { }} isCentered size='4xl'>
             <ModalOverlay />
@@ -190,8 +197,61 @@ const EditModalReject = ({ isOpen, onClose, transformId, setTransformId, editDat
                     </HStack>
                 </ModalHeader>
                 <ModalCloseButton onClick={onClose} />
+
                 <form onSubmit={handleSubmit(submitHandler)}>
                     <ModalBody>
+
+                        <Text textAlign='center'>From:</Text>
+                        <Flex justifyContent='space-between' mt={3} mb={3}>
+                            <VStack w='32%'>
+                                <HStack w='full'>
+                                    <Text fontSize='xs' fontWeight='semibold' w='40%'>
+                                        Item Code:
+                                    </Text>
+                                    <Text w='full' p={2} bgColor='gray.200'>{editData.itemCode}</Text>
+                                </HStack>
+                                <HStack w='full'>
+                                    <Text fontSize='xs' fontWeight='semibold' w='40%'>
+                                        Version:
+                                    </Text>
+                                    <Text w='full' p={2} bgColor='gray.200'>{editData.version}</Text>
+                                </HStack>
+                                <HStack w='full'>
+                                    <Text fontSize='xs' fontWeight='semibold' w='40%'>
+                                        Prod Plan:
+                                    </Text>
+                                    <Text w='full' p={2} bgColor='gray.200'>{editData.prodPlan}</Text>
+                                </HStack>
+                                <HStack w='full'>
+                                    <Text fontSize='xs' fontWeight='semibold' w='40%'>
+                                        Batch:
+                                    </Text>
+                                    <Text w='full' p={2} bgColor='gray.200'>{editData.batch}</Text>
+                                </HStack>
+                            </VStack>
+                            <VStack w='38%'>
+                                <HStack w='full'>
+                                    <Text fontSize='xs' fontWeight='semibold' w='40%'>
+                                        Item Description:
+                                    </Text>
+                                    <Text w='full' p={2} bgColor='gray.200'>{editData.itemDescription}</Text>
+                                </HStack>
+                                <HStack w='full'>
+                                    <Text fontSize='xs' fontWeight='semibold' w='40%'>
+                                        UOM:
+                                    </Text>
+                                    <Text w='full' p={2} bgColor='gray.200'>{editData.uom}</Text>
+                                </HStack>
+                                <HStack w='full'>
+                                    <Text fontSize='xs' fontWeight='semibold' w='40%'>
+                                        Quantity:
+                                    </Text>
+                                    <Text w='full' p={2} bgColor='gray.200'>{editData.quantity}</Text>
+                                </HStack>
+                            </VStack>
+                        </Flex>
+
+                        <Text textAlign='center'>To:</Text>
                         <Flex justifyContent='space-between' mt={3}>
                             <VStack>
                                 <HStack w='full'>
@@ -232,18 +292,18 @@ const EditModalReject = ({ isOpen, onClose, transformId, setTransformId, editDat
                                             ({
                                                 field: { onChange }
                                             }) => (
-                                                // code ? (
-                                                <Select
-                                                    onChange={onChange}
-                                                    ref={resetVersion}
-                                                    placeholder='Version'
-                                                    bgColor='#ffffe0'
-                                                >
-                                                    {codeData?.map((cd, i) => (
-                                                        <option key={i} value={cd.version}>{cd.version}</option>
-                                                    ))}
-                                                </Select>
-                                                // ) : <Input disabled bgColor='#ffffe0' title='Item code is required' />
+                                                codeData.length > 0 ? (
+                                                    <Select
+                                                        onChange={onChange}
+                                                        ref={resetVersion}
+                                                        placeholder='Version'
+                                                        bgColor='#ffffe0'
+                                                    >
+                                                        {codeData?.map((cd, i) => (
+                                                            <option key={i} value={cd.version}>{cd.version}</option>
+                                                        ))}
+                                                    </Select>
+                                                ) : <Input disabled bgColor='#ffffe0' title='Item code is required' />
                                             )
                                         }
                                     />
@@ -272,17 +332,20 @@ const EditModalReject = ({ isOpen, onClose, transformId, setTransformId, editDat
                                     <Text fontSize='xs' fontWeight='semibold' w='40%'>
                                         Batch:
                                     </Text>
-                                    <Controller
-                                        name='formData.batch'
-                                        control={control}
-                                        render={
-                                            ({
-                                                field: { onChange, value }
-                                            }) => (
-                                                <Input bgColor='#ffffe0' onChange={onChange} value={value} />
-                                            )
-                                        }
-                                    />
+                                    <VStack spacing={0} w='full'>
+                                        <Controller
+                                            name='formData.batch'
+                                            control={control}
+                                            render={
+                                                ({
+                                                    field: { onChange, value }
+                                                }) => (
+                                                    <Input bgColor='#ffffe0' onChange={onChange} value={value} />
+                                                )
+                                            }
+                                        />
+                                        <Text color="danger" fontSize="xs">{errors.formData?.batch?.message}</Text>
+                                    </VStack>
                                 </HStack>
                             </VStack>
                             <VStack>
@@ -336,6 +399,7 @@ const EditModalReject = ({ isOpen, onClose, transformId, setTransformId, editDat
                                 </HStack>
                             </VStack>
                         </Flex>
+
                     </ModalBody>
                     <ModalFooter>
                         <Flex justifyContent='end' w='full' mt={8}>
@@ -346,6 +410,7 @@ const EditModalReject = ({ isOpen, onClose, transformId, setTransformId, editDat
                         </Flex>
                     </ModalFooter>
                 </form>
+
             </ModalContent>
 
             {

@@ -40,7 +40,7 @@ export const ListofRawMaterialsRequirements = ({ requirements, transformId }) =>
                                     <Th color='white'>Version</Th>
                                     <Th color='white'>Quantity</Th>
                                     <Th color='white'>Prod Plan</Th>
-                                    <Th color='white'>Request By</Th>
+                                    {/* <Th color='white'>Request By</Th> */}
                                 </Tr>
                             </Thead>
                             <Tbody>
@@ -57,7 +57,7 @@ export const ListofRawMaterialsRequirements = ({ requirements, transformId }) =>
                                                 <Td>{r.version}</Td>
                                                 <Td>{r.quantity}</Td>
                                                 <Td>{r.prodPlan}</Td>
-                                                <Td>{r.addedBy}</Td>
+                                                {/* <Td>{r.addedBy}</Td> */}
                                             </Tr>
                                         )
                                         : null
