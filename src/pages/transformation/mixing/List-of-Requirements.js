@@ -2,7 +2,10 @@ import { Flex, Table, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react'
 import React from 'react'
 import PageScrollTransformation from '../../../components/PageScroll-Transformation'
 
-export const ListofRequirements = () => {
+export const ListofRequirements = ({ requirements }) => {
+
+    console.log(requirements)
+
     return (
         <Flex w='full' flexDirection='column'>
             <Text color='white' bgColor='secondary' textAlign='center'>List of Raw Materials Requirements</Text>

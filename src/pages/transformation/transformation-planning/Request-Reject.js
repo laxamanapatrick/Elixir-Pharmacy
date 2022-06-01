@@ -15,7 +15,7 @@ const RequestReject = ({ fetchNotification }) => {
   const [editData, setEditData] = useState([])
 
   const fetchRejectedApi = async (status) => {
-    const res = await apiClient.get(`Planning/GetAllPendingRequest?status=${status}`)
+    const res = await apiClient.get(`Planning/GetAllRejectRequest`)
     return res.data
   }
 

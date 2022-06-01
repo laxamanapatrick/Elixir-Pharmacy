@@ -1,19 +1,127 @@
-import { Button, Flex, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from '@chakra-ui/react'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { Button, Flex, HStack, Select, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from '@chakra-ui/react'
+import {
+  Pagination,
+  usePagination,
+  PaginationNext,
+  PaginationPage,
+  PaginationPrevious,
+  PaginationContainer,
+  PaginationPageGroup,
+} from '@ajna/pagination'
+import apiClient from '../../../services/apiClient'
 
-export const FormulaInformation = () => {
+const fetchInformationApi = async (pageNumber) => {
+  const res = await apiClient.get(`Preparation/GetTransformationFormulaPagination/?pageNumber=${pageNumber}&pageSize=1`)
+  return res.data
+}
+
+export const FormulaInformation = ({ setTransformId, setBatch }) => {
+
+  const [info, setInfo] = useState([])
+
+  const [pageTotal, setPageTotal] = useState(undefined);
+
+  const outerLimit = 2;
+  const innerLimit = 2;
+  const { currentPage, setCurrentPage, pagesCount, pages } = usePagination({
+    total: pageTotal,
+    limits: {
+      outer: outerLimit,
+      inner: innerLimit,
+    },
+    initialState: { currentPage: 1, pageSize: 1 },
+  })
+
+  const fetchInformation = () => {
+    fetchInformationApi(currentPage).then(res => {
+      setInfo(res)
+      setPageTotal(res.totalCount)
+    })
+  }
+
+  useEffect(() => {
+    fetchInformation()
+
+    return () => {
+      setInfo([])
+    }
+  }, [currentPage])
+
+  useEffect(() => {
+    {
+      info?.preparation?.map(item => {
+        item.id ? setTransformId(item?.id) : setTransformId(null)
+        item.batch ? setBatch(item?.batch) : setBatch(null)
+      }
+      )
+    }
+  }, [info])
+
+  const handlePageChange = (nextPage) => {
+    setCurrentPage(nextPage)
+  }
+
   return (
+
     <Flex w='full' flexDirection='column' mx={5} mb={10}>
 
       <Flex w='auto' justifyContent='space-between' mx={5} mt={2}>
-        <Flex>
-          <Text fontWeight='semibold' size='sm'>Transform ID: 21312321332</Text>
+        <Flex alignItems='center'>
+          {
+            info?.preparation?.map(item =>
+              <Text key={item} fontWeight='semibold' fontSize='20px'>Transform ID: {item.id}</Text>
+            )
+          }
         </Flex>
-        <Flex>
-          <Button variant='outline' size='xs' px={5}>Previous</Button>
-          <Text mx={2} fontSize='sm'>1</Text>
-          <Button variant='outline' size='xs' px={8}>Next</Button>
-        </Flex>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <Pagination
+          pagesCount={pagesCount}
+          currentPage={currentPage}
+          onPageChange={handlePageChange}
+        >
+          <PaginationContainer>
+            <PaginationPrevious
+              border='1px' fontSize='xs' px={2} _hover={{ bg: 'accent', color: 'white' }}
+            >
+              {"< Previous"}
+            </PaginationPrevious>
+            <Text mx={1} bgColor='secondary' color='white' px={2} pt={1.5} >{currentPage}</Text>
+            <PaginationNext
+              border='1px' fontSize='xs' px={4} _hover={{ bg: 'accent', color: 'white' }}
+            >
+              {"Next >"}
+            </PaginationNext>
+          </PaginationContainer>
+        </Pagination>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       </Flex>
 
       <VStack spacing={0.5} mt={5} w='full' justifyContent='center'>
@@ -27,11 +135,15 @@ export const FormulaInformation = () => {
             </Tr>
           </Thead>
           <Tbody>
-            <Tr>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-            </Tr>
+            {
+              info?.preparation?.map((item, i) =>
+                <Tr key={i}>
+                  <Td>{item.itemCode}</Td>
+                  <Td>{item.itemDescription}</Td>
+                  <Td>{item.quantity}</Td>
+                </Tr>
+              )
+            }
           </Tbody>
         </Table>
       </VStack>
@@ -40,21 +152,25 @@ export const FormulaInformation = () => {
         <Table w='90%' variant='striped' size='sm'>
           <Thead bgColor='secondary'>
             <Tr>
-              <Th color='white'>Item Code</Th>
-              <Th color='white'>Item Description</Th>
+              <Th color='white'>Stock on Hand</Th>
+              <Th color='white'>Batch</Th>
             </Tr>
           </Thead>
           <Tbody>
-            <Tr>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-            </Tr>
+            {
+              info?.preparation?.map((item, i) =>
+                <Tr key={i}>
+                  <Td>{item.warehouseStock}</Td>
+                  <Td>{item.batch}</Td>
+                </Tr>
+              )
+            }
           </Tbody>
         </Table>
-        <Text fontSize='xs' w='90%'>Some text provided here</Text>
+        {/* <Text fontSize='xs' w='90%'>{info?.preparation?.length} remaining of transformation formula</Text> */}
       </VStack>
 
 
-    </Flex>
+    </Flex >
   )
 }

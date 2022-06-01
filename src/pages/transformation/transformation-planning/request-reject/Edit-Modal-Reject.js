@@ -17,8 +17,17 @@ import {
     Text,
     VStack,
     useToast,
-    useDisclosure
+    useDisclosure,
+    Popover,
+    PopoverTrigger,
+    PopoverContent,
+    PopoverArrow,
+    PopoverCloseButton,
+    PopoverHeader,
+    PopoverBody,
+    PopoverFooter
 } from '@chakra-ui/react'
+import { BsFillQuestionOctagonFill } from 'react-icons/bs'
 import DatePicker from 'react-datepicker'
 import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -56,6 +65,7 @@ const EditModalReject = ({ isOpen, onClose, transformId, setTransformId, editDat
     const toast = useToast()
 
     const { isOpen: isErrorOpen, onOpen: openError, onClose: closeError } = useDisclosure()
+    const { isOpen: isSaveOpen, onOpen: openSave, onClose: closeSave } = useDisclosure()
 
     const { reset, handleSubmit, control, watch, getValues, setValue, formState: { errors, isValid } } = useForm({
         resolver: yupResolver(schema),
@@ -150,42 +160,62 @@ const EditModalReject = ({ isOpen, onClose, transformId, setTransformId, editDat
         }
     }, [watch('formData.version')])
 
+    // useEffect(() => {
+    //     if (watch('formData.itemCode') == editData.itemCode) {
+    //         ToastComponent("Warning", "You are providing the same Item Code.", "warning", toast)
+    //     }
+    // }, [watch('formData.itemCode')])
+
+    // useEffect(() => {
+    //     if (moment(watch('formData.prodPlan')).format("MM/dd/yyyy") == moment(editData.prodPlan).format("MM/dd/yyyy") && moment(watch('formData.prodPlan')).format("MM/dd/yyyy") != moment(new Date()).format("MM/dd/yyyy")) {
+    //         ToastComponent("Warning", "You are providing the same Production Plan.", "warning", toast)
+    //     }
+    // }, [watch('formData.prodPlan')])
+
+    // useEffect(() => {
+    //     if (watch('formData.batch') == editData.batch) {
+    //         ToastComponent("Warning", "You are providing the same batch number.", "warning", toast)
+    //     }
+    // }, [watch('formData.batch')])
+
     const submitHandler = (data) => {
-        if (data.formData.batch < 0) {
-            ToastComponent("Error!", "Negative values are not allowed.", "error", toast)
+        if (data.formData.batch <= 0) {
+            ToastComponent("Error!", "Zero or Negative values are not allowed.", "error", toast)
             return
         }
-        try {
-            const res = apiClient.put(`Planning/EditTransformationRequest/${transformId}`,
-                {
-                    transformId: transformId,
-                    itemCode: data.formData.itemCode,
-                    version: data.formData.version,
-                    batch: data.formData.batch,
-                    prodPlan: moment(data.formData.prodPlan).format("YYYY-MM-DD")
-                }
-            ).then((res) => {
-                ToastComponent("Success", "Request has been submitted", "success", toast)
-                setTransformId("")
-                fetchRejected()
-                fetchRequirements()
-                fetchNotification()
-                onClose()
-            }).catch(err => {
-                ToastComponent("Error", "Edit Failed", "error", toast)
-                setErrorData(err.response.data.outofStock)
-                if (err.response) {
-                    openError()
-                }
-            })
-        } catch (err) {
+        if (data.formData.itemCode == editData.itemCode && data.formData.version == editData.version && data.formData.batch == editData.batch && moment(data.formData.prodPlan).format("MM/dd/yyyy") == moment(editData.prodPlan).format("MM/dd/yyyy")) {
+            openSave()
+            return
         }
-    }
+        else {
+            try {
+                const res = apiClient.put(`Planning/EditTransformationRequest/${transformId}`,
+                    {
+                        transformId: transformId,
+                        itemCode: data.formData.itemCode,
+                        version: data.formData.version,
+                        batch: data.formData.batch,
+                        prodPlan: moment(data.formData.prodPlan).format("YYYY-MM-DD")
+                    }
+                ).then((res) => {
+                    ToastComponent("Success", "Request has been submitted", "success", toast)
+                    setTransformId("")
+                    fetchRejected()
+                    fetchRequirements()
+                    fetchNotification()
+                    onClose()
+                }).catch(err => {
+                    ToastComponent("Error", "Edit Failed", "error", toast)
+                    setErrorData(err.response.data.outofStock)
+                    if (err.response) {
+                        openError()
+                    }
+                })
+            } catch (err) {
+            }
+        }
 
-    // console.log(editData)
-    // console.log(watch('formData'))
-    // const res = codeData.filter(item => item.version === 1)
-    // console.log("Code Data", res)
+    }
 
     return (
         <Modal isOpen={isOpen} onClose={() => { }} isCentered size='4xl'>
@@ -201,7 +231,7 @@ const EditModalReject = ({ isOpen, onClose, transformId, setTransformId, editDat
                 <form onSubmit={handleSubmit(submitHandler)}>
                     <ModalBody>
 
-                        <Text textAlign='center'>From:</Text>
+                        <Text bgColor='secondary' color='white' textAlign='center'>From:</Text>
                         <Flex justifyContent='space-between' mt={3} mb={3}>
                             <VStack w='32%'>
                                 <HStack w='full'>
@@ -251,7 +281,7 @@ const EditModalReject = ({ isOpen, onClose, transformId, setTransformId, editDat
                             </VStack>
                         </Flex>
 
-                        <Text textAlign='center'>To:</Text>
+                        <Text bgColor='secondary' color='white' textAlign='center'>To:</Text>
                         <Flex justifyContent='space-between' mt={3}>
                             <VStack>
                                 <HStack w='full'>
@@ -259,6 +289,7 @@ const EditModalReject = ({ isOpen, onClose, transformId, setTransformId, editDat
                                     <Text fontSize='xs' fontWeight='semibold' w='40%'>
                                         Item Code:
                                     </Text>
+                                    {/* <VStack w='full'> */}
                                     <Controller
                                         name='formData.itemCode'
                                         control={control}
@@ -280,6 +311,8 @@ const EditModalReject = ({ isOpen, onClose, transformId, setTransformId, editDat
                                             )
                                         }
                                     />
+                                    {/* <Text color="#808500" fontSize="xs">{watch('formData.itemCode') == editData.itemCode ? "Warning: Same item code provided" : ""}</Text>
+                                    </VStack> */}
                                 </HStack>
                                 <HStack w='full'>
                                     <Text fontSize='xs' fontWeight='semibold' w='40%'>
@@ -401,6 +434,7 @@ const EditModalReject = ({ isOpen, onClose, transformId, setTransformId, editDat
                         </Flex>
 
                     </ModalBody>
+
                     <ModalFooter>
                         <Flex justifyContent='end' w='full' mt={8}>
                             <ButtonGroup size='sm'>
@@ -409,6 +443,7 @@ const EditModalReject = ({ isOpen, onClose, transformId, setTransformId, editDat
                             </ButtonGroup>
                         </Flex>
                     </ModalFooter>
+
                 </form>
 
             </ModalContent>
@@ -423,8 +458,99 @@ const EditModalReject = ({ isOpen, onClose, transformId, setTransformId, editDat
                 )
             }
 
+            {
+                isSaveOpen && (
+                    <SaveModal
+                        isOpen={isSaveOpen}
+                        onClose={closeSave}
+                        closeEditModal={onClose}
+                        openError={openError}
+                        transformId={transformId}
+                        submitData={watch('formData')}
+                        setTransformId={setTransformId}
+                        fetchRejected={fetchRejected}
+                        fetchRequirements={fetchRequirements}
+                        fetchNotification={fetchNotification}
+                        setErrorData={setErrorData}
+                    />
+                )
+            }
+
         </Modal >
     )
 }
 
 export default EditModalReject
+
+
+const SaveModal = ({ isOpen, onClose, closeEditModal, openError, transformId, submitData, 
+    setTransformId,
+    fetchRejected,
+    fetchRequirements,
+    fetchNotification,
+    setErrorData }) => {
+
+    const toast = useToast()
+
+    const submitWarning = () => {
+        try {
+            const res = apiClient.put(`Planning/EditTransformationRequest/${transformId}`,
+                {
+                    transformId: transformId,
+                    itemCode: submitData.itemCode,
+                    version: submitData.version,
+                    batch: submitData.batch,
+                    prodPlan: moment(submitData.prodPlan).format("YYYY-MM-DD")
+                }
+            ).then((res) => {
+                ToastComponent("Success", "Request has been submitted", "success", toast)
+                setTransformId("")
+                fetchRejected()
+                fetchRequirements()
+                fetchNotification()
+                onClose()
+                closeEditModal()
+            }).catch(err => {
+                ToastComponent("Error", "Edit Failed", "error", toast)
+                setErrorData(err.response.data.outofStock)
+                if (err.response) {
+                    openError()
+                }
+            })
+        } catch (err) {
+        }
+    }
+
+    return (
+
+        <Modal isCentered size='xl' isOpen={isOpen} onClose={() => { }}>
+            <ModalContent>
+
+                <ModalHeader>
+                    <VStack justifyContent='center'>
+                        <BsFillQuestionOctagonFill fontSize='40px' color='#eed202' />
+                        <Heading fontSize='25px'>Warning</Heading>
+                    </VStack>
+                </ModalHeader>
+                <ModalCloseButton onClick={onClose} />
+
+                <ModalBody>
+                    <VStack justifyContent='center'>
+                        <Text textAlign='center'>You have made no changes.</Text>
+                        <Text fontSize='sm'>Do you wish to proceed?</Text>
+                    </VStack>
+                </ModalBody>
+
+                <ModalFooter>
+                    <ButtonGroup size='sm'>
+                        <Button variant='solid' colorScheme='blue' onClick={submitWarning}>Yes</Button>
+                        <Button variant='solid' colorScheme='red' onClick={onClose}>No</Button>
+                    </ButtonGroup>
+                </ModalFooter>
+
+            </ModalContent>
+        </Modal>
+
+    )
+
+}

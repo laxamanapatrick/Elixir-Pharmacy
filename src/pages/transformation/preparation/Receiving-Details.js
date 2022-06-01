@@ -1,7 +1,7 @@
 import React from 'react'
 import { Box, Flex, Text, VStack } from '@chakra-ui/react'
 
-export const ReceivingDetails = () => {
+export const ReceivingDetails = ({ information }) => {
 
   return (
     <VStack spacing={2} mt={2} w='full' justifyContent='center'>
@@ -9,11 +9,11 @@ export const ReceivingDetails = () => {
       <Flex w='90%' justifyContent='space-between'>
         <Box border='1px' p={1} w='40%'>
           <Text bgColor='secondary' color='white' textAlign='center'>Received ID</Text>
-          <Text textAlign='center' fontSize='sm' pt={1}>21321313213</Text>
+          <Text textAlign='center' fontSize='sm' pt={1}>{information?.warehouseReceivedId ? information?.warehouseReceivedId : ''}</Text>
         </Box>
         <Box border='1px' p={1} w='40%'>
           <Text bgColor='secondary' color='white' textAlign='center'>Supplier</Text>
-          <Text textAlign='center' fontSize='sm' pt={1}>Jaypee Obidos</Text>
+          <Text textAlign='center' fontSize='sm' pt={1}>{information?.supplier ? information?.supplier : ''}</Text>
         </Box>
       </Flex>
     </VStack>

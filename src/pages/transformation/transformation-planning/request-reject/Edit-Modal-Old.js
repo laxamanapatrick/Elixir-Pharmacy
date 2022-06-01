@@ -141,10 +141,6 @@ const EditModalReject = ({ isOpen, onClose, transformId, setTransformId, editDat
     }
 
     const submitHandler = () => {
-        console.log('Item Code', itemCode)
-        console.log('Version', version)
-        console.log('Prod Plan', prodPlan)
-        console.log('Batch', batch)
         if (!itemCode) {
             ToastComponent("Error!", "Please provide an Item Code", "error", toast)
             return
@@ -161,10 +157,10 @@ const EditModalReject = ({ isOpen, onClose, transformId, setTransformId, editDat
             ToastComponent("Error!", "Batch quantity is required", "error", toast)
             return
         }
-        // if (data.formData.batch < 0) {
-        //     ToastComponent("Error!", "Negative values are not allowed.", "error", toast)
-        //     return
-        // }
+        if (data.formData.batch < 0) {
+            ToastComponent("Error!", "Negative values are not allowed.", "error", toast)
+            return
+        }
         // try {
         //     const res = apiClient.put(`Planning/EditTransformationRequest/${transformId}`,
         //         {

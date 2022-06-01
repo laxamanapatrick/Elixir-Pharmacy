@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react'
 import { BsFillQuestionOctagonFill } from 'react-icons/bs'
 
-export const StartMixing = () => {
+export const StartMixing = ({ setMixingCue, mixingCue }) => {
 
     const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -23,14 +23,22 @@ export const StartMixing = () => {
 
     return (
         <Flex w='full' justifyContent='end' bgColor='gray.200'>
-            <Button colorScheme='green' px={6} size='sm' onClick={() => mixingModal()}>
-                Start Mixing
-            </Button>
+            {
+                mixingCue === true ?
+                    <Button colorScheme='red' px={6} size='sm' onClick={() => setMixingCue(false)}>
+                        Stop Mixing
+                    </Button>
+                    :
+                    <Button colorScheme='green' px={6} size='sm' onClick={() => mixingModal()}>
+                        Start Mixing
+                    </Button>
+            }
             {
                 isOpen && (
-                    <StartMixingConfirmation
+                    <MixingConfirmation
                         isOpen={isOpen}
                         onClose={onClose}
+                        setMixingCue={setMixingCue}
                     />
                 )
             }
@@ -38,7 +46,12 @@ export const StartMixing = () => {
     )
 }
 
-const StartMixingConfirmation = ({ isOpen, onClose }) => {
+const MixingConfirmation = ({ isOpen, onClose, setMixingCue }) => {
+
+    const mixingHandler = () => {
+        setMixingCue(true)
+        onClose()
+    }
 
     return (
         <Modal size='xl' isCentered isOpen={isOpen} onClose={() => { }}>
@@ -59,7 +72,7 @@ const StartMixingConfirmation = ({ isOpen, onClose }) => {
 
                 <ModalFooter>
                     <ButtonGroup size='md' mt={2}>
-                        <Button colorScheme='blue'>Yes</Button>
+                        <Button colorScheme='blue' onClick={() => mixingHandler()}>Yes</Button>
                         <Button colorScheme='red' onClick={onClose}>No</Button>
                     </ButtonGroup>
                 </ModalFooter>

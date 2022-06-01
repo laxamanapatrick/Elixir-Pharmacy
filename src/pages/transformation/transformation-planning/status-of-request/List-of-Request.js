@@ -20,10 +20,29 @@ import apiClient from '../../../../services/apiClient'
 
 
 export const ListofRequest = ({ setTransformId, transformId, status, setStatus }) => {
-  
-  const fetchRequestByStatusApi = async (status) => {
-    const res = await apiClient.get(`Planning/GetAllPendingRequest?status=${status}`)
-    return res.data
+
+  // const fetchRequestByStatusApi = async (status) => {
+  //   const res = await apiClient.get(`Planning/GetAllPendingRequest?status=${status}`)
+  //   return res.data
+  // }
+
+  const fetchRequestByStatusApi = async () => {
+    if (status === 'approved') {
+      const res = await apiClient.get(`Planning/GetAllApprovedTransformationRequest`)
+      return res.data
+    }
+    if (status === 'cancelled') {
+      const res = await apiClient.get(`Planning/GetAllCancelledTransformationRequest`)
+      return res.data
+    }
+    if (status === 'rejected') {
+      const res = await apiClient.get(`Planning/GetAllRejectRequest`)
+      return res.data
+    }
+    if (status === 'pending') {
+      const res = await apiClient.get(`Planning/GetAllPendingTransformationRequest`)
+      return res.data
+    }
   }
 
   const [requests, setRequests] = useState([])
@@ -92,7 +111,7 @@ export const ListofRequest = ({ setTransformId, transformId, status, setStatus }
                     bgColor={r.id === transformId ? 'table_accent' : 'none'}
                     cursor='pointer'
                   >
-                    <Td>{i+1}</Td>
+                    <Td>{i + 1}</Td>
                     <Td>{r.id}</Td>
                     <Td>{r.itemCode}</Td>
                     <Td>{r.itemDescription}</Td>
@@ -110,7 +129,7 @@ export const ListofRequest = ({ setTransformId, transformId, status, setStatus }
         </PageScrollTransformation>
       </Flex>
       <Flex justifyContent='start' mt={1}>
-      <Text fontSize='xs'>Number of entries: {requests?.length}</Text>
+        <Text fontSize='xs'>Number of entries: {requests?.length}</Text>
       </Flex>
     </Flex>
   )

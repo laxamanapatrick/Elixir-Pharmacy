@@ -1,7 +1,12 @@
 import React from 'react';
+import { ListofOrders } from './orders/List-of-Orders';
 
 const OrdersPage = () => {
-  return <div>Orders Page</div>;
-};
+  return (
+    <>
+      <ListofOrders />
+    </>
+  )
+}
 
 export default OrdersPage;

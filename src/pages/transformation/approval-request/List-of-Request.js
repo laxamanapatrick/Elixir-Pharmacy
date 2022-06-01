@@ -21,15 +21,13 @@ import PageScrollTransformation from '../../../components/PageScroll-Transformat
 
 export const ListofRequest = ({ setTransformId, transformId, setStatus, requests }) => {
 
-  const [count, setCount] = useState(0)
-
-  const statusHandler = (data) => {
-    if (data) {
-      setStatus(data)
-    } else {
-      setStatus("pending")
-    }
-  }
+  // const statusHandler = (data) => {
+  //   if (data) {
+  //     setStatus(data)
+  //   } else {
+  //     setStatus("pending")
+  //   }
+  // }
 
   const requirementsHandler = (data) => {
     if (data) {
@@ -45,11 +43,15 @@ export const ListofRequest = ({ setTransformId, transformId, setStatus, requests
       <Flex justifyContent='space-between' mb={3}>
         <HStack>
           <Text>STATUS:</Text>
-          <Select bgColor='#ffffe0' fontSize='sm' onChange={(e) => statusHandler(e.target.value)}>
+          <Text border='1px' px={2}>PENDING</Text>
+          {/* <Select
+            onChange={(e) => statusHandler(e.target.value)}
+            bgColor='#ffffe0' fontSize='sm'
+          >
             <option value='pending'>PENDING</option>
-            {/* <option value='approve'>APPROVE</option>
-            <option value='reject'>REJECT</option> */}
-          </Select>
+            <option value='approve'>APPROVE</option>
+            <option value='reject'>REJECT</option>
+          </Select> */}
         </HStack>
         <HStack>
           {

@@ -1,52 +1,73 @@
 import React from 'react'
-import { Box, Flex, HStack, Input, Text, VStack } from '@chakra-ui/react'
+import { Box, Flex, HStack, Input, Text, useToast, VStack } from '@chakra-ui/react'
 import { FaCloudscale } from 'react-icons/fa'
+import moment from 'moment'
+import { ToastComponent } from '../../../components/Toast'
 
-export const RequirementsInformation = () => {
+export const RequirementsInformation = ({ information, setWeight, setDisableSave, batch, weight }) => {
+
+  const toast = useToast()
+
+  const weighHandler = (data) => {
+    const minAllowable = Number(information?.quantityNeeded * batch) * 0.95
+    const maxAllowable = Number(information?.quantityNeeded * batch) * 1.05
+    if (data < minAllowable || data > maxAllowable) {
+      setDisableSave(true)
+      setWeight(null)
+    } else {
+      setDisableSave(false)
+      setWeight(data)
+    }
+  }
+
   return (
     <VStack spacing={5} mt={2} w='full' justifyContent='center'>
       <Text mb={3} fontWeight='semibold' w='90%' bgColor='secondary' color='white' textAlign='center'>Raw Materials Requirements Information</Text>
 
       <Flex w='90%' justifyContent='space-between'>
         <Text w='45%' pl={2} bgColor='secondary' color='white'>Item Code:</Text>
-        <Text w='45%' pl={2} bgColor='gray.200' border='1px'>Ekalam09282</Text>
+        <Text w='45%' pl={2} bgColor='gray.200' border='1px'>{information.itemCode ? information.itemCode : ''}</Text>
       </Flex>
 
       <Flex w='90%' justifyContent='space-between'>
         <Text w='45%' pl={2} bgColor='secondary' color='white'>Item Description:</Text>
-        <Text w='45%' pl={2} bgColor='gray.200' border='1px'>Ekalam Jaypee</Text>
+        <Text w='45%' pl={2} bgColor='gray.200' border='1px'>{information.itemDescription ? information.itemDescription : ''}</Text>
       </Flex>
 
       <Flex w='90%' justifyContent='space-between'>
         <Text w='45%' pl={2} bgColor='secondary' color='white'>MFG Date:</Text>
-        <Text w='45%' pl={2} bgColor='gray.200' border='1px'>November ?, 1999</Text>
+        <Text w='45%' pl={2} bgColor='gray.200' border='1px'>{information.manufacturingDate ? moment(information.manufacturingDate).format("MM/DD/yyyy") : ''}</Text>
       </Flex>
 
       <Flex w='90%' justifyContent='space-between'>
         <Text w='45%' pl={2} bgColor='secondary' color='white'>Expiration Date:</Text>
-        <Text w='45%' pl={2} bgColor='gray.200' border='1px'>March ? , 1999</Text>
+        <Text w='45%' pl={2} bgColor='gray.200' border='1px'>{information.expirationDate ? moment(information.expirationDate).format("MM/DD/yyyy") : ''}</Text>
       </Flex>
 
       <Flex w='90%' justifyContent='space-between'>
         <Text w='45%' pl={2} bgColor='secondary' color='white'>Balance:</Text>
-        <Text w='45%' pl={2} bgColor='gray.200' border='1px'>Poor ako</Text>
+        <Text w='45%' pl={2} bgColor='gray.200' border='1px'>{information.balance ? information.balance : ''}</Text>
       </Flex>
 
       <Flex w='90%' justifyContent='space-between'>
         <Text w='45%' pl={2} bgColor='secondary' color='white'>Quantity Needed:</Text>
-        <Text w='45%' pl={2} bgColor='gray.200' border='1px'>69</Text>
+        <Text w='45%' pl={2} bgColor='gray.200' border='1px'>{information.quantityNeeded ? information.quantityNeeded * batch : ''}</Text>
       </Flex>
 
       <Flex w='90%' justifyContent='space-between'>
         <Text w='45%' pl={2} bgColor='secondary' color='white'>Batch:</Text>
-        <Text w='45%' pl={2} bgColor='gray.200' border='1px'>7</Text>
+        <Text w='45%' pl={2} bgColor='gray.200' border='1px'>{information.batch ? information.batch : ''}</Text>
       </Flex>
 
       <Flex w='90%' justifyContent='space-between'>
         <Text w='45%' pl={2} bgColor='secondary' color='white'>Weighing Scale:</Text>
         <HStack w='45%'>
           <FaCloudscale fontSize='25px' />
-          <Input w='full' h={7} p={0} bgColor='#fff8dc' border='1px' type='number' />
+          <Input
+            onChange={(e) => weighHandler(e.target.value)}
+            value={weight}
+            w='full' h={7} p={0} bgColor='#fff8dc' border='1px' type='number'
+          />
         </HStack>
       </Flex>
 

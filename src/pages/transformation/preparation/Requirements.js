@@ -1,8 +1,14 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Flex, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from '@chakra-ui/react'
 import PageScrollTransoformation from '../../../components/PageScroll-Transformation'
+import apiClient from '../../../services/apiClient'
 
-export const Requirements = () => {
+export const Requirements = ({ requirements, setItemCode, itemCode }) => {
+
+  useEffect(() => {
+    setItemCode(requirements[0]?.rawmaterialCode)
+  }, [requirements])
+
   return (
     <VStack spacing={2} mt={5} w='90%' justifyContent='center'>
       <Text fontWeight='semibold' w='full' bgColor='secondary' color='white' textAlign='center'>Raw Materials Requirements</Text>
@@ -19,130 +25,25 @@ export const Requirements = () => {
             </Tr>
           </Thead>
           <Tbody>
-            <Tr bgColor='table_accent'>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-            </Tr>
-            <Tr>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-            </Tr>
-            <Tr>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-            </Tr>
-            <Tr>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-            </Tr>
-            <Tr>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-            </Tr>
-            <Tr>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-            </Tr>
-            <Tr>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-            </Tr>
-            <Tr>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-            </Tr>
-            <Tr>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-            </Tr>
-            <Tr>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-            </Tr>
-            <Tr>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-            </Tr>
-            <Tr>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-            </Tr>
-            <Tr>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-            </Tr>
-            <Tr>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-            </Tr>
-            <Tr>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-              <Td>Yo</Td>
-            </Tr>
+            {
+              requirements?.map((item, i) =>
+                <Tr 
+                // onClick={() => setItemCode(item.rawmaterialCode)}
+                bgColor={item.rawmaterialCode == itemCode ? 'table_accent' : 'none'}
+                key={i}
+                >
+                  <Td>{i + 1}</Td>
+                  <Td>{item.rawmaterialCode}</Td>
+                  <Td>{item.rawmaterialDescription}</Td>
+                  <Td>{item.uom}</Td>
+                  <Td>{item.batch}</Td>
+                  <Td>{item.rawmaterialQuantity}</Td>
+                </Tr>
+              )
+            }
           </Tbody>
         </Table>
       </PageScrollTransoformation>
-      <Text w='full' fontSize='xs' textAlign='start'>4 Remaining raw mats</Text>
     </VStack>
   )
 }

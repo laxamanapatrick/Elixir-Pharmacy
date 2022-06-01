@@ -46,28 +46,32 @@ const LoginPage = () => {
         }
     }
 
-    return <Flex bgColor='secondary' h='100vh' justifyContent='center' alignItems='center'>
-        <form onSubmit={handleSubmit(submitHandler)}>
-            <VStack spacing={4} bgColor='gray.600' pl={10} pr={10} pt={4} pb={3} rounded={6}>
-                <VStack>
-                    <Image width='85px' src='/images/logo.png'></Image>
-                    <Heading color='#18b58f' size='md' fontFamily="Redressed, cursive">Elixir</Heading>
+    return (
+
+        <Flex bgColor='secondary' h='100vh' justifyContent='center' alignItems='center'>
+            <form onSubmit={handleSubmit(submitHandler)}>
+                <VStack spacing={4} bgColor='gray.600' pl={10} pr={10} pt={4} pb={3} rounded={6}>
+                    <VStack>
+                        <Image width='85px' src='/images/logo.png'></Image>
+                        <Heading color='#18b58f' size='md' fontFamily="Redressed, cursive">Elixir</Heading>
+                    </VStack>
+                    <Box>
+                        <Input variant='filled' size='sm' placeholder='Username' {...register("userName")} />
+                        <Text color="danger" fontSize='xs' mt={1}>{errors.userName?.message}</Text>
+                    </Box>
+                    <Box>
+                        <Input variant='filled' size='sm' placeholder='Password' type='password' {...register("password")} />
+                        <Text color="danger" fontSize='xs' mt={1}>{errors.password?.message}</Text>
+                    </Box>
+                    <Button width='full' bgColor='#18b58f' size='sm' type='sumbit' disabled={!isValid} isLoading={isLoading}>
+                        Login
+                    </Button>
+                    <Text color='gray.300' fontSize='10px'>© 2022, Elixir Powered by MIS</Text>
                 </VStack>
-                <Box>
-                    <Input variant='filled' size='sm' placeholder='Username' {...register("userName")} />
-                    <Text color="danger" fontSize='xs' mt={1}>{errors.userName?.message}</Text>
-                </Box>
-                <Box>
-                    <Input variant='filled' size='sm' placeholder='Password' type='password' {...register("password")} />
-                    <Text color="danger" fontSize='xs' mt={1}>{errors.password?.message}</Text>
-                </Box>
-                <Button width='full' bgColor='#18b58f' size='sm' type='sumbit' disabled={!isValid} isLoading={isLoading}>
-                    Login
-                </Button>
-                <Text color='gray.300' fontSize='10px'>© 2022, Elixir Powered by MIS</Text>
-            </VStack>
-        </form>
-    </Flex>;
-};
+            </form>
+        </Flex>
+        
+    )
+}
 
 export default LoginPage;
