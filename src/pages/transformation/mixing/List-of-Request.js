@@ -12,66 +12,30 @@ import {
 import PageScrollTransformation from '../../../components/PageScroll-Transformation'
 import apiClient from '../../../services/apiClient'
 
-const fetchMixingRequestApi = async (pageNumber) => {
-    const res = await apiClient.get(`Preparation/GetAllTransformationForMixingPagination?pageSize=1&pageNumber=${pageNumber}`)
-    return res.data
-}
-
-export const ListofRequest = ({ setTransformId, transformId }) => {
-
-    const [requests, setRequests] = useState([])
-
-    const [pageTotal, setPageTotal] = useState(undefined);
-
-    const outerLimit = 2;
-    const innerLimit = 2;
-    const { currentPage, setCurrentPage, pagesCount, pages } = usePagination({
-        total: pageTotal,
-        limits: {
-            outer: outerLimit,
-            inner: innerLimit,
-        },
-        initialState: { currentPage: 1, pageSize: 1 },
-    })
-
-    const fetchMixingRequest = () => {
-        fetchMixingRequestApi(currentPage).then(res => {
-            setRequests(res)
-            setPageTotal(res.totalCount)
-        })
-    }
+export const ListofRequest = ({ setTransformId, transformId, setBatchRemaining, setCurrentPage, currentPage, pagesCount, requests }) => {
 
     useEffect(() => {
-        fetchMixingRequest()
-
-        return () => {
-            setRequests([])
+        const requestData = requests?.mixing
+        if (requestData) {
+            setTransformId(requestData[0]?.id)
+            setBatchRemaining(requestData[0]?.batchRemaining)
         }
-    }, [currentPage])
-
-    useEffect(() => {
-        if (requests.length > 0) {
-            setTransformId(requests?.mixing[0]?.id)
-        }
-    }, [setRequests])
+    }, [requests])
 
     const handlePageChange = (nextPage) => {
         setCurrentPage(nextPage)
     }
 
-    console.log(transformId)
-
     return (
         <Flex w='full' flexDirection='column'>
-            <Flex w='full' justifyContent='start'>
+            <Flex w='full' justifyContent='space-between'>
                 <HStack spacing={0} mr={8}>
                     <Badge py={1} px={5} mr={2} bgColor='secondary' color='white' fontWeight='semibold'>Transform ID: </Badge>
-                    <Text fontWeight='semibold' fontSize='sm'>213123231</Text>
+                    <Text fontWeight='semibold' fontSize='sm'>{transformId && transformId}</Text>
                 </HStack>
                 {/* <Button variant='outline' size='xs' px={5}>Previous</Button>
                 <Text mx={2} fontSize='sm'>1</Text>
                 <Button variant='outline' size='xs' px={8}>Next</Button> */}
-
 
                 <Pagination
                     pagesCount={pagesCount}
@@ -92,8 +56,6 @@ export const ListofRequest = ({ setTransformId, transformId }) => {
                         </PaginationNext>
                     </PaginationContainer>
                 </Pagination>
-
-
 
             </Flex>
 
@@ -137,7 +99,7 @@ export const ListofRequest = ({ setTransformId, transformId }) => {
                     </Table>
                 </PageScrollTransformation>
             </Flex>
-            <Text fontSize='xs' mb={7}>Number of Records: </Text>
+            <Text fontSize='xs' mb={7}>Number of Records:  {requests?.mixing?.length}</Text>
         </Flex>
     )
 }

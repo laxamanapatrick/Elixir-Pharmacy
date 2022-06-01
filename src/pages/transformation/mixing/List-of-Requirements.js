@@ -2,9 +2,7 @@ import { Flex, Table, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react'
 import React from 'react'
 import PageScrollTransformation from '../../../components/PageScroll-Transformation'
 
-export const ListofRequirements = ({ requirements }) => {
-
-    console.log(requirements)
+export const ListofRequirements = ({ requirements, requests }) => {
 
     return (
         <Flex w='full' flexDirection='column'>
@@ -26,21 +24,25 @@ export const ListofRequirements = ({ requirements }) => {
                             </Tr>
                         </Thead>
                         <Tbody>
-                            <Tr>
-                                <Td>Line</Td>
-                                <Td>Id</Td>
-                                <Td>Data</Td>
-                                <Td>Data</Td>
-                                <Td>Data</Td>
-                                <Td>Data</Td>
-                                <Td>Data</Td>
-                                <Td>Data</Td>
-                            </Tr>
+                            {
+                                requirements?.map((item, i) =>
+                                    <Tr key={i}>
+                                        <Td>{i + 1}</Td>
+                                        <Td>{item.transformId}</Td>
+                                        <Td>{item.itemCode}</Td>
+                                        <Td>{item.itemDescription}</Td>
+                                        <Td>{item.batch}</Td>
+                                        <Td>{item.quantityBatch}</Td>
+                                        <Td>{item.totalQuantity}</Td>
+                                        <Td>{item.weighingScale}</Td>
+                                    </Tr>
+                                )
+                            }
                         </Tbody>
                     </Table>
                 </PageScrollTransformation>
             </Flex>
-            <Text fontSize='xs' mb={7}>Number of Records: </Text>
+            <Text fontSize='xs' mb={7}>Number of Records: {requirements?.length}</Text>
         </Flex>
     )
 }

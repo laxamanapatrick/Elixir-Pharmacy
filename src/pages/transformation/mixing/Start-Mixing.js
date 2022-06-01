@@ -9,9 +9,12 @@ import {
     ModalFooter,
     ModalHeader,
     Text,
-    useDisclosure
+    useDisclosure,
+    useToast
 } from '@chakra-ui/react'
 import { BsFillQuestionOctagonFill } from 'react-icons/bs'
+import apiClient from '../../../services/apiClient'
+import { ToastComponent } from '../../../components/Toast'
 
 export const StartMixing = ({ setMixingCue, mixingCue }) => {
 
@@ -47,6 +50,8 @@ export const StartMixing = ({ setMixingCue, mixingCue }) => {
 }
 
 const MixingConfirmation = ({ isOpen, onClose, setMixingCue }) => {
+
+    const toast = useToast()
 
     const mixingHandler = () => {
         setMixingCue(true)

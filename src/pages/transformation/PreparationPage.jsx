@@ -45,12 +45,12 @@ const PreparationPage = () => {
   }, [transformId])
 
   const fetchRequirementsInformationApi = async () => {
-    const res = await apiClient(`Preparation/GetRawmaterialDetailsInWarehouse?code=${itemCode}`)
+    const res = await apiClient(`Preparation/GetRawmaterialDetailsInWarehouse?id=${transformId}&code=${itemCode}`)
     return res.data
   }
 
   const fetchRequirementsInformation = () => {
-    fetchRequirementsInformationApi(itemCode).then(res => {
+    fetchRequirementsInformationApi(itemCode, transformId).then(res => {
       setInformation(res)
     })
   }
@@ -63,7 +63,7 @@ const PreparationPage = () => {
     return () => {
       setInformation([])
     }
-  }, [itemCode])
+  }, [itemCode, transformId])
 
   return (
     <>
