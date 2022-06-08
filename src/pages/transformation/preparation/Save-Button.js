@@ -1,12 +1,23 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Text, useDisclosure, useToast } from '@chakra-ui/react'
 import { BsFillQuestionOctagonFill } from 'react-icons/bs'
 import apiClient from '../../../services/apiClient'
 import { ToastComponent } from '../../../components/Toast'
+import { decodeUser } from '../../../services/decode-user'
 
-export const SaveButton = ({ transformId, itemCode, weight, fetchRequirements, fetchRequirementsInformation, setItemCode, setWeight, disableSave }) => {
+const currentUser = decodeUser()
+
+export const SaveButton = ({ transformId, itemCode, weight, fetchRequirements,
+    fetchRequirementsInformation, setItemCode, setWeight, disableSave, 
+    weightRef, fetchInformation, setCurrentPage, requirements, setDisableSave }) => {
 
     const { isOpen, onOpen, onClose } = useDisclosure()
+
+    // useEffect(() => {
+    //     if (weightRef.current) {
+    //         weightRef.current.focus()
+    //     }
+    // }, [weightRef])
 
     return (
         <>
@@ -25,6 +36,11 @@ export const SaveButton = ({ transformId, itemCode, weight, fetchRequirements, f
                         setWeight={setWeight}
                         fetchRequirements={fetchRequirements}
                         fetchRequirementsInformation={fetchRequirementsInformation}
+                        fetchInformation={fetchInformation}
+                        weightRef={weightRef}
+                        setCurrentPage={setCurrentPage}
+                        requirements={requirements}
+                        setDisableSave={setDisableSave}
                     />
                 )
             }
@@ -32,7 +48,9 @@ export const SaveButton = ({ transformId, itemCode, weight, fetchRequirements, f
     )
 }
 
-const SaveModal = ({ isOpen, onClose, transformId, itemCode, weight, fetchRequirements, fetchRequirementsInformation, setItemCode, setWeight }) => {
+const SaveModal = ({ isOpen, onClose, transformId, itemCode, weight, fetchRequirements,
+    fetchRequirementsInformation, setItemCode, setWeight, weightRef, fetchInformation, 
+    setCurrentPage, requirements, setDisableSave }) => {
 
     const toast = useToast()
 
@@ -41,18 +59,41 @@ const SaveModal = ({ isOpen, onClose, transformId, itemCode, weight, fetchRequir
             const res = apiClient.put(`Preparation/PrepareMaterialsForRequest/${transformId}`, {
                 transformId: transformId,
                 itemCode: itemCode,
-                weighingScale: weight
+                weighingScale: weight,
+                preparedBy: currentUser.userName
             })
                 .then(res => {
-                    ToastComponent("Succes", "Ayun pumasok", "success", toast)
-                    setWeight(null)
-                    setItemCode('')
-                    fetchRequirements()
-                    fetchRequirementsInformation()
-                    onClose()
+                    if (requirements.length === 1) {
+                        ToastComponent("Succes", "Requirement has been prepared", "success", toast)
+                        setWeight('')
+                        setItemCode('')
+                        setDisableSave(true)
+                        fetchRequirements()
+                        fetchRequirementsInformation()
+                        fetchInformation()
+                        // weightRef.current.value = ''
+                        // window.setTimeout(() => {
+                        //     weightRef.current.focus()
+                        // }, 3000)
+                        setCurrentPage(1)
+                        onClose()
+                    } else {
+                        ToastComponent("Succes", "Requirement has been prepared", "success", toast)
+                        setWeight('')
+                        setItemCode('')
+                        setDisableSave(true)
+                        fetchRequirements()
+                        fetchRequirementsInformation()
+                        fetchInformation()
+                        // weightRef.current.value = ''
+                        // window.setTimeout(() => {
+                        //     weightRef.current.focus()
+                        // }, 3000)
+                        onClose()
+                    }
                 })
                 .catch(err => {
-                    ToastComponent("Error", "Di pumasok", "error", toast)
+                    ToastComponent("Error", err.response.data, "error", toast)
                 })
         } catch (error) {
         }

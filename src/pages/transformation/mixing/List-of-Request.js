@@ -10,15 +10,17 @@ import {
     PaginationPageGroup,
 } from '@ajna/pagination'
 import PageScrollTransformation from '../../../components/PageScroll-Transformation'
-import apiClient from '../../../services/apiClient'
 
-export const ListofRequest = ({ setTransformId, transformId, setBatchRemaining, setCurrentPage, currentPage, pagesCount, requests }) => {
+export const ListofRequest = ({ setTransformId, transformId, setBatchRemaining, setCurrentPage, 
+    currentPage, pagesCount, requests, setQuantity, setBatch }) => {
 
     useEffect(() => {
         const requestData = requests?.mixing
         if (requestData) {
             setTransformId(requestData[0]?.id)
             setBatchRemaining(requestData[0]?.batchRemaining)
+            setQuantity(requestData[0]?.quantity)
+            setBatch(requestData[0]?.batch)
         }
     }, [requests])
 

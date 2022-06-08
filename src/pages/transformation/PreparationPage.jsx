@@ -10,18 +10,56 @@ import { ReceivingDetails } from './preparation/Receiving-Details';
 import { RequirementsInformation } from './preparation/Requirements-Information';
 import { SaveButton } from './preparation/Save-Button';
 import apiClient from '../../services/apiClient';
+import { usePagination } from '@ajna/pagination';
 
 const PreparationPage = () => {
+
 
   const [transformId, setTransformId] = useState(null)
   const [batch, setBatch] = useState(null)
   const [itemCode, setItemCode] = useState("")
   const [weight, setWeight] = useState('')
+  
 
   const [information, setInformation] = useState([])
   const [requirements, setRequirements] = useState([])
 
   const [disableSave, setDisableSave] = useState(true)
+
+  const [info, setInfo] = useState([])
+
+  const [pageTotal, setPageTotal] = useState(undefined);
+
+  const outerLimit = 2;
+  const innerLimit = 2;
+  const { currentPage, setCurrentPage, pagesCount } = usePagination({
+    total: pageTotal,
+    limits: {
+      outer: outerLimit,
+      inner: innerLimit,
+    },
+    initialState: { currentPage: 1, pageSize: 1 },
+  })
+
+  const fetchInformationApi = async (pageNumber) => {
+    const res = await apiClient.get(`Preparation/GetTransformationFormulaPagination/?pageNumber=${pageNumber}&pageSize=1`)
+    return res.data
+  }
+
+  const fetchInformation = () => {
+    fetchInformationApi(currentPage).then(res => {
+      setInfo(res)
+      setPageTotal(res.totalCount)
+    })
+  }
+
+  useEffect(() => {
+    fetchInformation()
+
+    return () => {
+      setInfo([])
+    }
+  }, [currentPage])
 
   const fetchRequirementsApi = async () => {
     const res = await apiClient(`Preparation/GetAllRequirementsByTransformId?Id=${transformId}`)
@@ -72,6 +110,11 @@ const PreparationPage = () => {
           <FormulaInformation
             setTransformId={setTransformId}
             setBatch={setBatch}
+            requirements={requirements}
+            info={info}
+            setCurrentPage={setCurrentPage}
+            pagesCount={pagesCount}
+            currentPage={currentPage}
           />
           <Requirements
             requirements={requirements}
@@ -100,7 +143,11 @@ const PreparationPage = () => {
             setWeight={setWeight}
             fetchRequirements={fetchRequirements}
             fetchRequirementsInformation={fetchRequirementsInformation}
+            fetchInformation={fetchInformation}
+            setCurrentPage={setCurrentPage}
             disableSave={disableSave}
+            requirements={requirements}
+            setDisableSave={setDisableSave}
           />
         </VStack>
       </Flex>

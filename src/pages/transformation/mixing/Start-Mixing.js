@@ -16,7 +16,7 @@ import { BsFillQuestionOctagonFill } from 'react-icons/bs'
 import apiClient from '../../../services/apiClient'
 import { ToastComponent } from '../../../components/Toast'
 
-export const StartMixing = ({ setMixingCue, mixingCue }) => {
+export const StartMixing = ({ setMixingCue, mixingCue, transformId }) => {
 
     const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -27,12 +27,12 @@ export const StartMixing = ({ setMixingCue, mixingCue }) => {
     return (
         <Flex w='full' justifyContent='end' bgColor='gray.200'>
             {
-                mixingCue === true ?
+                    mixingCue === true ?
                     <Button colorScheme='red' px={6} size='sm' onClick={() => setMixingCue(false)}>
                         Stop Mixing
                     </Button>
                     :
-                    <Button colorScheme='green' px={6} size='sm' onClick={() => mixingModal()}>
+                    <Button colorScheme='green' px={6} size='sm' disabled={!transformId} onClick={() => mixingModal()}>
                         Start Mixing
                     </Button>
             }

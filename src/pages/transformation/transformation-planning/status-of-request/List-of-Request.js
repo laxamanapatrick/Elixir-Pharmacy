@@ -1,10 +1,18 @@
 //Status of Request
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import {
+  Button,
   Flex,
   Heading,
   HStack,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Select,
   Table,
   Tbody,
@@ -13,18 +21,25 @@ import {
   Th,
   Thead,
   Tr,
+  useDisclosure,
+  useToast,
   VStack
 } from '@chakra-ui/react'
 import PageScrollTransformation from '../../../../components/PageScroll-Transformation'
 import apiClient from '../../../../services/apiClient'
+import { BsFillQuestionOctagonFill } from 'react-icons/bs'
+import { ToastComponent } from '../../../../components/Toast'
 
+// const fetchRequestByStatusApi = async (status) => {
+//   const res = await apiClient.get(`Planning/GetAllPendingRequest?status=${status}`)
+//   return res.data
+// }
 
 export const ListofRequest = ({ setTransformId, transformId, status, setStatus }) => {
 
-  // const fetchRequestByStatusApi = async (status) => {
-  //   const res = await apiClient.get(`Planning/GetAllPendingRequest?status=${status}`)
-  //   return res.data
-  // }
+  const dropdownRef = useRef()
+
+  const { isOpen: isCancel, onOpen: openCancel, onClose: closeCancel } = useDisclosure()
 
   const fetchRequestByStatusApi = async () => {
     if (status === 'approved') {
@@ -75,7 +90,11 @@ export const ListofRequest = ({ setTransformId, transformId, status, setStatus }
       <Flex justifyContent='start' mb={3}>
         <HStack>
           <Text>STATUS:</Text>
-          <Select bgColor='#ffffe0' fontSize='sm' onChange={(e) => statusHandler(e.target.value)}>
+          <Select
+            onChange={(e) => statusHandler(e.target.value)}
+            ref={dropdownRef}
+            bgColor='#ffffe0' fontSize='sm'
+          >
             <option value='pending'>PENDING</option>
             <option value='approved'>APPROVED</option>
             <option value='rejected'>REJECTED</option>
@@ -101,6 +120,10 @@ export const ListofRequest = ({ setTransformId, transformId, status, setStatus }
                 <Th color='white'>Quantity</Th>
                 <Th color='white'>Prod Plan</Th>
                 <Th color='white'>Request By</Th>
+                {
+                  status === 'approved' &&
+                  <Th color='white'>Cancel</Th>
+                }
               </Tr>
             </Thead>
             <Tbody>
@@ -121,6 +144,17 @@ export const ListofRequest = ({ setTransformId, transformId, status, setStatus }
                     <Td>{r.quantity}</Td>
                     <Td>{r.prodPlan}</Td>
                     <Td>{r.addedBy}</Td>
+                    {
+                      status == 'approved' &&
+                      <Td>
+                        <Button
+                          onClick={() => openCancel()}
+                          size='xs' colorScheme='red'
+                        >
+                          Cancel
+                        </Button>
+                      </Td>
+                    }
                   </Tr>
                 )
               }
@@ -131,6 +165,119 @@ export const ListofRequest = ({ setTransformId, transformId, status, setStatus }
       <Flex justifyContent='start' mt={1}>
         <Text fontSize='xs'>Number of entries: {requests?.length}</Text>
       </Flex>
+
+      {
+        isCancel && (
+          <CancelModal
+            isOpen={isCancel}
+            onClose={closeCancel}
+            transformId={transformId}
+            fetchRequestByStatus={fetchRequestByStatus}
+            setStatus={setStatus}
+            setTransformId={setTransformId}
+            dropdownRef={dropdownRef}
+          />
+        )
+      }
+
     </Flex>
   )
+}
+
+const CancelModal = ({ isOpen, onClose, transformId, fetchRequestByStatus, setStatus, setTransformId, dropdownRef }) => {
+
+  const [reasons, setReasons] = useState([])
+  const [cancelRemarks, setCancelRemarks] = useState([])
+
+  const toast = useToast()
+
+  const fetchReasons = async () => {
+    try {
+      const res = await apiClient.get('Reason/GetAllActiveReason')
+      setReasons(res.data)
+    } catch (error) {
+    }
+  }
+
+  useEffect(() => {
+    try {
+      fetchReasons()
+    } catch (error) {
+    }
+  }, []);
+
+  const remarksHandler = (data) => {
+    setCancelRemarks(data)
+  }
+
+  const submitCancelHandler = () => {
+    if (transformId) {
+      try {
+        const res = apiClient.put(`Planning/CancelTransformationRequest/${transformId}`,
+          {
+            id: transformId,
+            cancelRemarks: cancelRemarks
+          })
+          .then(res => {
+            ToastComponent("Success", `Item with Transformation ID of ${transformId} has been cancelled.`, "success", toast)
+            fetchRequestByStatus()
+            setStatus("approved")
+            setTransformId("")
+            dropdownRef.current.value = "approved"
+            onClose()
+          })
+          .catch(err => {
+            ToastComponent("Error", err.response.data , "error", toast)
+          })
+      } catch (error) {
+      }
+    }
+  }
+
+  console.log(dropdownRef)
+
+  return (
+    <Modal isCentered size='xl' isOpen={isOpen} onClose={() => { }}>
+      <ModalOverlay />
+      <ModalContent>
+
+        <ModalHeader>
+          <Flex justifyContent='center' mt={10}>
+            <BsFillQuestionOctagonFill fontSize='50px' />
+          </Flex>
+        </ModalHeader>
+        <ModalCloseButton onClick={onClose} />
+
+        <ModalBody>
+          <VStack justifyContent='center' mb={8}>
+            <Text>Are you sure you want to cancel this request?</Text>
+            {
+              reasons.length > 0 ? (
+                <Select
+                  onChange={(e) => remarksHandler(e.target.value)}
+                  placeholder='Please select a reason'
+                  w='65%'
+                  bgColor='#fff8dc'
+                >
+                  {
+                    reasons?.map((list, i) =>
+                      <option key={i} value={list.reasonName}>{list.reasonName}</option>
+                    )
+                  }
+                </Select>
+              ) : "Loading"
+            }
+          </VStack>
+        </ModalBody>
+
+        <ModalFooter>
+          <Button colorScheme='blue' mr={3} disabled={!cancelRemarks} onClick={submitCancelHandler}>
+            Yes
+          </Button>
+          <Button variant='ghost' onClick={onClose}>No</Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  )
+
 }

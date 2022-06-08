@@ -11,42 +11,11 @@ import {
 } from '@ajna/pagination'
 import apiClient from '../../../services/apiClient'
 
-const fetchInformationApi = async (pageNumber) => {
-  const res = await apiClient.get(`Preparation/GetTransformationFormulaPagination/?pageNumber=${pageNumber}&pageSize=1`)
-  return res.data
-}
-
-export const FormulaInformation = ({ setTransformId, setBatch }) => {
-
-  const [info, setInfo] = useState([])
-
-  const [pageTotal, setPageTotal] = useState(undefined);
-
-  const outerLimit = 2;
-  const innerLimit = 2;
-  const { currentPage, setCurrentPage, pagesCount, pages } = usePagination({
-    total: pageTotal,
-    limits: {
-      outer: outerLimit,
-      inner: innerLimit,
-    },
-    initialState: { currentPage: 1, pageSize: 1 },
-  })
-
-  const fetchInformation = () => {
-    fetchInformationApi(currentPage).then(res => {
-      setInfo(res)
-      setPageTotal(res.totalCount)
-    })
-  }
-
-  useEffect(() => {
-    fetchInformation()
-
-    return () => {
-      setInfo([])
-    }
-  }, [currentPage])
+export const FormulaInformation = ({ setTransformId, setBatch,
+  info,
+  setCurrentPage,
+  pagesCount,
+  currentPage }) => {
 
   useEffect(() => {
     {
@@ -61,7 +30,7 @@ export const FormulaInformation = ({ setTransformId, setBatch }) => {
   const handlePageChange = (nextPage) => {
     setCurrentPage(nextPage)
   }
-
+  
   return (
 
     <Flex w='full' flexDirection='column' mx={5} mb={10}>
@@ -152,6 +121,7 @@ export const FormulaInformation = ({ setTransformId, setBatch }) => {
         <Table w='90%' variant='striped' size='sm'>
           <Thead bgColor='secondary'>
             <Tr>
+              <Th color='white'>Production Date</Th>
               <Th color='white'>Stock on Hand</Th>
               <Th color='white'>Batch</Th>
             </Tr>
@@ -160,6 +130,7 @@ export const FormulaInformation = ({ setTransformId, setBatch }) => {
             {
               info?.preparation?.map((item, i) =>
                 <Tr key={i}>
+                  <Td>{item.prodPlan}</Td>
                   <Td>{item.warehouseStock}</Td>
                   <Td>{item.batch}</Td>
                 </Tr>
@@ -167,7 +138,7 @@ export const FormulaInformation = ({ setTransformId, setBatch }) => {
             }
           </Tbody>
         </Table>
-        {/* <Text fontSize='xs' w='90%'>{info?.preparation?.length} remaining of transformation formula</Text> */}
+        <Text fontSize='xs' w='90%'>{info?.totalCount} remaining of transformation formula</Text>
       </VStack>
 
 

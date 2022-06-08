@@ -27,6 +27,9 @@ import { useReactToPrint } from 'react-to-print'
 import PageScrollImport from '../../../components/PageScrollImport'
 import Barcode from 'react-barcode';
 import moment from 'moment'
+import { decodeUser } from '../../../services/decode-user'
+
+const currentUser = decodeUser()
 
 const ScannedModalSubmit = ({ itemCodeData, code, receivingDate, lotCategory, actualGood, sumQuantity, submitRejectData, buttonChanger, receivingId, setCode }) => {
 
@@ -41,7 +44,6 @@ const ScannedModalSubmit = ({ itemCodeData, code, receivingDate, lotCategory, ac
     const { isOpen: isPrintModalOpen, onOpen: openPrintModal, onClose: closePrintModal } = useDisclosure()
 
     const componentRef = useRef()
-
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
     });
@@ -52,7 +54,8 @@ const ScannedModalSubmit = ({ itemCodeData, code, receivingDate, lotCategory, ac
             receivingDate: receivingDate,
             lotCategory: lotCategory,
             actualGood: actualGood,
-            totalReject: sumQuantity
+            totalReject: sumQuantity,
+            receivedBy: currentUser.userName
         }
         try {
             setIsLoading(true)

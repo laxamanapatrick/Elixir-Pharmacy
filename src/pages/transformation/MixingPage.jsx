@@ -25,8 +25,11 @@ const MixingPage = () => {
     initialState: { currentPage: 1, pageSize: 1 },
   })
 
+  const [batch, setBatch] = useState(null)
+
   const [requirements, setRequirements] = useState([])
 
+  const [quantity, setQuantity] = useState(null)
   const [batchRemaining, setBatchRemaining] = useState(null)
 
   const fetchMixingRequestApi = async (pageNumber) => {
@@ -102,22 +105,27 @@ const MixingPage = () => {
           currentPage={currentPage}
           pagesCount={pagesCount}
           requests={requests}
+          setQuantity={setQuantity}
+          setBatch={setBatch}
         />
         <ListofRequirements requirements={requirements} requests={requests} />
         {
           mixingCue &&
-          <WeighingScaleInformation
-            transformId={transformId}
-            batchRemaining={batchRemaining}
-            fetchMixingRequest={fetchMixingRequest}
-            fetchRequirements={fetchRequirements}
-            fetchBatchRemaining={fetchBatchRemaining}
-            setMixingCue={setMixingCue}
-          />
+            <WeighingScaleInformation
+              transformId={transformId}
+              batchRemaining={batchRemaining}
+              fetchMixingRequest={fetchMixingRequest}
+              fetchRequirements={fetchRequirements}
+              fetchBatchRemaining={fetchBatchRemaining}
+              setMixingCue={setMixingCue}
+              quantity={quantity}
+              requests={requests}
+              batch={batch}
+            />
         }
       </Box>
       <Box w='full'>
-        <StartMixing setMixingCue={setMixingCue} mixingCue={mixingCue} />
+        <StartMixing setMixingCue={setMixingCue} mixingCue={mixingCue} transformId={transformId} />
       </Box>
     </VStack>
   )

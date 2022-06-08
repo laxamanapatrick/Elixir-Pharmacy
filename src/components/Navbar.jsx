@@ -34,6 +34,14 @@ const Navbar = ({ menus, notification }) => {
         {
             title: 'Approval Request',
             notifcation: notification?.approvalRequest?.approvalrequestcount,
+        },
+        {
+            title: 'Preparation',
+            notifcation: notification?.preparation?.preparationcount,
+        },
+        {
+            title: 'Mixing',
+            notifcation: notification?.mixing?.mixingcount,
         }
     ]
 

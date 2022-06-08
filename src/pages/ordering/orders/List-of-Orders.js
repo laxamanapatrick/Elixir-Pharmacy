@@ -16,10 +16,11 @@ export const ListofOrders = () => {
 
                     <Input disabled={isLoading} />
                 </HStack>
-                {isLoading ?
-                    <Spinner onClick={() => setIsLoading(false)}  />
-                    :
-                    <HiRefresh fontSize='25px' cursor='pointer' onClick={() => setIsLoading(true)} />
+                {
+                    isLoading ?
+                        <Spinner cursor='pointer' onClick={() => setIsLoading(false)} />
+                        :
+                        <HiRefresh fontSize='25px' cursor='pointer' onClick={() => setIsLoading(true)} />
                 }
             </Flex>
 
