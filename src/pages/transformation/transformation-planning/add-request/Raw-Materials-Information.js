@@ -127,6 +127,7 @@ export const RawMaterialsInformation = ({ formulas, setCode, codeData, fetchRequ
                 if (err.response) {
                     openError()
                 }
+                console.log(err)
             })
         } catch (err) {
         }
@@ -228,7 +229,14 @@ export const RawMaterialsInformation = ({ formulas, setCode, codeData, fetchRequ
                                             ({
                                                 field: { onChange, value }
                                             }) => (
-                                                <Input bgColor='#ffffe0' onChange={onChange} value={value} />
+                                                <Input
+                                                    onChange={onChange} value={value}
+                                                    bgColor='#ffffe0'
+                                                    type="number"
+                                                    onWheel={(e) => e.target.blur()}
+                                                    onKeyDown={(e) => ["E", "e", ".", "+", "-"].includes(e.key) && e.preventDefault()}
+                                                    onPaste={(e) => e.preventDefault()}
+                                                />
                                             )
                                         }
                                     />

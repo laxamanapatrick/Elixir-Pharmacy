@@ -9,7 +9,7 @@ import Barcode from 'react-barcode';
 import { PrintList } from './Print-List'
 
 export const WeighingScaleInformation = ({ transformId, batchRemaining, fetchMixingRequest, fetchRequirements,
-    fetchBatchRemaining, setMixingCue, quantity, requests, batch }) => {
+    fetchBatchRemaining, setMixingCue, quantity, requests, batch, setCurrentPage }) => {
 
     const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -110,6 +110,7 @@ export const WeighingScaleInformation = ({ transformId, batchRemaining, fetchMix
                         requests={requests}
                         totalWeight={totalWeight}
                         setTotalWeight={setTotalWeight}
+                        setCurrentPage={setCurrentPage}
                     />
                 )
             }
@@ -119,7 +120,7 @@ export const WeighingScaleInformation = ({ transformId, batchRemaining, fetchMix
 }
 
 const SaveModal = ({ isOpen, onClose, transformId, batchRemaining, fetchMixingRequest,
-    fetchRequirements, fetchBatchRemaining, setMixingCue, valueRef, setDisableSave, requests, totalWeight, setTotalWeight }) => {
+    fetchRequirements, fetchBatchRemaining, setMixingCue, valueRef, setDisableSave, requests, totalWeight, setTotalWeight, setCurrentPage }) => {
 
     const toast = useToast()
     const [lotData, setLotData] = useState([])
@@ -325,6 +326,7 @@ const SaveModal = ({ isOpen, onClose, transformId, batchRemaining, fetchMixingRe
                         setDisableSave={setDisableSave}
                         batchRemaining={batchRemaining}
                         setMixingCue={setMixingCue}
+                        setCurrentPage={setCurrentPage}
                     />
                 )
             }

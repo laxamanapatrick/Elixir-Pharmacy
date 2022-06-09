@@ -111,17 +111,18 @@ const MixingPage = () => {
         <ListofRequirements requirements={requirements} requests={requests} />
         {
           mixingCue &&
-            <WeighingScaleInformation
-              transformId={transformId}
-              batchRemaining={batchRemaining}
-              fetchMixingRequest={fetchMixingRequest}
-              fetchRequirements={fetchRequirements}
-              fetchBatchRemaining={fetchBatchRemaining}
-              setMixingCue={setMixingCue}
-              quantity={quantity}
-              requests={requests}
-              batch={batch}
-            />
+          <WeighingScaleInformation
+            transformId={transformId}
+            batchRemaining={batchRemaining}
+            fetchMixingRequest={fetchMixingRequest}
+            fetchRequirements={fetchRequirements}
+            fetchBatchRemaining={fetchBatchRemaining}
+            setMixingCue={setMixingCue}
+            quantity={quantity}
+            requests={requests}
+            batch={batch}
+            setCurrentPage={setCurrentPage}
+          />
         }
       </Box>
       <Box w='full'>

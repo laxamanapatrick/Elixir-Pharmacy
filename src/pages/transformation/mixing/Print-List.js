@@ -17,7 +17,7 @@ import Barcode from 'react-barcode'
 import { useReactToPrint } from 'react-to-print'
 
 export const PrintList = ({ isOpen, onClose, closeSave, newDisplayData, valueRef, batchRemaining,
-  setMixingCue, setDisableSave,
+  setMixingCue, setDisableSave, setCurrentPage,
   fetchMixingRequest, fetchRequirements, fetchBatchRemaining }) => {
 
   const componentRef = useRef()
@@ -29,6 +29,7 @@ export const PrintList = ({ isOpen, onClose, closeSave, newDisplayData, valueRef
     onClose()
     closeSave()
     if (batchRemaining === 0) {
+      setCurrentPage(1)
       fetchMixingRequest()
       fetchRequirements()
       fetchBatchRemaining()

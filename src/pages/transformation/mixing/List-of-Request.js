@@ -93,7 +93,7 @@ export const ListofRequest = ({ setTransformId, transformId, setBatchRemaining, 
                                         <Td>{item.version}</Td>
                                         <Td>{item.quantity}</Td>
                                         <Td>{item.prodPlan}</Td>
-                                        <Td>{"QUEUE"}</Td>
+                                        <Td>{"IN-PROCESS"}</Td>
                                     </Tr>
                                 )
                             }

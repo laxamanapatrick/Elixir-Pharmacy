@@ -3,7 +3,7 @@ import { Flex, HStack, Input, Skeleton, Spinner, Stack, Table, Tbody, Td, Text, 
 import { HiRefresh } from 'react-icons/hi'
 import PageScrollReusable from '../../../components/PageScroll-Reusable'
 
-export const ListofOrders = () => {
+export const ListofOrders = ({ genusOrders }) => {
 
     const [isLoading, setIsLoading] = useState(false)
 
@@ -54,25 +54,29 @@ export const ListofOrders = () => {
                                     </Tr>
                                 </Thead>
                                 <Tbody>
-                                    <Tr>
-                                        <Td>Data</Td>
-                                        <Td>Data</Td>
-                                        <Td>Data</Td>
-                                        <Td>Data</Td>
-                                        <Td>Data</Td>
-                                        <Td>Data</Td>
-                                        <Td>Data</Td>
-                                        <Td>Data</Td>
-                                        <Td>Data</Td>
-                                        <Td>Data</Td>
-                                    </Tr>
+                                    {
+                                        genusOrders?.genus_orders?.map((order, i) =>
+                                            <Tr key={i}>
+                                                <Td>{i+1}</Td>
+                                                <Td>{order.order_details.dateOrdered}</Td>
+                                                <Td>{order.order_details.dateNeeded}</Td>
+                                                <Td>{order.order_details.farm_name}</Td>
+                                                <Td>{order.order_details.farm_code}</Td>
+                                                <Td>{order.order_details.order.category}</Td>
+                                                <Td>{order.order_details.order.itemCode}</Td>
+                                                <Td>{order.order_details.order.itemDescription}</Td>
+                                                <Td>{order.order_details.order.uom}</Td>
+                                                <Td>{order.order_details.order.quantity}</Td>
+                                            </Tr>
+                                        )
+                                    }
                                 </Tbody>
                             </Table>
                     }
                 </PageScrollReusable>
             </VStack>
 
-            <Text fontSize='xs'>Number of records: </Text>
+            <Text mt={3} fontSize='xs'>Number of records: {genusOrders?.genus_orders?.length}</Text>
 
         </Flex >
     )

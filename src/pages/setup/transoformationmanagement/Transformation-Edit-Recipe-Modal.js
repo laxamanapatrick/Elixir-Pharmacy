@@ -226,7 +226,7 @@ const TransformationEditRecipeModal = ({
                 onClick={() => removedItemHandler()}
                 bgColor='secondary' color='white' size='sm' _hover={{ bgColor: 'accent' }}
               >
-                <Text mr={2}>List of removed items</Text> <RiFileList3Fill fontSize='22px' />
+                <Text mr={2}>List of removed requirements</Text> <RiFileList3Fill fontSize='22px' />
               </Button>
             </Box>
           </PageScrollModal>
