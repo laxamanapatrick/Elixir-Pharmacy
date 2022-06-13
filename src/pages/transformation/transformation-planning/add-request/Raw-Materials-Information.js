@@ -127,7 +127,6 @@ export const RawMaterialsInformation = ({ formulas, setCode, codeData, fetchRequ
                 if (err.response) {
                     openError()
                 }
-                console.log(err)
             })
         } catch (err) {
         }

@@ -7,6 +7,7 @@ import moment from 'moment'
 import { useReactToPrint } from 'react-to-print'
 import Barcode from 'react-barcode';
 import { PrintList } from './Print-List'
+import DatePicker from "react-datepicker";
 
 export const WeighingScaleInformation = ({ transformId, batchRemaining, fetchMixingRequest, fetchRequirements,
     fetchBatchRemaining, setMixingCue, quantity, requests, batch, setCurrentPage }) => {
@@ -125,6 +126,7 @@ const SaveModal = ({ isOpen, onClose, transformId, batchRemaining, fetchMixingRe
     const toast = useToast()
     const [lotData, setLotData] = useState([])
     const [lotCategory, setLotCategory] = useState("")
+    const [expirationDate, setExpirationDate] = useState("")
 
     const [displayData, setDisplayData] = useState([])
 
@@ -169,6 +171,7 @@ const SaveModal = ({ isOpen, onClose, transformId, batchRemaining, fetchMixingRe
         try {
             const res = apiClient.put(`Preparation/FinishedMixedMaterialsForWarehouse/${transformId}`, {
                 transformId: transformId,
+                expiration: expirationDate,
                 lotCategory: lotCategory
             })
                 .then(res => {
@@ -213,6 +216,14 @@ const SaveModal = ({ isOpen, onClose, transformId, batchRemaining, fetchMixingRe
         "Mixing Date": displayData?.['Mixing Date'],
         "Expiration Date": displayData?.['Expiration Date'],
         "Lot Name": displayData?.['Lot Name'],
+    }
+
+    const expirationDateProvider = (date) => {
+        if (date) {
+            setExpirationDate(date)
+        } else {
+            setExpirationDate(date)
+        }
     }
 
     return (
@@ -275,10 +286,19 @@ const SaveModal = ({ isOpen, onClose, transformId, batchRemaining, fetchMixingRe
                         </HStack> */}
                         <HStack w='full' spacing={4} justifyContent='space-between'>
                             <Text w='60%'>Expiration Date</Text>
-                            <Input readOnly bgColor='gray.200' value={moment(newDate).format("MM/DD/yyyy")} />
+                            {/* <Input readOnly bgColor='gray.200' value={moment(newDate).format("MM/DD/yyyy")} /> */}
+                            <DatePicker
+                                onChange={(date) => expirationDateProvider(date)}
+                                minDate={new Date()}
+                                maxDate={new Date(new Date(date.setMonth(date.getMonth()+6)))}
+                                shouldCloseOnSelect
+                                selected={expirationDate}
+                            // className='chakra-input css-7s3glp'
+                            // wrapperClassName='datePicker'
+                            />
                         </HStack>
                         <HStack w='full' spacing={4} justifyContent='space-between'>
-                            <Text w='57%'>Lot Name</Text>
+                            <Text w='60%'>Lot Name</Text>
                             {
                                 lotData?.length > 0 ?
                                     <Select
@@ -302,7 +322,7 @@ const SaveModal = ({ isOpen, onClose, transformId, batchRemaining, fetchMixingRe
                     <ButtonGroup size='sm' mt={4}>
                         <Button
                             onClick={submitHandler}
-                            disabled={!lotCategory}
+                            disabled={!lotCategory || !expirationDate}
                             colorScheme='blue'
                         >
                             Save
