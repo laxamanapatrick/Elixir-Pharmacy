@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Box, Button, Flex, HStack, Input, Select, Table, Tbody, Td, Text, Th, Thead, Tr, useToast } from '@chakra-ui/react';
+import React, { useState, useRef } from 'react';
+import { Box, Button, Flex, HStack, Input, Select, Table, Tbody, Td, Text, Th, Thead, Tr, useDisclosure, useToast } from '@chakra-ui/react';
 import PageScrollImport from '../../components/PageScrollImport'
 import * as XLSX from 'xlsx'
 import apiClient from '../../services/apiClient'
@@ -7,15 +7,22 @@ import { ToastComponent } from '../../components/Toast'
 import DateConverter from '../../components/DateConverter'
 import moment from 'moment';
 import { isDisabled } from '@testing-library/user-event/dist/utils';
+import { ErrorModal } from '../ordering/orders/Error-Modal';
 
 const ImportOrderPage = () => {
 
   const [workbook, setWorkbook] = useState([])
   const [excelData, setExcelData] = useState([])
-  const [isLoading, setisLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [isDisabled, setIsDisabled] = useState(true)
   const [sheetOptions, setSheetOptions] = useState([])
   const toast = useToast()
+
+
+  const fileClear = useRef()
+
+  const [errorData, setErrorData] = useState([])
+  const { isOpen: isError, onOpen: openError, onClose: closeError } = useDisclosure()
 
   const fileRenderer = (jsonData) => {
     jsonData.forEach((row) => {
@@ -59,38 +66,79 @@ const ImportOrderPage = () => {
     }
   }
 
-  // const resultArray = excelData.map(item => {
+  const resultArray = excelData.map(item => {
 
-  //   return {
-  //     itemCode: item.item_code,
-  //     itemDescription: item.item_description,
-  //     uom: item.uom,
-  //     itemCategory: item.item_category,
-  //     bufferLevel: item.buffer_level
-  //   }
+    return {
+      transactId: item?.transaction_id,
+      customerName: item?.customer_name,
+      customerPosition: item?.customer_position,
+      farmType: item?.farm_type,
+      farmCode: JSON.stringify(item?.farm_code),
+      farmName: item?.farm_name,
+      orderNo: item?.order_no,
+      batchNo: parseInt(item?.batch_no),
+      orderDate: moment(item?.order_date).format("yyyy-MM-DD"),
+      dateNeeded: moment(item?.date_needed).format("yyyy-MM-DD"),
+      timeNeeded: item?.time_needed,
+      transactionType: item?.transaction_type,
+      itemCode: item?.item_code,
+      itemDescription: item?.item_description,
+      uom: item?.uom,
+      quantityOrdered: item?.quantity_ordered,
+      category: item?.category
+    }
 
-  // })
+  })
 
-  // const submitFile = (resultArray) => {
-  //   try {
-  //     setisLoading(true)
-  //     const res = apiClient.post('Import/AddNewRawMaterialManual', resultArray).then((res) => {
-  //       ToastComponent("Success!", "Raw Materials Imported", "success", toast)
-  //       setisLoading(false)
-  //       setIsDisabled(true)
-  //     }).catch(err => {
-  //       setisLoading(false)
-  //       ToastComponent("Error", err.response.data, "error", toast)
-  //     })
-  //   } catch (err) {
-  //   }
-  // }
+  const submitFile = (resultArray) => {
+    if (resultArray.length > 0) {
+      console.log(resultArray)
+      try {
+        setIsLoading(true)
+        const res = apiClient.post(`https://localhost:44382/api/Ordering/AddNewOrders`,
+          resultArray.map(item => ({
+            transactId: item?.transactId,
+            customerName: item?.customerName,
+            customerPosition: item?.customerPosition,
+            farmType: item?.farmType,
+            farmCode: item?.farmCode,
+            farmName: item?.farmName,
+            orderNo: item?.orderNo,
+            batchNo: parseInt(item?.batchNo),
+            orderDate: moment(item?.orderDate).format("yyyy-MM-DD"),
+            dateNeeded: moment(item?.dateNeeded).format("yyyy-MM-DD"),
+            timeNeeded: item?.dateNeeded,
+            transactionType: item?.transactionType,
+            itemCode: item?.itemCode,
+            itemDescription: item?.itemDescription,
+            uom: item?.uom,
+            quantityOrdered: item?.quantityOrdered,
+            category: item?.category
+          }))
+        ).then(res => {
+          ToastComponent("Success", "Orders Imported!", "success", toast)
+          setIsLoading(false)
+          fileClear.current.value = ""
+          setExcelData([])
+        }).catch(err => {
+          setIsLoading(false)
+          setErrorData(err.response.data)
+          if (err.response.data) {
+            openError()
+          }
+        })
+      } catch (error) {
+      }
+    } else {
+      ToastComponent("Error!", "No data provided, please check your import", "error", toast)
+    }
+  }
 
   return (
     <Flex w='full'>
 
       <Flex
-        h='780px'
+        h='820px'
         ml='2%'
         mt='2%'
         w='96%'
@@ -107,24 +155,34 @@ const ImportOrderPage = () => {
 
             <Table variant='striped' size="sm">
               <Thead bgColor='secondary'>
-                {/* <Tr>
+                <Tr>
+                <Th color='white'>Transaction ID</Th>
+                  <Th color='white'>Order Date</Th>
+                  <Th color='white'>Date Needed</Th>
+                  <Th color='white'>Farm</Th>
+                  <Th color='white'>Farm Code</Th>
+                  <Th color='white'>Category</Th>
                   <Th color='white'>Item Code</Th>
                   <Th color='white'>Item Description</Th>
                   <Th color='white'>UOM</Th>
-                  <Th color='white'>Item Category</Th>
-                  <Th color='white'>Buffer Level</Th>
-                </Tr> */}
+                  <Th color='white'>Quantity Order</Th>
+                </Tr>
               </Thead>
               <Tbody>
-                {/* {resultArray?.map((ed, i) =>
+                {resultArray?.map((ed, i) =>
                   <Tr key={i}>
+                    <Td>{ed.transactId}</Td>
+                    <Td>{ed.orderDate}</Td>
+                    <Td>{ed.dateNeeded}</Td>
+                    <Td>{ed.farmName}</Td>
+                    <Td>{ed.farmCode}</Td>
+                    <Td>{ed.category}</Td>
                     <Td>{ed.itemCode}</Td>
                     <Td>{ed.itemDescription}</Td>
                     <Td>{ed.uom}</Td>
-                    <Td>{ed.itemCategory}</Td>
-                    <Td>{ed.bufferLevel}</Td>
+                    <Td>{ed.quantityOrdered}</Td>
                   </Tr>
-                )} */}
+                )}
               </Tbody>
             </Table>
 
@@ -136,7 +194,10 @@ const ImportOrderPage = () => {
 
             <Flex w='50%' justifyContent='start'>
 
-              <Input ml={1} w='47%' type='file' p={1} mr={.2} bgColor='white' onChange={(e) => fileHandler(e.target.files)} />
+              <Input
+                ref={fileClear}
+                ml={1} w='47%' type='file' p={1} mr={.2} bgColor='white' onChange={(e) => fileHandler(e.target.files)}
+              />
 
               <Select
                 onChange={(e) => sheetNumberHandlder(e.target.selectedIndex)}
@@ -154,7 +215,7 @@ const ImportOrderPage = () => {
 
             <HStack>
               <Button
-                // onClick={() => submitFile(resultArray)}
+                onClick={() => submitFile(resultArray)}
                 type='submit'
                 isLoading={isLoading}
                 isDisabled={isDisabled}
@@ -168,6 +229,15 @@ const ImportOrderPage = () => {
         </Box>
 
       </Flex>
+      {
+        isError && (
+          <ErrorModal
+            isOpen={isError}
+            onClose={closeError}
+            errorData={errorData}
+          />
+        )
+      }
     </Flex>
   )
 };

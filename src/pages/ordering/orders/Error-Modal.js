@@ -16,19 +16,24 @@ import {
     Box,
     Badge,
     VStack,
-    Table, Tbody, Td, Th, Thead, Tr
+    Table, Tbody, Td, Th, Thead, Tr, Button, useDisclosure
 } from '@chakra-ui/react'
 import { CgDanger } from 'react-icons/cg'
 import { RiFileList3Fill } from 'react-icons/ri'
 import PageScrollImportModal from '../../../components/PageScrollImport-Modal'
 import PageScrollModalErrorList from '../../../components/PageScrollErrorList'
+import moment from 'moment'
+import { ConfirmFiltteredModal } from './Confirm-Filttered-Modal'
 
 export const ErrorModal = ({ isOpen, onClose, errorData }) => {
+
+    const { isOpen: isConfirm, onClose: closeConfirm, onOpen: openConfirm } = useDisclosure()
 
     const duplicateList = errorData?.duplicateList?.map(list => {
         return {
             orderDate: list.orderDate,
             dateNeeded: list.dateNeeded,
+            farmName: list.farmName,
             farmType: list.farmType,
             farmCode: list.farmCode,
             category: list.category,
@@ -41,15 +46,34 @@ export const ErrorModal = ({ isOpen, onClose, errorData }) => {
 
     const filteredOrders = errorData?.filteredOrders?.map(list => {
         return {
-            orderDate: list.orderDate,
-            dateNeeded: list.dateNeeded,
-            farmType: list.farmType,
-            farmCode: list.farmCode,
-            category: list.category,
-            itemCode: list.itemCode,
-            itemDescription: list.itemDescription,
-            uom: list.uom,
-            quantity: list.quantityOrdered,
+            transactId: list?.transactId,
+            customerName: list?.customerName,
+            customerPosition: list?.customerPosition,
+            farmType: list?.farmType,
+            farmCode: list?.farmCode,
+            farmName: list?.farmName,
+            orderNo: list?.orderNo,
+            batchNo: parseInt(list?.batchNo),
+            orderDate: moment(list?.orderDate).format("yyyy-MM-DD"),
+            dateNeeded: moment(list?.dateNeeded).format("yyyy-MM-DD"),
+            timeNeeded: list?.dateNeeded,
+            transactionType: list?.transactionType,
+            itemCode: list?.itemCode,
+            itemDescription: list?.itemDescription,
+            uom: list?.uom,
+            quantityOrdered: list?.quantityOrdered,
+            category: list?.category
+
+            // orderDate: list.orderDate,
+            // dateNeeded: list.dateNeeded,
+            // farmName: list.farmName,
+            // farmType: list.farmType,
+            // farmCode: list.farmCode,
+            // category: list.category,
+            // itemCode: list.itemCode,
+            // itemDescription: list.itemDescription,
+            // uom: list.uom,
+            // quantity: list.quantityOrdered
         }
     })
 
@@ -57,6 +81,7 @@ export const ErrorModal = ({ isOpen, onClose, errorData }) => {
         return {
             orderDate: list.orderDate,
             dateNeeded: list.dateNeeded,
+            farmName: list.farmName,
             farmType: list.farmType,
             farmCode: list.farmCode,
             category: list.category,
@@ -71,6 +96,7 @@ export const ErrorModal = ({ isOpen, onClose, errorData }) => {
         return {
             orderDate: list.orderDate,
             dateNeeded: list.dateNeeded,
+            farmName: list.farmName,
             farmType: list.farmType,
             farmCode: list.farmCode,
             category: list.category,
@@ -85,6 +111,7 @@ export const ErrorModal = ({ isOpen, onClose, errorData }) => {
         return {
             orderDate: list.orderDate,
             dateNeeded: list.dateNeeded,
+            farmName: list.farmName,
             farmType: list.farmType,
             farmCode: list.farmCode,
             category: list.category,
@@ -99,6 +126,7 @@ export const ErrorModal = ({ isOpen, onClose, errorData }) => {
         return {
             orderDate: list.orderDate,
             dateNeeded: list.dateNeeded,
+            farmName: list.farmName,
             farmType: list.farmType,
             farmCode: list.farmCode,
             category: list.category,
@@ -113,6 +141,7 @@ export const ErrorModal = ({ isOpen, onClose, errorData }) => {
         return {
             orderDate: list.orderDate,
             dateNeeded: list.dateNeeded,
+            farmName: list.farmName,
             farmType: list.farmType,
             farmCode: list.farmCode,
             category: list.category,
@@ -122,6 +151,32 @@ export const ErrorModal = ({ isOpen, onClose, errorData }) => {
             quantity: list.quantityOrdered,
         }
     })
+
+    const resultArray = filteredOrders?.map(list => {
+        return {
+            transactId: list?.transactId,
+            customerName: list?.customerName,
+            customerPosition: list?.customerPosition,
+            farmType: list?.farmType,
+            farmCode: list?.farmCode,
+            farmName: list?.farmName,
+            orderNo: list?.orderNo,
+            batchNo: list?.batchNo,
+            orderDate: list?.orderDate,
+            dateNeeded: list?.dateNeeded,
+            timeNeeded: list?.dateNeeded,
+            transactionType: list?.transactionType,
+            itemCode: list?.itemCode,
+            itemDescription: list?.itemDescription,
+            uom: list?.uom,
+            quantityOrdered: list?.quantityOrdered,
+            category: list?.category
+        }
+    })
+
+    const syncManager = () => {
+        openConfirm()
+    }
 
     return (
         <Modal isOpen={isOpen} onClose={() => { }} isCentered size='6xl'>
@@ -138,8 +193,6 @@ export const ErrorModal = ({ isOpen, onClose, errorData }) => {
 
                     <ModalBody>
                         <Accordion allowToggle>
-
-
                             {duplicateList?.length > 0 ?
                                 <AccordionItem bgColor='gray.200'>
                                     <Flex>
@@ -177,9 +230,9 @@ export const ErrorModal = ({ isOpen, onClose, errorData }) => {
                                                             {duplicateList?.map((d, i) =>
                                                                 <Tr key={i}>
                                                                     <Td>{i + 1}</Td>
-                                                                    <Td>{d?.orderDate}</Td>
-                                                                    <Td>{d?.dateNeeded}</Td>
-                                                                    <Td>{d?.farmType}</Td>
+                                                                    <Td>{moment(d?.orderDate).format('yyyy-MM-DD')}</Td>
+                                                                    <Td>{moment(d?.dateNeeded).format('yyyy-MM-DD')}</Td>
+                                                                    <Td>{d?.farmName}</Td>
                                                                     <Td>{d?.farmCode}</Td>
                                                                     <Td>{d?.category}</Td>
                                                                     <Td>{d?.itemCode}</Td>
@@ -243,9 +296,9 @@ export const ErrorModal = ({ isOpen, onClose, errorData }) => {
                                                             {filteredOrders?.map((d, i) =>
                                                                 <Tr key={i}>
                                                                     <Td>{i + 1}</Td>
-                                                                    <Td>{d?.orderDate}</Td>
-                                                                    <Td>{d?.dateNeeded}</Td>
-                                                                    <Td>{d?.farmType}</Td>
+                                                                    <Td>{moment(d?.orderDate).format('yyyy-MM-DD')}</Td>
+                                                                    <Td>{moment(d?.dateNeeded).format('yyyy-MM-DD')}</Td>
+                                                                    <Td>{d?.farmName}</Td>
                                                                     <Td>{d?.farmCode}</Td>
                                                                     <Td>{d?.category}</Td>
                                                                     <Td>{d?.itemCode}</Td>
@@ -268,6 +321,18 @@ export const ErrorModal = ({ isOpen, onClose, errorData }) => {
                                             }
 
                                         </PageScrollModalErrorList>
+                                        {
+                                            filteredOrders ?
+                                                <Flex justifyContent='end'>
+                                                    <Button
+                                                        onClick={() => syncManager()}
+                                                        size='sm' _hover={{ bgColor: 'accent', color: 'white' }} colorScheme='blue'
+                                                    >
+                                                        Sync
+                                                    </Button>
+                                                </Flex>
+                                                : ''
+                                        }
                                     </AccordionPanel>
                                 </AccordionItem>
                                 : ''
@@ -309,9 +374,9 @@ export const ErrorModal = ({ isOpen, onClose, errorData }) => {
                                                             {invaliddatelist?.map((d, i) =>
                                                                 <Tr key={i}>
                                                                     <Td>{i + 1}</Td>
-                                                                    <Td>{d?.orderDate}</Td>
-                                                                    <Td>{d?.dateNeeded}</Td>
-                                                                    <Td>{d?.farmType}</Td>
+                                                                    <Td>{moment(d?.orderDate).format('yyyy-MM-DD')}</Td>
+                                                                    <Td>{moment(d?.dateNeeded).format('yyyy-MM-DD')}</Td>
+                                                                    <Td>{d?.farmName}</Td>
                                                                     <Td>{d?.farmCode}</Td>
                                                                     <Td>{d?.category}</Td>
                                                                     <Td>{d?.itemCode}</Td>
@@ -375,9 +440,9 @@ export const ErrorModal = ({ isOpen, onClose, errorData }) => {
                                                             {notExistFarmCode?.map((d, i) =>
                                                                 <Tr key={i}>
                                                                     <Td>{i + 1}</Td>
-                                                                    <Td>{d?.orderDate}</Td>
-                                                                    <Td>{d?.dateNeeded}</Td>
-                                                                    <Td>{d?.farmType}</Td>
+                                                                    <Td>{moment(d?.orderDate).format('yyyy-MM-DD')}</Td>
+                                                                    <Td>{moment(d?.dateNeeded).format('yyyy-MM-DD')}</Td>
+                                                                    <Td>{d?.farmName}</Td>
                                                                     <Td>{d?.farmCode}</Td>
                                                                     <Td>{d?.category}</Td>
                                                                     <Td>{d?.itemCode}</Td>
@@ -441,9 +506,9 @@ export const ErrorModal = ({ isOpen, onClose, errorData }) => {
                                                             {notExistFarmName?.map((d, i) =>
                                                                 <Tr key={i}>
                                                                     <Td>{i + 1}</Td>
-                                                                    <Td>{d?.orderDate}</Td>
-                                                                    <Td>{d?.dateNeeded}</Td>
-                                                                    <Td>{d?.farmType}</Td>
+                                                                    <Td>{moment(d?.orderDate).format('yyyy-MM-DD')}</Td>
+                                                                    <Td>{moment(d?.dateNeeded).format('yyyy-MM-DD')}</Td>
+                                                                    <Td>{d?.farmName}</Td>
                                                                     <Td>{d?.farmCode}</Td>
                                                                     <Td>{d?.category}</Td>
                                                                     <Td>{d?.itemCode}</Td>
@@ -507,9 +572,9 @@ export const ErrorModal = ({ isOpen, onClose, errorData }) => {
                                                             {notExistRawMats?.map((d, i) =>
                                                                 <Tr key={i}>
                                                                     <Td>{i + 1}</Td>
-                                                                    <Td>{d?.orderDate}</Td>
-                                                                    <Td>{d?.dateNeeded}</Td>
-                                                                    <Td>{d?.farmType}</Td>
+                                                                    <Td>{moment(d?.orderDate).format('yyyy-MM-DD')}</Td>
+                                                                    <Td>{moment(d?.dateNeeded).format('yyyy-MM-DD')}</Td>
+                                                                    <Td>{d?.farmName}</Td>
                                                                     <Td>{d?.farmCode}</Td>
                                                                     <Td>{d?.category}</Td>
                                                                     <Td>{d?.itemCode}</Td>
@@ -541,7 +606,7 @@ export const ErrorModal = ({ isOpen, onClose, errorData }) => {
                                     <Flex>
                                         <AccordionButton color='white' fontWeight='semibold'>
                                             <Box flex='1' textAlign='center' color='secondary' fontWeight='semibold'>
-                                                Raw Materials Does Not Exist <Badge color='danger'>{notExistUom?.length}</Badge>
+                                                UOM Does not Exist <Badge color='danger'>{notExistUom?.length}</Badge>
                                             </Box>
                                             <AccordionIcon color='secondary' />
                                         </AccordionButton>
@@ -573,9 +638,9 @@ export const ErrorModal = ({ isOpen, onClose, errorData }) => {
                                                             {notExistUom?.map((d, i) =>
                                                                 <Tr key={i}>
                                                                     <Td>{i + 1}</Td>
-                                                                    <Td>{d?.orderDate}</Td>
-                                                                    <Td>{d?.dateNeeded}</Td>
-                                                                    <Td>{d?.farmType}</Td>
+                                                                    <Td>{moment(d?.orderDate).format('yyyy-MM-DD')}</Td>
+                                                                    <Td>{moment(d?.dateNeeded).format('yyyy-MM-DD')}</Td>
+                                                                    <Td>{d?.farmName}</Td>
                                                                     <Td>{d?.farmCode}</Td>
                                                                     <Td>{d?.category}</Td>
                                                                     <Td>{d?.itemCode}</Td>
@@ -611,6 +676,17 @@ export const ErrorModal = ({ isOpen, onClose, errorData }) => {
 
                 </ModalFooter>
             </ModalContent>
+            {
+                isConfirm && (
+                    <ConfirmFiltteredModal
+                        isOpen={isConfirm}
+                        onClose={closeConfirm}
+                        resultArray={resultArray}
+                        openErrorModal={isOpen}
+                        closeErrorModal={onClose}
+                    />
+                )
+            }
         </Modal>
     )
 }

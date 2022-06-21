@@ -2,10 +2,8 @@ import React, { useState } from 'react'
 import { Flex, HStack, Input, Skeleton, Spinner, Stack, Table, Tbody, Td, Text, Th, Thead, toast, Tr, useDisclosure, useToast, VStack } from '@chakra-ui/react'
 import { HiRefresh } from 'react-icons/hi'
 import PageScrollReusable from '../../../components/PageScroll-Reusable'
-import apiClient from '../../../services/apiClient'
-import { ToastComponent } from '../../../components/Toast'
-import moment from 'moment';
 import { ErrorModal } from './Error-Modal'
+import { ConfirmModal } from './Confirm-Modal'
 
 
 export const ListofOrders = ({ genusOrders }) => {
@@ -15,8 +13,7 @@ export const ListofOrders = ({ genusOrders }) => {
     const [errorData, setErrorData] = useState([])
 
     const { isOpen: isError, onOpen: openError, onClose: closeError } = useDisclosure()
-
-    const toast = useToast()
+    const { isOpen: isConfirm, onOpen: openConfirm, onClose: closeConfirm } = useDisclosure()
 
     const resultArray = genusOrders?.genus_orders?.map(item => {
         return {
@@ -25,7 +22,7 @@ export const ListofOrders = ({ genusOrders }) => {
             customerPosition: item?.customer?.position,
             farmType: item?.order_details?.farm_name,
             farmCode: item?.order_details?.farm_code,
-            farmName: item?.customer?.group,
+            farmName: item?.order_details?.farm_name,
             orderNo: item?.order_details?.orderNo,
             batchNo: item?.order_details?.batchNo,
             orderDate: item?.order_details?.dateOrdered,
@@ -40,44 +37,44 @@ export const ListofOrders = ({ genusOrders }) => {
         }
     })
 
-    const syncHandler = () => {
-        setIsLoading(true)
-        try {
-            const res = apiClient.post(`https://localhost:44382/api/Ordering/AddNewOrders`,
-                resultArray.map(item => ({
-                    transactId: item?.transactId,
-                    customerName: item?.customerName,
-                    customerPosition: item?.customerPosition,
-                    farmType: item?.farmType,
-                    farmCode: item?.farmCode,
-                    farmName: item?.farmName,
-                    orderNo: item?.orderNo,
-                    batchNo: parseInt(item?.batchNo),
-                    orderDate: moment(item?.orderDate).format("yyyy-MM-DD"),
-                    dateNeeded: moment(item?.dateNeeded).format("yyyy-MM-DD"),
-                    timeNeeded: item?.dateNeeded,
-                    transactionType: item?.transactionType,
-                    itemCode: item?.itemCode,
-                    itemDescription: item?.itemDescription,
-                    uom: item?.uom,
-                    quantityOrdered: item?.quantityOrdered,
-                    category: item?.category
-                }))
-            )
-                .then(res => {
-                    ToastComponent("Success", "Orders Synced!", "succes", toast)
-                    setIsLoading(false)
-                })
-                .catch(err => {
-                    setIsLoading(false)
-                    setErrorData(err.response.data)
-                    if (err.response.data) {
-                        openError()
-                    }
-                })
-        } catch (error) {
-        }
-    }
+    // const syncHandler = () => {
+    //     try {
+    //         setIsLoading(true)
+    //         const res = apiClient.post(`https://localhost:44382/api/Ordering/AddNewOrders`,
+    //             resultArray.map(item => ({
+    //                 transactId: item?.transactId,
+    //                 customerName: item?.customerName,
+    //                 customerPosition: item?.customerPosition,
+    //                 farmType: item?.farmType,
+    //                 farmCode: item?.farmCode,
+    //                 farmName: item?.farmName,
+    //                 orderNo: item?.orderNo,
+    //                 batchNo: parseInt(item?.batchNo),
+    //                 orderDate: moment(item?.orderDate).format("yyyy-MM-DD"),
+    //                 dateNeeded: moment(item?.dateNeeded).format("yyyy-MM-DD"),
+    //                 timeNeeded: item?.dateNeeded,
+    //                 transactionType: item?.transactionType,
+    //                 itemCode: item?.itemCode,
+    //                 itemDescription: item?.itemDescription,
+    //                 uom: item?.uom,
+    //                 quantityOrdered: item?.quantityOrdered,
+    //                 category: item?.category
+    //             }))
+    //         )
+    //             .then(res => {
+    //                 ToastComponent("Success", "Orders Synced!", "success", toast)
+    //                 setIsLoading(false)
+    //             })
+    //             .catch(err => {
+    //                 setIsLoading(false)
+    //                 setErrorData(err.response.data)
+    //                 if (err.response.data) {
+    //                     openError()
+    //                 }
+    //             })
+    //     } catch (error) {
+    //     }
+    // }
 
     return (
         <Flex w='full' p={5} flexDirection='column'>
@@ -91,7 +88,7 @@ export const ListofOrders = ({ genusOrders }) => {
                     isLoading ?
                         <Spinner cursor='pointer' onClick={() => setIsLoading(false)} />
                         :
-                        <HiRefresh fontSize='25px' cursor='pointer' onClick={() => syncHandler()} />
+                        <HiRefresh fontSize='25px' cursor='pointer' onClick={() => openConfirm()} />
                 }
             </Flex>
 
@@ -115,11 +112,11 @@ export const ListofOrders = ({ genusOrders }) => {
                                         <Th color='white'>Line</Th>
                                         <Th color='white'>Order Date</Th>
                                         <Th color='white'>Date Needed</Th>
-                                        <Th color='white'>Farm</Th>
                                         <Th color='white'>Farm Code</Th>
-                                        <Th color='white'>Category</Th>
+                                        <Th color='white'>Farm Type</Th>
                                         <Th color='white'>Item Code</Th>
                                         <Th color='white'>Item Description</Th>
+                                        <Th color='white'>Category</Th>
                                         <Th color='white'>UOM</Th>
                                         <Th color='white'>Quantity Order</Th>
                                     </Tr>
@@ -131,11 +128,11 @@ export const ListofOrders = ({ genusOrders }) => {
                                                 <Td>{i + 1}</Td>
                                                 <Td>{order.order_details.dateOrdered}</Td>
                                                 <Td>{order.order_details.dateNeeded}</Td>
-                                                <Td>{order.order_details.farm_name}</Td>
                                                 <Td>{order.order_details.farm_code}</Td>
-                                                <Td>{order.order_details.order.category}</Td>
+                                                <Td>{order.order_details.farm_name}</Td>
                                                 <Td>{order.order_details.order.itemCode}</Td>
                                                 <Td>{order.order_details.order.itemDescription}</Td>
+                                                <Td>{order.order_details.order.category}</Td>
                                                 <Td>{order.order_details.order.uom}</Td>
                                                 <Td>{order.order_details.order.quantity}</Td>
                                             </Tr>
@@ -157,6 +154,19 @@ export const ListofOrders = ({ genusOrders }) => {
                         isOpen={isError}
                         onClose={closeError}
                         errorData={errorData}
+                        openConfirm={openConfirm}
+                    />
+                )
+            }
+            {
+                isConfirm && (
+                    <ConfirmModal
+                        isOpen={isConfirm}
+                        onClose={closeConfirm}
+                        resultArray={resultArray}
+                        setIsLoading={setIsLoading}
+                        setErrorData={setErrorData}
+                        openError={openError}
                     />
                 )
             }

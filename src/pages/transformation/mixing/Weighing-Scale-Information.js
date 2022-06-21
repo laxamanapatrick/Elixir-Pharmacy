@@ -126,12 +126,12 @@ const SaveModal = ({ isOpen, onClose, transformId, batchRemaining, fetchMixingRe
     const toast = useToast()
     const [lotData, setLotData] = useState([])
     const [lotCategory, setLotCategory] = useState("")
-    const [expirationDate, setExpirationDate] = useState("")
-
-    const [displayData, setDisplayData] = useState([])
 
     const date = new Date()
     const newDate = new Date(date.setMonth(date.getMonth() + 6))
+    const [expirationDate, setExpirationDate] = useState(newDate)
+
+    const [displayData, setDisplayData] = useState([])
 
     const { isOpen: isPrint, onOpen: openPrint, onClose: closePrint } = useDisclosure()
 
@@ -290,7 +290,7 @@ const SaveModal = ({ isOpen, onClose, transformId, batchRemaining, fetchMixingRe
                             <DatePicker
                                 onChange={(date) => expirationDateProvider(date)}
                                 minDate={new Date()}
-                                maxDate={new Date(new Date(date.setMonth(date.getMonth()+6)))}
+                                maxDate={new Date(new Date(date.setMonth(date.getMonth() + 9)))}
                                 shouldCloseOnSelect
                                 selected={expirationDate}
                             // className='chakra-input css-7s3glp'
