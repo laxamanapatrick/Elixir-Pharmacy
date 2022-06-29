@@ -16,6 +16,8 @@ const PreparationSchedulePage = () => {
 
   const [transactId, setTransactId] = useState(null)
 
+  const [lengthIndicator, setLengthIndicator] = useState('')
+
   const [pageTotal, setPageTotal] = useState(undefined);
   const outerLimit = 2;
   const innerLimit = 2;
@@ -51,6 +53,7 @@ const PreparationSchedulePage = () => {
   const fetchOrders = () => {
     fetchOrdersApi(farmName).then(res => {
       setOrders(res)
+      setLengthIndicator(res.length)
     })
   }
 
@@ -77,6 +80,7 @@ const PreparationSchedulePage = () => {
           setTransactId={setTransactId}
           transactId={transactId}
           fetchOrders={fetchOrders}
+          lengthIndicator={lengthIndicator}
         />
       </VStack>
     </>

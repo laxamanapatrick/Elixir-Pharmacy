@@ -6,17 +6,16 @@ import {
 import PageScrollReusable from '../../../components/PageScroll-Reusable'
 import moment from 'moment'
 
-export const ListofPreparedDate = ({ orders, setFarmName, farmName, setOrderId }) => {
+export const ListofPreparedDate = ({ orders, orderNo, setOrderNo }) => {
 
-    const farmHandler = (farm) => {
-        if (farm) {
-            setFarmName(farm)
-            setOrderId('')
+    const orderNoHandler = (id) => {
+        if (id) {
+            setOrderNo(id)
         } else {
-            setFarmName('')
+            setOrderNo('')
         }
     }
-    
+
     return (
         <Flex w='95%' p={10} flexDirection='column'>
             {/* <HStack justifyContent='start' w='13%'>
@@ -47,17 +46,17 @@ export const ListofPreparedDate = ({ orders, setFarmName, farmName, setOrderId }
                             {
                                 orders?.map((item, i) =>
                                     <Tr
-                                        onClick={() => farmHandler(item.farm)}
-                                        bgColor={farmName === item.farm ? 'table_accent' : 'none'}
+                                        onClick={() => orderNoHandler(item.orderNo)}
+                                        bgColor={orderNo === item.orderNo ? 'table_accent' : 'none'}
                                         key={i}
                                         cursor='pointer'
                                     >
                                         <Td>{i + 1}</Td>
-                                        <Td>{item.id}</Td>
+                                        <Td>{item.orderNo}</Td>
                                         <Td>{item.farm}</Td>
                                         <Td>{item.farmCode}</Td>
                                         <Td>{item.category}</Td>
-                                        <Td>{item.quantityOrder}</Td>
+                                        <Td>{item.totalOrders}</Td>
                                         <Td>{item.orderDate}</Td>
                                         <Td>{item.dateNeeded}</Td>
                                         <Td>{moment(item.preparedDate).format("MM/DD/yyyy")}</Td>

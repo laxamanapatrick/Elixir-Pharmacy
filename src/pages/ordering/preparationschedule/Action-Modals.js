@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { Button, ButtonGroup, Flex, Heading, HStack, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Select, Text, toast, useToast, VStack } from '@chakra-ui/react'
+import { Button, ButtonGroup, Flex, Heading, HStack, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Select, Text, toast, useDisclosure, useToast, VStack } from '@chakra-ui/react'
 import { BsFillQuestionOctagonFill } from 'react-icons/bs'
 import PageScrollReusable from '../../../components/PageScroll-Reusable'
 import apiClient from '../../../services/apiClient'
 import { ToastComponent } from '../../../components/Toast'
 import { decodeUser } from '../../../services/decode-user'
 import DatePicker from 'react-datepicker'
+import { BsQuestionOctagonFill } from 'react-icons/bs'
 
 const currentUser = decodeUser()
 
@@ -98,7 +99,7 @@ export const EditModal = ({ isOpen, onClose, editData, setCurrentPage, currentPa
     )
 }
 
-export const CancelModalConfirmation = ({ isOpen, onClose, cancelId, setCurrentPage, currentPage, fetchOrders }) => {
+export const CancelModalConfirmation = ({ isOpen, onClose, cancelId, setCurrentPage, currentPage, fetchOrders, orders }) => {
 
     const [cancelRemarks, setCancelRemarks] = useState('')
     const [reasons, setReasons] = useState([])
@@ -145,10 +146,14 @@ export const CancelModalConfirmation = ({ isOpen, onClose, cancelId, setCurrentP
                     ToastComponent("Success", "Order has been cancelled!", "success", toast)
                     onClose()
                     fetchOrders()
-                    setCurrentPage(currentPage)
+                    if (orders.length > 0) {
+                        setCurrentPage(currentPage)
+                    } else {
+                        setCurrentPage(1)
+                    }
                 })
                 .catch(err => {
-                    ToastComponent("Error", err.response.data, "error", toast)
+                    ToastComponent("Error", "Cancel failed!", "error", toast)
                     setIsLoading(false)
                 })
         } catch (error) {
@@ -201,13 +206,14 @@ export const CancelModalConfirmation = ({ isOpen, onClose, cancelId, setCurrentP
     )
 }
 
-export const ScheduleConfirmation = ({ isOpen, onClose, checkedItems, farmName, fetchOrders, setCurrentPage, currentPage }) => {
+export const ScheduleConfirmation = ({ isOpen, onClose, checkedItems, setCheckedItems,
+    farmName, fetchOrders, setCurrentPage, currentPage }) => {
 
     const [preparationDate, setPreparationDate] = useState('')
     const date = new Date()
     const maxDate = new Date(date.setMonth(date.getMonth() + 6))
 
-    const toast = useToast()
+    const { isOpen: isSchedValidate, onOpen: openSchedValidate, onClose: closeSchedValidate } = useDisclosure()
 
     const dateProvider = (date) => {
         if (date) {
@@ -217,27 +223,8 @@ export const ScheduleConfirmation = ({ isOpen, onClose, checkedItems, farmName, 
         }
     }
 
-    const submitHandler = () => {
-        const submitArray = checkedItems?.map(item => {
-            return {
-                id: item,
-                preparedDate: preparationDate,
-                preparedBy: currentUser.userName
-            }
-        })
-        try {
-            const res = apiClient.put(`Ordering/SchedulePreparedOrderedDate`, submitArray)
-                .then(res => {
-                    ToastComponent("Success", "Orders were successfully schedule", "success", toast)
-                    onClose()
-                    fetchOrders()
-                    setCurrentPage(currentPage)
-                })
-                .catch(err => {
-                    ToastComponent("Error", err.response.data, "error", toast)
-                })
-        } catch (error) {
-        }
+    const submitValidate = () => {
+        openSchedValidate()
     }
 
     return (
@@ -270,7 +257,82 @@ export const ScheduleConfirmation = ({ isOpen, onClose, checkedItems, farmName, 
 
                 <ModalFooter>
                     <ButtonGroup size='xs' mt={8}>
-                        <Button px={5} colorScheme='blue' disabled={!preparationDate} onClick={submitHandler}>Yes</Button>
+                        <Button px={5} colorScheme='blue' disabled={!preparationDate} onClick={submitValidate}>Yes</Button>
+                        <Button colorScheme='red' onClick={onClose}>Cancel</Button>
+                    </ButtonGroup>
+                </ModalFooter>
+            </ModalContent>
+            {
+                isSchedValidate && (
+                    <ScheduleValidation
+                        isOpen={isSchedValidate}
+                        onClose={closeSchedValidate}
+                        closeSchedule={onClose}
+                        preparationDate={preparationDate}
+                        checkedItems={checkedItems}
+                        setCheckedItems={setCheckedItems}
+                        fetchOrders={fetchOrders}
+                        setCurrentPage={setCurrentPage}
+                        currentPage={currentPage}
+                    />
+                )
+            }
+        </Modal>
+    )
+}
+
+const ScheduleValidation = ({ isOpen, onClose, closeSchedule, preparationDate, checkedItems, setCheckedItems, fetchOrders, setCurrentPage, currentPage }) => {
+
+    const toast = useToast()
+
+    const submitHandler = () => {
+        const submitArray = checkedItems?.map(item => {
+            return {
+                id: item,
+                preparedDate: preparationDate,
+                preparedBy: currentUser.userName
+            }
+        })
+        try {
+            const res = apiClient.put(`Ordering/SchedulePreparedOrderedDate`, submitArray)
+                .then(res => {
+                    ToastComponent("Success", "Orders were successfully scheduled", "success", toast)
+                    onClose()
+                    closeSchedule()
+                    setCurrentPage(currentPage)
+                    setCheckedItems([])
+                    fetchOrders()
+                })
+                .catch(err => {
+                    ToastComponent("Error", "Schedule failed", "error", toast)
+                })
+        } catch (error) {
+        }
+    }
+
+    return (
+        <Modal isOpen={isOpen} onClose={() => { }} isCentered size='xl'>
+            <ModalContent>
+                <ModalHeader>
+                    <Flex justifyContent='center' py={2}>
+                        <BsQuestionOctagonFill fontSize='40px' />
+                    </Flex>
+                </ModalHeader>
+                <ModalCloseButton onClick={onClose} />
+
+                <ModalBody>
+                    <Text mt={5} textAlign='center'>Are you sure you want to schedule these ({checkedItems?.length}) orders?</Text>
+                </ModalBody>
+
+                <ModalFooter>
+                    <ButtonGroup size='md' mt={10}>
+                        <Button
+                            px={5} colorScheme='blue'
+                            disabled={!preparationDate}
+                            onClick={submitHandler}
+                        >
+                            Yes
+                        </Button>
                         <Button colorScheme='red' onClick={onClose}>Cancel</Button>
                     </ButtonGroup>
                 </ModalFooter>

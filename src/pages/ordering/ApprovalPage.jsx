@@ -9,17 +9,14 @@ const fetchOrderListApi = async () => {
   return res.data
 }
 
-const fetchOrdersByFarmApi = async (farmName) => {
-  const res = await apiClient.get(`Ordering/GetAllOrdersForScheduleApproval?farm=${farmName}`)
+const fetchOrdersByOrderNoApi = async (orderNo) => {
+  const res = await apiClient.get(`Ordering/GetAllOrdersForScheduleApproval?id=${orderNo}`)
   return res.data
 }
 
 const ApprovalPage = () => {
 
-  const [orderId, setOrderId] = useState('')
-  const [farmName, setFarmName] = useState("")
-  const [status, setStatus] = useState("")
-
+  const [orderNo, setOrderNo] = useState('')
   const [orders, setOrders] = useState([])
   const [farmOrders, setFarmOrders] = useState([])
 
@@ -37,25 +34,29 @@ const ApprovalPage = () => {
     }
   }, [])
 
-  const fetchOrdersByFarm = () => {
-    fetchOrdersByFarmApi(farmName).then(res => {
+  const fetchOrdersByOrderNo = () => {
+    fetchOrdersByOrderNoApi(orderNo).then(res => {
       setFarmOrders(res)
     })
   }
 
   useEffect(() => {
-    fetchOrdersByFarm()
+    if (orderNo) {
+      fetchOrdersByOrderNo()
+    }
 
     return () => {
       setFarmOrders([])
     }
-  }, [farmName])
+  }, [orderNo])
 
   return (
     <>
       <VStack w='full' h='auto' spacing={5}>
-        <ListofPreparedDate orders={orders} setFarmName={setFarmName} farmName={farmName} setOrderId={setOrderId} />
-        <ListofOrders farmOrders={farmOrders} orderId={orderId} setOrderId={setOrderId} />
+        <ListofPreparedDate orders={orders} orderNo={orderNo} setOrderNo={setOrderNo}
+        />
+        <ListofOrders farmOrders={farmOrders} orderNo={orderNo} setOrderNo={setOrderNo} fetchOrderList={fetchOrderList}
+          fetchOrdersByOrderNo={fetchOrdersByOrderNo} />
       </VStack>
     </>
   )

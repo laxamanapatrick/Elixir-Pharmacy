@@ -14,7 +14,7 @@ import { TiInfo } from 'react-icons/ti'
 import { CancelModalConfirmation, EditModal, ScheduleConfirmation } from './Action-Modals'
 
 export const ListofOrders = ({ setCurrentPage, currentPage, pagesCount,
-    farmName, orders, pageTotal, setTransactId, transactId, fetchOrders }) => {
+    farmName, orders, pageTotal, setTransactId, transactId, fetchOrders, lengthIndicator }) => {
 
     const [editData, setEditData] = useState({
         transactId: '',
@@ -27,6 +27,9 @@ export const ListofOrders = ({ setCurrentPage, currentPage, pagesCount,
     const [cancelId, setCancelId] = useState('')
 
     const [checkedItems, setCheckedItems] = useState([])
+
+    const [disableIfStock, setDisableIfStock] = useState(false)
+    const [disableIfDateNeeded, setDisableIfDateNeeded] = useState(false)
 
     const { isOpen: isEdit, onOpen: openEdit, onClose: closeEdit } = useDisclosure()
     const { isOpen: isCancel, onOpen: openCancel, onClose: closeCancel } = useDisclosure()
@@ -71,12 +74,21 @@ export const ListofOrders = ({ setCurrentPage, currentPage, pagesCount,
     useEffect(() => {
         orders.map((item, i) => {
             setTransactId(item.id)
-            // if (item.stockOnHand < item.quantityOrder) {
-            // } else {
-            // }
+            if (item.stockOnHand < item.quantityOrder) {
+                setDisableIfStock(true)
+            } else {
+                setDisableIfStock(false)
+            }
         }
         )
     }, [orders])
+
+    useEffect(() => {
+        if (lengthIndicator === 0) {
+            setCurrentPage(1)
+            fetchOrders()
+        }
+    }, [lengthIndicator])
 
     const stockAvailable = orders?.filter(item => item.stockOnHand >= item.quantityOrder)
     const stockData = stockAvailable?.map(item => item.id)
@@ -143,7 +155,7 @@ export const ListofOrders = ({ setCurrentPage, currentPage, pagesCount,
                                 <Th>
                                     <Checkbox
                                         onChange={parentCheckHandler}
-                                        isChecked={                  
+                                        isChecked={
                                             stockData?.length === checkedItems?.length
                                         }
                                         disabled={!stockData?.length > 0}
@@ -162,6 +174,7 @@ export const ListofOrders = ({ setCurrentPage, currentPage, pagesCount,
                                 <Th color='white'>Item Description</Th>
                                 <Th color='white'>UOM</Th>
                                 <Th color='white'>Quantity Order</Th>
+                                <Th color='white'>Stock on hand</Th>
                                 <Th color='white'>Edit</Th>
                                 <Th color='white'>Cancel</Th>
                             </Tr>
@@ -203,6 +216,7 @@ export const ListofOrders = ({ setCurrentPage, currentPage, pagesCount,
                                         <Td>{item.itemDescription}</Td>
                                         <Td>{item.uom}</Td>
                                         <Td>{item.quantityOrder}</Td>
+                                        <Td>{item.stockOnHand}</Td>
 
                                         <Td>
                                             <Button
@@ -228,10 +242,16 @@ export const ListofOrders = ({ setCurrentPage, currentPage, pagesCount,
                         </Tbody>
                     </Table>
                 </PageScrollReusable>
-                <Flex w='full' justifyContent='end' py={2} px={2}>
+                <Flex w='full' justifyContent='space-between' py={2} px={2}>
+                    <Text fontSize='xs'>Selected Item(s): {checkedItems?.length}</Text>
                     <Button
                         onClick={scheduleHandler}
-                        disabled={!checkedItems?.length > 0}
+                        title={
+                            !checkedItems?.length > 0 ?
+                                disableIfStock ? "Stocks must be available" : "Please select an order to schedule"
+                                : !checkedItems?.length > 0 || disableIfStock ? "Stocks must be available" : "Schedule order(s)"
+                        }
+                        disabled={!checkedItems?.length > 0 || disableIfStock}
                         size='sm' px={3} colorScheme='blue'
                     >
                         Schedule
@@ -269,6 +289,7 @@ export const ListofOrders = ({ setCurrentPage, currentPage, pagesCount,
                 isSchedule && (
                     <ScheduleConfirmation
                         checkedItems={checkedItems}
+                        setCheckedItems={setCheckedItems}
                         isOpen={isSchedule}
                         onClose={closeSchedule}
                         farmName={farmName}

@@ -18,7 +18,6 @@ const ImportOrderPage = () => {
   const [sheetOptions, setSheetOptions] = useState([])
   const toast = useToast()
 
-
   const fileClear = useRef()
 
   const [errorData, setErrorData] = useState([])
@@ -67,6 +66,8 @@ const ImportOrderPage = () => {
   }
 
   const resultArray = excelData.map(item => {
+    let newOrderDate = DateConverter(item.order_date)
+    let newDateNeeded = DateConverter(item.date_needed)
 
     return {
       transactId: item?.transaction_id,
@@ -77,8 +78,8 @@ const ImportOrderPage = () => {
       farmName: item?.farm_name,
       orderNo: item?.order_no,
       batchNo: parseInt(item?.batch_no),
-      orderDate: moment(item?.order_date).format("yyyy-MM-DD"),
-      dateNeeded: moment(item?.date_needed).format("yyyy-MM-DD"),
+      orderDate: moment(newOrderDate).format("yyyy-MM-DD"),
+      dateNeeded: moment(newDateNeeded).format("yyyy-MM-DD"),
       timeNeeded: item?.time_needed,
       transactionType: item?.transaction_type,
       itemCode: item?.item_code,
@@ -92,7 +93,6 @@ const ImportOrderPage = () => {
 
   const submitFile = (resultArray) => {
     if (resultArray.length > 0) {
-      console.log(resultArray)
       try {
         setIsLoading(true)
         const res = apiClient.post(`https://localhost:44382/api/Ordering/AddNewOrders`,
@@ -105,8 +105,8 @@ const ImportOrderPage = () => {
             farmName: item?.farmName,
             orderNo: item?.orderNo,
             batchNo: parseInt(item?.batchNo),
-            orderDate: moment(item?.orderDate).format("yyyy-MM-DD"),
-            dateNeeded: moment(item?.dateNeeded).format("yyyy-MM-DD"),
+            orderDate: item?.orderDate,
+            dateNeeded: item?.dateNeeded,
             timeNeeded: item?.dateNeeded,
             transactionType: item?.transactionType,
             itemCode: item?.itemCode,

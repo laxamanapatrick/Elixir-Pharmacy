@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
-import { Flex, HStack, Input, Skeleton, Spinner, Stack, Table, Tbody, Td, Text, Th, Thead, toast, Tr, useDisclosure, useToast, VStack } from '@chakra-ui/react'
+import React, { useRef, useState } from 'react'
+import { Box, Flex, HStack, Input, Skeleton, Spinner, Stack, Table, Tbody, Td, Text, Th, Thead, toast, Tr, useDisclosure, useToast, VStack } from '@chakra-ui/react'
 import { HiRefresh } from 'react-icons/hi'
 import PageScrollReusable from '../../../components/PageScroll-Reusable'
 import { ErrorModal } from './Error-Modal'
 import { ConfirmModal } from './Confirm-Modal'
 
 
-export const ListofOrders = ({ genusOrders }) => {
+export const ListofOrders = ({ genusOrders, setGenusOrders, search, setSearch, fetchingData }) => {
 
     const [isLoading, setIsLoading] = useState(false)
 
@@ -37,44 +37,15 @@ export const ListofOrders = ({ genusOrders }) => {
         }
     })
 
-    // const syncHandler = () => {
-    //     try {
-    //         setIsLoading(true)
-    //         const res = apiClient.post(`https://localhost:44382/api/Ordering/AddNewOrders`,
-    //             resultArray.map(item => ({
-    //                 transactId: item?.transactId,
-    //                 customerName: item?.customerName,
-    //                 customerPosition: item?.customerPosition,
-    //                 farmType: item?.farmType,
-    //                 farmCode: item?.farmCode,
-    //                 farmName: item?.farmName,
-    //                 orderNo: item?.orderNo,
-    //                 batchNo: parseInt(item?.batchNo),
-    //                 orderDate: moment(item?.orderDate).format("yyyy-MM-DD"),
-    //                 dateNeeded: moment(item?.dateNeeded).format("yyyy-MM-DD"),
-    //                 timeNeeded: item?.dateNeeded,
-    //                 transactionType: item?.transactionType,
-    //                 itemCode: item?.itemCode,
-    //                 itemDescription: item?.itemDescription,
-    //                 uom: item?.uom,
-    //                 quantityOrdered: item?.quantityOrdered,
-    //                 category: item?.category
-    //             }))
-    //         )
-    //             .then(res => {
-    //                 ToastComponent("Success", "Orders Synced!", "success", toast)
-    //                 setIsLoading(false)
-    //             })
-    //             .catch(err => {
-    //                 setIsLoading(false)
-    //                 setErrorData(err.response.data)
-    //                 if (err.response.data) {
-    //                     openError()
-    //                 }
-    //             })
-    //     } catch (error) {
-    //     }
-    // }
+    const searchHandler = (data) => {
+        const search = data.toLowerCase()
+        const filteredSearch = genusOrders?.genus_orders.filter(orders => orders.farm_name.toLowerCase().includes(search))
+        if (data) {
+            setGenusOrders(filteredSearch)
+        } else {
+            setGenusOrders(genusOrders)
+        }
+    }
 
     return (
         <Flex w='full' p={5} flexDirection='column'>
@@ -82,7 +53,10 @@ export const ListofOrders = ({ genusOrders }) => {
             <Flex w='full' p={2} justifyContent='space-between'>
                 <HStack>
                     <Text fontSize='sm'>SEARCH:</Text>
-                    <Input disabled={isLoading} />
+                    <Input
+                        onChange={(e) => searchHandler(e.target.value)}
+                        disabled={isLoading}
+                    />
                 </HStack>
                 {
                     isLoading ?
@@ -96,7 +70,7 @@ export const ListofOrders = ({ genusOrders }) => {
                 <Text py={2} w='full' fontSize='lg' bgColor='secondary' color='white' textAlign='center'>List of Orders</Text>
                 <PageScrollReusable minHeight='200px' maxHeight='650px'>
                     {
-                        isLoading ?
+                        fetchingData ?
                             <Stack width="full">
                                 <Skeleton height='20px' />
                                 <Skeleton height='20px' />
@@ -123,20 +97,28 @@ export const ListofOrders = ({ genusOrders }) => {
                                 </Thead>
                                 <Tbody>
                                     {
-                                        genusOrders?.genus_orders?.map((order, i) =>
-                                            <Tr key={i}>
-                                                <Td>{i + 1}</Td>
-                                                <Td>{order.order_details.dateOrdered}</Td>
-                                                <Td>{order.order_details.dateNeeded}</Td>
-                                                <Td>{order.order_details.farm_code}</Td>
-                                                <Td>{order.order_details.farm_name}</Td>
-                                                <Td>{order.order_details.order.itemCode}</Td>
-                                                <Td>{order.order_details.order.itemDescription}</Td>
-                                                <Td>{order.order_details.order.category}</Td>
-                                                <Td>{order.order_details.order.uom}</Td>
-                                                <Td>{order.order_details.order.quantity}</Td>
-                                            </Tr>
-                                        )
+                                        genusOrders?.genus_orders
+                                            // ?.filter((val) => {
+                                            //     if (search == "") {
+                                            //         return val
+                                            //     } else if (val.farm_name.toLowerCase().includes(search.toLowerCase())) {
+                                            //         return val
+                                            //     }
+                                            // })
+                                            ?.map((order, i) =>
+                                                <Tr key={i}>
+                                                    <Td>{i + 1}</Td>
+                                                    <Td>{order.order_details.dateOrdered}</Td>
+                                                    <Td>{order.order_details.dateNeeded}</Td>
+                                                    <Td>{order.order_details.farm_code}</Td>
+                                                    <Td>{order.order_details.farm_name}</Td>
+                                                    <Td>{order.order_details.order.itemCode}</Td>
+                                                    <Td>{order.order_details.order.itemDescription}</Td>
+                                                    <Td>{order.order_details.order.category}</Td>
+                                                    <Td>{order.order_details.order.uom}</Td>
+                                                    <Td>{order.order_details.order.quantity}</Td>
+                                                </Tr>
+                                            )
                                     }
                                 </Tbody>
                             </Table>

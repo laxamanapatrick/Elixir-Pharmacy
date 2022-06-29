@@ -1,7 +1,84 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react'
+import { ListofOrders } from './ordersummary/List-of-Orders'
+import apiClient from '../../services/apiClient'
+import moment from 'moment'
+import { ListofOutOfStocks } from './ordersummary/List-of-OutOfStocks'
+import { others, VStack } from '@chakra-ui/react'
+
+const fetchOrderSummaryApi = async (dateFrom, dateTo) => {
+  const newDateFrom = moment(dateFrom).format("yyyy-MM-DD")
+  const newDateTo = moment(dateTo).format("yyyy-MM-DD")
+  const res = await apiClient.get(`https://localhost:44382/api/Ordering/OrderSummary?DateFrom=${newDateFrom}&DateTo=${newDateTo}`)
+  return res.data
+}
+
+const fetchOutofStocksApi = async (itemCode, orderDate) => {
+  const convertedDate = moment(orderDate).format("yyyy-MM-DD")
+  const res = await apiClient.get(`Ordering/GetAllOutOfStockByItemCodeAndOrderDate?itemcode=${itemCode}&orderdate=${convertedDate}`)
+  return res.data
+}
+
 
 const OrderSummaryPage = () => {
-  return <div>Order Summar Page</div>;
-};
+
+  const [dateFrom, setDateFrom] = useState('')
+  const [dateTo, setDateTo] = useState('')
+  const [orderSummary, setOrderSummary] = useState([])
+  const [orderId, setOrderId] = useState('')
+
+  const [itemCode, setItemCode] = useState('')
+  const [orderDate, setOrderDate] = useState('')
+  const [noStockData, setNoStockData] = useState([])
+
+  const fetchOrderSUmmary = () => {
+    fetchOrderSummaryApi(dateFrom, dateTo).then(res => {
+      setOrderSummary(res)
+    })
+  }
+
+  useEffect(() => {
+    if (dateFrom && dateTo) {
+      fetchOrderSUmmary()
+    }
+
+    return () => {
+      setOrderSummary([])
+    }
+  }, [dateFrom, dateTo])
+
+  const fetchOutofStocks = () => {
+    fetchOutofStocksApi(itemCode, orderDate).then(res => {
+      setNoStockData(res)
+    })
+  }
+
+  useEffect(() => {
+    if (itemCode && orderDate) {
+      fetchOutofStocks()
+    }
+
+    return () => {
+      setNoStockData([])
+    }
+  }, [itemCode, orderDate])
+
+  return (
+    <VStack w='full'>
+      <ListofOrders
+        setDateFrom={setDateFrom} setDateTo={setDateTo}
+        dateFrom={dateFrom} dateTo={dateTo}
+        orderSummary={orderSummary} orderId={orderId} setOrderId={setOrderId}
+        setItemCode={setItemCode} setOrderDate={setOrderDate}
+      />
+      {
+        noStockData?.map((stock, i) => {
+          if (stock.quantityOrder > stock.stockOnHand) {
+            return <ListofOutOfStocks key={i} noStockData={noStockData} />
+          }
+        })
+      }
+    </VStack>
+  )
+}
 
 export default OrderSummaryPage;

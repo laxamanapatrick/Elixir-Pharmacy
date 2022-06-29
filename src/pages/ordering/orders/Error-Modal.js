@@ -260,11 +260,11 @@ export const ErrorModal = ({ isOpen, onClose, errorData }) => {
                                 : ''
                             }
                             {filteredOrders?.length > 0 ?
-                                <AccordionItem bgColor='gray.200'>
+                                <AccordionItem bgColor='success'>
                                     <Flex>
                                         <AccordionButton color='white' fontWeight='semibold'>
                                             <Box flex='1' textAlign='center' color='secondary' fontWeight='semibold'>
-                                                Filtered Orders <Badge color='danger'>{filteredOrders?.length}</Badge>
+                                                Available for syncing <Badge color='success'>{filteredOrders?.length}</Badge>
                                             </Box>
                                             <AccordionIcon color='secondary' />
                                         </AccordionButton>
