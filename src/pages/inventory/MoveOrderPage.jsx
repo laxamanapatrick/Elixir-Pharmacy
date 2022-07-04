@@ -7,18 +7,38 @@ import { PreparedItems } from './moveorder/Prepared-Items'
 import { usePagination } from '@ajna/pagination'
 import apiClient from '../../services/apiClient'
 
+//Pagination
+
 const fetchMoveOrderApi = async (pageNumber) => {
   const res = await apiClient.get(`Ordering/GetAllListForMoveOrderPagination?pageSize=1&pageNumber=${pageNumber}`)
   return res.data
 }
+
+//List of Approved Move Orders
 
 const fetchApprovedMoveOrdersApi = async (farmName) => {
   const res = await apiClient.get(`Ordering/GetAllListOfApprovedPreparedForMoveOrder?farm=${farmName}`)
   return res.data
 }
 
+//List of Orders
+
 const fetchOrderListApi = async (orderId) => {
   const res = await apiClient.get(`Ordering/GetAllListOfOrdersForMoveOrder?id=${orderId}`)
+  return res.data
+}
+
+//Actual Item Quantity || Barcode Details
+
+const fetchBarcodeDetailsApi = async (warehouseId, itemCode) => {
+  const res = await apiClient.get(`Ordering/GetAvailableStockFromWarehouse?id=${warehouseId}&itemcode=${itemCode}`)
+  return res.data
+}
+
+//Prepared Items
+
+const fetchPreparedItemsApi = async (orderId) => {
+  const res = await apiClient.get(`Ordering/ListOfPreparedItemsForMoveOrder?id=${orderId}`)
   return res.data
 }
 
@@ -30,6 +50,17 @@ const MoveOrderPage = () => {
 
   const [orderId, setOrderId] = useState('')
   const [orderListData, setOrderListData] = useState([])
+
+  const [highlighterId, setHighlighterId] = useState('')
+
+  const [qtyOrdered, setQtyOrdered] = useState('')
+  const [preparedQty, setPreparedQty] = useState('')
+
+  const [warehouseId, setWarehouseId] = useState('')
+  const [itemCode, setItemCode] = useState('')
+  const [barcodeData, setBarcodeData] = useState([])
+
+  const [preparedData, setPreparedData] = useState([])
 
   const [pageTotal, setPageTotal] = useState(undefined);
   const outerLimit = 2;
@@ -47,7 +78,7 @@ const MoveOrderPage = () => {
 
   const fetchMoveOrder = () => {
     fetchMoveOrderApi(currentPage).then(res => {
-      setFarmName(res?.orders[0].farm)
+      setFarmName(res?.orders[0]?.farm)
       setPageTotal(res.totalCount)
     })
   }
@@ -67,7 +98,7 @@ const MoveOrderPage = () => {
   const fetchApprovedMoveOrders = () => {
     fetchApprovedMoveOrdersApi(farmName).then(res => {
       setMoveData(res)
-      setOrderId(res[0]?.id)
+      // setOrderId(res[0]?.id)
     })
   }
 
@@ -98,17 +129,80 @@ const MoveOrderPage = () => {
       setOrderListData([])
     }
   }, [orderId])
-  
+
+  //Barcode Details
+
+  const fetchBarcodeDetails = () => {
+    fetchBarcodeDetailsApi(warehouseId, itemCode).then(res => {
+      setBarcodeData(res)
+    })
+  }
+
+  useEffect(() => {
+    if (warehouseId && itemCode) {
+      fetchBarcodeDetails()
+    }
+
+    return () => {
+      setBarcodeData([])
+    }
+  }, [warehouseId, itemCode])
+
+  //Prepared Items
+
+  const fetchPreparedItems = () => {
+    fetchPreparedItemsApi(orderId).then(res => {
+      setPreparedData(res)
+    })
+  }
+
+  useEffect(() => {
+    if (orderId) {
+      fetchPreparedItems()
+    }
+
+    return () => {
+      setPreparedData([])
+    }
+  }, [orderId])
+
   return (
     <>
       <VStack w='full' p={4} spacing={6}>
         <ListofApprovedDate
           farmName={farmName} moveData={moveData}
           setCurrentPage={setCurrentPage} currentPage={currentPage} pagesCount={pagesCount}
+          setOrderId={setOrderId} orderId={orderId}
+          setItemCode={setItemCode} setWarehouseId={setWarehouseId} setHighlighterId={setHighlighterId}
         />
-        <ListofOrders orderListData={orderListData} />
-        <ActualItemQuantity />
-        <PreparedItems />
+        <ListofOrders
+          orderListData={orderListData}
+          setItemCode={setItemCode}
+          highlighterId={highlighterId} setHighlighterId={setHighlighterId}
+          setQtyOrdered={setQtyOrdered} setPreparedQty={setPreparedQty}
+        />
+        {
+          itemCode && highlighterId &&
+          <ActualItemQuantity
+            setWarehouseId={setWarehouseId}
+            warehouseId={warehouseId}
+            barcodeData={barcodeData}
+            orderId={orderId}
+            highlighterId={highlighterId}
+            itemCode={itemCode}
+            fetchOrderList={fetchOrderList} fetchPreparedItems={fetchPreparedItems}
+            qtyOrdered={qtyOrdered} preparedQty={preparedQty}
+            setHighlighterId={setHighlighterId} setItemCode={setItemCode}
+          />
+        }
+        {
+          preparedData.length > 0 &&
+          <PreparedItems
+            preparedData={preparedData}
+            fetchPreparedItems={fetchPreparedItems}
+            fetchOrderList={fetchOrderList}
+          />
+        }
       </VStack>
     </>
   )

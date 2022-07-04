@@ -1,5 +1,5 @@
 import React from 'react'
-import { Badge, Button, Checkbox, Flex, FormLabel, HStack, Input, Select, Table, Tbody, Td, Text, Th, Thead, Tr, useDisclosure, VStack } from '@chakra-ui/react'
+import { Badge, Flex, HStack, Select, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from '@chakra-ui/react'
 import {
     Pagination,
     usePagination,
@@ -11,12 +11,28 @@ import {
 } from '@ajna/pagination'
 import PageScrollReusable from '../../../components/PageScroll-Reusable'
 import { TiInfo } from 'react-icons/ti'
+import { GoArrowSmallRight } from 'react-icons/go'
 import moment from 'moment'
 
-export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage, setCurrentPage }) => {
+export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage,
+    setCurrentPage, setItemCode, setWarehouseId, setHighlighterId, setOrderId, orderId }) => {
 
     const handlePageChange = (nextPage) => {
         setCurrentPage(nextPage)
+        setItemCode('')
+        setWarehouseId('')
+        setHighlighterId('')
+        setOrderId('')
+    }
+
+    const handleId = (data) => {
+        setItemCode('')
+        setHighlighterId('')
+        if (data) {
+            setOrderId(data)
+        } else {
+            setOrderId('')
+        }
     }
 
     const TableHead = [
@@ -77,8 +93,17 @@ export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage
                         <Tbody>
                             {
                                 moveData?.map((order, i) =>
-                                    <Tr key={i}>
+                                    <Tr key={i}
+                                        onClick={() => handleId(order.id)}
+                                        bgColor={orderId === order.id ? 'table_accent' : 'none'}
+                                        cursor='pointer'
+                                    >
+                                        {orderId === order.id
+                                        ?
+                                        <Td><GoArrowSmallRight fontSize='27px' /></Td>
+                                        :
                                         <Td>{i + 1}</Td>
+                                    }
                                         <Td>{order.id}</Td>
                                         <Td>{order.farm}</Td>
                                         <Td>{order.farmCode}</Td>
