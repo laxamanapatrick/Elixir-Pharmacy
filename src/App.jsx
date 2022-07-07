@@ -73,6 +73,11 @@ import SupplierPage from './pages/setup/SupplierPage'
 import TransformationManagementPage from './pages/setup/TransformationManagementPage'
 import ReasonPage from './pages/setup/ReasonPage'
 
+import MoveOrderApproval from './pages/MoveOrderApproval';
+import ForApprovalMO from './pages/moveorderapproval/For-ApprovalMO';
+import ApprovedMO from './pages/moveorderapproval/Approved-MO';
+import RejectedMO from './pages/moveorderapproval/Rejected-MO';
+
 import ReportsPage from './pages/ReportsPage';
 import AppScroll from './components/AppScroll';
 
@@ -166,6 +171,12 @@ function App() {
             <Route path="supplier" element={user ? <SupplierPage /> : <Navigate to="/login" />} />
             <Route path="t-management" element={user ? <TransformationManagementPage /> : <Navigate to="/login" />} />
             <Route path="reason" element={user ? <ReasonPage /> : <Navigate to="/login" />} />
+          </Route>
+
+          <Route path="move-order-approval" element={user ? <MoveOrderApproval /> : <Navigate to='/login' />}>
+            <Route path="for-approval" element={user ? <ForApprovalMO /> : <Navigate to="/login" />} />
+            <Route path="approved-mo" element={user ? <ApprovedMO /> : <Navigate to="/login" />} />
+            <Route path="rejected-mo" element={user ? <RejectedMO /> : <Navigate to="/login" />} />
           </Route>
 
           <Route path="reports" element={user ? <ReportsPage /> : <Navigate to="/login" />}>

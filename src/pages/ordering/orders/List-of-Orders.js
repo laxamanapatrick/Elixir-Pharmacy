@@ -10,6 +10,7 @@ export const ListofOrders = ({ genusOrders, setGenusOrders, search, setSearch, f
 
     const [isLoading, setIsLoading] = useState(false)
 
+    const [keyword, setKeyword] = useState('')
     const [errorData, setErrorData] = useState([])
 
     const { isOpen: isError, onOpen: openError, onClose: closeError } = useDisclosure()
@@ -37,16 +38,6 @@ export const ListofOrders = ({ genusOrders, setGenusOrders, search, setSearch, f
         }
     })
 
-    const searchHandler = (data) => {
-        const search = data.toLowerCase()
-        const filteredSearch = genusOrders?.genus_orders.filter(orders => orders.farm_name.toLowerCase().includes(search))
-        if (data) {
-            setGenusOrders(filteredSearch)
-        } else {
-            setGenusOrders(genusOrders)
-        }
-    }
-
     return (
         <Flex w='full' p={5} flexDirection='column'>
 
@@ -54,7 +45,8 @@ export const ListofOrders = ({ genusOrders, setGenusOrders, search, setSearch, f
                 <HStack>
                     <Text fontSize='sm'>SEARCH:</Text>
                     <Input
-                        onChange={(e) => searchHandler(e.target.value)}
+                        placeholder='ex. Farm Name'
+                        onChange={(e) => setKeyword(e.target.value)}
                         disabled={isLoading}
                     />
                 </HStack>
@@ -87,7 +79,7 @@ export const ListofOrders = ({ genusOrders, setGenusOrders, search, setSearch, f
                                         <Th color='white'>Order Date</Th>
                                         <Th color='white'>Date Needed</Th>
                                         <Th color='white'>Farm Code</Th>
-                                        <Th color='white'>Farm Type</Th>
+                                        <Th color='white'>Farm Name</Th>
                                         <Th color='white'>Item Code</Th>
                                         <Th color='white'>Item Description</Th>
                                         <Th color='white'>Category</Th>
@@ -98,13 +90,11 @@ export const ListofOrders = ({ genusOrders, setGenusOrders, search, setSearch, f
                                 <Tbody>
                                     {
                                         genusOrders?.genus_orders
-                                            // ?.filter((val) => {
-                                            //     if (search == "") {
-                                            //         return val
-                                            //     } else if (val.farm_name.toLowerCase().includes(search.toLowerCase())) {
-                                            //         return val
-                                            //     }
-                                            // })
+                                            ?.filter((val) => {
+                                                const newKeyword = new RegExp(`${keyword.toLowerCase()}`)
+                                                return val.order_details.farm_name?.toLowerCase().match(newKeyword, '*')
+                                            }
+                                            )
                                             ?.map((order, i) =>
                                                 <Tr key={i}>
                                                     <Td>{i + 1}</Td>

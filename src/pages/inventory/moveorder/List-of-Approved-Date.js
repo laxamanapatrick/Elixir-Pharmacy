@@ -15,7 +15,7 @@ import { GoArrowSmallRight } from 'react-icons/go'
 import moment from 'moment'
 
 export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage,
-    setCurrentPage, setItemCode, setWarehouseId, setHighlighterId, setOrderId, orderId }) => {
+    setCurrentPage, setItemCode, setWarehouseId, setHighlighterId, setOrderId, orderId, setPlateNumber, buttonChanger }) => {
 
     const handlePageChange = (nextPage) => {
         setCurrentPage(nextPage)
@@ -28,6 +28,7 @@ export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage
     const handleId = (data) => {
         setItemCode('')
         setHighlighterId('')
+        setPlateNumber('')
         if (data) {
             setOrderId(data)
         } else {
@@ -70,22 +71,28 @@ export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage
                 </Flex>
             </Flex>
 
-            <HStack w='full' justifyContent='start'>
-                <Badge bgColor='secondary' color='white' px={3}>Plate Number: </Badge>
-                <Select
-                    placeholder='Please select a plate number'
-                    w='15%' size='xs' bgColor='#fff8dc'
-                >
-                    <option>CAR 1002</option>
-                    <option>EHS 228</option>
-                    <option>JYP 069</option>
-                    <option>PAT 625</option>
-                </Select>
-            </HStack>
+            {
+                buttonChanger ?
+                    <HStack w='full' justifyContent='start'>
+                        <Badge bgColor='secondary' color='white' px={3}>Plate Number: </Badge>
+                        <Select
+                            onChange={(e) => setPlateNumber(e.target.value)}
+                            placeholder='Please select a plate number'
+                            w='15%' size='xs' bgColor='#fff8dc'
+                        >
+                            <option>CAR 1002</option>
+                            <option>EHS 228</option>
+                            <option>JYP 069</option>
+                            <option>PAT 625</option>
+                        </Select>
+                    </HStack>
+                    :
+                    ''
+            }
 
             <VStack w='full' spacing={0} justifyContent='center' mt={6}>
                 <Text w='full' fontWeight='semibold' fontSize='md' bgColor='secondary' color='white' textAlign='center'>List of Approved Date</Text>
-                <PageScrollReusable minHeight='100px' maxHeight='120px'>
+                <PageScrollReusable minHeight='120px' maxHeight='150px'>
                     <Table size='sm' variant='simple'>
                         <Thead bgColor='secondary'>
                             <Tr>{TableHead?.map((head, i) => <Th key={i} color='white'>{head}</Th>)}</Tr>
@@ -94,16 +101,17 @@ export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage
                             {
                                 moveData?.map((order, i) =>
                                     <Tr key={i}
+                                        // title={isReject ? order.remarks : ''}
                                         onClick={() => handleId(order.id)}
                                         bgColor={orderId === order.id ? 'table_accent' : 'none'}
                                         cursor='pointer'
                                     >
                                         {orderId === order.id
-                                        ?
-                                        <Td><GoArrowSmallRight fontSize='27px' /></Td>
-                                        :
-                                        <Td>{i + 1}</Td>
-                                    }
+                                            ?
+                                            <Td><GoArrowSmallRight fontSize='27px' /></Td>
+                                            :
+                                            <Td>{i + 1}</Td>
+                                        }
                                         <Td>{order.id}</Td>
                                         <Td>{order.farm}</Td>
                                         <Td>{order.farmCode}</Td>

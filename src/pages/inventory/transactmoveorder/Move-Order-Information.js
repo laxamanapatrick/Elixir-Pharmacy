@@ -2,7 +2,7 @@ import React from 'react'
 import { Flex, HStack, Input, Select, Text, VStack } from '@chakra-ui/react'
 import DatePicker from 'react-datepicker'
 
-export const MoveOrderInformation = () => {
+export const MoveOrderInformation = ({ moveOrderInformation, deliveryDate, setDeliveryDate }) => {
     return (
         <Flex w='full' flexDirection='column' borderX='1px'>
             <VStack w='full' spacing={0} mb={2}>
@@ -11,19 +11,19 @@ export const MoveOrderInformation = () => {
                 <VStack w='99%'>
                     <HStack w='full' justifyContent='space-between' mt={2}>
                         <Text fontSize='sm'>Order ID:</Text>
-                        <Input size='sm' />
+                        <Text textAlign='center' w='full' fontSize='sm' bgColor='gray.200' border='1px' py={1}>{moveOrderInformation.orderNo ? moveOrderInformation.orderNo : 'Please select a list'}</Text>
                         <Text fontSize='sm'>Plate Number:</Text>
-                        <Input size='sm' />
+                        <Text textAlign='center' w='full' fontSize='sm' bgColor='gray.200' border='1px' py={1}>{moveOrderInformation.plateNumber ? moveOrderInformation.plateNumber : 'Please select a list'}</Text>
                         <Text fontSize='sm'>Delivery Date:</Text>
-                        <DatePicker />
+                        <DatePicker
+                            onChange={(date) => setDeliveryDate(date)}
+                            selected={deliveryDate}
+                            minDate={new Date()}
+                        />
                     </HStack>
                     <HStack w='full' justifyContent='start' mt={2}>
                         <Text fontSize='sm'>Farm:</Text>
-                        <Select size='sm' w='48%'>
-                            <option>Hi</option>
-                        </Select>
-                        <Text fontSize='sm'>Address:</Text>
-                        <Input w='full' size='sm' />
+                        <Text textAlign='center' w='29%' fontSize='sm' bgColor='gray.200' border='1px' py={1}>{moveOrderInformation.farmName ? moveOrderInformation.farmName : 'Please select a list'}</Text>
                     </HStack>
                 </VStack>
             </VStack>

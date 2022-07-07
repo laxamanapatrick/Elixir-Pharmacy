@@ -1,37 +1,58 @@
 import React from 'react'
-import { Flex, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from '@chakra-ui/react'
+import { Button, Flex, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from '@chakra-ui/react'
 import PageScrollReusable from '../../../components/PageScroll-Reusable'
+import moment from 'moment'
 
-export const ListofMoveOrdersPerFarm = () => {
+export const ListofMoveOrdersPerFarm = ({ moveOrderListThirdTable, deliveryDate }) => {
 
     const TableHead = [
         "Line", "Order Date", "Farm Code", "Farm", "Category", "Item Code", "Item Description", "UOM", "Expiration Date", "Quantity"
     ]
 
+    console.log(moveOrderListThirdTable)
+
     return (
-        <Flex w='full' flexDirection='column' borderX='1px' borderBottom='1px'>
-            <VStack spacing={0}>
-                <Text pb={2} textAlign='center' fontSize='md' color='white' bgColor='secondary' w='full' mb={-1.5}>List of Move Orders</Text>
-                <PageScrollReusable minHeight='220px' maxHeight='350px'>
-                    <Table size='sm' variant='simple'>
-                        <Thead bgColor='secondary'>
-                            <Tr>
+        <>
+            <Flex w='full' flexDirection='column' borderX='1px'>
+                <VStack spacing={0}>
+                    <Text pb={2} textAlign='center' fontSize='md' color='white' bgColor='secondary' w='full' mb={-1.5}>List of Move Orders</Text>
+                    <PageScrollReusable minHeight='220px' maxHeight='350px'>
+                        <Table size='sm' variant='simple'>
+                            <Thead bgColor='secondary'>
+                                <Tr>
+                                    {
+                                        TableHead?.map((t, i) =>
+                                            <Th color='white' key={i}>{t}</Th>
+                                        )
+                                    }
+                                </Tr>
+                            </Thead>
+                            <Tbody>
                                 {
-                                    TableHead?.map((t, i) =>
-                                        <Th color='white' key={i}>{t}</Th>
+                                    moveOrderListThirdTable?.map((list,i) => 
+                                    <Tr key={i}>
+                                        <Td>{i + 1}</Td>
+                                        <Td>{list.orderDate}</Td>
+                                        <Td>{list.farmCode}</Td>
+                                        <Td>{list.farm}</Td>
+                                        <Td>{list.category}</Td>
+                                        <Td>{list.itemCode}</Td>
+                                        <Td>{list.itemDescription}</Td>
+                                        <Td>{list.uom}</Td>
+                                        <Td>{moment(list.expiration).format('MM/DD/yyyy')}</Td>
+                                        <Td>{list.quantity}</Td>
+                                    </Tr>
                                     )
                                 }
-                            </Tr>
-                        </Thead>
-                        <Tbody>
-                            <Tr>
-                                <Td>e</Td>
-                            </Tr>
-                        </Tbody>
-                    </Table>
-                </PageScrollReusable>
-            </VStack>
-        </Flex>
+                            </Tbody>
+                        </Table>
+                    </PageScrollReusable>
+                </VStack>
+            </Flex>
+            <Flex justifyContent='end' w='full' borderX='1px' borderBottom='1px' p={1} mt={2}>
+                <Button colorScheme='blue' w='7%' size='sm' disabled={!deliveryDate}>Transact</Button>
+            </Flex>
+        </>
     )
 }
 

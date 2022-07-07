@@ -1,8 +1,10 @@
 import React from 'react'
-import { Button, ButtonGroup, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Text, useToast, VStack } from '@chakra-ui/react'
+import { Button, ButtonGroup, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Text, toast, useDisclosure, useToast, VStack } from '@chakra-ui/react'
 import { RiQuestionnaireLine } from 'react-icons/ri'
 import apiClient from '../../../services/apiClient'
 import { ToastComponent } from '../../../components/Toast'
+
+//Add Button
 
 export const AddQuantityConfirmation = ({ isOpen, onClose, id, orderNo, itemCode,
     quantityOrdered, fetchOrderList, fetchPreparedItems, setQuantity, expirationDate, setHighlighterId, warehouseId, setWarehouseId
@@ -74,8 +76,10 @@ export const AddQuantityConfirmation = ({ isOpen, onClose, id, orderNo, itemCode
     )
 }
 
+//Cancel Prepared
+
 export const CancelConfirmation = ({ isOpen, onClose, id, fetchPreparedItems, fetchOrderList, setCancelId }) => {
-    
+
     const toast = useToast()
 
     const submitHandler = () => {
@@ -109,6 +113,105 @@ export const CancelConfirmation = ({ isOpen, onClose, id, fetchPreparedItems, fe
                     <ModalBody>
                         <VStack justifyContent='center'>
                             <Text>Are you sure you want to cancel this prepared item?</Text>
+                        </VStack>
+                    </ModalBody>
+
+                    <ModalFooter>
+                        <ButtonGroup size='sm' mt={3}>
+                            <Button colorScheme='blue' px={4} onClick={submitHandler}>Yes</Button>
+                            <Button colorScheme='red' px={4} onClick={onClose}>No</Button>
+                        </ButtonGroup>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+        </>
+    )
+}
+
+//Save Button
+
+export const SaveButton = ({ plateNumber, orderListData, fetchApprovedMoveOrders, fetchOrderList,
+    setOrderId, setHighlighterId, setItemCode, setPlateNumber, setButtonChanger }) => {
+
+    const { isOpen: isPlateNumber, onClose: closePlateNumber, onOpen: openPlateNumber } = useDisclosure()
+
+    return (
+        <Flex w='full' justifyContent='end'>
+            <Button
+                onClick={() => openPlateNumber()}
+                disabled={!plateNumber}
+                title={plateNumber ? `Save with plate number ${plateNumber}` : 'Please select a plate number.'}
+                size='sm' colorScheme='blue' px={6}
+            >
+                Save
+            </Button>
+            {
+                <PlateNumberConfirmation
+                    isOpen={isPlateNumber}
+                    onClose={closePlateNumber}
+                    plateNumber={plateNumber}
+                    orderListData={orderListData}
+                    fetchApprovedMoveOrders={fetchApprovedMoveOrders}
+                    fetchOrderList={fetchOrderList}
+                    setOrderId={setOrderId}
+                    setHighlighterId={setHighlighterId}
+                    setItemCode={setItemCode}
+                    setPlateNumber={setPlateNumber}
+                    setButtonChanger={setButtonChanger}
+                />
+            }
+        </Flex>
+    )
+}
+export const PlateNumberConfirmation = ({ isOpen, onClose, plateNumber, orderListData, fetchApprovedMoveOrders, fetchOrderList,
+    setOrderId, setHighlighterId, setItemCode, setPlateNumber, setButtonChanger }) => {
+
+    const toast = useToast()
+
+    const submitHandler = () => {
+        // console.log("Plate Number: ", plateNumber)
+        // console.log("List of Id to Submit", orderListData?.map(item => { return item.id }))
+        const submitArray = orderListData?.map(item => {
+            return {
+                id: item.id,
+                plateNumber: plateNumber
+            }
+        })
+        console.log(submitArray)
+        try {
+            const res = apiClient.put(`Ordering/AddPlateNumberInMoveOrder`, submitArray)
+                .then(res => {
+                    ToastComponent("Success", "Items prepared successfully.", "success", toast)
+                    setOrderId('')
+                    setHighlighterId('')
+                    setItemCode('')
+                    setPlateNumber('')
+                    setButtonChanger(false)
+                    fetchApprovedMoveOrders()
+                    fetchOrderList()
+                    onClose()
+                })
+                .catch(err => {
+                    ToastComponent("Error", "Save failed.", "error", toast)
+                })
+        } catch (error) {
+        }
+    }
+
+    return (
+        <>
+            <Modal isOpen={isOpen} onClose={() => { }} size='xl' isCentered>
+                <ModalContent>
+                    <ModalHeader>
+                        <Flex justifyContent='center'>
+                            <RiQuestionnaireLine fontSize='35px' />
+                        </Flex>
+                    </ModalHeader>
+                    <ModalCloseButton onClick={onClose} />
+
+                    <ModalBody>
+                        <VStack justifyContent='center'>
+                            <Text>Are you sure you want to save these prepared items?</Text>
                         </VStack>
                     </ModalBody>
 

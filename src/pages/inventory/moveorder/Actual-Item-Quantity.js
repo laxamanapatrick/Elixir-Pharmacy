@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Button, Flex, HStack, Input, Text, useDisclosure } from '@chakra-ui/react'
 import { FaCloudscale } from 'react-icons/fa'
 import DatePicker from "react-datepicker";
-import { AddQuantityConfirmation } from './Action-Modals';
+import { AddQuantityConfirmation, PlateNumberConfirmation } from './Action-Modals';
 import moment from 'moment';
 
 export const ActualItemQuantity = ({ warehouseId, setWarehouseId, barcodeData, orderId, highlighterId, setHighlighterId,
@@ -14,6 +14,7 @@ export const ActualItemQuantity = ({ warehouseId, setWarehouseId, barcodeData, o
     const [inputValidate, setInputValidate] = useState(true)
 
     const { isOpen: isQuantity, onClose: closeQuantity, onOpen: openQuantity } = useDisclosure()
+    
 
     useEffect(() => {
         const total = Number(quantity) + Number(preparedQty)
@@ -65,6 +66,10 @@ export const ActualItemQuantity = ({ warehouseId, setWarehouseId, barcodeData, o
             </HStack>
 
             <Flex bgColor='gray.200' justifyContent='end' mt={5}>
+
+                {
+                }
+
                 <Button
                     onClick={() => openQuantity()}
                     disabled={!warehouseId || !quantity || inputValidate || !barcodeData}
@@ -72,6 +77,7 @@ export const ActualItemQuantity = ({ warehouseId, setWarehouseId, barcodeData, o
                 >
                     Add
                 </Button>
+
             </Flex>
             {
                 <AddQuantityConfirmation
@@ -90,6 +96,7 @@ export const ActualItemQuantity = ({ warehouseId, setWarehouseId, barcodeData, o
                     warehouseId={warehouseId}
                 />
             }
+       
         </Flex>
     )
 }

@@ -1,12 +1,32 @@
 import React from 'react'
 import { Flex, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from '@chakra-ui/react'
 import PageScrollReusable from '../../../components/PageScroll-Reusable'
+import moment from 'moment'
+import { GrRadialSelected } from 'react-icons/gr'
 
-export const ListofMoveOrder = () => {
+export const ListofMoveOrder = ({ moveOrderList, setMoveOrderInformation, moveOrderInformation }) => {
 
   const TableHead = [
     "Line", "Order Id", "Farm", "Farm Code", "Category", "Total Quantity Order", "Order Date", "Date Needed", "Prepared Date"
   ]
+
+  const setterHandler = ({ orderNo, plateNumber, farm }) => {
+    if (orderNo && plateNumber && farm) {
+      setMoveOrderInformation({
+        orderNo: orderNo,
+        plateNumber: plateNumber,
+        farmName: farm
+      })
+    } else {
+      setMoveOrderInformation({
+        orderNo: '',
+        plateNumber: '',
+        farmName: ''
+      })
+    }
+  }
+
+  console.log(moveOrderInformation)
 
   return (
     <Flex w='full' flexDirection='column'>
@@ -24,9 +44,30 @@ export const ListofMoveOrder = () => {
               </Tr>
             </Thead>
             <Tbody>
-              <Tr>
-                <Td>e</Td>
-              </Tr>
+              {
+                moveOrderList?.map((list, i) =>
+                  <Tr key={i}
+                    onClick={() => setterHandler(list)}
+                    bgColor={moveOrderInformation.orderNo === list.orderNo ? 'table_accent' : 'none'}
+                    cursor='pointer'
+                  >
+                    {
+                      moveOrderInformation.orderNo === list.orderNo ?
+                        <Td><GrRadialSelected /></Td>
+                        :
+                        <Td>{i + 1}</Td>
+                    }
+                    <Td>{list.orderNo}</Td>
+                    <Td>{list.farm}</Td>
+                    <Td>{list.farmCode}</Td>
+                    <Td>{list.category}</Td>
+                    <Td>{list.totalOrders}</Td>
+                    <Td>{list.orderDate}</Td>
+                    <Td>{list.dateNeeded}</Td>
+                    <Td>{moment(list.preparedDate).format('MM/DD/yyyy')}</Td>
+                  </Tr>
+                )
+              }
             </Tbody>
           </Table>
         </PageScrollReusable>

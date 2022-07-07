@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { VStack } from '@chakra-ui/react'
+import { Button, Flex, useDisclosure, VStack } from '@chakra-ui/react'
 import { ActualItemQuantity } from './moveorder/Actual-Item-Quantity'
 import { ListofApprovedDate } from './moveorder/List-of-Approved-Date'
 import { ListofOrders } from './moveorder/List-of-Orders'
 import { PreparedItems } from './moveorder/Prepared-Items'
 import { usePagination } from '@ajna/pagination'
 import apiClient from '../../services/apiClient'
+import { SaveButton } from './moveorder/Action-Modals'
 
 //Pagination
 
@@ -46,7 +47,11 @@ const MoveOrderPage = () => {
 
   const [farmName, setFarmName] = useState('')
 
+  const [plateNumber, setPlateNumber] = useState('')
+
   const [moveData, setMoveData] = useState([])
+
+  console.log(moveData)
 
   const [orderId, setOrderId] = useState('')
   const [orderListData, setOrderListData] = useState([])
@@ -61,6 +66,8 @@ const MoveOrderPage = () => {
   const [barcodeData, setBarcodeData] = useState([])
 
   const [preparedData, setPreparedData] = useState([])
+
+  let [buttonChanger, setButtonChanger] = useState(false)
 
   const [pageTotal, setPageTotal] = useState(undefined);
   const outerLimit = 2;
@@ -166,6 +173,19 @@ const MoveOrderPage = () => {
     }
   }, [orderId])
 
+  //UseEffect for button change Add-Save
+  useEffect(() => {
+    if (orderListData.length > 0) {
+      const variable = orderListData.every(item => item.preparedQuantity === item.quantityOrder)
+      setButtonChanger(variable)
+      // orderListData.some(item => {
+      //   if (item.preparedQuantity !== item.quantityOrder) {
+      //     setButtonChanger(false)
+      //   }
+      // })
+    }
+  }, [orderListData])
+
   return (
     <>
       <VStack w='full' p={4} spacing={6}>
@@ -174,6 +194,8 @@ const MoveOrderPage = () => {
           setCurrentPage={setCurrentPage} currentPage={currentPage} pagesCount={pagesCount}
           setOrderId={setOrderId} orderId={orderId}
           setItemCode={setItemCode} setWarehouseId={setWarehouseId} setHighlighterId={setHighlighterId}
+          setPlateNumber={setPlateNumber}
+          buttonChanger={buttonChanger}
         />
         <ListofOrders
           orderListData={orderListData}
@@ -182,18 +204,31 @@ const MoveOrderPage = () => {
           setQtyOrdered={setQtyOrdered} setPreparedQty={setPreparedQty}
         />
         {
-          itemCode && highlighterId &&
-          <ActualItemQuantity
-            setWarehouseId={setWarehouseId}
-            warehouseId={warehouseId}
-            barcodeData={barcodeData}
-            orderId={orderId}
-            highlighterId={highlighterId}
-            itemCode={itemCode}
-            fetchOrderList={fetchOrderList} fetchPreparedItems={fetchPreparedItems}
-            qtyOrdered={qtyOrdered} preparedQty={preparedQty}
-            setHighlighterId={setHighlighterId} setItemCode={setItemCode}
-          />
+          buttonChanger ?
+            <SaveButton
+              plateNumber={plateNumber}
+              orderListData={orderListData}
+              fetchApprovedMoveOrders={fetchApprovedMoveOrders}
+              fetchOrderList={fetchOrderList}
+              setOrderId={setOrderId}
+              setHighlighterId={setHighlighterId}
+              setItemCode={setItemCode}
+              setPlateNumber={setPlateNumber}
+              setButtonChanger={setButtonChanger}
+            />
+            :
+            itemCode && highlighterId &&
+            <ActualItemQuantity
+              setWarehouseId={setWarehouseId}
+              warehouseId={warehouseId}
+              barcodeData={barcodeData}
+              orderId={orderId}
+              highlighterId={highlighterId}
+              itemCode={itemCode}
+              fetchOrderList={fetchOrderList} fetchPreparedItems={fetchPreparedItems}
+              qtyOrdered={qtyOrdered} preparedQty={preparedQty}
+              setHighlighterId={setHighlighterId} setItemCode={setItemCode}
+            />
         }
         {
           preparedData.length > 0 &&
