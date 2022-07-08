@@ -34,7 +34,7 @@ export const ListofMoveOrdersPerFarm = ({ moveOrderListThirdTable, deliveryDate 
                                         <Td>{i + 1}</Td>
                                         <Td>{list.orderDate}</Td>
                                         <Td>{list.farmCode}</Td>
-                                        <Td>{list.farm}</Td>
+                                        <Td>{list.farmName}</Td>
                                         <Td>{list.category}</Td>
                                         <Td>{list.itemCode}</Td>
                                         <Td>{list.itemDescription}</Td>

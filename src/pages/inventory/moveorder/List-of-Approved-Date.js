@@ -10,7 +10,7 @@ import {
     PaginationPageGroup,
 } from '@ajna/pagination'
 import PageScrollReusable from '../../../components/PageScroll-Reusable'
-import { TiInfo } from 'react-icons/ti'
+import { VscCircleLargeFilled } from 'react-icons/vsc'
 import { GoArrowSmallRight } from 'react-icons/go'
 import moment from 'moment'
 
@@ -37,7 +37,7 @@ export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage
     }
 
     const TableHead = [
-        "Line", "Order ID", "Farm", "Farm Code", "Category", "Total Quantity Order", "Order Date", "Date Needed", "Prepared Date"
+        "Line", "Order ID", "Farm", "Farm Code", "Category", "Total Quantity Order", "Order Date", "Date Needed", "Prepared Date", "Status"
     ]
 
     return (
@@ -92,7 +92,7 @@ export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage
 
             <VStack w='full' spacing={0} justifyContent='center' mt={6}>
                 <Text w='full' fontWeight='semibold' fontSize='md' bgColor='secondary' color='white' textAlign='center'>List of Approved Date</Text>
-                <PageScrollReusable minHeight='120px' maxHeight='150px'>
+                <PageScrollReusable minHeight='200px' maxHeight='210px'>
                     <Table size='sm' variant='simple'>
                         <Thead bgColor='secondary'>
                             <Tr>{TableHead?.map((head, i) => <Th key={i} color='white'>{head}</Th>)}</Tr>
@@ -101,9 +101,10 @@ export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage
                             {
                                 moveData?.map((order, i) =>
                                     <Tr key={i}
-                                        // title={isReject ? order.remarks : ''}
+                                        title={order.isReject ? order.remarks : ''}
                                         onClick={() => handleId(order.id)}
                                         bgColor={orderId === order.id ? 'table_accent' : 'none'}
+                                        _hover={order.isReject ? { bgColor: 'gray.200' } : { bgColor: 'none' }}
                                         cursor='pointer'
                                     >
                                         {orderId === order.id
@@ -119,7 +120,10 @@ export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage
                                         <Td>{order.totalOrders}</Td>
                                         <Td>{order.orderDate}</Td>
                                         <Td>{order.dateNeeded}</Td>
-                                        <Td>{moment(order.preparedDate).format("yyyy-MM-DD")}</Td>
+                                        <Td>{moment(order.preparedDate).format("MM/DD/yyyy")}</Td>
+                                        <Td>{order.isReject ?
+                                            <VscCircleLargeFilled color='red' /> : <VscCircleLargeFilled color='green' />
+                                        }</Td>
                                     </Tr>
                                 )
                             }

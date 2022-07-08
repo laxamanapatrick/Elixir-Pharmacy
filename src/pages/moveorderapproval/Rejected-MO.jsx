@@ -49,6 +49,7 @@ const RejectedMO = () => {
       currentPage={currentPage}
       pageSize={pageSize}
       rejectedData={rejectedData}
+      fetchRejectedMO={fetchRejectedMO}
     />
   )
 }

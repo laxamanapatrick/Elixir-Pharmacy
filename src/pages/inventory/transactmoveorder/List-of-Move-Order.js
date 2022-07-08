@@ -26,8 +26,6 @@ export const ListofMoveOrder = ({ moveOrderList, setMoveOrderInformation, moveOr
     }
   }
 
-  console.log(moveOrderInformation)
-
   return (
     <Flex w='full' flexDirection='column'>
       <VStack spacing={0}>

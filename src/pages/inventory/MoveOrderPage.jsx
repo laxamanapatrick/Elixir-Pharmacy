@@ -51,8 +51,6 @@ const MoveOrderPage = () => {
 
   const [moveData, setMoveData] = useState([])
 
-  console.log(moveData)
-
   const [orderId, setOrderId] = useState('')
   const [orderListData, setOrderListData] = useState([])
 
@@ -197,12 +195,16 @@ const MoveOrderPage = () => {
           setPlateNumber={setPlateNumber}
           buttonChanger={buttonChanger}
         />
-        <ListofOrders
-          orderListData={orderListData}
-          setItemCode={setItemCode}
-          highlighterId={highlighterId} setHighlighterId={setHighlighterId}
-          setQtyOrdered={setQtyOrdered} setPreparedQty={setPreparedQty}
-        />
+        {
+          orderId ?
+            <ListofOrders
+              orderListData={orderListData}
+              setItemCode={setItemCode}
+              highlighterId={highlighterId} setHighlighterId={setHighlighterId}
+              setQtyOrdered={setQtyOrdered} setPreparedQty={setPreparedQty}
+            />
+            : ''
+        }
         {
           buttonChanger ?
             <SaveButton

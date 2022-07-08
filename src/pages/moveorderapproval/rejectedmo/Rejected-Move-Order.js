@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button, Flex, HStack, Input, Select, Table, Tbody, Td, Text, Th, Thead, Tr, useDisclosure } from '@chakra-ui/react'
 import PageScrollReusable from '../../../components/PageScroll-Reusable'
 import { ReturnModal } from './Return-Modal'
@@ -13,7 +13,11 @@ import {
 } from '@ajna/pagination'
 import moment from 'moment'
 
-export const RejectedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, pagesCount, currentPage, pageSize, rejectedData }) => {
+export const RejectedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, pagesCount, currentPage, pageSize, rejectedData, fetchRejectedMO }) => {
+
+    const [orderNo, setOrderNo] = useState('')
+
+    const { isOpen: isReturn, onOpen: openReturn, onClose: closeReturn } = useDisclosure()
 
     const TableHead = [
         "Line", "Order ID", "Farm", "Farm Code", "Category", "Total Quantity Order", "Prepared Date",
@@ -33,9 +37,14 @@ export const RejectedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, page
         setSearch(inputValue)
     }
 
-    const { isOpen: isReturn, onOpen: openReturn, onClose: closeReturn } = useDisclosure()
-
-    console.log(rejectedData)
+    const returnHandler = (id) => {
+        if (id) {
+            setOrderNo(id)
+            openReturn()
+        } else {
+            setOrderNo(id)
+        }
+    }
 
     return (
         <Flex w='full' flexDirection='column' p={5}>
@@ -67,7 +76,7 @@ export const RejectedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, page
                             {
                                 rejectedData?.moveorder?.map((data, i) =>
                                     <Tr key={i}>
-                                        <Td>{i+1}</Td>
+                                        <Td>{i + 1}</Td>
                                         <Td>{data.orderNo}</Td>
                                         <Td>{data.farmName}</Td>
                                         <Td>{data.farmCode}</Td>
@@ -78,7 +87,7 @@ export const RejectedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, page
                                         <Td>{moment(data.rejectedDate).format("MM/DD/yyyy")}</Td>
                                         <Td>{data.remarks}</Td>
                                         <Td>
-                                            <Button colorScheme='red' size='xs' onClick={() => openReturn()}>
+                                            <Button colorScheme='red' size='xs' onClick={() => returnHandler(data.orderNo)}>
                                                 Return
                                             </Button>
                                         </Td>
@@ -122,6 +131,8 @@ export const RejectedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, page
                     <ReturnModal
                         isOpen={isReturn}
                         onClose={closeReturn}
+                        orderNo={orderNo}
+                        fetchRejectedMO={fetchRejectedMO}
                     />
                 )
             }
