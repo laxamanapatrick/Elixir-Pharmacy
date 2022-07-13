@@ -35,7 +35,6 @@ export const ReturnModal = ({ isOpen, onClose, orderNo, fetchRejectedMO }) => {
     }, [])
 
     const submitHandler = () => {
-        console.log(orderNo, reasonSubmit)
         try {
             const res = apiClient.put(`Ordering/ReturnMoveOrderForApproval`,
                 {

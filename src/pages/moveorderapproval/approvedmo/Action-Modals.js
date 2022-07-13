@@ -193,7 +193,7 @@ export const PrintModal = ({ isOpen, onClose, printData, closeApprove, fetchAppr
                             </Table>
                         </PageScrollReusable>
 
-                        <Flex justifyContent='space-between'>
+                        <Flex justifyContent='space-between' mb={5}>
                             <HStack>
                                 <Text>Delivery Status:</Text>
                                 <Text textDecoration='underline'>
@@ -218,12 +218,12 @@ export const PrintModal = ({ isOpen, onClose, printData, closeApprove, fetchAppr
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     </Text>
                                 </HStack>
-                                <Text>
+                                {/* <Text>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     Patrick Laxamana
-                                </Text>
+                                </Text> */}
                             </VStack>
                         </Flex>
 
@@ -241,12 +241,12 @@ export const PrintModal = ({ isOpen, onClose, printData, closeApprove, fetchAppr
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     </Text>
                                 </HStack>
-                                <Text>
+                                {/* <Text>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     Patrick Laxamana
-                                </Text>
+                                </Text> */}
                             </VStack>
                             <VStack spacing={0}>
                                 <HStack>
@@ -261,12 +261,12 @@ export const PrintModal = ({ isOpen, onClose, printData, closeApprove, fetchAppr
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     </Text>
                                 </HStack>
-                                <Text>
+                                {/* <Text>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     Jaypee Obidos
-                                </Text>
+                                </Text> */}
                             </VStack>
                         </Flex>
 
@@ -314,7 +314,6 @@ export const RejectModal = ({ isOpen, onClose, id, fetchApprovedMO }) => {
     }, [])
 
     const submitHandler = () => {
-        console.log(id, reasonSubmit)
         try {
             const res = apiClient.put(`Ordering/RejectListOfMoveOrder`,
                 {

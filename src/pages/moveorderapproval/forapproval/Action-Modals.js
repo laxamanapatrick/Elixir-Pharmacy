@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { Button, ButtonGroup, Flex, Heading, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Select, Table, Tbody, Td, Text, Th, Thead, toast, Tr, useDisclosure, useToast, VStack } from '@chakra-ui/react'
+import React, { useState, useEffect, useRef } from 'react'
+import { HStack, Image, Button, ButtonGroup, Flex, Heading, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Select, Table, Tbody, Td, Text, Th, Thead, toast, Tr, useDisclosure, useToast, VStack, Box } from '@chakra-ui/react'
 import { BsQuestionOctagonFill } from 'react-icons/bs'
 import apiClient from '../../../services/apiClient'
 import { ToastComponent } from '../../../components/Toast'
@@ -7,6 +7,8 @@ import { decodeUser } from '../../../services/decode-user'
 import PageScrollReusable from '../../../components/PageScroll-Reusable'
 import moment from 'moment'
 import { PrintModal } from '../approvedmo/Action-Modals'
+import { useReactToPrint } from 'react-to-print';
+import Barcode from 'react-barcode';
 
 const currentUser = decodeUser()
 
@@ -64,6 +66,14 @@ export const ViewModal = ({ isOpen, onClose, viewData }) => {
 
 export const ApproveModal = ({ isOpen, onClose, orderNo, fetchForApprovalMO, printData }) => {
 
+  const componentRef = useRef()
+
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+
+  const dateToday = new Date()
+
   const toast = useToast()
   const { isOpen: isPrint, onClose: closePrint, onOpen: openPrint } = useDisclosure()
 
@@ -73,6 +83,7 @@ export const ApproveModal = ({ isOpen, onClose, orderNo, fetchForApprovalMO, pri
         .then(res => {
           ToastComponent("Success", "Move order has been approved", "success", toast)
           fetchForApprovalMO()
+          handlePrint()
           openPrint()
         })
         .catch(jaypee => {
@@ -124,6 +135,142 @@ export const ApproveModal = ({ isOpen, onClose, orderNo, fetchForApprovalMO, pri
           />
         )
       }
+      <Box display='none'>
+        <Flex w='full' mt={8} p={5} flexDirection='column' ref={componentRef}>
+
+          <Flex spacing={0} justifyContent='start' flexDirection='column'>
+            <Image
+              src='/images/RDF Logo.png'
+              w='13%' ml={3}
+            />
+            <Text fontSize='8px' ml={2}>Purok 6, Brgy. Lara, City of San Fernando, Pampanga, Philippines</Text>
+          </Flex>
+
+          <Flex justifyContent='center' my={4}>
+            <Text fontSize='lg' fontWeight='semibold'>Move Order Slip</Text>
+          </Flex>
+
+          <Flex justifyContent='space-between' mb={3}>
+            <Flex flexDirection='column'>
+              <Text>Order ID: {orderNo && orderNo}</Text>
+              <Text>Warehouse: {`Pharmacy`}</Text>
+              <Text>Customer: {printData[0]?.farmName}</Text>
+              <Text>Address: {printData[0]?.farmName}</Text>
+            </Flex>
+            <Flex flexDirection='column'>
+              <Barcode width={3} height={50} value={Number(orderNo)} />
+              <Text>Date: {moment(dateToday).format("MM/DD/yyyy")}</Text>
+            </Flex>
+          </Flex>
+
+          <PageScrollReusable minHeight='150px' maxHeight='300px'>
+            <Table size='sm'>
+              <Thead bgColor='secondary'>
+                <Tr>
+                  <Th color='white'>ITEM CODE</Th>
+                  <Th color='white'>ITEM DESCRIPTION</Th>
+                  <Th color='white'>UOM</Th>
+                  <Th color='white'>QUANTITY</Th>
+                  <Th color='white'>ACTUAL QTY RECEIVED</Th>
+                  <Th color='white'>EXPIRATION DATE</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {
+                  printData?.map((item, i) =>
+                    <Tr key={i}>
+                      <Td>{item.itemCode}</Td>
+                      <Td>{item.itemDescription}</Td>
+                      <Td>{item.uom}</Td>
+                      <Td>{item.quantity}</Td>
+                      <Td></Td>
+                      <Td>{moment(item.expiration).format("MM/DD/yyyy")}</Td>
+                    </Tr>
+                  )
+                }
+              </Tbody>
+            </Table>
+          </PageScrollReusable>
+
+          <Flex justifyContent='space-between' mb={5}>
+            <HStack>
+              <Text>Delivery Status:</Text>
+              <Text textDecoration='underline'>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                {printData[0]?.deliveryStatus}
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              </Text>
+            </HStack>
+            <VStack spacing={0}>
+              <HStack>
+                <Text>Checked By:</Text>
+                <Text textDecoration='underline'>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </Text>
+              </HStack>
+              {/* <Text>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                Patrick Laxamana
+              </Text> */}
+            </VStack>
+          </Flex>
+
+          <Flex justifyContent='space-between'>
+            <VStack spacing={0}>
+              <HStack>
+                <Text>Prepared By:</Text>
+                <Text textDecoration='underline'>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </Text>
+              </HStack>
+              {/* <Text>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                Patrick Laxamana
+              </Text> */}
+            </VStack>
+            <VStack spacing={0}>
+              <HStack>
+                <Text>Received By:</Text>
+                <Text textDecoration='underline'>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </Text>
+              </HStack>
+              {/* <Text>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                Jaypee Obidos
+              </Text> */}
+            </VStack>
+          </Flex>
+
+        </Flex>
+      </Box>
     </>
   )
 }
@@ -156,7 +303,6 @@ export const RejectModal = ({ isOpen, onClose, id, fetchForApprovalMO }) => {
   }, [])
 
   const submitHandler = () => {
-    console.log(id, reasonSubmit)
     try {
       const res = apiClient.put(`Ordering/RejectListOfMoveOrder`,
         {
