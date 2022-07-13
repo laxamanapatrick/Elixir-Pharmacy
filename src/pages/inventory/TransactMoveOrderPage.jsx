@@ -26,7 +26,7 @@ const TransactMoveOrderPage = () => {
 
   const [moveOrderInformation, setMoveOrderInformation] = useState({
     orderNo: '',
-    plateNumber: '',
+    deliveryStatus: '',
     farmName: '',
     farmCode: ''
   })
@@ -100,7 +100,7 @@ const TransactMoveOrderPage = () => {
             mr={5}
             onClick={() => setMoveOrderInformation({
               orderNo: '',
-              plateNumber: '',
+              deliveryStatus: '',
               farmName: ''
             })}
           >

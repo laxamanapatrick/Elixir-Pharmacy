@@ -13,11 +13,10 @@ import {
 } from '@ajna/pagination'
 import moment from 'moment'
 
-export const ForApprovalMoveOrder = ({ setCurrentPage, setPageSize, setSearch, pagesCount, currentPage, pageSize, forApprovalData, fetchForApprovalMO }) => {
-
-    const [orderId, setOrderId] = useState('')
-
-    const [printData, setPrintData] = useState([])
+export const ForApprovalMoveOrder = ({ setCurrentPage, setPageSize, setSearch, pagesCount, 
+    currentPage, pageSize, 
+    forApprovalData, fetchForApprovalMO, orderId, setOrderId, viewData
+}) => {
 
     const TableHead = [
         "Line", "Order ID", "Farm", "Farm Code", "Category", "Total Quantity Order", "Prepared Date",
@@ -54,10 +53,8 @@ export const ForApprovalMoveOrder = ({ setCurrentPage, setPageSize, setSearch, p
     const approveHandler = (data) => {
         if (data) {
             setOrderId(data.orderNo)
-            setPrintData(data)
         } else {
             setOrderId('')
-            setPrintData([])
         }
         openApprove()
     }
@@ -158,6 +155,7 @@ export const ForApprovalMoveOrder = ({ setCurrentPage, setPageSize, setSearch, p
                         isOpen={isView}
                         onClose={closeView}
                         id={orderId}
+                        viewData={viewData}
                     />
                 )
             }
@@ -168,7 +166,7 @@ export const ForApprovalMoveOrder = ({ setCurrentPage, setPageSize, setSearch, p
                         onClose={closeApprove}
                         orderNo={orderId}
                         fetchForApprovalMO={fetchForApprovalMO}
-                        printData={printData}
+                        printData={viewData}
                     />
                 )
             }

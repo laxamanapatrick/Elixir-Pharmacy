@@ -47,7 +47,7 @@ const MoveOrderPage = () => {
 
   const [farmName, setFarmName] = useState('')
 
-  const [plateNumber, setPlateNumber] = useState('')
+  const [deliveryStatus, setDeliveryStatus] = useState('')
 
   const [moveData, setMoveData] = useState([])
   const [lengthIndicator, setLengthIndicator] = useState('')
@@ -194,7 +194,7 @@ const MoveOrderPage = () => {
           setCurrentPage={setCurrentPage} currentPage={currentPage} pagesCount={pagesCount}
           setOrderId={setOrderId} orderId={orderId}
           setItemCode={setItemCode} setWarehouseId={setWarehouseId} setHighlighterId={setHighlighterId}
-          setPlateNumber={setPlateNumber}
+          setDeliveryStatus={setDeliveryStatus}
           buttonChanger={buttonChanger}
           fetchApprovedMoveOrders={fetchApprovedMoveOrders}
           lengthIndicator={lengthIndicator}
@@ -212,14 +212,14 @@ const MoveOrderPage = () => {
         {
           buttonChanger ?
             <SaveButton
-              plateNumber={plateNumber}
+              deliveryStatus={deliveryStatus}
               orderListData={orderListData}
               fetchApprovedMoveOrders={fetchApprovedMoveOrders}
               fetchOrderList={fetchOrderList}
               setOrderId={setOrderId}
               setHighlighterId={setHighlighterId}
               setItemCode={setItemCode}
-              setPlateNumber={setPlateNumber}
+              setDeliveryStatus={setDeliveryStatus}
               setButtonChanger={setButtonChanger}
             />
             :

@@ -8,12 +8,20 @@ const fetchApprovedMOApi = async (pageNumber, pageSize, search) => {
   return res.data
 }
 
+const fetchViewApi = async (orderId) => {
+  const res = await apiClient.get(`Ordering/ViewMoveOrderForApproval?id=${orderId}`)
+  return res.data
+}
+
 const ApprovedMO = () => {
 
   const [approvedData, setApprovedData] = useState([])
 
   const [search, setSearch] = useState("")
   const [pageTotal, setPageTotal] = useState(undefined)
+
+  const [orderId, setOrderId] = useState('')
+  const [printData, setPrintData] = useState([])
 
   const outerLimit = 2;
   const innerLimit = 2;
@@ -41,6 +49,22 @@ const ApprovedMO = () => {
     }
   }, [pageSize, currentPage, search])
 
+  const fetchView = () => {
+    fetchViewApi(orderId).then(res => {
+      setPrintData(res)
+    })
+  }
+
+  useEffect(() => {
+    if (orderId) {
+      fetchView()
+    }
+
+    return () => {
+      setPrintData([])
+    }
+  }, [orderId])
+
   return (
     <ApprovedMoveOrder
       setCurrentPage={setCurrentPage}
@@ -51,6 +75,9 @@ const ApprovedMO = () => {
       pageSize={pageSize}
       approvedData={approvedData}
       fetchApprovedMO={fetchApprovedMO}
+      orderId={orderId}
+      setOrderId={setOrderId}
+      printData={printData}
     />
   )
 }

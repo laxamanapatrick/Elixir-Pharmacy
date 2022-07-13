@@ -13,12 +13,6 @@ export const AddQuantityConfirmation = ({ isOpen, onClose, id, orderNo, itemCode
     const toast = useToast()
 
     const submitHandler = () => {
-        console.log("Barcode: ", warehouseId)
-        console.log("Order No P Key: ", id)
-        console.log("Order No: ", orderNo)
-        console.log("Item Code: ", itemCode)
-        console.log("Quantity Ordered: ", Number(quantityOrdered))
-        console.log("Expiration Date: ", expirationDate)
         try {
             const res = apiClient.post(`Ordering/PrepareItemsForMoveOrder`,
                 {
@@ -130,8 +124,8 @@ export const CancelConfirmation = ({ isOpen, onClose, id, fetchPreparedItems, fe
 
 //Save Button
 
-export const SaveButton = ({ plateNumber, orderListData, fetchApprovedMoveOrders, fetchOrderList,
-    setOrderId, setHighlighterId, setItemCode, setPlateNumber, setButtonChanger }) => {
+export const SaveButton = ({ deliveryStatus, orderListData, fetchApprovedMoveOrders, fetchOrderList,
+    setOrderId, setHighlighterId, setItemCode, setDeliveryStatus, setButtonChanger }) => {
 
     const { isOpen: isPlateNumber, onClose: closePlateNumber, onOpen: openPlateNumber } = useDisclosure()
 
@@ -139,8 +133,8 @@ export const SaveButton = ({ plateNumber, orderListData, fetchApprovedMoveOrders
         <Flex w='full' justifyContent='end'>
             <Button
                 onClick={() => openPlateNumber()}
-                disabled={!plateNumber}
-                title={plateNumber ? `Save with plate number ${plateNumber}` : 'Please select a plate number.'}
+                disabled={!deliveryStatus}
+                title={deliveryStatus ? `Save with plate number ${deliveryStatus}` : 'Please select a plate number.'}
                 size='sm' colorScheme='blue' px={6}
             >
                 Save
@@ -149,43 +143,42 @@ export const SaveButton = ({ plateNumber, orderListData, fetchApprovedMoveOrders
                 <PlateNumberConfirmation
                     isOpen={isPlateNumber}
                     onClose={closePlateNumber}
-                    plateNumber={plateNumber}
+                    deliveryStatus={deliveryStatus}
                     orderListData={orderListData}
                     fetchApprovedMoveOrders={fetchApprovedMoveOrders}
                     fetchOrderList={fetchOrderList}
                     setOrderId={setOrderId}
                     setHighlighterId={setHighlighterId}
                     setItemCode={setItemCode}
-                    setPlateNumber={setPlateNumber}
+                    setDeliveryStatus={setDeliveryStatus}
                     setButtonChanger={setButtonChanger}
                 />
             }
         </Flex>
     )
 }
-export const PlateNumberConfirmation = ({ isOpen, onClose, plateNumber, orderListData, fetchApprovedMoveOrders, fetchOrderList,
-    setOrderId, setHighlighterId, setItemCode, setPlateNumber, setButtonChanger }) => {
+export const PlateNumberConfirmation = ({ isOpen, onClose, deliveryStatus, orderListData, fetchApprovedMoveOrders, fetchOrderList,
+    setOrderId, setHighlighterId, setItemCode, setDeliveryStatus, setButtonChanger }) => {
 
     const toast = useToast()
 
     const submitHandler = () => {
-        // console.log("Plate Number: ", plateNumber)
+        // console.log("Plate Number: ", deliveryStatus)
         // console.log("List of Id to Submit", orderListData?.map(item => { return item.id }))
         const submitArray = orderListData?.map(item => {
             return {
                 id: item.id,
-                plateNumber: plateNumber
+                deliveryStatus: deliveryStatus
             }
         })
-        console.log(submitArray)
         try {
-            const res = apiClient.put(`Ordering/AddPlateNumberInMoveOrder`, submitArray)
+            const res = apiClient.put(`Ordering/AddDeliveryStatus`, submitArray)
                 .then(res => {
                     ToastComponent("Success", "Items prepared successfully.", "success", toast)
                     setOrderId('')
                     setHighlighterId('')
                     setItemCode('')
-                    setPlateNumber('')
+                    setDeliveryStatus('')
                     setButtonChanger(false)
                     fetchApprovedMoveOrders()
                     fetchOrderList()

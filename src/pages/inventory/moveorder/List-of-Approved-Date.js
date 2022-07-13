@@ -15,7 +15,7 @@ import { GoArrowSmallRight } from 'react-icons/go'
 import moment from 'moment'
 
 export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage, fetchApprovedMoveOrders, lengthIndicator,
-    setCurrentPage, setItemCode, setWarehouseId, setHighlighterId, setOrderId, orderId, setPlateNumber, buttonChanger }) => {
+    setCurrentPage, setItemCode, setWarehouseId, setHighlighterId, setOrderId, orderId, setDeliveryStatus, buttonChanger }) => {
 
     const handlePageChange = (nextPage) => {
         setCurrentPage(nextPage)
@@ -28,7 +28,7 @@ export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage
     const handleId = (data) => {
         setItemCode('')
         setHighlighterId('')
-        setPlateNumber('')
+        setDeliveryStatus('')
         if (data) {
             setOrderId(data)
         } else {
@@ -90,16 +90,14 @@ export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage
             {
                 buttonChanger ?
                     <HStack w='full' justifyContent='start'>
-                        <Badge bgColor='secondary' color='white' px={3}>Plate Number: </Badge>
+                        <Badge bgColor='secondary' color='white' px={3}>Delivery Status: </Badge>
                         <Select
-                            onChange={(e) => setPlateNumber(e.target.value)}
-                            placeholder='Please select a plate number'
+                            onChange={(e) => setDeliveryStatus(e.target.value)}
+                            placeholder=' '
                             w='15%' size='xs' bgColor='#fff8dc'
                         >
-                            <option>CAR 1002</option>
-                            <option>EHS 228</option>
-                            <option>JYP 069</option>
-                            <option>PAT 625</option>
+                            <option>Pick-Up</option>
+                            <option>For Delivery</option>
                         </Select>
                     </HStack>
                     :

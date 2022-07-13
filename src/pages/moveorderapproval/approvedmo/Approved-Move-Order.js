@@ -15,7 +15,8 @@ import moment from 'moment'
 import { MdLocationPin } from 'react-icons/md'
 
 
-export const ApprovedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, pagesCount, currentPage, approvedData, fetchApprovedMO }) => {
+export const ApprovedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, pagesCount, currentPage, approvedData, fetchApprovedMO,
+    setOrderId, orderId, printData }) => {
 
     const TableHead = [
         "Line", "Order ID", "Farm Code", "Category", "Total Quantity Order", "Prepared Date",
@@ -23,8 +24,6 @@ export const ApprovedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, page
         // "Approved Date", 
         "Track", "Print", "Reject"
     ]
-
-    const [orderId, setOrderId] = useState('')
 
     const [trackData, setTrackData] = useState([{
         barcodeNo: '',
@@ -37,8 +36,6 @@ export const ApprovedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, page
         isPrint: '',
         isTransact: ''
     }])
-
-    const [printData, setPrintData] = useState([])
 
     const { isOpen: isTrack, onClose: closeTrack, onOpen: openTrack } = useDisclosure()
     const { isOpen: isReject, onClose: closeReject, onOpen: openReject } = useDisclosure()
@@ -67,6 +64,7 @@ export const ApprovedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, page
 
     const trackHandler = (data) => {
         if (data) {
+            setOrderId(data.orderNo)
             setTrackData([{
                 barcodeNo: data.barcodeNo,
                 itemCode: data.itemCode,
@@ -80,6 +78,7 @@ export const ApprovedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, page
             }])
             openTrack()
         } else {
+            setOrderId('')
             setTrackData([{
                 barcodeNo: '',
                 itemCode: '',
@@ -94,12 +93,12 @@ export const ApprovedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, page
         }
     }
 
-    const printHanlder = (data) => {
-        if (data) {
-            setPrintData(data)
+    const printHanlder = (id) => {
+        if (id) {
+            setOrderId(id)
             openPrint()
         } else {
-            setPrintData([])
+            setOrderId('')
         }
     }
 
@@ -147,7 +146,7 @@ export const ApprovedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, page
                                             </Button>
                                         </Td>
                                         <Td>
-                                            <Button size='xs' colorScheme='cyan' color='white' onClick={() => printHanlder(order)}>Print</Button>
+                                            <Button size='xs' colorScheme='cyan' color='white' onClick={() => printHanlder(order.orderNo)}>Print</Button>
                                         </Td>
                                         <Td>
                                             <Button
@@ -202,6 +201,7 @@ export const ApprovedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, page
                         isOpen={isTrack}
                         onClose={closeTrack}
                         trackData={trackData}
+                        trackList={printData}
                     />
                 )
             }
@@ -213,6 +213,7 @@ export const ApprovedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, page
                         onClose={closePrint}
                         printData={printData}
                         fetchApprovedMO={fetchApprovedMO}
+                        orderId={orderId}
                     />
                 )
             }

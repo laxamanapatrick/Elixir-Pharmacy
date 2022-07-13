@@ -41,8 +41,6 @@ const RejectedMO = () => {
     }
   }, [pageSize, currentPage, search])
 
-  console.log(rejectedData)
-
   return (
     <RejectedMoveOrder
       setCurrentPage={setCurrentPage}

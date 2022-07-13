@@ -12,7 +12,7 @@ import moment from 'moment'
 
 const currentUser = decodeUser()
 
-export const TrackModal = ({ isOpen, onClose, trackData }) => {
+export const TrackModal = ({ isOpen, onClose, trackData, trackList }) => {
 
     const TableHead = [
         "Line", "Barcode", "Item Code", "Item Description", "Quantity", "Expiration Date"
@@ -69,14 +69,14 @@ export const TrackModal = ({ isOpen, onClose, trackData }) => {
                                 </Thead>
                                 <Tbody>
                                     {
-                                        trackData?.map((item, i) =>
+                                        trackList?.map((item, i) =>
                                             <Tr key={i}>
                                                 <Td>{i + 1}</Td>
                                                 <Td>{item.barcodeNo}</Td>
                                                 <Td>{item.itemCode}</Td>
                                                 <Td>{item.itemDescription}</Td>
                                                 <Td>{item.quantity}</Td>
-                                                <Td>{item.expirationDate}</Td>
+                                                <Td>{moment(item.expiration).format("MM/DD/yyyy")}</Td>
                                             </Tr>
                                         )
                                     }
@@ -97,7 +97,7 @@ export const TrackModal = ({ isOpen, onClose, trackData }) => {
     )
 }
 
-export const PrintModal = ({ isOpen, onClose, printData, closeApprove, fetchApprovedMO }) => {
+export const PrintModal = ({ isOpen, onClose, printData, closeApprove, fetchApprovedMO, orderId }) => {
 
     const componentRef = useRef()
 
@@ -153,13 +153,13 @@ export const PrintModal = ({ isOpen, onClose, printData, closeApprove, fetchAppr
 
                         <Flex justifyContent='space-between' mb={3}>
                             <Flex flexDirection='column'>
-                                <Text>Order ID: {printData?.orderNo}</Text>
+                                <Text>Order ID: {orderId && orderId}</Text>
                                 <Text>Warehouse: {`Pharmacy`}</Text>
-                                <Text>Customer: {printData?.farmName}</Text>
-                                <Text>Address: {printData?.farmName}</Text>
+                                <Text>Customer: {printData[0]?.farmName}</Text>
+                                <Text>Address: {printData[0]?.farmName}</Text>
                             </Flex>
                             <Flex flexDirection='column'>
-                                <Barcode width={3} height={50} value={Number(printData?.orderNo)} />
+                                <Barcode width={3} height={50} value={Number(orderId)} />
                                 <Text>Date: {moment(dateToday).format("MM/DD/yyyy")}</Text>
                             </Flex>
                         </Flex>
@@ -177,25 +177,29 @@ export const PrintModal = ({ isOpen, onClose, printData, closeApprove, fetchAppr
                                     </Tr>
                                 </Thead>
                                 <Tbody>
-                                    <Tr>
-                                        <Td>{printData.itemCode}</Td>
-                                        <Td>{printData.itemDescription}</Td>
-                                        <Td>{printData.uom}</Td>
-                                        <Td>{printData.quantity}</Td>
-                                        <Td></Td>
-                                        <Td>{moment(printData.expiration).format("MM/DD/yyyy")}</Td>
-                                    </Tr>
+                                    {
+                                        printData?.map((item, i) =>
+                                            <Tr key={i}>
+                                                <Td>{item.itemCode}</Td>
+                                                <Td>{item.itemDescription}</Td>
+                                                <Td>{item.uom}</Td>
+                                                <Td>{item.quantity}</Td>
+                                                <Td></Td>
+                                                <Td>{moment(item.expiration).format("MM/DD/yyyy")}</Td>
+                                            </Tr>
+                                        )
+                                    }
                                 </Tbody>
                             </Table>
                         </PageScrollReusable>
 
                         <Flex justifyContent='space-between'>
                             <HStack>
-                                <Text>Plate Number:</Text>
+                                <Text>Delivery Status:</Text>
                                 <Text textDecoration='underline'>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    PAT 123
+                                    {printData[0]?.deliveryStatus}
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -203,7 +207,7 @@ export const PrintModal = ({ isOpen, onClose, printData, closeApprove, fetchAppr
                             </HStack>
                             <VStack spacing={0}>
                                 <HStack>
-                                    <Text>Prepared By:</Text>
+                                    <Text>Checked By:</Text>
                                     <Text textDecoration='underline'>
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -280,7 +284,6 @@ export const PrintModal = ({ isOpen, onClose, printData, closeApprove, fetchAppr
         </Modal>
     )
 }
-
 
 
 export const RejectModal = ({ isOpen, onClose, id, fetchApprovedMO }) => {

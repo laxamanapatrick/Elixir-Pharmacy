@@ -19,7 +19,7 @@ export const MoveOrderInformation = ({ moveOrderInformation, deliveryDate, setDe
                         <Text fontSize='sm'>Plate Number:</Text>
                         <Text textAlign='center' w='full' fontSize='sm' bgColor='gray.200' border='1px' py={1}
                         >
-                            {moveOrderInformation.plateNumber ? moveOrderInformation.plateNumber : 'Please select a list'}
+                            {moveOrderInformation.deliveryStatus ? moveOrderInformation.deliveryStatus : 'Please select a list'}
                         </Text>
                         <Text fontSize='sm'>Delivery Date:</Text>
                         <DatePicker

@@ -10,30 +10,7 @@ import { PrintModal } from '../approvedmo/Action-Modals'
 
 const currentUser = decodeUser()
 
-export const ViewModal = ({ isOpen, onClose, id }) => {
-
-  const [viewData, setViewData] = useState([])
-
-  const fetchViewApi = async (id) => {
-    const res = await apiClient.get(`Ordering/ViewMoveOrderForApproval?id=${id}`)
-    return res.data
-  }
-
-  const fetchView = () => {
-    fetchViewApi(id).then(res => {
-      setViewData(res)
-    })
-  }
-
-  useEffect(() => {
-    if (id) {
-      fetchView()
-    }
-
-    return () => {
-      setViewData([])
-    }
-  }, [id])
+export const ViewModal = ({ isOpen, onClose, viewData }) => {
 
   const TableHeads = [
     "Line", "Barcode", "Item Code", "Item Description", "Quantity", "Expiration Date"
@@ -143,6 +120,7 @@ export const ApproveModal = ({ isOpen, onClose, orderNo, fetchForApprovalMO, pri
             closeApprove={onClose}
             printData={printData}
             fetchApprovedMO={fetchForApprovalMO}
+            orderId={orderNo}
           />
         )
       }
