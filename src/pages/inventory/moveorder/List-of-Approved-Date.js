@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Badge, Flex, HStack, Select, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from '@chakra-ui/react'
 import {
     Pagination,
@@ -14,7 +14,7 @@ import { VscCircleLargeFilled } from 'react-icons/vsc'
 import { GoArrowSmallRight } from 'react-icons/go'
 import moment from 'moment'
 
-export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage,
+export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage, fetchApprovedMoveOrders, lengthIndicator,
     setCurrentPage, setItemCode, setWarehouseId, setHighlighterId, setOrderId, orderId, setPlateNumber, buttonChanger }) => {
 
     const handlePageChange = (nextPage) => {
@@ -37,9 +37,25 @@ export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage
     }
 
     const TableHead = [
-        "Line", "Order ID", "Farm", "Farm Code", "Category", "Total Quantity Order", "Order Date", "Date Needed", "Prepared Date", "Status"
+        "Line", "Order ID", "Farm", "Farm Code", "Category", "Total Quantity Order", "Order Date", 
+        // "Date Needed", 
+        "Prepared Date", "Status"
     ]
 
+    //Return to Page 1 once length === 0
+    useEffect(() => {
+        if (lengthIndicator === 0) {
+            setCurrentPage(1)
+            fetchApprovedMoveOrders()
+        }
+
+    }, [moveData])
+
+    //Auto select index 0
+    useEffect(() => {
+      setOrderId(moveData[0]?.id)
+    }, [moveData])
+    
     return (
         <Flex w='full' flexDirection='column'>
             <Flex w='full' justifyContent='space-between'>
@@ -119,7 +135,7 @@ export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage
                                         <Td>{order.category}</Td>
                                         <Td>{order.totalOrders}</Td>
                                         <Td>{order.orderDate}</Td>
-                                        <Td>{order.dateNeeded}</Td>
+                                        {/* <Td>{order.dateNeeded}</Td> */}
                                         <Td>{moment(order.preparedDate).format("MM/DD/yyyy")}</Td>
                                         <Td>{order.isReject ?
                                             <VscCircleLargeFilled color='red' /> : <VscCircleLargeFilled color='green' />

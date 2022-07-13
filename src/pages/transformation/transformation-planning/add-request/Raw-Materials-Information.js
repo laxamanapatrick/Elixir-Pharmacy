@@ -157,7 +157,7 @@ export const RawMaterialsInformation = ({ formulas, setCode, codeData, fetchRequ
                                             formulas.length > 0 ? (
                                                 <Select
                                                     onChange={onChange}
-                                                    placeholder='Item Code' bgColor='#ffffe0'
+                                                    placeholder=' ' bgColor='#ffffe0'
                                                     ref={resetCode}
                                                 >
                                                     {formulas?.map((formula, i) => (
@@ -184,7 +184,7 @@ export const RawMaterialsInformation = ({ formulas, setCode, codeData, fetchRequ
                                                 <Select
                                                     onChange={onChange}
                                                     ref={resetVersion}
-                                                    placeholder='Version'
+                                                    placeholder=' '
                                                     bgColor='#ffffe0'
                                                 >
                                                     {codeData?.map((cd, i) => (

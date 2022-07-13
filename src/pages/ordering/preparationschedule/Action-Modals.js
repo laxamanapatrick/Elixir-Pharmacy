@@ -12,7 +12,7 @@ const currentUser = decodeUser()
 
 export const EditModal = ({ isOpen, onClose, editData, setCurrentPage, currentPage, fetchOrders }) => {
 
-    const [quantitySubmit, setQuantitySubmit] = useState(editData.quantiy)
+    const [quantitySubmit, setQuantitySubmit] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const toast = useToast()
 
@@ -27,7 +27,7 @@ export const EditModal = ({ isOpen, onClose, editData, setCurrentPage, currentPa
     const submitHandler = () => {
         setIsLoading(true)
         try {
-            const res = apiClient.put(`https://localhost:44382/api/Ordering/EditOrderQuantity`,
+            const res = apiClient.put(`Ordering/EditOrderQuantity`,
                 {
                     id: editData.transactId,
                     quantityOrdered: quantitySubmit
@@ -46,6 +46,9 @@ export const EditModal = ({ isOpen, onClose, editData, setCurrentPage, currentPa
         } catch (error) {
         }
     }
+
+    console.log(editData.transactId)
+    console.log(quantitySubmit)
 
     const titles = ['Farm', 'Item Code', 'Item Description', 'UOM', 'Quantity Order']
     const autofilled = [editData?.farm, editData?.itemCode, editData?.itemDescription, editData?.uom]
@@ -137,20 +140,18 @@ export const CancelModalConfirmation = ({ isOpen, onClose, cancelId, setCurrentP
     const cancelHandler = () => {
         setIsLoading(true)
         try {
-            const res = apiClient.put(`https://localhost:44382/api/Ordering/CancelOrders`, {
-                id: cancelId,
-                remarks: cancelRemarks,
-                isCancelBy: currentUser.userName
-            })
+            const res = apiClient.put(`https://localhost:44382/api/Ordering/CancelOrders`,
+                {
+                    id: cancelId,
+                    remarks: cancelRemarks,
+                    isCancelBy: currentUser.userName
+                }
+            )
                 .then(res => {
+                    setCurrentPage(currentPage)
                     ToastComponent("Success", "Order has been cancelled!", "success", toast)
                     onClose()
                     fetchOrders()
-                    if (orders.length > 0) {
-                        setCurrentPage(currentPage)
-                    } else {
-                        setCurrentPage(1)
-                    }
                 })
                 .catch(err => {
                     ToastComponent("Error", "Cancel failed!", "error", toast)

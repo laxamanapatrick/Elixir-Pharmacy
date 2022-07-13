@@ -38,7 +38,7 @@ export const ListofPreparedDate = ({ orders, orderNo, setOrderNo }) => {
                                 <Th color='white'>Category</Th>
                                 <Th color='white'>Total Quantity Order</Th>
                                 <Th color='white'>Order Date</Th>
-                                <Th color='white'>Date Needed</Th>
+                                {/* <Th color='white'>Date Needed</Th> */}
                                 <Th color='white'>Prepared Date</Th>
                             </Tr>
                         </Thead>
@@ -58,7 +58,7 @@ export const ListofPreparedDate = ({ orders, orderNo, setOrderNo }) => {
                                         <Td>{item.category}</Td>
                                         <Td>{item.totalOrders}</Td>
                                         <Td>{item.orderDate}</Td>
-                                        <Td>{item.dateNeeded}</Td>
+                                        {/* <Td>{item.dateNeeded}</Td> */}
                                         <Td>{moment(item.preparedDate).format("MM/DD/yyyy")}</Td>
                                     </Tr>
                                 )

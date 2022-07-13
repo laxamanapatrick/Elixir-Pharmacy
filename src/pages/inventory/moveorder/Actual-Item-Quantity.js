@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Button, Flex, HStack, Input, Text, useDisclosure } from '@chakra-ui/react'
 import { FaCloudscale } from 'react-icons/fa'
 import DatePicker from "react-datepicker";
@@ -9,12 +9,13 @@ export const ActualItemQuantity = ({ warehouseId, setWarehouseId, barcodeData, o
     itemCode, fetchOrderList, fetchPreparedItems, qtyOrdered, preparedQty
 }) => {
 
+    const barcodeRef = useRef(null)
+
     const [quantity, setQuantity] = useState('')
     const expirationDate = moment(barcodeData?.expirationDate).format("yyyy-MM-DD")
     const [inputValidate, setInputValidate] = useState(true)
 
     const { isOpen: isQuantity, onClose: closeQuantity, onOpen: openQuantity } = useDisclosure()
-    
 
     useEffect(() => {
         const total = Number(quantity) + Number(preparedQty)
@@ -32,6 +33,17 @@ export const ActualItemQuantity = ({ warehouseId, setWarehouseId, barcodeData, o
         }
     }, [quantity])
 
+    //autofocuse on barcode
+    useEffect(() => {
+        if (warehouseId === '') {
+            window.setTimeout(() => {
+                barcodeRef?.current?.focus()
+            }, 600)
+        }
+    }, [warehouseId])
+
+    const allowableQuantity = quantity*0.5
+
     return (
         <Flex w='full' flexDirection='column'>
 
@@ -42,6 +54,10 @@ export const ActualItemQuantity = ({ warehouseId, setWarehouseId, barcodeData, o
                     <Text bgColor='secondary' color='white' px={10} textAlign='start' fontSize='sm'>Scan Barcode:</Text>
                     <Input
                         onChange={(e) => setWarehouseId(e.target.value)}
+                        ref={barcodeRef}
+                        type="number"
+                        onWheel={(e) => e.target.blur()}
+                        onKeyDown={(e) => ["E", "e", ".", "+", "-"].includes(e.key) && e.preventDefault()}
                         placeholder='Barcode number'
                         h='15%' w='50%' bgColor='#fff8dc'
                     />
@@ -54,6 +70,8 @@ export const ActualItemQuantity = ({ warehouseId, setWarehouseId, barcodeData, o
                     <Text bgColor='secondary' color='white' px={10} textAlign='start' fontSize='sm'>Actual Quantity:</Text>
                     <Input
                         onChange={(e) => setQuantity(e.target.value)}
+                        disabled={!barcodeData?.remaining}
+                        title={barcodeData?.remaining ? 'Please enter a quantity' : 'Barcode Number is required'}
                         value={quantity}
                         type="number"
                         onWheel={(e) => e.target.blur()}
@@ -96,7 +114,7 @@ export const ActualItemQuantity = ({ warehouseId, setWarehouseId, barcodeData, o
                     warehouseId={warehouseId}
                 />
             }
-       
+
         </Flex>
     )
 }

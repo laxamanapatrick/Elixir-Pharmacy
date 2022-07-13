@@ -59,7 +59,7 @@ const Navbar = ({ menus, notification }) => {
                             <Text color='white'>{sub.title}</Text>
                             {navBars.map((nav, i) => (
                                 !pathname.includes(sub.path) ?
-                                    sub.title === nav.title && <Badge key={i} bgColor='danger'><Text color='white'>{nav.notifcation}</Text></Badge> 
+                                    sub.title === nav.title && <Badge key={i} bgColor='danger'><Text color='white'>{nav.notifcation === 0 ? '' : nav.notifcation}</Text></Badge> 
                                     :
                                     ''
                             )

@@ -59,7 +59,7 @@ export const ListofRequest = ({ setTransformId, transformId, requests, fetchRequ
                                 <Th color='white'>UOM</Th>
                                 <Th color='white'>Batch</Th>
                                 <Th color='white'>Version</Th>
-                                <Th color='white'>Quantity</Th>
+                                <Th color='white'>Total Quantity</Th>
                                 <Th color='white'>Prod Plan</Th>
                                 <Th color='white'>Request By</Th>
                                 <Th color='white'>Cancel</Th>
@@ -81,7 +81,7 @@ export const ListofRequest = ({ setTransformId, transformId, requests, fetchRequ
                                         <Td>{r.uom}</Td>
                                         <Td>{r.batch}</Td>
                                         <Td>{r.version}</Td>
-                                        <Td>{r.quantity}</Td>
+                                        <Td>{r.quantity * r.batch}</Td>
                                         <Td>{r.prodPlan}</Td>
                                         <Td>{r.addedBy}</Td>
                                         <Td><Button size='xs' colorScheme='red' onClick={() => cancelHandler(r.id)}>Cancel</Button></Td>

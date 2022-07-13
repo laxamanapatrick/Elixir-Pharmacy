@@ -82,7 +82,7 @@ const TransformationPlanningPage = () => {
                 {
                   !pathname.includes('/transformation/transformation-planning/request -reject')
                     ?
-                    'Request Reject' === navBars.title && <Badge bgColor='danger'><Text color='white'>{navBars.notifcation}</Text></Badge>
+                    'Request Reject' === navBars.title && <Badge bgColor='danger'><Text color='white'>{navBars.notifcation === 0 ? '' : navBars.notifcation}</Text></Badge>
                     :
                     ''
                 }

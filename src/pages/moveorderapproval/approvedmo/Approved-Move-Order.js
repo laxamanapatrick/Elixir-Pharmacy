@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Button, Flex, HStack, Input, Select, Table, Tbody, Td, Text, Th, Thead, Tr, useDisclosure } from '@chakra-ui/react'
 import PageScrollReusable from '../../../components/PageScroll-Reusable'
-import { RejectModal, TrackModal } from './Action-Modals'
+import { PrintModal, RejectModal, TrackModal } from './Action-Modals'
 import {
     Pagination,
     usePagination,
@@ -15,10 +15,13 @@ import moment from 'moment'
 import { MdLocationPin } from 'react-icons/md'
 
 
-export const ApprovedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, pagesCount, currentPage, pageSize, approvedData, fetchApprovedMO }) => {
+export const ApprovedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, pagesCount, currentPage, approvedData, fetchApprovedMO }) => {
+
     const TableHead = [
         "Line", "Order ID", "Farm Code", "Category", "Total Quantity Order", "Prepared Date",
-        "Date Needed", "Approved Date", "Track", "Reject"
+        // "Date Needed", 
+        // "Approved Date", 
+        "Track", "Print", "Reject"
     ]
 
     const [orderId, setOrderId] = useState('')
@@ -30,11 +33,16 @@ export const ApprovedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, page
         quantity: '',
         expirationDate: '',
         isPrepared: '',
-        isApproved: ''
+        isApproved: '',
+        isPrint: '',
+        isTransact: ''
     }])
+
+    const [printData, setPrintData] = useState([])
 
     const { isOpen: isTrack, onClose: closeTrack, onOpen: openTrack } = useDisclosure()
     const { isOpen: isReject, onClose: closeReject, onOpen: openReject } = useDisclosure()
+    const { isOpen: isPrint, onClose: closePrint, onOpen: openPrint } = useDisclosure()
 
     const handlePageChange = (nextPage) => {
         setCurrentPage(nextPage)
@@ -66,7 +74,9 @@ export const ApprovedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, page
                 quantity: data.quantity,
                 expirationDate: moment(data.expiration).format("MM/DD/yyyy"),
                 isPrepared: data.isPrepared,
-                isApproved: data.isApprove
+                isApproved: data.isApprove,
+                isPrint: data.isPrint,
+                isTransact: data.isTransact
             }])
             openTrack()
         } else {
@@ -77,8 +87,19 @@ export const ApprovedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, page
                 quantity: '',
                 expirationDate: '',
                 isPrepared: '',
-                isApproved: ''
+                isApproved: '',
+                isPrint: '',
+                isTransact: ''
             }])
+        }
+    }
+
+    const printHanlder = (data) => {
+        if (data) {
+            setPrintData(data)
+            openPrint()
+        } else {
+            setPrintData([])
         }
     }
 
@@ -118,15 +139,25 @@ export const ApprovedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, page
                                         <Td>{order.category}</Td>
                                         <Td>{order.quantity}</Td>
                                         <Td>{moment(order.preparedDate).format("MM/DD/yyyy")}</Td>
-                                        <Td>{moment(order.dateNeeded).format("MM/DD/yyyy")}</Td>
-                                        <Td>{moment(order.approvedDate).format("MM/DD/yyyy")}</Td>
+                                        {/* <Td>{moment(order.dateNeeded).format("MM/DD/yyyy")}</Td> */}
+                                        {/* <Td>{moment(order.approvedDate).format("MM/DD/yyyy")}</Td> */}
                                         <Td>
                                             <Button size='xs' p={0} bgColor='white' onClick={() => trackHandler(order)}>
                                                 <MdLocationPin color='#3EB489' fontSize='20px' />
                                             </Button>
                                         </Td>
                                         <Td>
-                                            <Button size='xs' colorScheme='red' onClick={() => rejectHandler(order.orderNo)}>Reject</Button>
+                                            <Button size='xs' colorScheme='cyan' color='white' onClick={() => printHanlder(order)}>Print</Button>
+                                        </Td>
+                                        <Td>
+                                            <Button
+                                                onClick={() => rejectHandler(order.orderNo)}
+                                                disabled={order.isTransact}
+                                                title={order.isTransact ? 'Order was already transacted' : 'Order not yet transacted'}
+                                                size='xs' colorScheme='red'
+                                            >
+                                                Reject
+                                            </Button>
                                         </Td>
                                     </Tr>
                                 )
@@ -137,7 +168,9 @@ export const ApprovedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, page
             </Flex>
 
             <Flex justifyContent='space-between' mt={7}>
-                <Text fontSize='xs'>Showing entries</Text>
+                <Text fontSize='xs'>
+                    {approvedData?.moveorder?.length > 0 ? `Showing ${approvedData?.moveorder?.length} entries` : 'No entries available'}
+                </Text>
 
                 <Flex>
                     <Pagination
@@ -169,6 +202,17 @@ export const ApprovedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, page
                         isOpen={isTrack}
                         onClose={closeTrack}
                         trackData={trackData}
+                    />
+                )
+            }
+
+            {
+                isPrint && (
+                    <PrintModal
+                        isOpen={isPrint}
+                        onClose={closePrint}
+                        printData={printData}
+                        fetchApprovedMO={fetchApprovedMO}
                     />
                 )
             }

@@ -10,18 +10,20 @@ export const ListofMoveOrder = ({ moveOrderList, setMoveOrderInformation, moveOr
     "Line", "Order Id", "Farm", "Farm Code", "Category", "Total Quantity Order", "Order Date", "Date Needed", "Prepared Date"
   ]
 
-  const setterHandler = ({ orderNo, plateNumber, farm }) => {
+  const setterHandler = ({ orderNo, plateNumber, farm, farmCode }) => {
     if (orderNo && plateNumber && farm) {
       setMoveOrderInformation({
         orderNo: orderNo,
         plateNumber: plateNumber,
-        farmName: farm
+        farmName: farm,
+        farmCode: farmCode
       })
     } else {
       setMoveOrderInformation({
         orderNo: '',
         plateNumber: '',
-        farmName: ''
+        farmName: '',
+        farmCode: ''
       })
     }
   }

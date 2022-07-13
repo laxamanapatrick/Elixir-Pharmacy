@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { Button, ButtonGroup, Flex, Heading, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Select, Table, Tbody, Td, Text, Th, Thead, toast, Tr, useToast, VStack } from '@chakra-ui/react'
+import { Button, ButtonGroup, Flex, Heading, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Select, Table, Tbody, Td, Text, Th, Thead, toast, Tr, useDisclosure, useToast, VStack } from '@chakra-ui/react'
 import { BsQuestionOctagonFill } from 'react-icons/bs'
 import apiClient from '../../../services/apiClient'
 import { ToastComponent } from '../../../components/Toast'
 import { decodeUser } from '../../../services/decode-user'
 import PageScrollReusable from '../../../components/PageScroll-Reusable'
 import moment from 'moment'
+import { PrintModal } from '../approvedmo/Action-Modals'
 
 const currentUser = decodeUser()
 
@@ -84,9 +85,10 @@ export const ViewModal = ({ isOpen, onClose, id }) => {
   )
 }
 
-export const ApproveModal = ({ isOpen, onClose, orderNo, fetchForApprovalMO }) => {
+export const ApproveModal = ({ isOpen, onClose, orderNo, fetchForApprovalMO, printData }) => {
 
   const toast = useToast()
+  const { isOpen: isPrint, onClose: closePrint, onOpen: openPrint } = useDisclosure()
 
   const submitHandler = () => {
     try {
@@ -94,7 +96,7 @@ export const ApproveModal = ({ isOpen, onClose, orderNo, fetchForApprovalMO }) =
         .then(res => {
           ToastComponent("Success", "Move order has been approved", "success", toast)
           fetchForApprovalMO()
-          onClose()
+          openPrint()
         })
         .catch(jaypee => {
           ToastComponent("Error", "Move order was not approved", "error", toast)
@@ -104,34 +106,47 @@ export const ApproveModal = ({ isOpen, onClose, orderNo, fetchForApprovalMO }) =
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={() => { }} isCentered size='xl'>
-      <ModalContent>
-        <ModalHeader>
-          <Flex justifyContent='center'>
-            <Text>Approve Modal </Text>
-          </Flex>
-        </ModalHeader>
-        <ModalCloseButton onClick={onClose} />
+    <>
+      <Modal isOpen={isOpen} onClose={() => { }} isCentered size='xl'>
+        <ModalContent>
+          <ModalHeader>
+            <Flex justifyContent='center'>
+              <Text>Approve Modal </Text>
+            </Flex>
+          </ModalHeader>
+          <ModalCloseButton onClick={onClose} />
 
-        <ModalBody>
-          <VStack justifyContent='center'>
-            <Text>Are you sure you want to approve this move order?</Text>
-          </VStack>
-        </ModalBody>
+          <ModalBody>
+            <VStack justifyContent='center'>
+              <Text>Are you sure you want to approve this move order?</Text>
+            </VStack>
+          </ModalBody>
 
-        <ModalFooter>
-          <ButtonGroup size='sm' mt={7}>
-            <Button
-              colorScheme='blue'
-              onClick={submitHandler}
-            >
-              Yes
-            </Button>
-            <Button colorScheme='red' onClick={onClose}>No</Button>
-          </ButtonGroup>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+          <ModalFooter>
+            <ButtonGroup size='sm' mt={7}>
+              <Button
+                colorScheme='blue'
+                onClick={submitHandler}
+              >
+                Yes
+              </Button>
+              <Button colorScheme='red' onClick={onClose}>No</Button>
+            </ButtonGroup>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+      {
+        isPrint && (
+          <PrintModal
+            isOpen={isPrint}
+            onClose={closePrint}
+            closeApprove={onClose}
+            printData={printData}
+            fetchApprovedMO={fetchForApprovalMO}
+          />
+        )
+      }
+    </>
   )
 }
 
@@ -230,3 +245,48 @@ export const RejectModal = ({ isOpen, onClose, id, fetchForApprovalMO }) => {
     </Modal>
   )
 }
+
+
+
+//Print Preview - For approved MO
+
+// export const PrintModal = ({ isOpen, onClose, closeApprove }) => {
+
+//   const closeHandler = () => {
+//     onClose()
+//     closeApprove()
+//   }
+
+//   return (
+//     <Modal isOpen={isOpen} onClose={() => { }} isCentered size='xl'>
+//       <ModalContent>
+//         <ModalHeader>
+//           <Flex justifyContent='center'>
+//             <Text>Print Preview</Text>
+//             <Text>Do you want to print this slip?</Text>
+//           </Flex>
+//         </ModalHeader>
+//         <ModalCloseButton onClick={closeHandler} />
+
+//         <ModalBody>
+//           <VStack justifyContent='center'>
+//             <Text>Print Context here</Text>
+//           </VStack>
+//         </ModalBody>
+
+//         <ModalFooter>
+//           <ButtonGroup size='sm' mt={7}>
+//             <Button
+//               colorScheme='blue'
+//             // onClick={submitHandler}
+//             >
+//               Yes
+//             </Button>
+//             <Button colorScheme='red' onClick={closeHandler}>No</Button>
+//           </ButtonGroup>
+//         </ModalFooter>
+//       </ModalContent>
+//     </Modal>
+//   )
+
+// }

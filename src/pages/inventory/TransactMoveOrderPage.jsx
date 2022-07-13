@@ -27,7 +27,8 @@ const TransactMoveOrderPage = () => {
   const [moveOrderInformation, setMoveOrderInformation] = useState({
     orderNo: '',
     plateNumber: '',
-    farmName: ''
+    farmName: '',
+    farmCode: ''
   })
   const orderNo = moveOrderInformation.orderNo
   const [deliveryDate, setDeliveryDate] = useState('')
@@ -66,6 +67,8 @@ const TransactMoveOrderPage = () => {
     }
   }, [orderNo])
 
+  console.log(moveOrderList)
+
   return (
     <Flex w='full' justifyContent='space-between' flexDirection='column'>
       <VStack p={5} w='full' spacing={0}>
@@ -85,6 +88,8 @@ const TransactMoveOrderPage = () => {
           <ListofMoveOrdersPerFarm
             moveOrderListThirdTable={moveOrderListThirdTable}
             deliveryDate={deliveryDate}
+            setMoveOrderInformation={setMoveOrderInformation}
+            fetchMoveOrderList={fetchMoveOrderList}
           />
         }
       </VStack>

@@ -21,7 +21,9 @@ export const RejectedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, page
 
     const TableHead = [
         "Line", "Order ID", "Farm", "Farm Code", "Category", "Total Quantity Order", "Prepared Date",
-        "Date Needed", "Reject Date", "Remarks", "Reject"
+        // "Date Needed", 
+        // "Reject Date", 
+        "Remarks", "Reject"
     ]
 
     const handlePageChange = (nextPage) => {
@@ -83,8 +85,8 @@ export const RejectedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, page
                                         <Td>{data.category}</Td>
                                         <Td>{data.quantity}</Td>
                                         <Td>{moment(data.preparedDate).format("MM/DD/yyyy")}</Td>
-                                        <Td>{data.dateNeeded}</Td>
-                                        <Td>{moment(data.rejectedDate).format("MM/DD/yyyy")}</Td>
+                                        {/* <Td>{data.dateNeeded}</Td> */}
+                                        {/* <Td>{moment(data.rejectedDate).format("MM/DD/yyyy")}</Td> */}
                                         <Td>{data.remarks}</Td>
                                         <Td>
                                             <Button colorScheme='red' size='xs' onClick={() => returnHandler(data.orderNo)}>
@@ -100,8 +102,10 @@ export const RejectedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, page
             </Flex>
 
             <Flex justifyContent='space-between' mt={8}>
-                <Text fontSize='xs'>Showing entries</Text>
-
+                <Text fontSize='xs'>
+                    {rejectedData?.moveorder?.length > 0 ? `Showing ${rejectedData?.moveorder?.length} entries` : 'No entries available'}
+                </Text>
+                
                 <Flex>
                     <Pagination
                         pagesCount={pagesCount}

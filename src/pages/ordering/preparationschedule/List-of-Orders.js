@@ -28,6 +28,7 @@ export const ListofOrders = ({ setCurrentPage, currentPage, pagesCount,
 
     const [checkedItems, setCheckedItems] = useState([])
 
+    const [dateNeeded, setDateNeeded] = useState('')
     const [disableIfStock, setDisableIfStock] = useState(false)
     const [disableIfDateNeeded, setDisableIfDateNeeded] = useState(false)
 
@@ -191,10 +192,7 @@ export const ListofOrders = ({ setCurrentPage, currentPage, pagesCount,
                                         key={i}
                                     >
                                         {
-                                            item.stockOnHand < item.quantityOrder
-                                                ?
-                                                <Td><TiInfo fontSize='22px' color='red' title='Not enough stocks' /></Td>
-                                                :
+                                            item.stockOnHand >= item.quantityOrder ?
                                                 <Td>
                                                     <Checkbox
                                                         onChange={childCheckHandler}
@@ -204,6 +202,13 @@ export const ListofOrders = ({ setCurrentPage, currentPage, pagesCount,
                                                     >
                                                         {i + 1}
                                                     </Checkbox>
+                                                </Td>
+                                                :
+                                                <Td>
+                                                    <HStack>
+                                                        <TiInfo fontSize='22px' color='red' title='Not enough stocks' />
+                                                        <Text>{i + 1}</Text>
+                                                    </HStack>
                                                 </Td>
                                         }
                                         <Td>{item.id}</Td>
@@ -217,10 +222,10 @@ export const ListofOrders = ({ setCurrentPage, currentPage, pagesCount,
                                         <Td>{item.uom}</Td>
                                         <Td>{item.quantityOrder}</Td>
                                         <Td>{item.stockOnHand}</Td>
-
                                         <Td>
                                             <Button
                                                 onClick={() => editHandler(item)}
+                                                disabled={item.stockOnHand === 0}
                                                 size='xs' colorScheme='yellow' color='white' px={4}
                                             >
                                                 Edit

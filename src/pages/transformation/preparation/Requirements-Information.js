@@ -9,22 +9,24 @@ export const RequirementsInformation = ({ information, setWeight, setDisableSave
   const ref = useRef(null)
 
   useEffect(() => {
-    if(weight === '') {
+    if (weight === '') {
       window.setTimeout(() => {
         ref?.current?.focus()
-      },500)
+      }, 500)
     }
   }, [weight])
-  
+
 
   const weighHandler = (data) => {
     setWeight(data)
-    const minAllowable = Number(information?.quantityNeeded) * 0.95
-    const maxAllowable = Number(information?.quantityNeeded) * 1.05
+    const minAllowable = Number(information?.quantityNeeded) - (Number(information?.quantityNeeded) * 0.001)
+    const maxAllowable = Number(information?.quantityNeeded) * 1.001
+
+    console.log(minAllowable, maxAllowable)
     if (data < minAllowable || data > maxAllowable) {
       setDisableSave(true)
       // setWeight('')
-    } 
+    }
     else {
       setDisableSave(false)
     }
@@ -37,7 +39,7 @@ export const RequirementsInformation = ({ information, setWeight, setDisableSave
     //   // setWeight('')
     // }
   }
-  
+
   return (
     <VStack spacing={5} mt={2} w='full' justifyContent='center'>
       <Text mb={3} fontWeight='semibold' w='90%' bgColor='secondary' color='white' textAlign='center'>Raw Materials Requirements Information</Text>
@@ -88,11 +90,11 @@ export const RequirementsInformation = ({ information, setWeight, setDisableSave
             onWheel={(e) => e.target.blur()}
             ref={ref}
             value={weight}
-            w='full' h={7} p={0} bgColor='#fff8dc' border='1px' 
+            w='full' h={7} p={0} bgColor='#fff8dc' border='1px'
             type='number'
           />
 
-          
+
         </HStack>
       </Flex>
 

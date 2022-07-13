@@ -50,6 +50,7 @@ const MoveOrderPage = () => {
   const [plateNumber, setPlateNumber] = useState('')
 
   const [moveData, setMoveData] = useState([])
+  const [lengthIndicator, setLengthIndicator] = useState('')
 
   const [orderId, setOrderId] = useState('')
   const [orderListData, setOrderListData] = useState([])
@@ -103,6 +104,7 @@ const MoveOrderPage = () => {
   const fetchApprovedMoveOrders = () => {
     fetchApprovedMoveOrdersApi(farmName).then(res => {
       setMoveData(res)
+      setLengthIndicator(res.length)
       // setOrderId(res[0]?.id)
     })
   }
@@ -194,6 +196,8 @@ const MoveOrderPage = () => {
           setItemCode={setItemCode} setWarehouseId={setWarehouseId} setHighlighterId={setHighlighterId}
           setPlateNumber={setPlateNumber}
           buttonChanger={buttonChanger}
+          fetchApprovedMoveOrders={fetchApprovedMoveOrders}
+          lengthIndicator={lengthIndicator}
         />
         {
           orderId ?

@@ -17,9 +17,12 @@ export const ForApprovalMoveOrder = ({ setCurrentPage, setPageSize, setSearch, p
 
     const [orderId, setOrderId] = useState('')
 
+    const [printData, setPrintData] = useState([])
+
     const TableHead = [
         "Line", "Order ID", "Farm", "Farm Code", "Category", "Total Quantity Order", "Prepared Date",
-        "Date Needed", "View", "Approve", "Reject"
+        // "Date Needed", 
+        "View", "Approve", "Reject"
     ]
 
     const { isOpen: isView, onClose: closeView, onOpen: openView } = useDisclosure()
@@ -29,12 +32,12 @@ export const ForApprovalMoveOrder = ({ setCurrentPage, setPageSize, setSearch, p
     const handlePageChange = (nextPage) => {
         setCurrentPage(nextPage)
     }
-    
+
     const handlePageSizeChange = (e) => {
         const pageSize = Number(e.target.value)
         setPageSize(pageSize)
     }
-    
+
     const searchHandler = (inputValue) => {
         setSearch(inputValue)
     }
@@ -48,11 +51,13 @@ export const ForApprovalMoveOrder = ({ setCurrentPage, setPageSize, setSearch, p
         openView()
     }
 
-    const approveHandler = (orderNo) => {
-        if (orderNo) {
-            setOrderId(orderNo)
+    const approveHandler = (data) => {
+        if (data) {
+            setOrderId(data.orderNo)
+            setPrintData(data)
         } else {
             setOrderId('')
+            setPrintData([])
         }
         openApprove()
     }
@@ -102,12 +107,12 @@ export const ForApprovalMoveOrder = ({ setCurrentPage, setPageSize, setSearch, p
                                     <Td>{item.category}</Td>
                                     <Td>{item.quantity}</Td>
                                     <Td>{moment(item.preparedDate).format("MM/DD/yyyy")}</Td>
-                                    <Td>{item.dateNeeded}</Td>
+                                    {/* <Td>{item.dateNeeded}</Td> */}
                                     <Td>
                                         <Button size='xs' colorScheme='blue' px={4} onClick={() => viewHandler(item.orderNo)}>View</Button>
                                     </Td>
                                     <Td>
-                                        <Button size='xs' colorScheme='blue' onClick={() => approveHandler(item.orderNo)}>Approve</Button>
+                                        <Button size='xs' colorScheme='blue' onClick={() => approveHandler(item)}>Approve</Button>
                                     </Td>
                                     <Td>
                                         <Button size='xs' colorScheme='red' px={3} onClick={() => rejectHandler(item.orderNo)}>Reject</Button>
@@ -120,8 +125,9 @@ export const ForApprovalMoveOrder = ({ setCurrentPage, setPageSize, setSearch, p
             </Flex>
 
             <Flex justifyContent='space-between'>
-                <Text fontSize='xs'>{`Showing ${forApprovalData?.moveorder?.length} entries`}</Text>
-
+                <Text fontSize='xs'>
+                    {forApprovalData?.moveorder?.length > 0 ? `Showing ${forApprovalData?.moveorder?.length} entries` : 'No entries available'}
+                </Text>
                 <Flex>
                     <Pagination
                         pagesCount={pagesCount}
@@ -162,6 +168,7 @@ export const ForApprovalMoveOrder = ({ setCurrentPage, setPageSize, setSearch, p
                         onClose={closeApprove}
                         orderNo={orderId}
                         fetchForApprovalMO={fetchForApprovalMO}
+                        printData={printData}
                     />
                 )
             }

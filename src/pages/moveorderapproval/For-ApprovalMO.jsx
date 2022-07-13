@@ -23,7 +23,7 @@ const ForApprovalMO = () => {
       outer: outerLimit,
       inner: innerLimit,
     },
-    initialState: { currentPage: 1, pageSize: 5 },
+    initialState: { currentPage: 1, pageSize: 10 },
   })
 
   const fetchForApprovalMO = () => {
@@ -39,7 +39,9 @@ const ForApprovalMO = () => {
     return () => {
       setForApprovalData([])
     }
-  }, [currentPage, pageSize, search])
+  }, [pageSize, currentPage, search])
+
+  console.log(forApprovalData)
 
   return (
     <ForApprovalMoveOrder

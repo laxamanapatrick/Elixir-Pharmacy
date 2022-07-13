@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import apiClient from '../../services/apiClient'
 import { ApprovedMoveOrder } from './approvedmo/Approved-Move-Order'
 
-const fetchApprovedMOApi = async (pageNumber, pageSize , search) => {
+const fetchApprovedMOApi = async (pageNumber, pageSize, search) => {
   const res = await apiClient.get(`Ordering/ApprovedMoveOrderPaginationOrig?pageSize=${pageSize}&pageNumber=${pageNumber}&search=${search}`)
   return res.data
 }
@@ -23,12 +23,13 @@ const ApprovedMO = () => {
       outer: outerLimit,
       inner: innerLimit,
     },
-    initialState: { currentPage: 1, pageSize: 5 },
+    initialState: { currentPage: 1, pageSize: 10 },
   })
 
   const fetchApprovedMO = () => {
     fetchApprovedMOApi(currentPage, pageSize, search).then(res => {
       setApprovedData(res)
+      setPageTotal(res.totalCount)
     })
   }
 
@@ -38,7 +39,7 @@ const ApprovedMO = () => {
     return () => {
       setApprovedData([])
     }
-  }, [currentPage, pageSize, search])
+  }, [pageSize, currentPage, search])
 
   return (
     <ApprovedMoveOrder

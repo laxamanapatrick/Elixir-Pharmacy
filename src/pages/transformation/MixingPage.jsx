@@ -7,6 +7,19 @@ import { WeighingScaleInformation } from './mixing/Weighing-Scale-Information';
 import apiClient from '../../services/apiClient'
 import { usePagination } from '@ajna/pagination';
 
+const fetchMixingRequestApi = async (pageNumber) => {
+  const res = await apiClient.get(`Preparation/GetAllTransformationForMixingPagination?pageSize=1&pageNumber=${pageNumber}`)
+  return res.data
+}
+const fetchRequirementsApi = async (transformId) => {
+  const res = await apiClient.get(`Preparation/GetAllRequirementsForMixing?id=${transformId}`)
+  return res.data
+}
+const fetchBatchRemainingAPi = async (transformId) => {
+  const res = await apiClient.get(`Preparation/GetAllBatchRemainingPerMixing/?id=${transformId}`)
+  return res.data
+}
+
 const MixingPage = () => {
 
   const [mixingCue, setMixingCue] = useState(false)
@@ -32,10 +45,7 @@ const MixingPage = () => {
   const [quantity, setQuantity] = useState(null)
   const [batchRemaining, setBatchRemaining] = useState(null)
 
-  const fetchMixingRequestApi = async (pageNumber) => {
-    const res = await apiClient.get(`Preparation/GetAllTransformationForMixingPagination?pageSize=1&pageNumber=${pageNumber}`)
-    return res.data
-  }
+
 
   const fetchMixingRequest = () => {
     fetchMixingRequestApi(currentPage).then(res => {
@@ -52,10 +62,7 @@ const MixingPage = () => {
     }
   }, [currentPage])
 
-  const fetchRequirementsApi = async () => {
-    const res = await apiClient.get(`Preparation/GetAllRequirementsForMixing?id=${transformId}`)
-    return res.data
-  }
+
 
   const fetchRequirements = () => {
     fetchRequirementsApi(transformId).then(res => {
@@ -73,10 +80,7 @@ const MixingPage = () => {
     }
   }, [transformId])
 
-  const fetchBatchRemainingAPi = async () => {
-    const res = await apiClient.get(`Preparation/GetAllBatchRemainingPerMixing/?id=${transformId}`)
-    return res.data
-  }
+
 
   const fetchBatchRemaining = () => {
     fetchBatchRemainingAPi(transformId).then(res => {

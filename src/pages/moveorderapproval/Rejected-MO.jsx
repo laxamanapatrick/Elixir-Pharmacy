@@ -29,6 +29,7 @@ const RejectedMO = () => {
   const fetchRejectedMO = () => {
     fetchRejectedMOApi(currentPage, pageSize, search).then(res => {
       setRejectedData(res)
+      setPageTotal(res.totalCount)
     })
   }
 
@@ -38,7 +39,9 @@ const RejectedMO = () => {
     return () => {
       setRejectedData([])
     }
-  }, [currentPage, pageSize, search])
+  }, [pageSize, currentPage, search])
+
+  console.log(rejectedData)
 
   return (
     <RejectedMoveOrder

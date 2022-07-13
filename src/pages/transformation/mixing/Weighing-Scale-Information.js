@@ -30,8 +30,8 @@ export const WeighingScaleInformation = ({ transformId, batchRemaining, fetchMix
     const quantityPerBatch = Number(quantity) / Number(batch)
     const weightHandler = (data) => {
         setTotalWeight(data)
-        const minAllowable = Number(quantityPerBatch) * 0.95
-        const maxAllowable = Number(quantityPerBatch) * 1.05
+        const minAllowable = Number(quantityPerBatch) - (Number(quantityPerBatch) * 0.001)
+        const maxAllowable = Number(quantityPerBatch)
         if (Number(data) < minAllowable || Number(data) > maxAllowable) {
             setDisableSave(true)
         }
@@ -194,6 +194,9 @@ const SaveModal = ({ isOpen, onClose, transformId, batchRemaining, fetchMixingRe
                     fetchRequirements()
                     fetchBatchRemaining()
                     setDisableSave(true)
+                    if (batchRemaining === 0) {
+                        setMixingCue(false)
+                    }
                     // valueRef.current.value = null
                     handlePrint()
                     openPrint()
