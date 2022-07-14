@@ -12,8 +12,6 @@ export const ListofMoveOrdersPerFarm = ({ moveOrderListThirdTable, deliveryDate,
 
     const { isOpen: isTransact, onClose: closeTransact, onOpen: openTransact } = useDisclosure()
 
-    console.log(moveOrderListThirdTable)
-
     return (
         <>
             <Flex w='full' flexDirection='column' borderX='1px'>

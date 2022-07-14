@@ -12,6 +12,7 @@ import {
 import PageScrollReusable from '../../../components/PageScroll-Reusable'
 import { TiInfo } from 'react-icons/ti'
 import { CancelModalConfirmation, EditModal, ScheduleConfirmation } from './Action-Modals'
+import moment from 'moment'
 
 export const ListofOrders = ({ setCurrentPage, currentPage, pagesCount,
     farmName, orders, pageTotal, setTransactId, transactId, fetchOrders, lengthIndicator }) => {
@@ -71,11 +72,14 @@ export const ListofOrders = ({ setCurrentPage, currentPage, pagesCount,
             setCancelId('')
         }
     }
-
+    
     useEffect(() => {
-        orders.map((item, i) => {
+        orders.map((item) => {
+            // item.stockOnHand < item.quantityOrder
             setTransactId(item.id)
-            if (item.stockOnHand < item.quantityOrder) {
+            const dateValidation = moment(item.dateNeeded).subtract(1, 'days').format("MM/DD/yyyy")
+            // item.dateNeeded === dateValidation
+            if (item.dateNeeded === dateValidation || item.stockOnHand < item.quantityOrder) {
                 setDisableIfStock(true)
             } else {
                 setDisableIfStock(false)

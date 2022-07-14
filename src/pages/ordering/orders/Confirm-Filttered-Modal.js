@@ -5,7 +5,7 @@ import apiClient from '../../../services/apiClient'
 import { ToastComponent } from '../../../components/Toast'
 import moment from 'moment'
 
-export const ConfirmFiltteredModal = ({ isOpen, onClose, resultArray, openErrorModal, closeErrorModal }) => {
+export const ConfirmFiltteredModal = ({ isOpen, onClose, resultArray, openErrorModal, closeErrorModal, isLoading }) => {
     const toast = useToast()
 
     const syncHandler = () => {
@@ -61,7 +61,7 @@ export const ConfirmFiltteredModal = ({ isOpen, onClose, resultArray, openErrorM
                 </ModalBody>
 
                 <ModalFooter>
-                    <Button onClick={() => syncHandler()} colorScheme='blue'>Yes</Button>
+                    <Button isLoading={isLoading} onClick={() => syncHandler()} colorScheme='blue'>Yes</Button>
                     <Button ml={2} colorScheme='red' onClick={onClose}>No</Button>
                 </ModalFooter>
             </ModalContent>

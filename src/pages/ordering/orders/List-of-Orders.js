@@ -1,12 +1,13 @@
 import React, { useRef, useState } from 'react'
-import { Box, Flex, HStack, Input, Skeleton, Spinner, Stack, Table, Tbody, Td, Text, Th, Thead, toast, Tr, useDisclosure, useToast, VStack } from '@chakra-ui/react'
+import { Badge, Box, Flex, HStack, Input, Skeleton, Spinner, Stack, Table, Tbody, Td, Text, Th, Thead, toast, Tr, useDisclosure, useToast, VStack } from '@chakra-ui/react'
 import { HiRefresh } from 'react-icons/hi'
 import PageScrollReusable from '../../../components/PageScroll-Reusable'
 import { ErrorModal } from './Error-Modal'
 import { ConfirmModal } from './Confirm-Modal'
+import DatePicker from 'react-datepicker'
 
 
-export const ListofOrders = ({ genusOrders, setGenusOrders, search, setSearch, fetchingData }) => {
+export const ListofOrders = ({ genusOrders, fetchingData, setFromDate, setToDate, fromDate, toDate }) => {
 
     const [isLoading, setIsLoading] = useState(false)
 
@@ -38,85 +39,119 @@ export const ListofOrders = ({ genusOrders, setGenusOrders, search, setSearch, f
         }
     })
 
+    const dateVar = new Date()
+    const startDate = dateVar.setDate(dateVar.getDate() - 5)
+
     return (
         <Flex w='full' p={5} flexDirection='column'>
 
-            <Flex w='full' p={2} justifyContent='space-between'>
-                <HStack>
-                    <Text fontSize='sm'>SEARCH:</Text>
-                    <Input
-                        placeholder='ex. Farm Name'
-                        onChange={(e) => setKeyword(e.target.value)}
-                        disabled={isLoading}
+            <Flex justifyContent='center'>
+                <Badge>Date</Badge>
+            </Flex>
+            <Flex justifyContent='center'>
+                <HStack spacing={2} w='40%'>
+                    <Badge>From:</Badge>
+                    <DatePicker
+                        onChange={(date) => setFromDate(date)}
+                        selected={fromDate}
+                        shouldCloseOnSelect
+                        dateFormat="yyyy-MM-dd"
+                    />
+                    <Badge>To:</Badge>
+                    <DatePicker
+                        onChange={(date) => setToDate(date)}
+                        selected={toDate}
+                        minDate={fromDate}
+                        shouldCloseOnSelect
+                        dateFormat="yyyy-MM-dd"
                     />
                 </HStack>
-                {
-                    isLoading ?
-                        <Spinner cursor='pointer' onClick={() => setIsLoading(false)} />
-                        :
-                        <HiRefresh fontSize='25px' cursor='pointer' onClick={() => openConfirm()} />
-                }
             </Flex>
 
-            <VStack spacing={0} w='full'>
-                <Text py={2} w='full' fontSize='lg' bgColor='secondary' color='white' textAlign='center'>List of Orders</Text>
-                <PageScrollReusable minHeight='200px' maxHeight='650px'>
-                    {
-                        fetchingData ?
-                            <Stack width="full">
-                                <Skeleton height='20px' />
-                                <Skeleton height='20px' />
-                                <Skeleton height='20px' />
-                                <Skeleton height='20px' />
-                                <Skeleton height='20px' />
-                                <Skeleton height='20px' />
-                            </Stack>
-                            :
-                            <Table size='sm'>
-                                <Thead bgColor='secondary'>
-                                    <Tr>
-                                        <Th color='white'>Line</Th>
-                                        <Th color='white'>Order Date</Th>
-                                        <Th color='white'>Date Needed</Th>
-                                        <Th color='white'>Farm Code</Th>
-                                        <Th color='white'>Farm Name</Th>
-                                        <Th color='white'>Item Code</Th>
-                                        <Th color='white'>Item Description</Th>
-                                        <Th color='white'>Category</Th>
-                                        <Th color='white'>UOM</Th>
-                                        <Th color='white'>Quantity Order</Th>
-                                    </Tr>
-                                </Thead>
-                                <Tbody>
-                                    {
-                                        genusOrders?.genus_orders
-                                            ?.filter((val) => {
-                                                const newKeyword = new RegExp(`${keyword.toLowerCase()}`)
-                                                return val.order_details.farm_name?.toLowerCase().match(newKeyword, '*')
-                                            }
-                                            )
-                                            ?.map((order, i) =>
-                                                <Tr key={i}>
-                                                    <Td>{i + 1}</Td>
-                                                    <Td>{order.order_details.dateOrdered}</Td>
-                                                    <Td>{order.order_details.dateNeeded}</Td>
-                                                    <Td>{order.order_details.farm_code}</Td>
-                                                    <Td>{order.order_details.farm_name}</Td>
-                                                    <Td>{order.order_details.order.itemCode}</Td>
-                                                    <Td>{order.order_details.order.itemDescription}</Td>
-                                                    <Td>{order.order_details.order.category}</Td>
-                                                    <Td>{order.order_details.order.uom}</Td>
-                                                    <Td>{order.order_details.order.quantity}</Td>
-                                                </Tr>
-                                            )
-                                    }
-                                </Tbody>
-                            </Table>
-                    }
-                </PageScrollReusable>
-            </VStack>
             {
-                !isLoading ?
+                fromDate && toDate
+                    ?
+                    <>
+                        <Flex w='full' p={2} justifyContent='space-between'>
+                            <HStack>
+                                <Text fontSize='sm'>SEARCH:</Text>
+                                <Input
+                                    placeholder='ex. Farm Name'
+                                    onChange={(e) => setKeyword(e.target.value)}
+                                    disabled={isLoading}
+                                />
+                            </HStack>
+                            {
+                                isLoading ?
+                                    <Spinner cursor='pointer' onClick={() => setIsLoading(false)} />
+                                    :
+                                    <HiRefresh fontSize='25px' cursor='pointer' onClick={() => openConfirm()} />
+                            }
+                        </Flex>
+
+                        <VStack spacing={0} w='full'>
+                            <Text py={2} w='full' fontSize='lg' bgColor='secondary' color='white' textAlign='center'>List of Orders</Text>
+                            <PageScrollReusable minHeight='200px' maxHeight='650px'>
+                                {
+                                    fetchingData ?
+                                        <Stack width="full">
+                                            <Skeleton height='20px' />
+                                            <Skeleton height='20px' />
+                                            <Skeleton height='20px' />
+                                            <Skeleton height='20px' />
+                                            <Skeleton height='20px' />
+                                            <Skeleton height='20px' />
+                                        </Stack>
+                                        :
+                                        <Table size='sm'>
+                                            <Thead bgColor='secondary'>
+                                                <Tr>
+                                                    <Th color='white'>Line</Th>
+                                                    <Th color='white'>Order Date</Th>
+                                                    <Th color='white'>Date Needed</Th>
+                                                    <Th color='white'>Farm Code</Th>
+                                                    <Th color='white'>Farm Name</Th>
+                                                    <Th color='white'>Item Code</Th>
+                                                    <Th color='white'>Item Description</Th>
+                                                    <Th color='white'>Category</Th>
+                                                    <Th color='white'>UOM</Th>
+                                                    <Th color='white'>Quantity Order</Th>
+                                                </Tr>
+                                            </Thead>
+                                            <Tbody>
+                                                {
+                                                    genusOrders?.genus_orders
+                                                        ?.filter((val) => {
+                                                            const newKeyword = new RegExp(`${keyword.toLowerCase()}`)
+                                                            return val.order_details.farm_name?.toLowerCase().match(newKeyword, '*')
+                                                        }
+                                                        )
+                                                        ?.map((order, i) =>
+                                                            <Tr key={i}>
+                                                                <Td>{i + 1}</Td>
+                                                                <Td>{order.order_details.dateOrdered}</Td>
+                                                                <Td>{order.order_details.dateNeeded}</Td>
+                                                                <Td>{order.order_details.farm_code}</Td>
+                                                                <Td>{order.order_details.farm_name}</Td>
+                                                                <Td>{order.order_details.order.itemCode}</Td>
+                                                                <Td>{order.order_details.order.itemDescription}</Td>
+                                                                <Td>{order.order_details.order.category}</Td>
+                                                                <Td>{order.order_details.order.uom}</Td>
+                                                                <Td>{order.order_details.order.quantity}</Td>
+                                                            </Tr>
+                                                        )
+                                                }
+                                            </Tbody>
+                                        </Table>
+                                }
+                            </PageScrollReusable>
+                        </VStack>
+                    </>
+                    :
+                    ''
+            }
+            {
+                fromDate && toDate ?
                     <Text mt={3} fontSize='xs'>Number of records: {genusOrders?.genus_orders?.length}</Text>
                     : ""
             }
@@ -127,6 +162,7 @@ export const ListofOrders = ({ genusOrders, setGenusOrders, search, setSearch, f
                         onClose={closeError}
                         errorData={errorData}
                         openConfirm={openConfirm}
+                        isLoading={isLoading}
                     />
                 )
             }
@@ -139,6 +175,7 @@ export const ListofOrders = ({ genusOrders, setGenusOrders, search, setSearch, f
                         setIsLoading={setIsLoading}
                         setErrorData={setErrorData}
                         openError={openError}
+                        isLoading={isLoading}
                     />
                 )
             }

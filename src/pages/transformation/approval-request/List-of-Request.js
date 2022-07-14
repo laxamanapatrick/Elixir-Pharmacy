@@ -78,7 +78,7 @@ export const ListofRequest = ({ setTransformId, transformId, setStatus, requests
                 <Th color='white'>UOM</Th>
                 <Th color='white'>Batch</Th>
                 <Th color='white'>Version</Th>
-                <Th color='white'>Quantity</Th>
+                <Th color='white'>Total Quantity</Th>
                 <Th color='white'>Prod Plan</Th>
                 <Th color='white'>Request By</Th>
               </Tr>
@@ -98,7 +98,7 @@ export const ListofRequest = ({ setTransformId, transformId, setStatus, requests
                     <Td>{r.uom}</Td>
                     <Td>{r.batch}</Td>
                     <Td>{r.version}</Td>
-                    <Td>{r.quantity}</Td>
+                    <Td>{r.quantity * r.batch}</Td>
                     <Td>{r.prodPlan}</Td>
                     <Td>{r.addedBy}</Td>
                   </Tr>

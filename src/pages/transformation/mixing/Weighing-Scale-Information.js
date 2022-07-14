@@ -1,12 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Box, Button, ButtonGroup, Flex, HStack, Image, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Select, Text, useDisclosure, useToast, VStack } from '@chakra-ui/react'
 import { FaCloudscale } from 'react-icons/fa'
-import { ToastComponent } from '../../../components/Toast'
 import apiClient from '../../../services/apiClient'
-import moment from 'moment'
-import { useReactToPrint } from 'react-to-print'
-import Barcode from 'react-barcode';
-import { PrintList } from './Print-List'
+import { SaveConfirmation } from './Print-List'
 import DatePicker from "react-datepicker";
 
 export const WeighingScaleInformation = ({ transformId, batchRemaining, fetchMixingRequest, fetchRequirements,
@@ -131,9 +127,7 @@ const SaveModal = ({ isOpen, onClose, transformId, batchRemaining, fetchMixingRe
     const newDate = new Date(date.setMonth(date.getMonth() + 6))
     const [expirationDate, setExpirationDate] = useState(newDate)
 
-    const [displayData, setDisplayData] = useState([])
-
-    const { isOpen: isPrint, onOpen: openPrint, onClose: closePrint } = useDisclosure()
+    const { isOpen: isSaveConfirmation, onClose: closeSaveConfirmation, onOpen: openSaveConfirmation } = useDisclosure()
 
     const fetchLotCategoryApi = async () => {
         const res = await apiClient.get(`Lot/GetAllActiveLotCategories`)
@@ -154,71 +148,12 @@ const SaveModal = ({ isOpen, onClose, transformId, batchRemaining, fetchMixingRe
         }
     }, [])
 
-    const componentRef = useRef()
-    const handlePrint = useReactToPrint({
-        content: () => componentRef.current,
-    });
-
     const lotHandler = (lotName) => {
         if (lotName) {
             setLotCategory(lotName)
         } else {
             setLotCategory("")
         }
-    }
-
-    const submitHandler = () => {
-        try {
-            const res = apiClient.put(`Preparation/FinishedMixedMaterialsForWarehouse/${transformId}`, {
-                transformId: transformId,
-                expiration: expirationDate,
-                lotCategory: lotCategory
-            })
-                .then(res => {
-                    ToastComponent('Success', 'Mixing has started', 'success', toast)
-                    const displayData = {
-                        "Date": moment(new Date()).format('MM/DD/yyyy, h:mm:ss a'),
-                        "Transform ID": transformId,
-                        "Item Code": requests?.mixing[0]?.itemCode,
-                        "Item Description": requests?.mixing[0]?.itemDescription,
-                        "UOM": requests?.mixing[0]?.uom,
-                        "Batch": `${res.data.batchCount} out of ${requests?.mixing[0]?.batch}`,
-                        "Quantity": totalWeight && totalWeight,
-                        "Mixing Date": moment(new Date()).format('MM/DD/yyyy'),
-                        "Expiration Date": newDate && moment(newDate).format('MM/DD/yyyy'),
-                        "Lot Name": lotCategory && lotCategory,
-                    }
-                    setDisplayData(displayData)
-                    setTotalWeight('')
-                    fetchMixingRequest()
-                    fetchRequirements()
-                    fetchBatchRemaining()
-                    setDisableSave(true)
-                    if (batchRemaining === 0) {
-                        setMixingCue(false)
-                    }
-                    // valueRef.current.value = null
-                    handlePrint()
-                    openPrint()
-                })
-                .catch(err => {
-                    ToastComponent('Error', err.response.data, 'error', toast)
-                })
-        } catch (error) {
-        }
-    }
-
-    const newDisplayData = {
-        "Date": displayData?.['Date'],
-        "Transform ID": displayData?.['Transform ID'],
-        "Item Code": displayData?.['Item Code'],
-        "Item Description": displayData?.['Item Description'],
-        "UOM": displayData?.['UOM'],
-        "Batch": displayData?.['Batch'],
-        "Quantity": displayData?.['Quantity'],
-        "Mixing Date": displayData?.['Mixing Date'],
-        "Expiration Date": displayData?.['Expiration Date'],
-        "Lot Name": displayData?.['Lot Name'],
     }
 
     const expirationDateProvider = (date) => {
@@ -239,47 +174,6 @@ const SaveModal = ({ isOpen, onClose, transformId, batchRemaining, fetchMixingRe
                 </ModalHeader>
 
                 <ModalBody>
-
-                    <Box w='20%' display='none'>
-
-                        <VStack spacing={0} justifyContent='center' ref={componentRef}>
-
-                            <VStack spacing={0} justifyContent='start'>
-                                <Image
-                                    src='/images/RDF Logo.png'
-                                    w='20%' ml={3}
-                                />
-                                <Text fontSize='xs' ml={2}>Purok 6, Brgy. Lara, City of San Fernando, Pampanga, Philippines</Text>
-                            </VStack>
-
-                            <Flex mt={2} w='90%' justifyContent='center'>
-                                <Text fontSize='25px' fontWeight='semibold' ml={4}>Raw Materials</Text>
-                            </Flex>
-
-                            {Object.keys(newDisplayData)?.map((key, i) =>
-                                <Flex w='full' justifyContent='center' key={i}>
-                                    <Flex ml='4%' w='full'>
-                                        <Flex>
-                                            <Text fontWeight='semibold' fontSize='10px'>{key}:</Text>
-                                        </Flex>
-                                    </Flex>
-                                    <Flex w='full'>
-                                        <Flex>
-                                            <Text fontWeight='semibold' fontSize='10px'>{newDisplayData[key]}</Text>
-                                        </Flex>
-                                    </Flex>
-                                </Flex>
-                            )}
-
-                            <VStack spacing={0} w='90%' ml={4} justifyContent='center'>
-                                <Barcode width={3} height={75} value={newDisplayData?.['Transform ID']} />
-                            </VStack>
-
-                            <Flex w='full'></Flex>
-
-                        </VStack>
-
-                    </Box>
 
                     <VStack justifyContent='center'>
                         <Text my={4}>Where do you want to place this Raw Material?</Text>
@@ -324,7 +218,7 @@ const SaveModal = ({ isOpen, onClose, transformId, batchRemaining, fetchMixingRe
                 <ModalFooter>
                     <ButtonGroup size='sm' mt={4}>
                         <Button
-                            onClick={submitHandler}
+                            onClick={() => openSaveConfirmation()}
                             disabled={!lotCategory || !expirationDate}
                             colorScheme='blue'
                         >
@@ -334,25 +228,31 @@ const SaveModal = ({ isOpen, onClose, transformId, batchRemaining, fetchMixingRe
                     </ButtonGroup>
                 </ModalFooter>
             </ModalContent>
+
             {
-                isPrint && (
-                    <PrintList
-                        isOpen={isPrint}
-                        onClose={closePrint}
-                        closeSave={onClose}
-                        requests={requests}
-                        newDisplayData={newDisplayData}
-                        valueRef={valueRef}
+                isSaveConfirmation && (
+                    <SaveConfirmation
+                        isOpen={isSaveConfirmation}
+                        onClose={closeSaveConfirmation}
+                        closeSaveModal={onClose}
+                        transformId={transformId}
+                        lotCategory={lotCategory}
+                        expirationDate={expirationDate}
+                        batchRemaining={batchRemaining}
                         fetchMixingRequest={fetchMixingRequest}
                         fetchRequirements={fetchRequirements}
                         fetchBatchRemaining={fetchBatchRemaining}
-                        setDisableSave={setDisableSave}
-                        batchRemaining={batchRemaining}
                         setMixingCue={setMixingCue}
+                        valueRef={valueRef}
+                        setDisableSave={setDisableSave}
+                        requests={requests}
+                        totalWeight={totalWeight}
+                        setTotalWeight={setTotalWeight}
                         setCurrentPage={setCurrentPage}
                     />
                 )
             }
+
         </Modal>
     )
 }

@@ -40,7 +40,7 @@ export const ListofRawMaterialsRequirements = ({ transformId, requirements }) =>
                                 <Th color='white'>UOM</Th>
                                 <Th color='white'>Batch</Th>
                                 <Th color='white'>Version</Th>
-                                <Th color='white'>Quantity</Th>
+                                <Th color='white'>Total Quantity</Th>
                                 <Th color='white'>Prod Plan</Th>
                                 {/* <Th color='white'>Request By</Th> */}
                             </Tr>

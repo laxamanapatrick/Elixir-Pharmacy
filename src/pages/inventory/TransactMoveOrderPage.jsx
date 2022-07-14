@@ -67,8 +67,6 @@ const TransactMoveOrderPage = () => {
     }
   }, [orderNo])
 
-  console.log(moveOrderList)
-
   return (
     <Flex w='full' justifyContent='space-between' flexDirection='column'>
       <VStack p={5} w='full' spacing={0}>

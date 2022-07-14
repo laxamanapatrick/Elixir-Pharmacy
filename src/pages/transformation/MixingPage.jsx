@@ -45,8 +45,6 @@ const MixingPage = () => {
   const [quantity, setQuantity] = useState(null)
   const [batchRemaining, setBatchRemaining] = useState(null)
 
-
-
   const fetchMixingRequest = () => {
     fetchMixingRequestApi(currentPage).then(res => {
       setRequests(res)
@@ -61,8 +59,6 @@ const MixingPage = () => {
       setRequests([])
     }
   }, [currentPage])
-
-
 
   const fetchRequirements = () => {
     fetchRequirementsApi(transformId).then(res => {
@@ -79,8 +75,6 @@ const MixingPage = () => {
       setRequirements([])
     }
   }, [transformId])
-
-
 
   const fetchBatchRemaining = () => {
     fetchBatchRemainingAPi(transformId).then(res => {

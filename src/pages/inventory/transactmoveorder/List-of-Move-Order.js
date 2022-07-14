@@ -11,7 +11,8 @@ export const ListofMoveOrder = ({ moveOrderList, setMoveOrderInformation, moveOr
   ]
 
   const setterHandler = ({ orderNo, deliveryStatus, farm, farmCode }) => {
-    if (orderNo && deliveryStatus && farm) {
+    // Add delivery status for condition
+    if (orderNo && farm && farmCode) {
       setMoveOrderInformation({
         orderNo: orderNo,
         deliveryStatus: deliveryStatus,

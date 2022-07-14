@@ -16,10 +16,11 @@ export const MoveOrderInformation = ({ moveOrderInformation, deliveryDate, setDe
                         >
                             {moveOrderInformation.orderNo ? moveOrderInformation.orderNo : 'Please select a list'}
                         </Text>
-                        <Text fontSize='sm'>Plate Number:</Text>
+                        <Text fontSize='sm'>Delivery Status:</Text>
                         <Text textAlign='center' w='full' fontSize='sm' bgColor='gray.200' border='1px' py={1}
                         >
-                            {moveOrderInformation.deliveryStatus ? moveOrderInformation.deliveryStatus : 'Please select a list'}
+                            {/* {moveOrderInformation.deliveryStatus ? moveOrderInformation.deliveryStatus : 'Please select a list'} */}
+                            {`Ask backend to change plate number to delivery status`}
                         </Text>
                         <Text fontSize='sm'>Delivery Date:</Text>
                         <DatePicker
