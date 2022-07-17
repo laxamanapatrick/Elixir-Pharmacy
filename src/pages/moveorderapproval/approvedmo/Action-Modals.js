@@ -107,7 +107,7 @@ export const PrintModal = ({ isOpen, onClose, printData, closeApprove, fetchAppr
 
     const printAndUpdate = () => {
         try {
-            const res = apiClient.put(`Ordering/UpdatePrintStatus`, { orderNo: printData?.orderNo })
+            const res = apiClient.put(`Ordering/UpdatePrintStatus`, { orderNo: orderId })
                 .then(res => {
                     handlePrint()
                 })

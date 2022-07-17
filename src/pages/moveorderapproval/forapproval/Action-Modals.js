@@ -83,8 +83,15 @@ export const ApproveModal = ({ isOpen, onClose, orderNo, fetchForApprovalMO, pri
         .then(res => {
           ToastComponent("Success", "Move order has been approved", "success", toast)
           fetchForApprovalMO()
-          handlePrint()
-          openPrint()
+          try {
+            const res = apiClient.put(`Ordering/UpdatePrintStatus`, { orderNo: orderNo })
+              .then(res => {
+                handlePrint()
+                openPrint()
+              })
+              .catch(err => { })
+          } catch (error) {
+          }
         })
         .catch(jaypee => {
           ToastComponent("Error", "Move order was not approved", "error", toast)

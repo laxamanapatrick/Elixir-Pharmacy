@@ -1,16 +1,41 @@
 import React from 'react'
-import { Flex, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from '@chakra-ui/react'
+import { Button, Checkbox, Flex, Table, Tbody, Td, Text, Th, Thead, Tr, useDisclosure, VStack } from '@chakra-ui/react'
 import PageScrollReusable from '../../../components/PageScroll-Reusable'
 import moment from 'moment'
 import { GrRadialSelected } from 'react-icons/gr'
+import { ViewModal } from './Action-Modals-Transact'
+import { decodeUser } from '../../../services/decode-user'
 
-export const ListofMoveOrder = ({ moveOrderList, setMoveOrderInformation, moveOrderInformation }) => {
+const currentUser = decodeUser()
 
-  const TableHead = [
-    "Line", "Order Id", "Farm", "Farm Code", "Category", "Total Quantity Order", "Order Date", "Date Needed", "Prepared Date"
-  ]
+export const ListofMoveOrder = ({ moveOrderList, setMoveOrderInformation, moveOrderInformation, moveOrderListThirdTable, checkedItems, setCheckedItems }) => {
 
-  const setterHandler = ({ orderNo, deliveryStatus, farm, farmCode }) => {
+  const { isOpen: isView, onClose: closeView, onOpen: openView } = useDisclosure()
+
+  // const TableHead = [
+  //   "Line", "Order Id", "Farm", "Farm Code", "Category", "Total Quantity Order", "Order Date", "Date Needed", "Prepared Date", "View"
+  // ]
+
+  // const setterHandler = ({ orderNo, deliveryStatus, farm, farmCode }) => {
+  //   // Add delivery status for condition
+  //   if (orderNo && farm && farmCode) {
+  //     setMoveOrderInformation({
+  //       orderNo: orderNo,
+  //       deliveryStatus: deliveryStatus,
+  //       farmName: farm,
+  //       farmCode: farmCode
+  //     })
+  //   } else {
+  //     setMoveOrderInformation({
+  //       orderNo: '',
+  //       deliveryStatus: '',
+  //       farmName: '',
+  //       farmCode: ''
+  //     })
+  //   }
+  // }
+
+  const viewHandler = ({ orderNo, deliveryStatus, farm, farmCode }) => {
     // Add delivery status for condition
     if (orderNo && farm && farmCode) {
       setMoveOrderInformation({
@@ -19,6 +44,7 @@ export const ListofMoveOrder = ({ moveOrderList, setMoveOrderInformation, moveOr
         farmName: farm,
         farmCode: farmCode
       })
+      openView()
     } else {
       setMoveOrderInformation({
         orderNo: '',
@@ -29,50 +55,133 @@ export const ListofMoveOrder = ({ moveOrderList, setMoveOrderInformation, moveOr
     }
   }
 
+  const moveOrderData = moveOrderList?.filter(item => item.stockOnHand >= item.quantityOrder)
+  const submitData = moveOrderData?.map(item => {
+    return {
+      orderNo: item.orderNo,
+      farmType: item.farmType,
+      farmName: item.farm,
+      farmCode: item.farmCode,
+      orderNoPKey: item.orderNoPKey,
+      isApprove: item.isApproved,
+      preparedBy: currentUser?.userName
+    }
+  })
+
+  const parentCheckHandler = (e) => {
+    if (e.target.checked) {
+      setCheckedItems(submitData)
+    } else {
+      setCheckedItems([])
+    }
+  }
+
+  const childCheckHandler = ({ orderNo, farmType, farm, farmCode, orderNoPKey, deliveryDate, isApproved }) => {
+    let valueSubmit = {
+      orderNo: orderNo,
+      farmType: farmType,
+      farmName: farm,
+      farmCode: farmCode,
+      orderNoPKey: orderNoPKey,
+      isApprove: isApproved,
+      preparedBy: currentUser?.userName
+    }
+    if (orderNo && farmType && farm && farmCode && orderNoPKey && isApproved) {
+      setCheckedItems([...checkedItems, valueSubmit])
+    } else {
+      const data = checkedItems?.filter(item => item !== valueSubmit)
+      setCheckedItems(data)
+    }
+  }
+
+  console.log(checkedItems)
+
   return (
-    <Flex w='full' flexDirection='column'>
-      <VStack spacing={0}>
-        <Text pb={2} textAlign='center' fontSize='md' color='white' bgColor='secondary' w='full' mb={-1.5}>List of Move Order</Text>
-        <PageScrollReusable minHeight='220px' maxHeight='300px'>
-          <Table size='sm' variant='simple'>
-            <Thead bgColor='secondary'>
-              <Tr>
+    <>
+      <Flex w='full' flexDirection='column'>
+        <VStack spacing={0}>
+          <Text pb={2} textAlign='center' fontSize='md' color='white' bgColor='secondary' w='full' mb={-1.5}>List of Move Order</Text>
+          <PageScrollReusable minHeight='800px' maxHeight='820px'>
+            <Table size='sm' variant='simple'>
+              <Thead bgColor='secondary'>
+                <Tr>
+                  <Th color='white'>
+                    <Checkbox
+                      onChange={parentCheckHandler}
+                      isChecked={
+                        submitData?.length === checkedItems?.length
+                      }
+                      color='white'
+                    >
+                      Line
+                    </Checkbox>
+                  </Th>
+                  <Th color='white'>Order Id</Th>
+                  <Th color='white'>Farm</Th>
+                  <Th color='white'>Farm Code</Th>
+                  <Th color='white'>Category</Th>
+                  <Th color='white'>Total Quantity Order</Th>
+                  <Th color='white'>Order Date</Th>
+                  <Th color='white'>Date Needed</Th>
+                  <Th color='white'>Prepared Date</Th>
+                  <Th color='white'>View</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
                 {
-                  TableHead?.map((t, i) =>
-                    <Th color='white' key={i}>{t}</Th>
+                  moveOrderList?.map((list, i) =>
+                    <Tr key={i}
+                      // onClick={() => setterHandler(list)}
+                      // bgColor={moveOrderInformation.orderNo === list.orderNo ? 'table_accent' : 'none'}
+                      cursor='pointer'
+                    >
+                      {/* {
+                        moveOrderInformation.orderNo === list.orderNo ?
+                          <Td><GrRadialSelected /></Td>
+                          :
+                          ''
+                      } */}
+                      <Td>
+                        <Checkbox
+                          onChange={() => childCheckHandler(list)}
+                          isChecked={checkedItems.includes(list.orderNo)}
+                          // value={list}
+                          color='black'
+                        >
+                          {i + 1}
+                        </Checkbox>
+                      </Td>
+                      <Td>{list.orderNo}</Td>
+                      <Td>{list.farm}</Td>
+                      <Td>{list.farmCode}</Td>
+                      <Td>{list.category}</Td>
+                      <Td>{list.totalOrders}</Td>
+                      <Td>{list.orderDate}</Td>
+                      <Td>{list.dateNeeded}</Td>
+                      <Td>{moment(list.preparedDate).format('MM/DD/yyyy')}</Td>
+                      <Td>
+                        <Button size='xs' colorScheme='green' onClick={() => viewHandler(list)}>
+                          View
+                        </Button>
+                      </Td>
+                    </Tr>
                   )
                 }
-              </Tr>
-            </Thead>
-            <Tbody>
-              {
-                moveOrderList?.map((list, i) =>
-                  <Tr key={i}
-                    onClick={() => setterHandler(list)}
-                    bgColor={moveOrderInformation.orderNo === list.orderNo ? 'table_accent' : 'none'}
-                    cursor='pointer'
-                  >
-                    {
-                      moveOrderInformation.orderNo === list.orderNo ?
-                        <Td><GrRadialSelected /></Td>
-                        :
-                        <Td>{i + 1}</Td>
-                    }
-                    <Td>{list.orderNo}</Td>
-                    <Td>{list.farm}</Td>
-                    <Td>{list.farmCode}</Td>
-                    <Td>{list.category}</Td>
-                    <Td>{list.totalOrders}</Td>
-                    <Td>{list.orderDate}</Td>
-                    <Td>{list.dateNeeded}</Td>
-                    <Td>{moment(list.preparedDate).format('MM/DD/yyyy')}</Td>
-                  </Tr>
-                )
-              }
-            </Tbody>
-          </Table>
-        </PageScrollReusable>
-      </VStack>
-    </Flex>
+              </Tbody>
+            </Table>
+          </PageScrollReusable>
+        </VStack>
+      </Flex>
+      {
+        isView && (
+          <ViewModal
+            isOpen={isView}
+            onClose={closeView}
+            moveOrderInformation={moveOrderInformation}
+            moveOrderListThirdTable={moveOrderListThirdTable}
+          />
+        )
+      }
+    </>
   )
 }
