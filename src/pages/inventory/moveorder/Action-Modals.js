@@ -125,7 +125,7 @@ export const CancelConfirmation = ({ isOpen, onClose, id, fetchPreparedItems, fe
 //Save Button
 
 export const SaveButton = ({ deliveryStatus, orderListData, fetchApprovedMoveOrders, fetchOrderList,
-    setOrderId, setHighlighterId, setItemCode, setDeliveryStatus, setButtonChanger }) => {
+    setOrderId, setHighlighterId, setItemCode, setDeliveryStatus, setButtonChanger, setCurrentPage, currentPage }) => {
 
     const { isOpen: isPlateNumber, onClose: closePlateNumber, onOpen: openPlateNumber } = useDisclosure()
 
@@ -140,7 +140,7 @@ export const SaveButton = ({ deliveryStatus, orderListData, fetchApprovedMoveOrd
                 Save
             </Button>
             {
-                <PlateNumberConfirmation
+                <DeliveryStatusConfirmation
                     isOpen={isPlateNumber}
                     onClose={closePlateNumber}
                     deliveryStatus={deliveryStatus}
@@ -152,19 +152,19 @@ export const SaveButton = ({ deliveryStatus, orderListData, fetchApprovedMoveOrd
                     setItemCode={setItemCode}
                     setDeliveryStatus={setDeliveryStatus}
                     setButtonChanger={setButtonChanger}
+                    setCurrentPage={setCurrentPage}
+                    currentPage={currentPage}
                 />
             }
         </Flex>
     )
 }
-export const PlateNumberConfirmation = ({ isOpen, onClose, deliveryStatus, orderListData, fetchApprovedMoveOrders, fetchOrderList,
-    setOrderId, setHighlighterId, setItemCode, setDeliveryStatus, setButtonChanger }) => {
+export const DeliveryStatusConfirmation = ({ isOpen, onClose, deliveryStatus, orderListData, fetchApprovedMoveOrders, fetchOrderList,
+    setOrderId, setHighlighterId, setItemCode, setDeliveryStatus, setButtonChanger, setCurrentPage, currentPage }) => {
 
     const toast = useToast()
 
     const submitHandler = () => {
-        // console.log("Plate Number: ", deliveryStatus)
-        // console.log("List of Id to Submit", orderListData?.map(item => { return item.id }))
         const submitArray = orderListData?.map(item => {
             return {
                 id: item.id,
@@ -180,6 +180,7 @@ export const PlateNumberConfirmation = ({ isOpen, onClose, deliveryStatus, order
                     setItemCode('')
                     setDeliveryStatus('')
                     setButtonChanger(false)
+                    setCurrentPage(currentPage)
                     fetchApprovedMoveOrders()
                     fetchOrderList()
                     onClose()

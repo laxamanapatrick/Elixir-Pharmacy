@@ -101,7 +101,7 @@ export const RejectedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, page
                 </PageScrollReusable>
             </Flex>
 
-            <Flex justifyContent='space-between' mt={8}>
+            <Flex justifyContent='space-between' mt={7}>
                 <Text fontSize='xs'>
                     {rejectedData?.moveorder?.length > 0 ? `Showing ${rejectedData?.moveorder?.length} entries` : 'No entries available'}
                 </Text>

@@ -221,6 +221,8 @@ const MoveOrderPage = () => {
               setItemCode={setItemCode}
               setDeliveryStatus={setDeliveryStatus}
               setButtonChanger={setButtonChanger}
+              setCurrentPage={setCurrentPage}
+              currentPage={currentPage}
             />
             :
             itemCode && highlighterId &&

@@ -121,7 +121,7 @@ export const ForApprovalMoveOrder = ({ setCurrentPage, setPageSize, setSearch, p
                 </PageScrollReusable>
             </Flex>
 
-            <Flex justifyContent='space-between'>
+            <Flex justifyContent='space-between' mt={7}>
                 <Text fontSize='xs'>
                     {forApprovalData?.moveorder?.length > 0 ? `Showing ${forApprovalData?.moveorder?.length} entries` : 'No entries available'}
                 </Text>

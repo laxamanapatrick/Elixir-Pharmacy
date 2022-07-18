@@ -42,14 +42,14 @@ export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage
         "Prepared Date", "Status"
     ]
 
-    //Return to Page 1 once length === 0
+    // Return to Page 1 once length === 0
     useEffect(() => {
         if (lengthIndicator === 0) {
             setCurrentPage(1)
             fetchApprovedMoveOrders()
         }
 
-    }, [moveData])
+    }, [lengthIndicator])
 
     //Auto select index 0
     useEffect(() => {

@@ -76,25 +76,30 @@ export const ListofMoveOrder = ({ moveOrderList, setMoveOrderInformation, moveOr
     }
   }
 
-  const childCheckHandler = ({ orderNo, farmType, farm, farmCode, orderNoPKey, deliveryDate, isApproved }) => {
+  const childCheckHandler = (e) => {
+    const data = JSON.parse(e.target.value)
     let valueSubmit = {
-      orderNo: orderNo,
-      farmType: farmType,
-      farmName: farm,
-      farmCode: farmCode,
-      orderNoPKey: orderNoPKey,
-      isApprove: isApproved,
+      orderNo: data.orderNo,
+      farmType: data.farmType,
+      farmName: data.farm,
+      farmCode: data.farmCode,
+      orderNoPKey: data.orderNoPKey,
+      isApprove: data.isApproved,
       preparedBy: currentUser?.userName
     }
-    if (orderNo && farmType && farm && farmCode && orderNoPKey && isApproved) {
+    if (e.target.checked) {
       setCheckedItems([...checkedItems, valueSubmit])
     } else {
-      const data = checkedItems?.filter(item => item !== valueSubmit)
-      setCheckedItems(data)
+      const filterData = checkedItems?.filter(item => item.orderNo !== valueSubmit.orderNo)
+      setCheckedItems(filterData)
     }
+    // if (orderNo && farmType && farm && farmCode && orderNoPKey && isApproved) {
+    //   setCheckedItems([...checkedItems, valueSubmit])
+    // } else {
+    //   const data = checkedItems?.filter(item => item !== valueSubmit)
+    //   setCheckedItems(data)
+    // }
   }
-
-  console.log(checkedItems)
 
   return (
     <>
@@ -143,9 +148,10 @@ export const ListofMoveOrder = ({ moveOrderList, setMoveOrderInformation, moveOr
                       } */}
                       <Td>
                         <Checkbox
-                          onChange={() => childCheckHandler(list)}
-                          isChecked={checkedItems.includes(list.orderNo)}
-                          // value={list}
+                          // onChange={() => childCheckHandler(list)}
+                          onChange={childCheckHandler}
+                          isChecked={checkedItems.some(item => item.orderNo === list.orderNo)}
+                          value={JSON.stringify(list)}
                           color='black'
                         >
                           {i + 1}

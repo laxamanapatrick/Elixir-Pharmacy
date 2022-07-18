@@ -181,23 +181,24 @@ export const TransactConfirmation = ({ isOpen, onClose, deliveryDate, checkedIte
     // }
 
     const submitHandler = () => {
+        const arraySubmit = checkedItems?.map(item => {
+            return {
+                orderNo: item.orderNo,
+                farmType: item.farmType,
+                farmName: item.farmName,
+                farmCode: item.farmCode,
+                orderNoPKey: item.orderNoPKey,
+                isApprove: item.isApprove,
+                deliveryDate: deliveryDate,
+                preparedBy: currentUser?.userName
+            }
+        })
         try {
-            const res = apiClient.post(`Ordering/TransactListOfMoveOrders`,
-                checkedItems?.map(item => {
-                    return {
-                        orderNo: item.orderNo,
-                        farmType: item.farmType,
-                        farmName: item.farmName,
-                        farmCode: item.farmCode,
-                        orderNoPKey: item.orderNoPKey,
-                        deliveryDate: moment(deliveryDate).format("yyyy-MM-DD"),
-                        isApprove: item.isApprove,
-                        preparedBy: currentUser.userName
-                    }
-                })
-            )
+            const res = apiClient.post(`Ordering/TransactListOfMoveOrders`, arraySubmit)
                 .then(res => {
                     ToastComponent("Success", "Move order transacted", "success", toast)
+                    setCheckedItems([])
+                    fetchMoveOrderList()
                     onClose()
                 })
                 .catch(err => {
