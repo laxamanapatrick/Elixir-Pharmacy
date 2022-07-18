@@ -106,7 +106,7 @@ export const ListofMoveOrder = ({ moveOrderList, setMoveOrderInformation, moveOr
       <Flex w='full' flexDirection='column'>
         <VStack spacing={0}>
           <Text pb={2} textAlign='center' fontSize='md' color='white' bgColor='secondary' w='full' mb={-1.5}>List of Move Order</Text>
-          <PageScrollReusable minHeight='800px' maxHeight='820px'>
+          <PageScrollReusable minHeight='770px' maxHeight='790px'>
             <Table size='sm' variant='simple'>
               <Thead bgColor='secondary'>
                 <Tr>

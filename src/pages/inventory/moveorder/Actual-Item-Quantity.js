@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Button, Flex, HStack, Input, Text, useDisclosure } from '@chakra-ui/react'
+import { Button, Flex, HStack, Input, Text, toast, useDisclosure, useToast } from '@chakra-ui/react'
 import { FaCloudscale } from 'react-icons/fa'
 import DatePicker from "react-datepicker";
 import { AddQuantityConfirmation, PlateNumberConfirmation } from './Action-Modals';
 import moment from 'moment';
+import { ToastComponent } from '../../../components/Toast';
 
 export const ActualItemQuantity = ({ warehouseId, setWarehouseId, barcodeData, orderId, highlighterId, setHighlighterId,
-    itemCode, fetchOrderList, fetchPreparedItems, qtyOrdered, preparedQty
+    itemCode, fetchOrderList, fetchPreparedItems, qtyOrdered, preparedQty, nearlyExpireBarcode
 }) => {
 
     const barcodeRef = useRef(null)
@@ -14,6 +15,8 @@ export const ActualItemQuantity = ({ warehouseId, setWarehouseId, barcodeData, o
     const [quantity, setQuantity] = useState('')
     const expirationDate = moment(barcodeData?.expirationDate).format("yyyy-MM-DD")
     const [inputValidate, setInputValidate] = useState(true)
+
+    const toast = useToast()
 
     const { isOpen: isQuantity, onClose: closeQuantity, onOpen: openQuantity } = useDisclosure()
 
@@ -42,7 +45,22 @@ export const ActualItemQuantity = ({ warehouseId, setWarehouseId, barcodeData, o
         }
     }, [warehouseId])
 
-    const allowableQuantity = quantity*0.5
+    const allowableQuantity = quantity * 0.5
+
+    //Barcode Validation of Nearly Expired inventory
+    useEffect(() => {
+        if (barcodeData?.orders?.warehouseId) {
+            if (warehouseId != nearlyExpireBarcode) {
+                ToastComponent(
+                    "Warning",
+                    `The barcode ${nearlyExpireBarcode} will expire earlier than provided barcode ${warehouseId}`,
+                    "warning",
+                    toast
+                )
+            }
+        }
+
+    }, [barcodeData])
 
     return (
         <Flex w='full' flexDirection='column'>
@@ -64,14 +82,14 @@ export const ActualItemQuantity = ({ warehouseId, setWarehouseId, barcodeData, o
                 </HStack>
                 <HStack spacing={5}>
                     <Text bgColor='secondary' color='white' px={10} textAlign='start' fontSize='sm'>Remaining Quantity:</Text>
-                    <Text bgColor='gray.200' border='1px' px={12} fontSize='sm'>{barcodeData?.remaining ? barcodeData?.remaining : 'No data with this barcode'}</Text>
+                    <Text bgColor='gray.200' border='1px' px={12} fontSize='sm'>{barcodeData?.orders?.remaining ? barcodeData?.orders?.remaining : 'No data with this barcode'}</Text>
                 </HStack>
                 <HStack spacing={5}>
                     <Text bgColor='secondary' color='white' px={10} textAlign='start' fontSize='sm'>Actual Quantity:</Text>
                     <Input
                         onChange={(e) => setQuantity(e.target.value)}
-                        disabled={!barcodeData?.remaining}
-                        title={barcodeData?.remaining ? 'Please enter a quantity' : 'Barcode Number is required'}
+                        disabled={!barcodeData?.orders?.remaining}
+                        title={barcodeData?.orders?.remaining ? 'Please enter a quantity' : 'Barcode Number is required'}
                         value={quantity}
                         type="number"
                         onWheel={(e) => e.target.blur()}

@@ -19,7 +19,14 @@ const currentUser = decodeUser()
 export const ViewModal = ({ isOpen, onClose, moveOrderInformation, moveOrderListThirdTable }) => {
 
     const TableHead = [
-        "Line", "Order Date", "Farm Code", "Farm", "Category", "Item Code", "Item Description", "UOM", "Expiration Date", "Quantity"
+        "Line", "Order Date",
+        // "Farm Code", "Farm",
+        "Item Code",
+        "Item Description",
+        "Category",
+        "UOM",
+        "Quantity",
+        "Expiration Date",
     ]
 
     return (
@@ -45,7 +52,7 @@ export const ViewModal = ({ isOpen, onClose, moveOrderInformation, moveOrderList
                                         <Text textAlign='center' w='full' fontSize='sm' bgColor='gray.200' border='1px' py={1}
                                         >
                                             {/* {moveOrderInformation.deliveryStatus ? moveOrderInformation.deliveryStatus : 'Please select a list'} */}
-                                            {`Ask backend to change plate number to delivery status`}
+                                            {moveOrderInformation.deliveryStatus ? moveOrderInformation.deliveryStatus : 'Please select a list'}
                                         </Text>
                                         {/* <Text fontSize='sm'>Delivery Date:</Text>
                                         <DatePicker
@@ -90,14 +97,14 @@ export const ViewModal = ({ isOpen, onClose, moveOrderInformation, moveOrderList
                                                     <Tr key={i}>
                                                         <Td>{i + 1}</Td>
                                                         <Td>{list.orderDate}</Td>
-                                                        <Td>{list.farmCode}</Td>
-                                                        <Td>{list.farmName}</Td>
-                                                        <Td>{list.category}</Td>
+                                                        {/* <Td>{list.farmCode}</Td>
+                                                        <Td>{list.farmName}</Td> */}
                                                         <Td>{list.itemCode}</Td>
                                                         <Td>{list.itemDescription}</Td>
+                                                        <Td>{list.category}</Td>
                                                         <Td>{list.uom}</Td>
-                                                        <Td>{moment(list.expiration).format('MM/DD/yyyy')}</Td>
                                                         <Td>{list.quantity}</Td>
+                                                        <Td>{moment(list.expiration).format('MM/DD/yyyy')}</Td>
                                                     </Tr>
                                                 )
                                             }
@@ -115,7 +122,7 @@ export const ViewModal = ({ isOpen, onClose, moveOrderInformation, moveOrderList
     )
 }
 
-export const TransactConfirmation = ({ isOpen, onClose, deliveryDate, checkedItems, setCheckedItems, fetchMoveOrderList }) => {
+export const TransactConfirmation = ({ isOpen, onClose, deliveryDate, checkedItems, setCheckedItems, fetchMoveOrderList, setDeliveryDate }) => {
 
     const toast = useToast()
 
@@ -197,6 +204,7 @@ export const TransactConfirmation = ({ isOpen, onClose, deliveryDate, checkedIte
             const res = apiClient.post(`Ordering/TransactListOfMoveOrders`, arraySubmit)
                 .then(res => {
                     ToastComponent("Success", "Move order transacted", "success", toast)
+                    setDeliveryDate('')
                     setCheckedItems([])
                     fetchMoveOrderList()
                     onClose()

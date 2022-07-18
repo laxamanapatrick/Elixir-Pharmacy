@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Button, Flex, useDisclosure, VStack } from '@chakra-ui/react'
+import { Button, Flex, useDisclosure, useToast, VStack } from '@chakra-ui/react'
 import { ActualItemQuantity } from './moveorder/Actual-Item-Quantity'
 import { ListofApprovedDate } from './moveorder/List-of-Approved-Date'
 import { ListofOrders } from './moveorder/List-of-Orders'
@@ -7,6 +7,7 @@ import { PreparedItems } from './moveorder/Prepared-Items'
 import { usePagination } from '@ajna/pagination'
 import apiClient from '../../services/apiClient'
 import { SaveButton } from './moveorder/Action-Modals'
+import { ToastComponent } from '../../components/Toast'
 
 //Pagination
 
@@ -63,6 +64,7 @@ const MoveOrderPage = () => {
   const [warehouseId, setWarehouseId] = useState('')
   const [itemCode, setItemCode] = useState('')
   const [barcodeData, setBarcodeData] = useState([])
+  const [nearlyExpireBarcode, setNearlyExpireBarcode] = useState('')
 
   const [preparedData, setPreparedData] = useState([])
 
@@ -138,11 +140,16 @@ const MoveOrderPage = () => {
   }, [orderId])
 
   //Barcode Details
-
+  const toast = useToast()
   const fetchBarcodeDetails = () => {
-    fetchBarcodeDetailsApi(warehouseId, itemCode).then(res => {
-      setBarcodeData(res)
-    })
+    fetchBarcodeDetailsApi(warehouseId, itemCode)
+      .then(res => {
+        setBarcodeData(res)
+        setNearlyExpireBarcode(res?.warehouseId)
+      })
+      .catch(err => {
+        ToastComponent("Error", err.response.data, "error", toast)
+      })
   }
 
   useEffect(() => {
@@ -236,6 +243,7 @@ const MoveOrderPage = () => {
               fetchOrderList={fetchOrderList} fetchPreparedItems={fetchPreparedItems}
               qtyOrdered={qtyOrdered} preparedQty={preparedQty}
               setHighlighterId={setHighlighterId} setItemCode={setItemCode}
+              nearlyExpireBarcode={nearlyExpireBarcode}
             />
         }
         {

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { Button, Flex, HStack, Input, useDisclosure, VStack } from '@chakra-ui/react'
+import { Button, Flex, HStack, Input, Text, useDisclosure, VStack } from '@chakra-ui/react'
 import { ListofMoveOrder } from './transactmoveorder/List-of-Move-Order';
 // import { MoveOrderInformation } from './transactmoveorder/Move-Order-Information';
 // import { ListofMoveOrdersPerFarm } from './transactmoveorder/List-of-Move-Orders-PerFarm';
 import apiClient from '../../services/apiClient'
 import { TransactConfirmation } from './transactmoveorder/Action-Modals-Transact';
+import moment from 'moment';
 
 //Move Order List
 
@@ -72,9 +73,22 @@ const TransactMoveOrderPage = () => {
     }
   }, [orderNo])
 
+  const newDate = new Date()
+  const minDate = moment(newDate).format('yyyy-MM-DD')
+
   return (
     <>
       <Flex w='full' justifyContent='space-between' flexDirection='column'>
+        <HStack justifyContent='end' mt={5} pr={5}>
+          <Text>Delivery Date:</Text>
+          <Input
+            onChange={(e) => setDeliveryDate(e.target.value)}
+            min={minDate}
+            disabled={checkedItems <= 0}
+            title={checkedItems <= 0 ? 'Please select items to transact first' : ''}
+            w='13%' type='date' bgColor='#fff8dc'
+          />
+        </HStack>
         <VStack p={5} w='full' spacing={0}>
           <ListofMoveOrder
             moveOrderList={moveOrderList}
@@ -84,12 +98,7 @@ const TransactMoveOrderPage = () => {
           />
         </VStack>
         <HStack justifyContent='end' mr={10} mt={5}>
-          <Input
-            onChange={(e) => setDeliveryDate(e.target.value)}
-            disabled={checkedItems <= 0}
-            title={checkedItems <= 0 ? 'Please select items to transact first' : ''}
-            w='13%' type='date' bgColor='#fff8dc'
-          />
+
           <Button
             onClick={() => openTransact()}
             title={!deliveryDate ? 'Please select a delivery date first' : ''}
@@ -109,6 +118,7 @@ const TransactMoveOrderPage = () => {
             checkedItems={checkedItems}
             setCheckedItems={setCheckedItems}
             fetchMoveOrderList={fetchMoveOrderList}
+            setDeliveryDate={setDeliveryDate}
           />
         )
       }
