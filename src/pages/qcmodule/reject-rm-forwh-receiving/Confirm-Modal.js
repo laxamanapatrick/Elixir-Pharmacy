@@ -49,7 +49,7 @@ const ConfirmModal = ({ qcReceivingId, fetchReject, isOpen, onClose }) => {
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={() => { }} size='xl'>
+    <Modal isOpen={isOpen} onClose={() => { }} size='xl' isCentered>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>

@@ -42,6 +42,7 @@ export const RawMaterialsInformation = ({ formulas, setCode, codeData, fetchRequ
     const resetVersion = useRef()
 
     const [errorData, setErrorData] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
 
     const toast = useToast()
 
@@ -99,6 +100,7 @@ export const RawMaterialsInformation = ({ formulas, setCode, codeData, fetchRequ
             ToastComponent("Error!", "Negative values are not allowed.", "error", toast)
             return
         }
+        setIsLoading(true)
         try {
             const res = apiClient.post('Planning/AddNewTransformationRequest', data.formData).then((res) => {
                 ToastComponent("Success", "Request has been submitted", "success", toast)
@@ -117,6 +119,7 @@ export const RawMaterialsInformation = ({ formulas, setCode, codeData, fetchRequ
                     }
                 }
 
+                setIsLoading(false)
                 fetchRequests()
                 resetCode.current.value = ''
                 reset()
@@ -297,7 +300,7 @@ export const RawMaterialsInformation = ({ formulas, setCode, codeData, fetchRequ
 
                     <Flex justifyContent='end' mt={6} w='full' bgColor='gray.200'>
                         <ButtonGroup size='xs'>
-                            <Button colorScheme='blue' type='submit' disabled={!isValid}>REQUEST</Button>
+                            <Button colorScheme='blue' type='submit' disabled={!isValid || isLoading} isLoading={isLoading}>REQUEST</Button>
                             <Button colorScheme='yellow' onClick={clearHandler}>Clear</Button>
                         </ButtonGroup>
                     </Flex>

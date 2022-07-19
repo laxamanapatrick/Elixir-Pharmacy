@@ -187,7 +187,8 @@ export const ListofRequest = ({ setTransformId, transformId, status, setStatus }
 const CancelModal = ({ isOpen, onClose, transformId, fetchRequestByStatus, setStatus, setTransformId, dropdownRef }) => {
 
   const [reasons, setReasons] = useState([])
-  const [cancelRemarks, setCancelRemarks] = useState([])
+  const [cancelRemarks, setCancelRemarks] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   const toast = useToast()
 
@@ -212,6 +213,7 @@ const CancelModal = ({ isOpen, onClose, transformId, fetchRequestByStatus, setSt
 
   const submitCancelHandler = () => {
     if (transformId) {
+      setIsLoading(true)
       try {
         const res = apiClient.put(`Planning/CancelTransformationRequest/${transformId}`,
           {
@@ -227,14 +229,12 @@ const CancelModal = ({ isOpen, onClose, transformId, fetchRequestByStatus, setSt
             onClose()
           })
           .catch(err => {
-            ToastComponent("Error", err.response.data , "error", toast)
+            ToastComponent("Error", err.response.data, "error", toast)
           })
       } catch (error) {
       }
     }
   }
-
-  console.log(dropdownRef)
 
   return (
     <Modal isCentered size='xl' isOpen={isOpen} onClose={() => { }}>
@@ -271,7 +271,10 @@ const CancelModal = ({ isOpen, onClose, transformId, fetchRequestByStatus, setSt
         </ModalBody>
 
         <ModalFooter>
-          <Button colorScheme='blue' mr={3} disabled={!cancelRemarks} onClick={submitCancelHandler}>
+          <Button colorScheme='blue' mr={3} disabled={!cancelRemarks || isLoading}
+            onClick={submitCancelHandler}
+            isLoading={isLoading}
+          >
             Yes
           </Button>
           <Button variant='ghost' onClick={onClose}>No</Button>

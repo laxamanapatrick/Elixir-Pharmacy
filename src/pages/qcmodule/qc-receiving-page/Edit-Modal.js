@@ -131,7 +131,7 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo }) => {
   return (
     <ReceivingContext.Provider value={{ setSubmitDataTwo, setSubmitDataThree, setSumQuantity, setReceivingId }}>
       <Flex>
-        <Modal size='6xl' isOpen={isOpen} onClose={() => { }}>
+        <Modal size='6xl' isOpen={isOpen} onClose={() => { }} isCentered>
           <ModalOverlay />
           <ModalContent>
             <ModalHeader>

@@ -49,7 +49,7 @@ const ViewingModal = ({ viewingId, viewingData, isOpen, onClose }) => {
 
     return (
         <Flex>
-            <Modal size='5xl' isOpen={isOpen} onClose={() => { }}>
+            <Modal size='5xl' isOpen={isOpen} onClose={() => { }} isCentered>
                 <ModalOverlay />
                 <ModalContent>
                     <ModalHeader>

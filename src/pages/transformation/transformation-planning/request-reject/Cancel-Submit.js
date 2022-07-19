@@ -20,12 +20,13 @@ import {
 } from '@chakra-ui/react'
 import { BsFillQuestionOctagonFill } from 'react-icons/bs'
 import apiClient from '../../../../services/apiClient'
-import {ToastComponent} from '../../../../components/Toast'
+import { ToastComponent } from '../../../../components/Toast'
 
 const CancelSubmit = ({ isOpen, onClose, transformId, setTransformId, fetchRejected, fetchRequirements, fetchNotification }) => {
 
     const [reasons, setReasons] = useState([])
-    const [cancelRemarks, setCancelRemarks] = useState([])
+    const [cancelRemarks, setCancelRemarks] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
 
     const toast = useToast()
 
@@ -50,6 +51,7 @@ const CancelSubmit = ({ isOpen, onClose, transformId, setTransformId, fetchRejec
 
     const submitCancelHandler = () => {
         if (transformId) {
+            setIsLoading(true)
             try {
                 const res = apiClient.put(`Planning/CancelTransformationRequest/${transformId}`,
                     {
@@ -107,7 +109,10 @@ const CancelSubmit = ({ isOpen, onClose, transformId, setTransformId, fetchRejec
                 </ModalBody>
 
                 <ModalFooter>
-                    <Button colorScheme='blue' mr={3} disabled={!cancelRemarks} onClick={submitCancelHandler}>
+                    <Button colorScheme='blue' mr={3}
+                        disabled={!cancelRemarks || isLoading}
+                        isLoading={isLoading}
+                        onClick={submitCancelHandler}>
                         Yes
                     </Button>
                     <Button variant='ghost' onClick={onClose}>No</Button>

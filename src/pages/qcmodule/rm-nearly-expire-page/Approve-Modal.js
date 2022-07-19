@@ -48,7 +48,7 @@ const toast = useToast()
     }
 
     return (
-        <Modal isOpen={isOpen} onClose={() => { }} size='xl'>
+        <Modal isOpen={isOpen} onClose={() => { }} size='xl' isCentered>
             <ModalOverlay />
             <ModalContent>
                 <ModalHeader>

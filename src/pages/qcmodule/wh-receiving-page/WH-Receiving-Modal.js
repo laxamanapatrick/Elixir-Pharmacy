@@ -118,7 +118,7 @@ export const ModalComponent = ({ fetchWHReceiving, modalData, isOpen, onClose })
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={() => { }} size='5xl'>
+    <Modal isOpen={isOpen} onClose={() => { }} size='5xl' isCentered>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>

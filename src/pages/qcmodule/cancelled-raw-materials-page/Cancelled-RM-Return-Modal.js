@@ -78,7 +78,7 @@ const ReturnModalComponent = ({ poId, fetchCancelled, isOpen, onClose }) => {
     }
 
     return (
-        <Modal isOpen={isOpen} onClose={() => { }} size='xl'>
+        <Modal isOpen={isOpen} onClose={() => { }} isCentered size='xl'>
             <ModalOverlay />
             <ModalContent>
                 <ModalHeader>
@@ -97,7 +97,7 @@ const ReturnModalComponent = ({ poId, fetchCancelled, isOpen, onClose }) => {
                             reasons.length > 0 ?
                                 (<Select
                                     onChange={(e) => reasonHandler(e.target.value)}
-                                    placeholder='Select Item Code'
+                                    placeholder='Select a reason'
                                     w='60%'
                                     bgColor='#fff8dc'
                                 >

@@ -72,7 +72,7 @@ export const CancelModalComponent = ({ isOpen, onClose, poId, fetchPo }) => {
     return (
 
         <Flex>
-            <Modal size='xl' isOpen={isOpen} onClose={() => { }}>
+            <Modal size='xl' isOpen={isOpen} onClose={() => { }} isCentered>
                 <ModalOverlay />
                 <ModalContent>
                     <ModalHeader>

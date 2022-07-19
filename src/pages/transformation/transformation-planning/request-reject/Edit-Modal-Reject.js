@@ -59,6 +59,8 @@ const EditModalReject = ({ isOpen, onClose, transformId, setTransformId, editDat
     const [codeData, setCodeData] = useState([])
     const [errorData, setErrorData] = useState([])
 
+    const [isLoading, setIsLoading] = useState(false)
+
     const resetCode = useRef()
     const resetVersion = useRef()
 
@@ -188,6 +190,7 @@ const EditModalReject = ({ isOpen, onClose, transformId, setTransformId, editDat
             return
         }
         else {
+            setIsLoading(true)
             try {
                 const res = apiClient.put(`Planning/EditTransformationRequest/${transformId}`,
                     {
@@ -438,7 +441,10 @@ const EditModalReject = ({ isOpen, onClose, transformId, setTransformId, editDat
                     <ModalFooter>
                         <Flex justifyContent='end' w='full' mt={8}>
                             <ButtonGroup size='sm'>
-                                <Button colorScheme='blue' px={6} type='submit' disabled={!isValid}>SAVE</Button>
+                                <Button colorScheme='blue' px={6} type='submit' disabled={!isValid || isLoading}
+                                 isLoading={isLoading}
+                                >
+                                    SAVE</Button>
                                 <Button colorScheme='red' onClick={onClose}>CANCEL</Button>
                             </ButtonGroup>
                         </Flex>
@@ -483,7 +489,7 @@ const EditModalReject = ({ isOpen, onClose, transformId, setTransformId, editDat
 export default EditModalReject
 
 
-const SaveModal = ({ isOpen, onClose, closeEditModal, openError, transformId, submitData, 
+const SaveModal = ({ isOpen, onClose, closeEditModal, openError, transformId, submitData,
     setTransformId,
     fetchRejected,
     fetchRequirements,
@@ -492,7 +498,10 @@ const SaveModal = ({ isOpen, onClose, closeEditModal, openError, transformId, su
 
     const toast = useToast()
 
+    const [isLoading, setIsLoading] = useState(false)
+
     const submitWarning = () => {
+        setIsLoading(true)
         try {
             const res = apiClient.put(`Planning/EditTransformationRequest/${transformId}`,
                 {
@@ -543,7 +552,10 @@ const SaveModal = ({ isOpen, onClose, closeEditModal, openError, transformId, su
 
                 <ModalFooter>
                     <ButtonGroup size='sm'>
-                        <Button variant='solid' colorScheme='blue' onClick={submitWarning}>Yes</Button>
+                        <Button variant='solid' colorScheme='blue' onClick={submitWarning}
+                        isLoading={isLoading}
+                        disabled={isLoading}
+                        >Yes</Button>
                         <Button variant='solid' colorScheme='red' onClick={onClose}>No</Button>
                     </ButtonGroup>
                 </ModalFooter>

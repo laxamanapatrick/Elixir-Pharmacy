@@ -16,7 +16,7 @@ export const MRPTable = () => {
                     {buttonChanger ? '<< Previous' : 'Next >>'}
                 </Button>
             </Flex>
-            <PageScrollReusable minHeight='480px' maxHeight='520px'>
+            <PageScrollReusable minHeight='665px' maxHeight='666px'>
                 <Table size='sm'>
                     <Thead bgColor='secondary'>
                         <Tr>
