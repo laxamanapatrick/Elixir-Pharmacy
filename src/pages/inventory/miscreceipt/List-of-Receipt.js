@@ -2,11 +2,18 @@ import React from 'react'
 import { Flex, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from '@chakra-ui/react'
 import PageScrollReusable from '../../../components/PageScroll-Reusable'
 
-export const ListofReceipt = () => {
+export const ListofReceipt = ({ listDataTempo, selectorId, setSelectorId, setEditableData }) => {
 
     const TableHead = [
-        "Line", "Item Code", "Item Description", "Category", "UOM", "Quantity", "Supplier", "Expiration Date"
+        "Line", "Item Code", "Item Description",
+        // "Category", 
+        "UOM", "Quantity", "Supplier", "Expiration Date"
     ]
+
+    const rowHandler = (list, i) => {
+        setSelectorId(i+1)
+        setEditableData(list)
+    }
 
     return (
         <Flex justifyContent='center' flexDirection='column' w='full'>
@@ -17,13 +24,26 @@ export const ListofReceipt = () => {
                         <Table size='sm'>
                             <Thead bgColor='secondary'>
                                 <Tr>
-                                    {TableHead?.map((item, i) => <Th color='white' key={i}>{item}</Th>) }
+                                    {TableHead?.map((item, i) => <Th color='white' key={i}>{item}</Th>)}
                                 </Tr>
                             </Thead>
                             <Tbody>
-                                <Tr>
-                                    <Td>Hi</Td>
-                                </Tr>
+                                {
+                                    listDataTempo?.map((item, i) =>
+                                        <Tr key={i}
+                                        onClick={() => rowHandler(item,i)}
+                                        bgColor={selectorId === i+1 ? 'table_accent' : 'none'}
+                                        >
+                                            <Td>{i+1}</Td>
+                                            <Td>{item?.itemCode}</Td>
+                                            <Td>{`Desc`}</Td>
+                                            <Td>{item?.uom}</Td>
+                                            <Td>{item?.quantity}</Td>
+                                            <Td>{item?.supplier}</Td>
+                                            <Td>{item?.expirationDate}</Td>
+                                        </Tr>
+                                    )
+                                }
                             </Tbody>
                         </Table>
                     </PageScrollReusable>
