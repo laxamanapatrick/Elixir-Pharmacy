@@ -89,6 +89,7 @@ const MiscellaneousReceiptPage = () => {
         details={details} setDetails={setDetails}
         listDataTempo={listDataTempo} setListDataTempo={setListDataTempo}
         suppliers={suppliers} rawMats={rawMats} uoms={uoms}
+        setSelectorId={setSelectorId}
       />
       {
         listDataTempo.length > 0 ?

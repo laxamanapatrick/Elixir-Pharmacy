@@ -1,9 +1,10 @@
 import React, { useEffect, useRef } from 'react'
 import { Button, ButtonGroup, Flex, HStack, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Select, Spinner, Text, useDisclosure, VStack } from '@chakra-ui/react'
 import { useLocation } from 'react-router-dom'
+import { AddConfirmation } from './Action-Modals'
 
 export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, listDataTempo, setListDataTempo, details, setDetails,
-    suppliers, rawMats, uoms,
+    suppliers, rawMats, uoms, setSelectorId
 }) => {
 
     const supplierRef = useRef()
@@ -39,7 +40,7 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, listDataT
                                             quantity: rawMatsInfo.quantity
                                         })}
                                         ref={supplierRef}
-                                        w='full' placeholder=' '
+                                        w='full' placeholder=' ' bgColor='#fff8dc'
                                     >
                                         {
                                             suppliers?.map((item, i) =>
@@ -58,7 +59,7 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, listDataT
                         {/* Supplier Name */}
                         <HStack w='full'>
                             <Text minW='50%' w='auto' bgColor='secondary' color='white' pl={2} pr={10} py={2.5} fontSize='xs'>Supplier Name: </Text>
-                            <Text w='full' border='1px' borderColor='gray.200' py={1.5}>{rawMatsInfo.supplier}</Text>
+                            <Text bgColor='gray.200' w='full' border='1px' borderColor='gray.200' py={1.5}>{rawMatsInfo.supplier ? rawMatsInfo.supplier : 'Please select a supplier'}</Text>
                         </HStack>
 
                     </VStack>
@@ -71,7 +72,7 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, listDataT
                         <Input
                             onChange={(e) => detailHandler(e.target.value)}
                             value={details}
-                            minW='93%' w='auto'
+                            minW='93%' w='auto' bgColor='#fff8dc'
                         />
                     </HStack>
                 </VStack>
@@ -98,6 +99,7 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, listDataT
                         supplierRef={supplierRef}
                         rawMats={rawMats}
                         uoms={uoms}
+                        setSelectorId={setSelectorId}
                         isOpen={isModal}
                         onClose={closeModal}
                     />
@@ -110,37 +112,12 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, listDataT
 
 
 export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMatsInfo, setRawMatsInfo,
-    listDataTempo, setListDataTempo, supplierRef, rawMats, uoms
+    listDataTempo, setListDataTempo, supplierRef, rawMats, uoms, setSelectorId
 }) => {
 
-    const submitHandler = () => {
-        const addToArray = {
-            "itemCode": rawMatsInfo.itemCode,
-            "supplier": rawMatsInfo.supplier,
-            "uom": rawMatsInfo.uom,
-            "expirationDate": rawMatsInfo.expirationDate,
-            "quantity": rawMatsInfo.quantity,
-            "description": details
-        }
-        setListDataTempo(current => [...current, addToArray])
-        setRawMatsInfo({
-            itemCode: '',
-            supplier: '',
-            uom: '',
-            expirationDate: '',
-            quantity: ''
-        })
-        supplierRef.current.value = ''
-        setDetails('')
-        onClose()
-        // setRawMatsInfo({
-        //     itemCode: '',
-        //     supplier: '',
-        //     uom: '',
-        //     expirationDate: '',
-        //     quantity: ''
-        // })
-        // setDetails('')
+    const { isOpen: isAdd, onClose: closeAdd, onOpen: openAdd } = useDisclosure()
+    const openAddConfirmation = () => {
+        openAdd()
     }
 
     return (
@@ -169,7 +146,7 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
                                                     expirationDate: rawMatsInfo.expirationDate,
                                                     quantity: rawMatsInfo.quantity
                                                 })}
-                                                w='full' placeholder=' '
+                                                w='full' placeholder=' ' bgColor='#fff8dc'
                                             >
                                                 {
                                                     rawMats?.map((item, i) =>
@@ -193,7 +170,7 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
                                             expirationDate: e.target.value,
                                             quantity: rawMatsInfo.quantity
                                         })}
-                                        w='full' type='date'
+                                        w='full' type='date' bgColor='#fff8dc'
                                     />
                                 </HStack>
 
@@ -210,7 +187,7 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
                                                     expirationDate: rawMatsInfo.expirationDate,
                                                     quantity: rawMatsInfo.quantity
                                                 })}
-                                                w='full' placeholder=' '
+                                                w='full' placeholder=' ' bgColor='#fff8dc'
                                             >
                                                 {
                                                     uoms?.map((item, i) =>
@@ -233,7 +210,7 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
                                             expirationDate: rawMatsInfo.expirationDate,
                                             quantity: Number(e.target.value)
                                         })}
-                                        w='full' type='number'
+                                        w='full' type='number' bgColor='#fff8dc'
                                     />
                                 </HStack>
 
@@ -242,7 +219,7 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
                                 {/* Item Description */}
                                 <HStack w='full'>
                                     <Text minW='50%' w='auto' bgColor='secondary' color='white' pl={2} pr={10} py={2.5} fontSize='xs'>Item Description: </Text>
-                                    <Text w='full' border='1px' borderColor='gray.200' py={1.5}>{rawMatsInfo.itemCode}</Text>
+                                    <Text bgColor='gray.200' w='full' border='1px' borderColor='gray.200' py={1.5}>{rawMatsInfo.itemCode ? rawMatsInfo.itemCode : 'Item Code required'}</Text>
                                 </HStack>
 
                             </VStack>
@@ -251,7 +228,7 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
                     <ModalFooter>
                         <ButtonGroup size='xs'>
                             <Button
-                                onClick={submitHandler}
+                                onClick={openAddConfirmation}
                                 disabled={
                                     !rawMatsInfo.itemCode || !rawMatsInfo.supplier || !rawMatsInfo.uom ||
                                     !rawMatsInfo.expirationDate || !rawMatsInfo.quantity || !details
@@ -265,7 +242,17 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
                 </ModalContent>
             </Modal>
             {
-
+                isAdd && (
+                    <AddConfirmation
+                        isOpen={isAdd}
+                        onClose={closeAdd}
+                        closeAddModal={onClose}
+                        details={details} setDetails={setDetails} rawMatsInfo={rawMatsInfo} setRawMatsInfo={setRawMatsInfo}
+                        listDataTempo={listDataTempo} setListDataTempo={setListDataTempo}
+                        supplierRef={supplierRef}
+                        setSelectorId={setSelectorId}
+                    />
+                )
             }
         </>
     )

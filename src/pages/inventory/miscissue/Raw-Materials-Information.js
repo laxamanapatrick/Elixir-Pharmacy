@@ -1,9 +1,22 @@
-import React from 'react'
-import { Button, ButtonGroup, Flex, HStack, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Select, Text, useDisclosure, VStack } from '@chakra-ui/react'
+import React, { useEffect, useRef } from 'react'
+import { Button, ButtonGroup, Flex, HStack, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Select, Spinner, Text, useDisclosure, VStack } from '@chakra-ui/react'
+import { useLocation } from 'react-router-dom'
+import { AddConfirmation } from './Action-Modals'
 
-export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, setListDataTempo, details, setDetails }) => {
+export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, listDataTempo, setListDataTempo, details, setDetails,
+    customers, rawMats, uoms, setSelectorId
+}) => {
 
+    const customerRef = useRef()
     const { isOpen: isModal, onClose: closeModal, onOpen: openModal } = useDisclosure()
+
+    const detailHandler = (data) => {
+        if (data) {
+            setDetails(data)
+        } else {
+            setDetails('')
+        }
+    }
 
     return (
         <Flex justifyContent='center' flexDirection='column' w='full'>
@@ -16,19 +29,27 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, setListDa
                         {/* Customer Code */}
                         <HStack w='full'>
                             <Text minW='50%' w='auto' bgColor='secondary' color='white' pl={2} py={2.5} fontSize='xs'>Customer: </Text>
-                            <Select
-                                onChange={(e) => setRawMatsInfo({
-                                    itemCode: rawMatsInfo.itemCode,
-                                    supplier: e.target.value,
-                                    uom: rawMatsInfo.uom,
-                                    expirationDate: rawMatsInfo.expirationDate,
-                                    quantity: rawMatsInfo.quantity
-                                })}
-                                w='full' placeholder=' '
-                            >
-                                <option>Sample 1</option>
-                                <option>Sample 2</option>
-                            </Select>
+                            {
+                                customers.length > 0 ?
+                                    <Select
+                                        onChange={(e) => setRawMatsInfo({
+                                            itemCode: rawMatsInfo.itemCode,
+                                            customer: e.target.value,
+                                            uom: rawMatsInfo.uom,
+                                            expirationDate: rawMatsInfo.expirationDate,
+                                            quantity: rawMatsInfo.quantity
+                                        })}
+                                        ref={customerRef}
+                                        w='full' placeholder=' '
+                                    >
+                                        {
+                                            customers?.map((item, i) =>
+                                                <option key={i} value={item.customerName}>{item.customerName}</option>
+                                            )
+                                        }
+                                    </Select>
+                                    : <Spinner />
+                            }
                         </HStack>
 
                     </VStack>
@@ -37,8 +58,8 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, setListDa
 
                         {/* Customer Name */}
                         <HStack w='full'>
-                            <Text minW='50%' w='auto' bgColor='secondary' color='white' pl={2} pr={10} py={2.5} fontSize='xs'>Customer Name: </Text>
-                            <Input w='95%' readOnly />
+                            <Text minW='50%' w='auto' bgColor='secondary' color='white' pl={2} pr={10} py={2.5} fontSize='xs'>Supplier Name: </Text>
+                            <Text w='full' border='1px' borderColor='gray.200' py={1.5}>{rawMatsInfo.customer}</Text>
                         </HStack>
 
                     </VStack>
@@ -49,7 +70,8 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, setListDa
                     <HStack w='full'>
                         <Text w='auto' bgColor='secondary' color='white' pl={2} pr={5} py={2.5} fontSize='xs'>Details: </Text>
                         <Input
-                            onChange={(e) => setDetails(e.target.value)}
+                            onChange={(e) => detailHandler(e.target.value)}
+                            value={details}
                             minW='93%' w='auto'
                         />
                     </HStack>
@@ -57,7 +79,7 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, setListDa
                 <Flex w='full' justifyContent='end' mt={4}>
                     <Button
                         onClick={() => openModal()}
-                        disabled={!rawMatsInfo.supplier}
+                        disabled={!rawMatsInfo.customer || !details}
                         size='xs' colorScheme='blue'
                     >
                         New
@@ -70,9 +92,14 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, setListDa
                     <RawMatsInfoModal
                         rawMatsInfo={rawMatsInfo}
                         setRawMatsInfo={setRawMatsInfo}
+                        listDataTempo={listDataTempo}
                         setListDataTempo={setListDataTempo}
                         details={details}
                         setDetails={setDetails}
+                        customerRef={customerRef}
+                        rawMats={rawMats}
+                        uoms={uoms}
+                        setSelectorId={setSelectorId}
                         isOpen={isModal}
                         onClose={closeModal}
                     />
@@ -84,25 +111,13 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, setListDa
 }
 
 
-export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMatsInfo, setRawMatsInfo, setListDataTempo }) => {
+export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMatsInfo, setRawMatsInfo,
+    listDataTempo, setListDataTempo, customerRef, rawMats, uoms, setSelectorId
+}) => {
 
-    const submitHandler = () => {
-        setListDataTempo({
-            itemCode: rawMatsInfo.itemCode,
-            supplier: rawMatsInfo.supplier,
-            uom: rawMatsInfo.uom,
-            expirationDate: rawMatsInfo.expirationDate,
-            quantity: rawMatsInfo.quantity,
-            description: details
-        })
-        // setRawMatsInfo({
-        //     itemCode: '',
-        //     supplier: '',
-        //     uom: '',
-        //     expirationDate: '',
-        //     quantity: ''
-        // })
-        // setDetails('')
+    const { isOpen: isAdd, onClose: closeAdd, onOpen: openAdd } = useDisclosure()
+    const openAddConfirmation = () => {
+        openAdd()
     }
 
     return (
@@ -121,19 +136,26 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
                                 {/* Item Code */}
                                 <HStack w='full'>
                                     <Text minW='50%' w='auto' bgColor='secondary' color='white' pl={2} pr={7} py={2.5} fontSize='xs'>Item Code: </Text>\
-                                    <Select
-                                        onChange={(e) => setRawMatsInfo({
-                                            itemCode: e.target.value,
-                                            supplier: rawMatsInfo.supplier,
-                                            uom: rawMatsInfo.uom,
-                                            expirationDate: rawMatsInfo.expirationDate,
-                                            quantity: rawMatsInfo.quantity
-                                        })}
-                                        w='full' placeholder=' '
-                                    >
-                                        <option>Sample 1</option>
-                                        <option>Sample 2</option>
-                                    </Select>
+                                    {
+                                        rawMats.length > 0 ?
+                                            <Select
+                                                onChange={(e) => setRawMatsInfo({
+                                                    itemCode: e.target.value,
+                                                    customer: rawMatsInfo.customer,
+                                                    uom: rawMatsInfo.uom,
+                                                    expirationDate: rawMatsInfo.expirationDate,
+                                                    quantity: rawMatsInfo.quantity
+                                                })}
+                                                w='full' placeholder=' '
+                                            >
+                                                {
+                                                    rawMats?.map((item, i) =>
+                                                        <option key={i} value={item.itemCode}>{item.itemCode}</option>
+                                                    )
+                                                }
+                                            </Select>
+                                            : <Spinner />
+                                    }
                                 </HStack>
 
 
@@ -143,7 +165,7 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
                                     <Input
                                         onChange={(e) => setRawMatsInfo({
                                             itemCode: rawMatsInfo.itemCode,
-                                            supplier: rawMatsInfo.supplier,
+                                            customer: rawMatsInfo.customer,
                                             uom: rawMatsInfo.uom,
                                             expirationDate: e.target.value,
                                             quantity: rawMatsInfo.quantity
@@ -155,19 +177,26 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
                                 {/* UOM */}
                                 < HStack w='full'>
                                     <Text minW='50%' w='auto' bgColor='secondary' color='white' pl={2} pr={7} py={2.5} fontSize='xs'>UOM: </Text>
-                                    <Select
-                                        onChange={(e) => setRawMatsInfo({
-                                            itemCode: rawMatsInfo.itemCode,
-                                            supplier: rawMatsInfo.supplier,
-                                            uom: e.target.value,
-                                            expirationDate: rawMatsInfo.expirationDate,
-                                            quantity: rawMatsInfo.quantity
-                                        })}
-                                        w='full' placeholder=' '
-                                    >
-                                        <option>Sample 1</option>
-                                        <option>Sample 2</option>
-                                    </Select>
+                                    {
+                                        uoms.length > 0 ?
+                                            <Select
+                                                onChange={(e) => setRawMatsInfo({
+                                                    itemCode: rawMatsInfo.itemCode,
+                                                    customer: rawMatsInfo.customer,
+                                                    uom: e.target.value,
+                                                    expirationDate: rawMatsInfo.expirationDate,
+                                                    quantity: rawMatsInfo.quantity
+                                                })}
+                                                w='full' placeholder=' '
+                                            >
+                                                {
+                                                    uoms?.map((item, i) =>
+                                                        <option key={i} value={item.uoM_Code}>{item.uoM_Code}</option>
+                                                    )
+                                                }
+                                            </Select>
+                                            : <Spinner />
+                                    }
                                 </HStack>
 
                                 {/* Quantity */}
@@ -176,7 +205,7 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
                                     <Input
                                         onChange={(e) => setRawMatsInfo({
                                             itemCode: rawMatsInfo.itemCode,
-                                            supplier: rawMatsInfo.supplier,
+                                            customer: rawMatsInfo.customer,
                                             uom: rawMatsInfo.uom,
                                             expirationDate: rawMatsInfo.expirationDate,
                                             quantity: Number(e.target.value)
@@ -190,7 +219,7 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
                                 {/* Item Description */}
                                 <HStack w='full'>
                                     <Text minW='50%' w='auto' bgColor='secondary' color='white' pl={2} pr={10} py={2.5} fontSize='xs'>Item Description: </Text>
-                                    <Input w='95%' readOnly />
+                                    <Text w='full' border='1px' borderColor='gray.200' py={1.5}>{rawMatsInfo.itemCode}</Text>
                                 </HStack>
 
                             </VStack>
@@ -198,12 +227,33 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
                     </ModalBody>
                     <ModalFooter>
                         <ButtonGroup size='xs'>
-                            <Button colorScheme='blue' px={4} onClick={submitHandler}>Add</Button>
+                            <Button
+                                onClick={openAddConfirmation}
+                                disabled={
+                                    !rawMatsInfo.itemCode || !rawMatsInfo.customer || !rawMatsInfo.uom ||
+                                    !rawMatsInfo.expirationDate || !rawMatsInfo.quantity || !details
+                                }
+                                colorScheme='blue' px={4}
+                            >Add
+                            </Button>
                             <Button colorScheme='red' onClick={onClose}>Cancel</Button>
                         </ButtonGroup>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
+            {
+                isAdd && (
+                    <AddConfirmation
+                        isOpen={isAdd}
+                        onClose={closeAdd}
+                        closeAddModal={onClose}
+                        details={details} setDetails={setDetails} rawMatsInfo={rawMatsInfo} setRawMatsInfo={setRawMatsInfo}
+                        listDataTempo={listDataTempo} setListDataTempo={setListDataTempo}
+                        customerRef={customerRef}
+                        setSelectorId={setSelectorId}
+                    />
+                )
+            }
         </>
     )
 }
