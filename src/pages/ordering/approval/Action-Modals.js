@@ -13,7 +13,7 @@ export const ApproveModal = ({ isOpen, onClose, orderNo, setOrderNo, fetchOrderL
 
     const submitHandler = () => {
         try {
-            const res = apiClient.put(`https://localhost:44382/api/Ordering/ApprovePreparedDate`,
+            const res = apiClient.put(`Ordering/ApprovePreparedDate`,
                 {
                     orderNoPKey: orderNo
                 }

@@ -120,6 +120,7 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo }) => {
 
   let submitDataOne = {
     pO_Summary_Id: editData.id,
+    itemCode: editData.itemCode,
     manufacturing_Date: moment(manufacturingDate).format("YYYY-MM-DD"),
     expected_Delivery: Number(expectedDelivery),
     expiry_Date: moment(expiryDate).format("YYYY-MM-DD"),

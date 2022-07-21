@@ -95,7 +95,7 @@ const ImportOrderPage = () => {
     if (resultArray.length > 0) {
       try {
         setIsLoading(true)
-        const res = apiClient.post(`https://localhost:44382/api/Ordering/AddNewOrders`,
+        const res = apiClient.post(`Ordering/AddNewOrders`,
           resultArray.map(item => ({
             transactId: item?.transactId,
             customerName: item?.customerName,

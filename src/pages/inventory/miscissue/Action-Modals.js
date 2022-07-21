@@ -11,6 +11,7 @@ export const AddConfirmation = ({ isOpen, onClose, closeAddModal, details, setDe
     setIsLoading(true)
     const addToArray = {
       "itemCode": rawMatsInfo.itemCode,
+      "itemDescription": rawMatsInfo.itemDescription,
       "customer": rawMatsInfo.customer,
       "uom": rawMatsInfo.uom,
       "expirationDate": rawMatsInfo.expirationDate,
@@ -20,6 +21,7 @@ export const AddConfirmation = ({ isOpen, onClose, closeAddModal, details, setDe
     setListDataTempo(current => [...current, addToArray])
     setRawMatsInfo({
       itemCode: '',
+      itemDescription: '',
       customer: '',
       uom: '',
       expirationDate: '',

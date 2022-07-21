@@ -34,7 +34,7 @@ export const AddQuantityConfirmation = ({ isOpen, onClose, id, orderNo, itemCode
                     fetchPreparedItems()
                 })
                 .catch(err => {
-                    ToastComponent("Error", err.response.data, "error", toast)
+                    ToastComponent("Error", "Add Failed", "error", toast)
                 })
         } catch (error) {
         }

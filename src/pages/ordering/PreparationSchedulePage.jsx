@@ -5,7 +5,7 @@ import { ListofOrders } from './preparationschedule/List-of-Orders'
 import { usePagination } from '@ajna/pagination';
 
 const fetchFarmOrdersApi = async (pageNumber) => {
-  const res = await apiClient.get(`https://localhost:44382/api/Ordering/GetAllListOfOrdersPagination?pageSize=1&pageNumber=${pageNumber}`)
+  const res = await apiClient.get(`Ordering/GetAllListOfOrdersPagination?pageSize=1&pageNumber=${pageNumber}`)
   return res.data
 }
 
@@ -46,7 +46,7 @@ const PreparationSchedulePage = () => {
   }, [currentPage])
 
   const fetchOrdersApi = async () => {
-    const res = await apiClient.get(`https://localhost:44382/api/Ordering/GetAllListofOrders?farms=${farmName}`)
+    const res = await apiClient.get(`Ordering/GetAllListofOrders?farms=${farmName}`)
     return res.data
   }
 

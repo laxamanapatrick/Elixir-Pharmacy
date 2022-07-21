@@ -40,7 +40,7 @@ const ErrorModal = ({ isOpen, onClose, errorData }) => {
                             <Tr>
                                 <Th>Item Code</Th>
                                 <Th>Quantity per batch</Th>
-                                <Th>Stock on hand</Th>
+                                <Th>Available Stock</Th>
                                 <Th>Stock needed for this request</Th>
                             </Tr>
                         </Thead>

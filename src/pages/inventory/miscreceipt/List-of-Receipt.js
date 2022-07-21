@@ -36,7 +36,7 @@ export const ListofReceipt = ({ listDataTempo, selectorId, setSelectorId, setEdi
                                         >
                                             <Td>{i+1}</Td>
                                             <Td>{item?.itemCode}</Td>
-                                            <Td>{`Desc`}</Td>
+                                            <Td>{item?.itemDescription}</Td>
                                             <Td>{item?.uom}</Td>
                                             <Td>{item?.quantity}</Td>
                                             <Td>{item?.supplier}</Td>

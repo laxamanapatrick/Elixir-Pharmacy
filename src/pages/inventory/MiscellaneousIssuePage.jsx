@@ -26,6 +26,7 @@ const MiscellaneousIssuePage = () => {
 
   const [rawMatsInfo, setRawMatsInfo] = useState({
     itemCode: '',
+    itemDescription: '',
     customer: '',
     uom: '',
     expirationDate: '',

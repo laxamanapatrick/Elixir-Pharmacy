@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import { Button, ButtonGroup, Flex, HStack, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Select, Spinner, Text, useDisclosure, VStack } from '@chakra-ui/react'
 import { useLocation } from 'react-router-dom'
 import { AddConfirmation } from './Action-Modals'
+import moment from 'moment'
 
 export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, listDataTempo, setListDataTempo, details, setDetails,
     suppliers, rawMats, uoms, setSelectorId
@@ -15,6 +16,31 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, listDataT
             setDetails(data)
         } else {
             setDetails('')
+        }
+    }
+
+    const supplierHandler = (data) => {
+        if (data) {
+            const newData = JSON.parse(data)
+            const supplierCode = newData.supplierCode
+            const supplierName = newData.supplierName
+            setRawMatsInfo({
+                itemCode: rawMatsInfo.itemCode,
+                itemDescription: rawMatsInfo.itemDescription,
+                supplier: supplierName,
+                uom: rawMatsInfo.uom,
+                expirationDate: rawMatsInfo.expirationDate,
+                quantity: rawMatsInfo.quantity
+            })
+        } else {
+            setRawMatsInfo({
+                itemCode: rawMatsInfo.itemCode,
+                itemDescription: rawMatsInfo.itemDescription,
+                supplier: '',
+                uom: rawMatsInfo.uom,
+                expirationDate: rawMatsInfo.expirationDate,
+                quantity: rawMatsInfo.quantity
+            })
         }
     }
 
@@ -32,19 +58,13 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, listDataT
                             {
                                 suppliers.length > 0 ?
                                     <Select
-                                        onChange={(e) => setRawMatsInfo({
-                                            itemCode: rawMatsInfo.itemCode,
-                                            supplier: e.target.value,
-                                            uom: rawMatsInfo.uom,
-                                            expirationDate: rawMatsInfo.expirationDate,
-                                            quantity: rawMatsInfo.quantity
-                                        })}
+                                        onChange={(e) => supplierHandler(e.target.value)}
                                         ref={supplierRef}
                                         w='full' placeholder=' ' bgColor='#fff8dc'
                                     >
                                         {
                                             suppliers?.map((item, i) =>
-                                                <option key={i} value={item.supplierName}>{item.supplierName}</option>
+                                                <option key={i} value={JSON.stringify(item)}>{item.supplierCode}</option>
                                             )
                                         }
                                     </Select>
@@ -120,6 +140,34 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
         openAdd()
     }
 
+    const itemCodeHandler = (data) => {
+        if (data) {
+            const newData = JSON.parse(data)
+            const itemCode = newData.itemCode
+            const itemDescription = newData.itemDescription
+            setRawMatsInfo({
+                itemCode: itemCode,
+                itemDescription: itemDescription,
+                supplier: rawMatsInfo.supplier,
+                uom: rawMatsInfo.uom,
+                expirationDate: rawMatsInfo.expirationDate,
+                quantity: rawMatsInfo.quantity
+            })
+        } else {
+            setRawMatsInfo({
+                itemCode: '',
+                itemDescription: '',
+                supplier: rawMatsInfo.supplier,
+                uom: rawMatsInfo.uom,
+                expirationDate: rawMatsInfo.expirationDate,
+                quantity: rawMatsInfo.quantity
+            })
+        }
+    }
+
+    const newDate = new Date()
+    const minDate = moment(newDate).format('yyyy-MM-DD')
+
     return (
         <>
             <Modal isOpen={isOpen} onClose={() => { }} isCentered size='5xl'>
@@ -139,18 +187,12 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
                                     {
                                         rawMats.length > 0 ?
                                             <Select
-                                                onChange={(e) => setRawMatsInfo({
-                                                    itemCode: e.target.value,
-                                                    supplier: rawMatsInfo.supplier,
-                                                    uom: rawMatsInfo.uom,
-                                                    expirationDate: rawMatsInfo.expirationDate,
-                                                    quantity: rawMatsInfo.quantity
-                                                })}
+                                                onChange={(e) => itemCodeHandler(e.target.value)}
                                                 w='full' placeholder=' ' bgColor='#fff8dc'
                                             >
                                                 {
                                                     rawMats?.map((item, i) =>
-                                                        <option key={i} value={item.itemCode}>{item.itemCode}</option>
+                                                        <option key={i} value={JSON.stringify(item)}>{item.itemCode}</option>
                                                     )
                                                 }
                                             </Select>
@@ -165,11 +207,13 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
                                     <Input
                                         onChange={(e) => setRawMatsInfo({
                                             itemCode: rawMatsInfo.itemCode,
+                                            itemDescription: rawMatsInfo.itemDescription,
                                             supplier: rawMatsInfo.supplier,
                                             uom: rawMatsInfo.uom,
                                             expirationDate: e.target.value,
                                             quantity: rawMatsInfo.quantity
                                         })}
+                                        min={minDate}
                                         w='full' type='date' bgColor='#fff8dc'
                                     />
                                 </HStack>
@@ -182,6 +226,7 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
                                             <Select
                                                 onChange={(e) => setRawMatsInfo({
                                                     itemCode: rawMatsInfo.itemCode,
+                                                    itemDescription: rawMatsInfo.itemDescription,
                                                     supplier: rawMatsInfo.supplier,
                                                     uom: e.target.value,
                                                     expirationDate: rawMatsInfo.expirationDate,
@@ -205,6 +250,7 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
                                     <Input
                                         onChange={(e) => setRawMatsInfo({
                                             itemCode: rawMatsInfo.itemCode,
+                                            itemDescription: rawMatsInfo.itemDescription,
                                             supplier: rawMatsInfo.supplier,
                                             uom: rawMatsInfo.uom,
                                             expirationDate: rawMatsInfo.expirationDate,
@@ -219,7 +265,7 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
                                 {/* Item Description */}
                                 <HStack w='full'>
                                     <Text minW='50%' w='auto' bgColor='secondary' color='white' pl={2} pr={10} py={2.5} fontSize='xs'>Item Description: </Text>
-                                    <Text bgColor='gray.200' w='full' border='1px' borderColor='gray.200' py={1.5}>{rawMatsInfo.itemCode ? rawMatsInfo.itemCode : 'Item Code required'}</Text>
+                                    <Text bgColor='gray.200' w='full' border='1px' borderColor='gray.200' py={1.5}>{rawMatsInfo.itemDescription ? rawMatsInfo.itemDescription : 'Item Code required'}</Text>
                                 </HStack>
 
                             </VStack>
