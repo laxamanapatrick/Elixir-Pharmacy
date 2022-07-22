@@ -23,7 +23,7 @@ export const ActionButton = ({ listDataTempo, setListDataTempo, selectorId, rowI
         <>
             <Flex w='full' justifyContent='end'>
                 <ButtonGroup size='xs'>
-                    <Button colorScheme='yellow' color='white' px={5} disabled={!selectorId} onClick={editHandler}>Edit</Button>
+                    {/* <Button colorScheme='yellow' color='white' px={5} disabled={!selectorId} onClick={editHandler}>Edit</Button> */}
                     <Button colorScheme='blue' px={5} disabled={listDataTempo.length === 0} onClick={saveHandler}>Save</Button>
                     <Button colorScheme='red' px={3} disabled={!selectorId} onClick={cancelHandler}>Cancel</Button>
                 </ButtonGroup>
