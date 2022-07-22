@@ -35,6 +35,7 @@ const MiscellaneousReceiptPage = () => {
   const [details, setDetails] = useState('')
   const [listDataTempo, setListDataTempo] = useState([])
   const [selectorId, setSelectorId] = useState('')
+  const [rowIndex, setRowIndex] = useState('')
 
   const [editableData, setEditableData] = useState({})
 
@@ -99,13 +100,15 @@ const MiscellaneousReceiptPage = () => {
               listDataTempo={listDataTempo}
               selectorId={selectorId} setSelectorId={setSelectorId}
               setEditableData={setEditableData}
+              setRowIndex={setRowIndex}
             />
             <ActionButtons
               listDataTempo={listDataTempo}
               setListDataTempo={setListDataTempo}
               editableData={editableData}
-              //cancel key
               selectorId={selectorId}
+              //cancel key
+              rowIndex={rowIndex}
             />
           </>
           : ''

@@ -43,6 +43,7 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, listDataT
                                         })}
                                         ref={customerRef}
                                         w='full' placeholder=' '
+                                        bgColor='#fff8dc'
                                     >
                                         {
                                             customers?.map((item, i) =>
@@ -75,6 +76,7 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, listDataT
                             onChange={(e) => detailHandler(e.target.value)}
                             value={details}
                             minW='93%' w='auto'
+                            bgColor='#fff8dc'
                         />
                     </HStack>
                 </VStack>
@@ -130,7 +132,7 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
             setRawMatsInfo({
                 itemCode: itemCode,
                 itemDescription: itemDescription,
-                supplier: rawMatsInfo.supplier,
+                customer: rawMatsInfo.customer,
                 uom: rawMatsInfo.uom,
                 expirationDate: rawMatsInfo.expirationDate,
                 quantity: rawMatsInfo.quantity
@@ -139,7 +141,7 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
             setRawMatsInfo({
                 itemCode: '',
                 itemDescription: '',
-                supplier: rawMatsInfo.supplier,
+                customer: rawMatsInfo.customer,
                 uom: rawMatsInfo.uom,
                 expirationDate: rawMatsInfo.expirationDate,
                 quantity: rawMatsInfo.quantity
@@ -171,6 +173,7 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
                                             <Select
                                                 onChange={(e) => itemCodeHandler(e.target.value)}
                                                 w='full' placeholder=' '
+                                                bgColor='#fff8dc'
                                             >
                                                 {
                                                     rawMats?.map((item, i) =>
@@ -197,6 +200,7 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
                                         })}
                                         min={minDate}
                                         w='full' type='date'
+                                        bgColor='#fff8dc'
                                     />
                                 </HStack>
 
@@ -215,6 +219,7 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
                                                     quantity: rawMatsInfo.quantity
                                                 })}
                                                 w='full' placeholder=' '
+                                                bgColor='#fff8dc'
                                             >
                                                 {
                                                     uoms?.map((item, i) =>
@@ -239,6 +244,7 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
                                             quantity: Number(e.target.value)
                                         })}
                                         w='full' type='number'
+                                        bgColor='#fff8dc'
                                     />
                                 </HStack>
 

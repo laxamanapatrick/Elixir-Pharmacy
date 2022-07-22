@@ -12,6 +12,15 @@ const fetchMRPApi = async () => {
 const MrpPage = () => {
 
   const [mrpData, setMrpData] = useState([])
+  const [selectorId, setSelectorId] = useState('')
+  const [rawMatsInfo, setRawMatsInfo] = useState({
+    itemCode: '',
+    itemDescription: '',
+    soh: '',
+    bufferLevel: '',
+    suggestedPo: '',
+    lastUsed: ''
+  })
 
   const fetchMRP = () => {
     fetchMRPApi().then(res => {
@@ -30,13 +39,19 @@ const MrpPage = () => {
   return (
     <Flex flexDirection='column' w='full'>
       <Text textAlign='center' color='white' bgColor='accent' py={2}>MRP</Text>
-      <VStack w='full' p={5} justifyContent='space-between'>
-        <MRPTable mrpData={mrpData} />
-        <RawMatertialInformation />
+      <VStack w='full' p={5} justifyContent='space-between' spacing={5}>
+        <MRPTable mrpData={mrpData} setSelectorId={setSelectorId} selectorId={selectorId} setRawMatsInfo={setRawMatsInfo} />
+        {
+          selectorId ?
+            <RawMatertialInformation mrpDataLength={mrpData?.length} rawMatsInfo={rawMatsInfo} />
+            :
+            <Flex w='full' justifyContent='center'>
+              <Text fontSize='xs' fontWeight='semibold'>Total Records: {mrpData?.length}</Text>
+            </Flex>
+        }
       </VStack>
     </Flex>
   )
-
 }
 
 export default MrpPage

@@ -2,7 +2,7 @@ import React from 'react'
 import { Flex, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from '@chakra-ui/react'
 import PageScrollReusable from '../../../components/PageScroll-Reusable'
 
-export const ListofReceipt = ({ listDataTempo, selectorId, setSelectorId, setEditableData }) => {
+export const ListofReceipt = ({ listDataTempo, selectorId, setSelectorId, setEditableData, setRowIndex }) => {
 
     const TableHead = [
         "Line", "Item Code", "Item Description",
@@ -10,9 +10,11 @@ export const ListofReceipt = ({ listDataTempo, selectorId, setSelectorId, setEdi
         "UOM", "Quantity", "Supplier", "Expiration Date"
     ]
 
-    const rowHandler = (list, i) => {
-        setSelectorId(i+1)
-        setEditableData(list)
+    const rowHandler = (item, i) => {
+        setSelectorId(i + 1)
+        setEditableData(item)
+        const index = listDataTempo.indexOf(item)
+        setRowIndex(index)
     }
 
     return (
@@ -31,10 +33,11 @@ export const ListofReceipt = ({ listDataTempo, selectorId, setSelectorId, setEdi
                                 {
                                     listDataTempo?.map((item, i) =>
                                         <Tr key={i}
-                                        onClick={() => rowHandler(item,i)}
-                                        bgColor={selectorId === i+1 ? 'table_accent' : 'none'}
+                                            onClick={() => rowHandler(item, i)}
+                                            bgColor={selectorId === i + 1 ? 'table_accent' : 'none'}
+                                            cursor='pointer'
                                         >
-                                            <Td>{i+1}</Td>
+                                            <Td>{i + 1}</Td>
                                             <Td>{item?.itemCode}</Td>
                                             <Td>{item?.itemDescription}</Td>
                                             <Td>{item?.uom}</Td>

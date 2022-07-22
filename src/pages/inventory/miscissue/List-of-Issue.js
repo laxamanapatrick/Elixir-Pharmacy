@@ -2,7 +2,7 @@ import React from 'react'
 import { Flex, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from '@chakra-ui/react'
 import PageScrollReusable from '../../../components/PageScroll-Reusable'
 
-export const ListofIssue = ({ listDataTempo, selectorId, setSelectorId, setEditableData }) => {
+export const ListofIssue = ({ listDataTempo, selectorId, setSelectorId, setEditableData, setRowIndex }) => {
 
     const TableHead = [
         "Line", "Item Code", "Item Description",
@@ -10,10 +10,13 @@ export const ListofIssue = ({ listDataTempo, selectorId, setSelectorId, setEdita
         "UOM", "Quantity", "Customer", "Expiration Date"
     ]
 
-    const rowHandler = (list, i) => {
+    const rowHandler = (item, i) => {
         setSelectorId(i+1)
-        setEditableData(list)
+        setEditableData(item)
+        const index = listDataTempo.indexOf(item)
+        setRowIndex(index)
     }
+
 
     return (
         <Flex justifyContent='center' flexDirection='column' w='full'>
