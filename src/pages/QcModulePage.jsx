@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { Flex } from '@chakra-ui/react';
+import { Flex, Text } from '@chakra-ui/react';
 import { Outlet } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import { Context } from '../context/Context';
@@ -10,7 +10,6 @@ const QcModulePage = ({ notification, fetchNotification }) => {
     useEffect(() => {
         fetchNotification()
     }, [])
-
 
     return (
         <Flex flexDirection='column' width='full'>

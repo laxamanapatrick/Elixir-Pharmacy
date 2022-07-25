@@ -171,9 +171,9 @@ const WHConfirmReject = ({ fetchNotification }) => {
                     <Td>{rmd.itemDescription}</Td>
                     <Td>{rmd.supplier}</Td>
                     <Td>{rmd.uom}</Td>
-                    <Td>{rmd.quantityOrdered}</Td>
-                    <Td>{rmd.actualGood}</Td>
-                    <Td>{rmd.actualReject}</Td>
+                    <Td>{rmd.quantityOrdered.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                    <Td>{rmd.actualGood.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                    <Td>{rmd.actualReject.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
                     <Td>{rmd.receivingDate}</Td>
                     <Td>{rmd.confirmDate}</Td>
                     <Td>

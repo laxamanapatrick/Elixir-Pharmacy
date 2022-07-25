@@ -168,9 +168,9 @@ const RMWHReceivingPage = ({ fetchNotification }) => {
                     <Td>{wh.itemCode}</Td>
                     <Td>{wh.itemDescription}</Td>
                     <Td>{wh.supplier}</Td>
-                    <Td>{wh.quantityOrdered}</Td>
-                    <Td>{wh.actualGood}</Td>
-                    <Td>{wh.reject}</Td>
+                    <Td>{wh.quantityOrdered.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                    <Td>{wh.actualGood.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                    <Td>{wh.reject.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
                     <Td>{wh.expirationDate}</Td>
                     <Td>{wh.qC_ReceivedDate}</Td>
                     <Td>

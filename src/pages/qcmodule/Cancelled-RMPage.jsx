@@ -168,9 +168,9 @@ const CancelledRMPage = ({ notification, fetchNotification }) => {
                     <Td>{c.itemCode}</Td>
                     <Td>{c.itemDescription}</Td>
                     <Td>{c.supplier}</Td>
-                    <Td>{c.quantityOrdered}</Td>
-                    <Td>{c.quantityCancel}</Td>
-                    <Td>{c.quantityGood}</Td>
+                    <Td>{c.quantityOrdered.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                    <Td>{c.quantityCancel.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                    <Td>{c.quantityGood.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
                     <Td>{c.dateCancelled}</Td>
                     <Td>{c.remarks}</Td>
                     <Td>

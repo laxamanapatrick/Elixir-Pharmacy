@@ -189,9 +189,9 @@ const QCReceivingPage = ({ fetchNotification }) => {
                     <Td>{po.itemDescription}</Td>
                     <Td>{po.supplier}</Td>
                     <Td>{po.uom}</Td>
-                    <Td>{po.quantityOrdered}</Td>
-                    <Td>{po.actualGood}</Td>
-                    <Td>{po.actualRemaining}</Td>
+                    <Td>{po.quantityOrdered.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                    <Td>{po.actualGood.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                    <Td>{po.actualRemaining.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
                     <Td>
                       <HStack spacing={4}>
 

@@ -178,10 +178,10 @@ const RMNearlyExpirePage = ({ fetchNotification }) => {
                     <Td>{ne.itemCode}</Td>
                     <Td>{ne.itemDescription}</Td>
                     <Td>{ne.supplier}</Td>
-                    <Td> uom </Td>
-                    <Td>{ne.quantityOrdered}</Td>
-                    <Td>{ne.actualGood}</Td>
-                    <Td>{ne.actualRemaining}</Td>
+                    <Td>{ne.uom}</Td>
+                    <Td>{ne.quantityOrdered.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                    <Td>{ne.actualGood.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                    <Td>{ne.actualRemaining.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
                     <Td>{ne.expiryDate}</Td>
                     <Td>
                       <Button

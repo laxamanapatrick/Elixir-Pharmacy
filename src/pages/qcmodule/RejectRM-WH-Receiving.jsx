@@ -183,9 +183,9 @@ const RejectRMWHReceiving = ({ fetchNotification }) => {
                     <Td>{rd.itemDescription}</Td>
                     <Td>{rd.supplier}</Td>
                     <Td>{rd.uom}</Td>
-                    <Td>{rd.quantityOrdered}</Td>
-                    <Td>{rd.actualGood}</Td>
-                    <Td>{rd.actualReject}</Td>
+                    <Td>{rd.quantityOrdered.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                    <Td>{rd.actualGood.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                    <Td>{rd.actualReject.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
                     <Td>{moment(rd.receivingDate).format("MM-DD-YYYY")}</Td>
                     <Td>{rd.remarks}</Td>
                     <Td>
