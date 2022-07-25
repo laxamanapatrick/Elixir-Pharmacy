@@ -28,18 +28,18 @@ export const RawMatertialInformation = ({ rawMatsInfo, mrpDataLength }) => {
             <VStack alignItems='start' w='40%' mx={5}>
               <HStack w='full'>
                 <Text w='full' bgColor='secondary' color='white' pl={2} pr={7} py={2.5} fontSize='xs'>Stock on Hand: </Text>
-                <Input w='95%' readOnly bgColor='white' value={rawMatsInfo.soh} />
+                <Input w='95%' readOnly bgColor='white' value={rawMatsInfo.soh.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })} />
               </HStack>
               <HStack w='full'>
                 <Text w='full' bgColor='secondary' color='white' pl={2} pr={7} py={2.5} fontSize='xs'>Buffer Level: </Text>
-                <Input w='95%' readOnly bgColor='white' value={rawMatsInfo.bufferLevel} />
+                <Input w='95%' readOnly bgColor='white' value={rawMatsInfo.bufferLevel.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })} />
               </HStack>
             </VStack>
 
             <VStack alignItems='start' w='40%' mx={5}>
               <HStack w='full'>
                 <Text w='full' bgColor='secondary' color='white' pl={2} py={2.5} fontSize='xs'>Suggested PO: </Text>
-                <Input w='95%' readOnly bgColor='white' value={rawMatsInfo.suggestedPo} />
+                <Input w='95%' readOnly bgColor='white' value={rawMatsInfo.suggestedPo.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })} />
               </HStack>
               <HStack w='full'>
                 <Text w='full' bgColor='secondary' color='white' pl={2} pr={7} py={2.5} fontSize='xs'>Last Used: </Text>

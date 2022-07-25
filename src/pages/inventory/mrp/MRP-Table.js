@@ -100,23 +100,23 @@ export const MRPTable = ({ mrpData, setSelectorId, selectorId, setRawMatsInfo })
                                             <>
                                                 <Td>{item.itemCategory}</Td>
                                                 <Td>{item.uom}</Td>
-                                                <Td>{item.price}</Td>
-                                                <Td>{item.soh}</Td>
-                                                <Td>{item.reserve}</Td>
-                                                <Td>{item.bufferLevel}</Td>
-                                                <Td>{item.receiveIn}</Td>
+                                                <Td>{item.price.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                                                <Td>{item.soh.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                                                <Td>{item.reserve.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                                                <Td>{item.bufferLevel.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                                                <Td>{item.receiveIn.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
 
                                             </>
                                             :
                                             <>
-                                                <Td>{item.receiptIn}</Td>
-                                                <Td>{item.moveOrderOut}</Td>
-                                                <Td>{item.issueOut}</Td>
-                                                <Td>{item.qcReceiving}</Td>
+                                                <Td>{item.receiptIn.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                                                <Td>{item.moveOrderOut.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                                                <Td>{item.issueOut.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                                                <Td>{item.qcReceiving.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
                                                 <Td>{`Last Used`}</Td>
                                                 <Td>{`Movement Status`}</Td>
                                                 <Td>{`Classification ABC`}</Td>
-                                                <Td>{item.suggestedPo}</Td>
+                                                <Td>{item.suggestedPo.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
                                             </>
                                     }
                                 </Tr>

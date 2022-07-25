@@ -147,10 +147,10 @@ const ReceivingList = () => {
                       <Td>{l.pO_Number}</Td>
                       <Td>{l.itemCode}</Td>
                       <Td>{l.itemDescription}</Td>
-                      <Td>{l.quantityOrdered}</Td>
-                      <Td>{l.quantityOrdered}</Td>
-                      <Td>{l.actualGood}</Td>
-                      <Td>{l.reject}</Td>
+                      <Td>{l.quantityOrdered.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                      <Td>{l.quantityOrdered.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                      <Td>{l.actualGood.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                      <Td>{l.reject.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
                       <Td>{l.qC_ReceivedDate}</Td>
                       <Td>
                         <Button

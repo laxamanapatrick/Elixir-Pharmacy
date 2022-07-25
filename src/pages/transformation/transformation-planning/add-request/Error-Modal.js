@@ -49,9 +49,9 @@ const ErrorModal = ({ isOpen, onClose, errorData }) => {
                                 errorData?.map((ed, i) =>
                                     <Tr key={i}>
                                         <Td>{ed.itemCode}</Td>
-                                        <Td>{ed.quantity}</Td>
-                                        <Td>{ed.warehouseStock}</Td>
-                                        <Td>{ed.quantityNeeded}</Td>
+                                        <Td>{ed.quantity.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                                        <Td>{ed.warehouseStock.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                                        <Td>{ed.quantityNeeded.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
                                     </Tr>
                                 )
                             }
