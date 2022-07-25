@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button, ButtonGroup, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Text, toast, useDisclosure, useToast, VStack } from '@chakra-ui/react'
 import { RiQuestionnaireLine } from 'react-icons/ri'
 import apiClient from '../../../services/apiClient'
@@ -11,8 +11,10 @@ export const AddQuantityConfirmation = ({ isOpen, onClose, id, orderNo, itemCode
 }) => {
 
     const toast = useToast()
+    const [isLoading, setIsLoading] = useState(false)
 
     const submitHandler = () => {
+        setIsLoading(true)
         try {
             const res = apiClient.post(`Ordering/PrepareItemsForMoveOrder`,
                 {
@@ -29,12 +31,14 @@ export const AddQuantityConfirmation = ({ isOpen, onClose, id, orderNo, itemCode
                     setQuantity('')
                     setHighlighterId('')
                     setWarehouseId('')
+                    setIsLoading(false)
                     onClose()
                     fetchOrderList()
                     fetchPreparedItems()
                 })
                 .catch(err => {
                     ToastComponent("Error", "Add Failed", "error", toast)
+                    setIsLoading(false)
                 })
         } catch (error) {
         }
@@ -60,8 +64,22 @@ export const AddQuantityConfirmation = ({ isOpen, onClose, id, orderNo, itemCode
 
                     <ModalFooter>
                         <ButtonGroup size='sm' mt={3}>
-                            <Button colorScheme='blue' px={4} onClick={submitHandler}>Yes</Button>
-                            <Button colorScheme='red' px={4} onClick={onClose}>No</Button>
+                            <Button
+                                onClick={submitHandler}
+                                isLoading={isLoading}
+                                disabled={isLoading}
+                                colorScheme='blue' px={4}
+                            >
+                                Yes
+                            </Button>
+                            <Button
+                                onClick={onClose}
+                                isLoading={isLoading}
+                                disabled={isLoading}
+                                colorScheme='red' px={4}
+                            >
+                                No
+                            </Button>
                         </ButtonGroup>
                     </ModalFooter>
                 </ModalContent>
@@ -75,8 +93,10 @@ export const AddQuantityConfirmation = ({ isOpen, onClose, id, orderNo, itemCode
 export const CancelConfirmation = ({ isOpen, onClose, id, fetchPreparedItems, fetchOrderList, setCancelId }) => {
 
     const toast = useToast()
+    const [isLoading, setIsLoading] = useState(false)
 
     const submitHandler = () => {
+        setIsLoading(true)
         try {
             const res = apiClient.put(`Ordering/CancelPreparedItems`, { id: id })
                 .then(res => {
@@ -84,10 +104,12 @@ export const CancelConfirmation = ({ isOpen, onClose, id, fetchPreparedItems, fe
                     setCancelId('')
                     fetchPreparedItems()
                     fetchOrderList()
+                    setIsLoading(false)
                     onClose()
                 })
                 .catch(err => {
                     ToastComponent("Error", "Cancel failed", "error", toast)
+                    setIsLoading(false)
                 })
         } catch (error) {
         }
@@ -112,8 +134,22 @@ export const CancelConfirmation = ({ isOpen, onClose, id, fetchPreparedItems, fe
 
                     <ModalFooter>
                         <ButtonGroup size='sm' mt={3}>
-                            <Button colorScheme='blue' px={4} onClick={submitHandler}>Yes</Button>
-                            <Button colorScheme='red' px={4} onClick={onClose}>No</Button>
+                            <Button
+                                onClick={submitHandler}
+                                isLoading={isLoading}
+                                disabled={isLoading}
+                                colorScheme='blue' px={4}
+                            >
+                                Yes
+                            </Button>
+                            <Button
+                                onClick={onClose}
+                                isLoading={isLoading}
+                                disabled={isLoading}
+                                colorScheme='red' px={4}
+                            >
+                                No
+                            </Button>
                         </ButtonGroup>
                     </ModalFooter>
                 </ModalContent>
@@ -163,6 +199,7 @@ export const DeliveryStatusConfirmation = ({ isOpen, onClose, deliveryStatus, or
     setOrderId, setHighlighterId, setItemCode, setDeliveryStatus, setButtonChanger, setCurrentPage, currentPage }) => {
 
     const toast = useToast()
+    const [isLoading, setIsLoading] = useState(false)
 
     const submitHandler = () => {
         const submitArray = orderListData?.map(item => {
@@ -171,6 +208,7 @@ export const DeliveryStatusConfirmation = ({ isOpen, onClose, deliveryStatus, or
                 deliveryStatus: deliveryStatus
             }
         })
+        setIsLoading(true)
         try {
             const res = apiClient.put(`Ordering/AddDeliveryStatus`, submitArray)
                 .then(res => {
@@ -183,10 +221,12 @@ export const DeliveryStatusConfirmation = ({ isOpen, onClose, deliveryStatus, or
                     setCurrentPage(currentPage)
                     fetchApprovedMoveOrders()
                     fetchOrderList()
+                    setIsLoading(false)
                     onClose()
                 })
                 .catch(err => {
                     ToastComponent("Error", "Save failed.", "error", toast)
+                    setIsLoading(false)
                 })
         } catch (error) {
         }
@@ -211,8 +251,22 @@ export const DeliveryStatusConfirmation = ({ isOpen, onClose, deliveryStatus, or
 
                     <ModalFooter>
                         <ButtonGroup size='sm' mt={3}>
-                            <Button colorScheme='blue' px={4} onClick={submitHandler}>Yes</Button>
-                            <Button colorScheme='red' px={4} onClick={onClose}>No</Button>
+                            <Button
+                                onClick={submitHandler}
+                                isLoading={isLoading}
+                                disabled={isLoading}
+                                colorScheme='blue' px={4}
+                            >
+                                Yes
+                            </Button>
+                            <Button
+                                onClick={onClose}
+                                isLoading={isLoading}
+                                disabled={isLoading}
+                                colorScheme='red' px={4}
+                            >
+                                No
+                            </Button>
                         </ButtonGroup>
                     </ModalFooter>
                 </ModalContent>

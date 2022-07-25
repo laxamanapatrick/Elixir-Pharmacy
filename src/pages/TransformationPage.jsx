@@ -5,28 +5,11 @@ import Navbar from '../components/Navbar';
 import { Context } from '../context/Context';
 import apiClient from '../services/apiClient';
 
-const fetchNotificationApi = async () => {
-    const res = await apiClient.get(`Receiving/GetNotification`)
-    return res.data
-}
-
-const TransformationPage = () => {
+const TransformationPage = ({ notification, fetchNotification }) => {
     const { selectedMenu } = useContext(Context)
-
-    const [notification, setNotification] = useState([])
-
-    const fetchNotification = () => {
-        fetchNotificationApi().then(res => {
-            setNotification(res)
-        })
-    }
 
     useEffect(() => {
         fetchNotification()
-
-        return () => {
-            setNotification([])
-        }
     }, [])
 
     return <Flex flexDirection='column' width='full'>

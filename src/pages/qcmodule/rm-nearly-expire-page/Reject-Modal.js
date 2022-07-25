@@ -19,7 +19,7 @@ import apiClient from '../../../services/apiClient';
 import { decodeUser } from '../../../services/decode-user';
 import { ToastComponent } from '../../../components/Toast';
 
-const RejectModal = ({ receivingId, fetchRMNearlyExpire, isOpen, onClose }) => {
+const RejectModal = ({ receivingId, fetchRMNearlyExpire, isOpen, onClose, fetchNotification }) => {
 
 
     const [isLoading, setIsLoading] = useState(false)
@@ -36,6 +36,7 @@ const RejectModal = ({ receivingId, fetchRMNearlyExpire, isOpen, onClose }) => {
             ).then((res) => {
                 ToastComponent("Success!", "Raw Material Rejected", "success", toast)
                 fetchRMNearlyExpire()
+                fetchNotification()
                 onClose(onClose)
             }).catch(err => {
                 setIsLoading(false)

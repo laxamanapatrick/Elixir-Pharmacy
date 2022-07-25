@@ -6,7 +6,7 @@ import { SaveConfirmation } from './Print-List'
 import DatePicker from "react-datepicker";
 
 export const WeighingScaleInformation = ({ transformId, batchRemaining, fetchMixingRequest, fetchRequirements,
-    fetchBatchRemaining, setMixingCue, quantity, requests, batch, setCurrentPage }) => {
+    fetchBatchRemaining, setMixingCue, quantity, requests, batch, setCurrentPage, fetchNotification }) => {
 
     const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -108,6 +108,7 @@ export const WeighingScaleInformation = ({ transformId, batchRemaining, fetchMix
                         totalWeight={totalWeight}
                         setTotalWeight={setTotalWeight}
                         setCurrentPage={setCurrentPage}
+                        fetchNotification={fetchNotification}
                     />
                 )
             }
@@ -117,7 +118,8 @@ export const WeighingScaleInformation = ({ transformId, batchRemaining, fetchMix
 }
 
 const SaveModal = ({ isOpen, onClose, transformId, batchRemaining, fetchMixingRequest,
-    fetchRequirements, fetchBatchRemaining, setMixingCue, valueRef, setDisableSave, requests, totalWeight, setTotalWeight, setCurrentPage }) => {
+    fetchRequirements, fetchBatchRemaining, setMixingCue, valueRef, setDisableSave,
+    requests, totalWeight, setTotalWeight, setCurrentPage, fetchNotification }) => {
 
     const toast = useToast()
     const [lotData, setLotData] = useState([])
@@ -249,6 +251,7 @@ const SaveModal = ({ isOpen, onClose, transformId, batchRemaining, fetchMixingRe
                         totalWeight={totalWeight}
                         setTotalWeight={setTotalWeight}
                         setCurrentPage={setCurrentPage}
+                        fetchNotification={fetchNotification}
                     />
                 )
             }

@@ -21,7 +21,7 @@ import { ToastComponent } from '../../../components/Toast';
 
 const currentUser = decodeUser()
 
-const ApproveModal = ({ receivingId, fetchRMNearlyExpire, isOpen, onClose }) => {
+const ApproveModal = ({ receivingId, fetchRMNearlyExpire, isOpen, onClose, fetchNotification }) => {
 
 const [isLoading, setIsLoading] = useState(false)
 const toast = useToast()
@@ -37,6 +37,7 @@ const toast = useToast()
             ).then((res) => {
                 ToastComponent("Success!", "Nearly Expired Raw Material Approved", "success", toast)
                 fetchRMNearlyExpire()
+                fetchNotification()
                 onClose(onClose)
             }).catch(err => {
                 setIsLoading(false)

@@ -10,8 +10,10 @@ const currentUser = decodeUser()
 export const ApproveModal = ({ isOpen, onClose, orderNo, setOrderNo, fetchOrderList, fetchOrdersByOrderNo }) => {
 
     const toast = useToast()
+    const [isLoading, setIsLoading] = useState(false)
 
     const submitHandler = () => {
+        setIsLoading(true)
         try {
             const res = apiClient.put(`Ordering/ApprovePreparedDate`,
                 {
@@ -23,10 +25,12 @@ export const ApproveModal = ({ isOpen, onClose, orderNo, setOrderNo, fetchOrderL
                     setOrderNo('')
                     fetchOrderList()
                     fetchOrdersByOrderNo()
+                    setIsLoading(false)
                     onClose()
                 })
                 .catch(err => {
                     ToastComponent("Success", "Order was not approved.", "success", toast)
+                    setIsLoading(false)
                 })
         } catch (error) {
         }
@@ -48,8 +52,8 @@ export const ApproveModal = ({ isOpen, onClose, orderNo, setOrderNo, fetchOrderL
 
                 <ModalFooter>
                     <ButtonGroup size='sm' mt={7}>
-                        <Button colorScheme='blue' onClick={submitHandler}>Yes</Button>
-                        <Button colorScheme='red' onClick={onClose}>No</Button>
+                        <Button colorScheme='blue' onClick={submitHandler} isLoading={isLoading} disabled={isLoading}>Yes</Button>
+                        <Button colorScheme='red' onClick={onClose} isLoading={isLoading} disabled={isLoading}>No</Button>
                     </ButtonGroup>
                 </ModalFooter>
             </ModalContent>
@@ -62,10 +66,11 @@ export const RejectModal = ({ isOpen, onClose, orderNo, setOrderNo, fetchOrderLi
     const [reason, setReason] = useState('')
     const [reasonData, setReasonData] = useState([])
 
+    const [isLoading, setIsLoading] = useState(false)
     const toast = useToast()
 
     const fetchReasonApi = async () => {
-        const res = await apiClient.get(`https://localhost:44382/api/Reason/GetAllActiveReason`)
+        const res = await apiClient.get(`Reason/GetAllActiveReason`)
         return res.data
     }
 
@@ -84,8 +89,9 @@ export const RejectModal = ({ isOpen, onClose, orderNo, setOrderNo, fetchOrderLi
     }, [])
 
     const submitHandler = () => {
+        setIsLoading(true)
         try {
-            const res = apiClient.put(`https://localhost:44382/api/Ordering/RejectPreparedDate`,
+            const res = apiClient.put(`Ordering/RejectPreparedDate`,
                 {
                     orderNoPKey: orderNo,
                     remarks: reason,
@@ -97,10 +103,12 @@ export const RejectModal = ({ isOpen, onClose, orderNo, setOrderNo, fetchOrderLi
                     setOrderNo('')
                     fetchOrderList()
                     fetchOrdersByOrderNo()
+                    setIsLoading(false)
                     onClose()
                 })
                 .catch(err => {
-                    ToastComponent("Succes", "Reject failed", "success", toast)
+                    ToastComponent("Error", "Reject failed", "error", toast)
+                    setIsLoading(false)
                 })
         } catch (error) {
         }
@@ -139,8 +147,8 @@ export const RejectModal = ({ isOpen, onClose, orderNo, setOrderNo, fetchOrderLi
 
                 <ModalFooter>
                     <ButtonGroup size='sm' mt={7}>
-                        <Button colorScheme='blue' disabled={!reason} onClick={submitHandler}>Yes</Button>
-                        <Button colorScheme='red'>No</Button>
+                        <Button colorScheme='blue' disabled={!reason || isLoading} onClick={submitHandler} isLoading={isLoading}>Yes</Button>
+                        <Button colorScheme='red' isLoading={isLoading} disabled={isLoading}>No</Button>
                     </ButtonGroup>
                 </ModalFooter>
             </ModalContent>

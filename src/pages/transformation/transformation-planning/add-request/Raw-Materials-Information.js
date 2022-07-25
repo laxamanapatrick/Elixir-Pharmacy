@@ -36,7 +36,7 @@ const schema = yup.object().shape({
     })
 })
 
-export const RawMaterialsInformation = ({ formulas, setCode, codeData, fetchRequests }) => {
+export const RawMaterialsInformation = ({ formulas, setCode, codeData, fetchRequests, fetchNotification }) => {
 
     const resetCode = useRef()
     const resetVersion = useRef()
@@ -119,6 +119,7 @@ export const RawMaterialsInformation = ({ formulas, setCode, codeData, fetchRequ
                     }
                 }
 
+                fetchNotification()
                 setIsLoading(false)
                 fetchRequests()
                 resetCode.current.value = ''
@@ -130,6 +131,7 @@ export const RawMaterialsInformation = ({ formulas, setCode, codeData, fetchRequ
                 if (err.response) {
                     openError()
                 }
+                setIsLoading(false)
             })
         } catch (err) {
         }

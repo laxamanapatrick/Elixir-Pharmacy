@@ -35,7 +35,7 @@ import { ToastComponent } from '../../../components/Toast';
 
 const currentUser = decodeUser()
 
-export const ModalComponent = ({ fetchWHReceiving, modalData, isOpen, onClose }) => {
+export const ModalComponent = ({ fetchWHReceiving, modalData, isOpen, onClose, fetchNotification }) => {
 
   const [reasons, setReasons] = useState([])
   const [isDisabled, setIsDisabled] = useState(false)
@@ -106,6 +106,7 @@ export const ModalComponent = ({ fetchWHReceiving, modalData, isOpen, onClose })
         .then((res) => {
           ToastComponent("Success!", "Cancelled", "success", toast)
           fetchWHReceiving()
+          fetchNotification()
           onClose(onClose)
         }).catch(err => {
           setIsLoading(false)

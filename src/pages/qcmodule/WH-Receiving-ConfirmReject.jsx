@@ -43,7 +43,7 @@ const fetchRejectRMApi = async (pageNumber, pageSize, search) => {
   return res.data
 }
 
-const WHConfirmReject = () => {
+const WHConfirmReject = ({ fetchNotification }) => {
 
   const [rejectedMaterialsData, setRejectedMaterialsData] = useState([])
   const [viewingData, setViewingData] = useState([])

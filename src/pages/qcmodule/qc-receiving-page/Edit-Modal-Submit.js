@@ -1,24 +1,26 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { 
-    Button, 
-    ButtonGroup, 
-    Flex, 
-    Modal, 
-    ModalBody, 
-    ModalCloseButton, 
-    ModalContent, 
-    ModalFooter, 
-    ModalHeader, 
-    ModalOverlay, 
-    Text, 
-    useDisclosure, 
-    useToast } from '@chakra-ui/react'
+import {
+    Button,
+    ButtonGroup,
+    Flex,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+    Text,
+    useDisclosure,
+    useToast
+} from '@chakra-ui/react'
 import { ReceivingContext } from '../../../context/ReceivingContext'
 import apiClient from '../../../services/apiClient'
 import { ToastComponent } from '../../../components/Toast'
 import { BsFillQuestionOctagonFill } from 'react-icons/bs'
 
-export const EditModalSubmit = ({ isSubmitDisabled, receivingId, sumQuantity, submitDataOne, submitDataTwo, submitDataThree, fetchPo, closeModal }) => {
+export const EditModalSubmit = ({ isSubmitDisabled, receivingId, sumQuantity, submitDataOne,
+    submitDataTwo, submitDataThree, fetchPo, closeModal, fetchNotification }) => {
 
     const { setReceivingId } = useContext(ReceivingContext)
 
@@ -54,6 +56,7 @@ export const EditModalSubmit = ({ isSubmitDisabled, receivingId, sumQuantity, su
                 setReceivingId(res.data.id)
                 // setIsLoading(false)
                 fetchPo()
+                fetchNotification()
                 closeModal()
 
                 // take generated id 

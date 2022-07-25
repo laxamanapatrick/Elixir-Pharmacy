@@ -66,6 +66,8 @@ export const ViewModal = ({ isOpen, onClose, viewData }) => {
 
 export const ApproveModal = ({ isOpen, onClose, orderNo, fetchForApprovalMO, printData }) => {
 
+  const [isLoading, setIsLoading] = useState(false)
+
   const componentRef = useRef()
 
   const handlePrint = useReactToPrint({
@@ -78,6 +80,7 @@ export const ApproveModal = ({ isOpen, onClose, orderNo, fetchForApprovalMO, pri
   const { isOpen: isPrint, onClose: closePrint, onOpen: openPrint } = useDisclosure()
 
   const submitHandler = () => {
+    setIsLoading(true)
     try {
       const res = apiClient.put(`Ordering/ApproveListOfMoveOrder`, { orderNo: orderNo })
         .then(res => {
@@ -86,6 +89,7 @@ export const ApproveModal = ({ isOpen, onClose, orderNo, fetchForApprovalMO, pri
           try {
             const res = apiClient.put(`Ordering/UpdatePrintStatus`, { orderNo: orderNo })
               .then(res => {
+                setIsLoading(false)
                 handlePrint()
                 openPrint()
               })
@@ -95,6 +99,7 @@ export const ApproveModal = ({ isOpen, onClose, orderNo, fetchForApprovalMO, pri
         })
         .catch(jaypee => {
           ToastComponent("Error", "Move order was not approved", "error", toast)
+          setIsLoading(false)
         })
     } catch (error) {
     }
@@ -120,12 +125,21 @@ export const ApproveModal = ({ isOpen, onClose, orderNo, fetchForApprovalMO, pri
           <ModalFooter>
             <ButtonGroup size='sm' mt={7}>
               <Button
-                colorScheme='blue'
                 onClick={submitHandler}
+                isLoading={isLoading}
+                disabled={isLoading}
+                colorScheme='blue'
               >
                 Yes
               </Button>
-              <Button colorScheme='red' onClick={onClose}>No</Button>
+              <Button
+                onClick={onClose}
+                isLoading={isLoading}
+                disabled={isLoading}
+                colorScheme='red'
+              >
+                No
+              </Button>
             </ButtonGroup>
           </ModalFooter>
         </ModalContent>
@@ -289,6 +303,7 @@ export const RejectModal = ({ isOpen, onClose, id, fetchForApprovalMO }) => {
   const [reasons, setReasons] = useState([])
 
   const toast = useToast()
+  const [isLoading, setIsLoading] = useState(false)
 
   const fetchReasonsApi = async () => {
     const res = await apiClient.get(`Reason/GetAllActiveReason`)
@@ -310,6 +325,7 @@ export const RejectModal = ({ isOpen, onClose, id, fetchForApprovalMO }) => {
   }, [])
 
   const submitHandler = () => {
+    setIsLoading(true)
     try {
       const res = apiClient.put(`Ordering/RejectListOfMoveOrder`,
         {
@@ -321,10 +337,12 @@ export const RejectModal = ({ isOpen, onClose, id, fetchForApprovalMO }) => {
         .then(res => {
           ToastComponent("Success", "Move order has been rejected", "success", toast)
           fetchForApprovalMO()
+          setIsLoading(false)
           onClose()
         })
         .catch(err => {
           ToastComponent("Error", "Move order was not rejected", "error", toast)
+          setIsLoading(false)
         })
     } catch (error) {
     }
@@ -364,12 +382,20 @@ export const RejectModal = ({ isOpen, onClose, id, fetchForApprovalMO }) => {
           <ButtonGroup size='sm' mt={7}>
             <Button
               onClick={submitHandler}
-              disabled={!reasonSubmit}
+              disabled={!reasonSubmit || isLoading}
+              isLoading={isLoading}
               colorScheme='blue'
             >
               Yes
             </Button>
-            <Button colorScheme='red' onClick={onClose}>No</Button>
+            <Button
+              onClick={onClose}
+              disabled={isLoading}
+              isLoading={isLoading}
+              colorScheme='red'
+            >
+              No
+            </Button>
           </ButtonGroup>
         </ModalFooter>
       </ModalContent>

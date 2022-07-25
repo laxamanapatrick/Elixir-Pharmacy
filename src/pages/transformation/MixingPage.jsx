@@ -20,7 +20,7 @@ const fetchBatchRemainingAPi = async (transformId) => {
   return res.data
 }
 
-const MixingPage = () => {
+const MixingPage = ({ fetchNotification }) => {
 
   const [mixingCue, setMixingCue] = useState(false)
   const [transformId, setTransformId] = useState(null)
@@ -120,6 +120,7 @@ const MixingPage = () => {
             requests={requests}
             batch={batch}
             setCurrentPage={setCurrentPage}
+            fetchNotification={fetchNotification}
           />
         }
       </Box>

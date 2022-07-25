@@ -26,7 +26,7 @@ const fetchReasonsApi = async () => {
     return res.data
 }
 
-const ReturnModalComponent = ({ poId, fetchCancelled, isOpen, onClose }) => {
+const ReturnModalComponent = ({ poId, fetchCancelled, isOpen, onClose, fetchNotification }) => {
 
     const [reasons, setReasons] = useState([])
     const [submitReason, setSubmitReason] = useState("")
@@ -66,10 +66,11 @@ const ReturnModalComponent = ({ poId, fetchCancelled, isOpen, onClose }) => {
             ).then(res => {
                 ToastComponent("Succes", "PO Returned", "success", toast)
                 fetchCancelled()
+                fetchNotification()
                 onClose()
             }).catch(err => {
                 setIsLoading(false)
-                ToastComponent("Error", err.response.data, "error", toast)
+                ToastComponent("Error", "Cancel Failed", "error", toast)
             })
 
         } catch (error) {

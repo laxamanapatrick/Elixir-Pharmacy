@@ -4,7 +4,7 @@ import { ToastComponent } from '../../../components/Toast'
 import apiClient from '../../../services/apiClient'
 
 
-export const CancelModalComponent = ({ isOpen, onClose, poId, fetchPo }) => {
+export const CancelModalComponent = ({ isOpen, onClose, poId, fetchPo, fetchNotification }) => {
 
     const [reasons, setReasons] = useState([])
     const [reasonData, setReasonData] = useState(null)
@@ -55,6 +55,7 @@ export const CancelModalComponent = ({ isOpen, onClose, poId, fetchPo }) => {
             ).then((res) => {
                 ToastComponent("Success!", "PO Cancelled", "success", toast)
                 fetchPo()
+                fetchNotification()
                 onClose()
                 setIsLoading(false)
             }
@@ -108,7 +109,7 @@ export const CancelModalComponent = ({ isOpen, onClose, poId, fetchPo }) => {
                     </ModalBody>
                     <Flex borderColor='gray.100' borderWidth='5px' borderX='none' borderTop='none'></Flex>
                     <ModalFooter>
-                        
+
                         <ButtonGroup size='md'>
                             <Button
                                 colorScheme='blue' _hover={{ bgColor: 'accent' }}

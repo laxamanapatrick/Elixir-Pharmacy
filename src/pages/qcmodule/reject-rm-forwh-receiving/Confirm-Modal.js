@@ -22,7 +22,7 @@ import { ToastComponent } from '../../../components/Toast';
 
 const currentUser = decodeUser()
 
-const ConfirmModal = ({ qcReceivingId, fetchReject, isOpen, onClose }) => {
+const ConfirmModal = ({ qcReceivingId, fetchReject, isOpen, onClose, fetchNotification }) => {
 
   const [isLoading, setIsLoading] = useState(false)
 
@@ -39,6 +39,7 @@ const ConfirmModal = ({ qcReceivingId, fetchReject, isOpen, onClose }) => {
       ).then(res => {
         ToastComponent("Succes!", "Rejected Raw Material has been confirmed", "success", toast)
         fetchReject()
+        fetchNotification()
         onClose()
       }).catch(err => {
         ToastComponent("Error!", err.response.data, "error", toast)

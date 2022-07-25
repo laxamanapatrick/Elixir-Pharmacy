@@ -44,7 +44,7 @@ const fetchWHReceivingApi = async (pageNumber, pageSize, search) => {
   return res.data
 }
 
-const RMWHReceivingPage = () => {
+const RMWHReceivingPage = ({ fetchNotification }) => {
 
   const [whData, setWhData] = useState([])
   const [isLoading, setIsLoading] = useState(true);
@@ -199,6 +199,7 @@ const RMWHReceivingPage = () => {
             isOpen={isModalOpen}
             onClose={closeModal}
             fetchWHReceiving={fetchWHReceiving}
+            fetchNotification={fetchNotification}
           />
         )
 

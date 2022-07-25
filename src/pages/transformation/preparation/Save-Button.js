@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Text, useDisclosure, useToast } from '@chakra-ui/react'
 import { BsFillQuestionOctagonFill } from 'react-icons/bs'
 import apiClient from '../../../services/apiClient'
@@ -8,8 +8,8 @@ import { decodeUser } from '../../../services/decode-user'
 const currentUser = decodeUser()
 
 export const SaveButton = ({ transformId, itemCode, weight, fetchRequirements,
-    fetchRequirementsInformation, setItemCode, setWeight, disableSave, 
-    weightRef, fetchInformation, setCurrentPage, requirements, setDisableSave }) => {
+    fetchRequirementsInformation, setItemCode, setWeight, disableSave,
+    weightRef, fetchInformation, setCurrentPage, requirements, setDisableSave, fetchNotification }) => {
 
     const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -41,6 +41,7 @@ export const SaveButton = ({ transformId, itemCode, weight, fetchRequirements,
                         setCurrentPage={setCurrentPage}
                         requirements={requirements}
                         setDisableSave={setDisableSave}
+                        fetchNotification={fetchNotification}
                     />
                 )
             }
@@ -49,12 +50,14 @@ export const SaveButton = ({ transformId, itemCode, weight, fetchRequirements,
 }
 
 const SaveModal = ({ isOpen, onClose, transformId, itemCode, weight, fetchRequirements,
-    fetchRequirementsInformation, setItemCode, setWeight, weightRef, fetchInformation, 
-    setCurrentPage, requirements, setDisableSave }) => {
+    fetchRequirementsInformation, setItemCode, setWeight, weightRef, fetchInformation,
+    setCurrentPage, requirements, setDisableSave, fetchNotification }) => {
 
     const toast = useToast()
+    const [isLoading, setIsLoading] = useState(false)
 
     const submitHandler = () => {
+        setIsLoading(true)
         try {
             const res = apiClient.put(`Preparation/PrepareMaterialsForRequest/${transformId}`, {
                 transformId: transformId,
@@ -71,11 +74,13 @@ const SaveModal = ({ isOpen, onClose, transformId, itemCode, weight, fetchRequir
                         fetchRequirements()
                         fetchRequirementsInformation()
                         fetchInformation()
+                        fetchNotification()
                         // weightRef.current.value = ''
                         // window.setTimeout(() => {
                         //     weightRef.current.focus()
                         // }, 3000)
                         setCurrentPage(1)
+                        setIsLoading(false)
                         onClose()
                     } else {
                         ToastComponent("Succes", "Requirement has been prepared", "success", toast)
@@ -85,6 +90,8 @@ const SaveModal = ({ isOpen, onClose, transformId, itemCode, weight, fetchRequir
                         fetchRequirements()
                         fetchRequirementsInformation()
                         fetchInformation()
+                        fetchNotification()
+                        setIsLoading(false)
                         // weightRef.current.value = ''
                         // window.setTimeout(() => {
                         //     weightRef.current.focus()
@@ -94,6 +101,7 @@ const SaveModal = ({ isOpen, onClose, transformId, itemCode, weight, fetchRequir
                 })
                 .catch(err => {
                     ToastComponent("Error", err.response.data, "error", toast)
+                    setIsLoading(false)
                 })
         } catch (error) {
         }
@@ -118,10 +126,18 @@ const SaveModal = ({ isOpen, onClose, transformId, itemCode, weight, fetchRequir
                     <Button
                         onClick={() => submitHandler()}
                         colorScheme='blue' mr={3}
+                        isLoading={isLoading}
+                        disabled={isLoading}
                     >
                         Yes
                     </Button>
-                    <Button colorScheme='red' _hover={{ color: 'none', bgColor: 'none' }} color='white' onClick={onClose}>No</Button>
+                    <Button
+                        isLoading={isLoading}
+                        disabled={isLoading}
+                        colorScheme='red' _hover={{ color: 'none', bgColor: 'none' }} color='white' onClick={onClose}
+                    >
+                        No
+                    </Button>
                 </ModalFooter>
 
             </ModalContent>

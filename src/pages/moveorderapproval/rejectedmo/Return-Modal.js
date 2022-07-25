@@ -14,6 +14,7 @@ export const ReturnModal = ({ isOpen, onClose, orderNo, fetchRejectedMO }) => {
     const [reasons, setReasons] = useState([])
 
     const toast = useToast()
+    const [isLoading, setIsLoading] = useState(false)
 
     const fetchReasonsApi = async () => {
         const res = await apiClient.get(`Reason/GetAllActiveReason`)
@@ -35,6 +36,7 @@ export const ReturnModal = ({ isOpen, onClose, orderNo, fetchRejectedMO }) => {
     }, [])
 
     const submitHandler = () => {
+        setIsLoading(true)
         try {
             const res = apiClient.put(`Ordering/ReturnMoveOrderForApproval`,
                 {
@@ -45,10 +47,12 @@ export const ReturnModal = ({ isOpen, onClose, orderNo, fetchRejectedMO }) => {
                 .then(res => {
                     ToastComponent("Success", "Move order has been returned", "success", toast)
                     fetchRejectedMO()
+                    setIsLoading(false)
                     onClose()
                 })
                 .catch(err => {
                     ToastComponent("Error", "Move order was not rejected", "error", toast)
+                    setIsLoading(false)
                 })
         } catch (error) {
         }
@@ -88,12 +92,20 @@ export const ReturnModal = ({ isOpen, onClose, orderNo, fetchRejectedMO }) => {
                     <ButtonGroup size='sm' mt={7}>
                         <Button
                             onClick={submitHandler}
-                            disabled={!reasonSubmit}
+                            disabled={!reasonSubmit || isLoading}
+                            isLoading={isLoading}
                             colorScheme='blue'
                         >
                             Yes
                         </Button>
-                        <Button colorScheme='red' onClick={onClose}>No</Button>
+                        <Button
+                            onClick={onClose}
+                            disabled={isLoading}
+                            isLoading={isLoading}
+                            colorScheme='red'
+                        >
+                            No
+                        </Button>
                     </ButtonGroup>
                 </ModalFooter>
             </ModalContent>

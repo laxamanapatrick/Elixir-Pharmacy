@@ -56,7 +56,7 @@ const fetchPoApi = async (pageNumber, pageSize, search) => {
   return res.data
 }
 
-const QCReceivingPage = () => {
+const QCReceivingPage = ({ fetchNotification }) => {
 
   const [poData, setPoData] = useState([])
   const [isLoading, setIsLoading] = useState(true)
@@ -246,6 +246,7 @@ const QCReceivingPage = () => {
               onClose={closeEditModal}
               editData={editData}
               fetchPo={fetchPo}
+              fetchNotification={fetchNotification}
             />
           )
         }
@@ -257,6 +258,7 @@ const QCReceivingPage = () => {
               onClose={closeCancelModal}
               poId={poId}
               fetchPo={fetchPo}
+              fetchNotification={fetchNotification}
             />
           )
         }

@@ -44,7 +44,7 @@ const fetchCancelledRMApi = async (pageNumber, pageSize, search) => {
   return res.data
 }
 
-const CancelledRMPage = () => {
+const CancelledRMPage = ({ notification, fetchNotification }) => {
 
   const [cancelledData, setCancelledData] = useState([])
   const [poId, setPoId] = useState(null)
@@ -199,6 +199,7 @@ const CancelledRMPage = () => {
             isOpen={isModalOpen}
             onClose={closeModal}
             fetchCancelled={fetchCancelled}
+            notification={notification} fetchNotification={fetchNotification}
           />
         )
 

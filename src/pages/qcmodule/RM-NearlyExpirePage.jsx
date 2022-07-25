@@ -47,7 +47,7 @@ const fetchRMNearlyExpireApi = async (pageNumber, pageSize, search) => {
   return res.data
 }
 
-const RMNearlyExpirePage = () => {
+const RMNearlyExpirePage = ({ fetchNotification }) => {
 
   const [nearlyExpireData, setNearlyExpireData] = useState([])
   const [receivingId, setReceivingId] = useState(null)
@@ -254,6 +254,7 @@ const RMNearlyExpirePage = () => {
             fetchRMNearlyExpire={fetchRMNearlyExpire}
             isOpen={isApproveModalOpen}
             onClose={closeApproveModal}
+            fetchNotification={fetchNotification}
           />
         )
       }
@@ -265,6 +266,7 @@ const RMNearlyExpirePage = () => {
             fetchRMNearlyExpire={fetchRMNearlyExpire}
             isOpen={isRejectModalOpen}
             onClose={closeRejectModal}
+            fetchNotification={fetchNotification}
           />
         )
       }

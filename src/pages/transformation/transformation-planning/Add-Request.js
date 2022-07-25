@@ -6,7 +6,7 @@ import { ListofRequest } from './add-request/List-of-Request'
 import { ListofRawMaterialsRequirements } from './add-request/List-of-Raw-Materials-Requirements'
 import apiClient from '../../../services/apiClient'
 
-const AddRequest = () => {
+const AddRequest = ({ fetchNotification }) => {
 
   const [transformId, setTransformId] = useState("")
 
@@ -107,7 +107,7 @@ const AddRequest = () => {
 
   return (
     <VStack spacing={3} w='full' h='auto'>
-      <RawMaterialsInformation formulas={formulas} setCode={setCode} codeData={codeData} fetchRequests={fetchRequests} />
+      <RawMaterialsInformation formulas={formulas} setCode={setCode} codeData={codeData} fetchRequests={fetchRequests} fetchNotification={fetchNotification} />
       <ListofRequest setTransformId={setTransformId} transformId={transformId} requests={requests} fetchRequests={fetchRequests} fetchRequirements={fetchRequirements} />
       <ListofRawMaterialsRequirements transformId={transformId} requirements={requirements} />
     </VStack>

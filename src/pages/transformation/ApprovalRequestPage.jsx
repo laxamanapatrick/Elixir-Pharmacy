@@ -5,7 +5,7 @@ import { ListofRequest } from './approval-request/List-of-Request';
 import { Submit } from './approval-request/Submit';
 import apiClient from '../../services/apiClient';
 
-const ApprovalRequestPage = () => {
+const ApprovalRequestPage = ({ fetchNotification }) => {
 
   const [transformId, setTransformId] = useState("")
   // const [status, setStatus] = useState("pending")
@@ -48,7 +48,10 @@ const ApprovalRequestPage = () => {
     <VStack spacing={3} w='full' h='83.5vh'>
       <ListofRequest setTransformId={setTransformId} transformId={transformId} requests={requests} />
       <ListofRawMaterialsRequirements transformId={transformId} requirements={requirements} />
-      <Submit transformId={transformId} setTransformId={setTransformId} fetchRequestByStatus={fetchRequestByStatus} fetchRequirements={fetchRequirements} />
+      <Submit transformId={transformId} setTransformId={setTransformId}
+        fetchRequestByStatus={fetchRequestByStatus} fetchRequirements={fetchRequirements}
+        fetchNotification={fetchNotification}
+      />
     </VStack>
   )
 }

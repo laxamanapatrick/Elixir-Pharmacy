@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
     Flex, HStack, Button, ButtonGroup, Text, useToast, VStack,
     Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader,
@@ -125,6 +125,7 @@ export const ViewModal = ({ isOpen, onClose, moveOrderInformation, moveOrderList
 export const TransactConfirmation = ({ isOpen, onClose, deliveryDate, checkedItems, setCheckedItems, fetchMoveOrderList, setDeliveryDate }) => {
 
     const toast = useToast()
+    const [isLoading, setIsLoading] = useState(false)
 
     // const submitHandlerOld = () => {
     //     try {
@@ -200,6 +201,7 @@ export const TransactConfirmation = ({ isOpen, onClose, deliveryDate, checkedIte
                 preparedBy: currentUser?.userName
             }
         })
+        setIsLoading(true)
         try {
             const res = apiClient.post(`Ordering/TransactListOfMoveOrders`, arraySubmit)
                 .then(res => {
@@ -207,10 +209,12 @@ export const TransactConfirmation = ({ isOpen, onClose, deliveryDate, checkedIte
                     setDeliveryDate('')
                     setCheckedItems([])
                     fetchMoveOrderList()
+                    setIsLoading(false)
                     onClose()
                 })
                 .catch(err => {
                     ToastComponent("Error", "Transaction failed", "error", toast)
+                    setIsLoading(false)
                 })
         } catch (error) {
         }
@@ -232,8 +236,22 @@ export const TransactConfirmation = ({ isOpen, onClose, deliveryDate, checkedIte
                 </ModalBody>
                 <ModalFooter>
                     <ButtonGroup size='sm' mt={7}>
-                        <Button colorScheme='blue' onClick={submitHandler}>Yes</Button>
-                        <Button colorScheme='red' onClick={onClose}>No</Button>
+                        <Button
+                            onClick={submitHandler}
+                            isLoading={isLoading}
+                            disabled={isLoading}
+                            colorScheme='blue'
+                        >
+                            Yes
+                        </Button>
+                        <Button
+                            onClick={onClose}
+                            isLoading={isLoading}
+                            disabled={isLoading}
+                            colorScheme='red'
+                        >
+                            No
+                        </Button>
                     </ButtonGroup>
                 </ModalFooter>
             </ModalContent>

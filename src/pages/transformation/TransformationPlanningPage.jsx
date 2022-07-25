@@ -21,25 +21,14 @@ const fetchNotificationApi = async () => {
   return res.data
 }
 
-const TransformationPlanningPage = () => {
+const TransformationPlanningPage = ({ notification, fetchNotification }) => {
 
   const [navigation, setNavigation] = useState(null)
 
-  const [notification, setNotification] = useState([])
   const { pathname } = useLocation()
-
-  const fetchNotification = () => {
-    fetchNotificationApi().then(res => {
-      setNotification(res)
-    })
-  }
 
   useEffect(() => {
     fetchNotification()
-
-    return () => {
-      setNotification([])
-    }
   }, [])
 
   const navBars = {
@@ -105,12 +94,12 @@ const TransformationPlanningPage = () => {
         {/* <PageScrollTransformation> */}
         {navigation === 1 ?
           (
-            <AddRequest />
+            <AddRequest fetchNotification={fetchNotification} />
           )
           :
           navigation === 2 ?
             (
-              <StatusOfRequest />
+              <StatusOfRequest fetchNotification={fetchNotification} />
             )
             :
             navigation === 3 ?

@@ -35,7 +35,7 @@ import { ToastComponent } from '../../../../components/Toast'
 //   return res.data
 // }
 
-export const ListofRequest = ({ setTransformId, transformId, status, setStatus }) => {
+export const ListofRequest = ({ setTransformId, transformId, status, setStatus, fetchNotification }) => {
 
   const dropdownRef = useRef()
 
@@ -176,6 +176,7 @@ export const ListofRequest = ({ setTransformId, transformId, status, setStatus }
             setStatus={setStatus}
             setTransformId={setTransformId}
             dropdownRef={dropdownRef}
+            fetchNotification={fetchNotification}
           />
         )
       }
@@ -184,7 +185,7 @@ export const ListofRequest = ({ setTransformId, transformId, status, setStatus }
   )
 }
 
-const CancelModal = ({ isOpen, onClose, transformId, fetchRequestByStatus, setStatus, setTransformId, dropdownRef }) => {
+const CancelModal = ({ isOpen, onClose, transformId, fetchRequestByStatus, setStatus, setTransformId, dropdownRef, fetchNotification }) => {
 
   const [reasons, setReasons] = useState([])
   const [cancelRemarks, setCancelRemarks] = useState('')
@@ -225,6 +226,7 @@ const CancelModal = ({ isOpen, onClose, transformId, fetchRequestByStatus, setSt
             fetchRequestByStatus()
             setStatus("approved")
             setTransformId("")
+            fetchNotification()
             dropdownRef.current.value = "approved"
             onClose()
           })

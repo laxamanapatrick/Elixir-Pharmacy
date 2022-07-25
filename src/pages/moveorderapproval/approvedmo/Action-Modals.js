@@ -99,6 +99,8 @@ export const TrackModal = ({ isOpen, onClose, trackData, trackList }) => {
 
 export const PrintModal = ({ isOpen, onClose, printData, closeApprove, fetchApprovedMO, orderId }) => {
 
+    const [isLoading, setIsLoading] = useState(false)
+
     const componentRef = useRef()
 
     const handlePrint = useReactToPrint({
@@ -106,12 +108,16 @@ export const PrintModal = ({ isOpen, onClose, printData, closeApprove, fetchAppr
     });
 
     const printAndUpdate = () => {
+        setIsLoading(true)
         try {
             const res = apiClient.put(`Ordering/UpdatePrintStatus`, { orderNo: orderId })
                 .then(res => {
+                    setIsLoading(false)
                     handlePrint()
                 })
-                .catch(err => { })
+                .catch(err => {
+                    setIsLoading(false)
+                })
         } catch (error) {
         }
     }
@@ -276,8 +282,20 @@ export const PrintModal = ({ isOpen, onClose, printData, closeApprove, fetchAppr
 
                 <ModalFooter>
                     <ButtonGroup size='sm' mt={7}>
-                        <Button colorScheme='cyan' color='white' onClick={printAndUpdate}>Print</Button>
-                        <Button colorScheme='blackAlpha' onClick={closeHandler}>Close</Button>
+                        <Button
+                            isLoading={isLoading}
+                            disabled={isLoading}
+                            colorScheme='cyan' color='white' onClick={printAndUpdate}
+                        >
+                            Print
+                        </Button>
+                        <Button
+                            isLoading={isLoading}
+                            disabled={isLoading}
+                            colorScheme='blackAlpha' onClick={closeHandler}
+                        >
+                            Close
+                        </Button>
                     </ButtonGroup>
                 </ModalFooter>
             </ModalContent>
@@ -293,6 +311,8 @@ export const RejectModal = ({ isOpen, onClose, id, fetchApprovedMO }) => {
     const [reasons, setReasons] = useState([])
 
     const toast = useToast()
+
+    const [isLoading, setIsLoading] = useState(false)
 
     const fetchReasonsApi = async () => {
         const res = await apiClient.get(`Reason/GetAllActiveReason`)
@@ -314,6 +334,7 @@ export const RejectModal = ({ isOpen, onClose, id, fetchApprovedMO }) => {
     }, [])
 
     const submitHandler = () => {
+        setIsLoading(true)
         try {
             const res = apiClient.put(`Ordering/RejectListOfMoveOrder`,
                 {
@@ -325,10 +346,12 @@ export const RejectModal = ({ isOpen, onClose, id, fetchApprovedMO }) => {
                 .then(res => {
                     ToastComponent("Success", "Move order has been rejected", "success", toast)
                     fetchApprovedMO()
+                    setIsLoading(false)
                     onClose()
                 })
                 .catch(err => {
                     ToastComponent("Error", "Move order was not rejected", "error", toast)
+                    setIsLoading(false)
                 })
         } catch (error) {
         }
@@ -368,12 +391,19 @@ export const RejectModal = ({ isOpen, onClose, id, fetchApprovedMO }) => {
                     <ButtonGroup size='sm' mt={7}>
                         <Button
                             onClick={submitHandler}
-                            disabled={!reasonSubmit}
+                            disabled={!reasonSubmit || isLoading}
+                            isLoading={isLoading}
                             colorScheme='blue'
                         >
                             Yes
                         </Button>
-                        <Button colorScheme='red' onClick={onClose}>No</Button>
+                        <Button
+                            disabled={isLoading}
+                            isLoading={isLoading}
+                            colorScheme='red' onClick={onClose}
+                        >
+                            No
+                        </Button>
                     </ButtonGroup>
                 </ModalFooter>
             </ModalContent>

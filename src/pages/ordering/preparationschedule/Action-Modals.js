@@ -92,8 +92,22 @@ export const EditModal = ({ isOpen, onClose, editData, setCurrentPage, currentPa
 
                     <ModalFooter>
                         <ButtonGroup size='xs' mt={5}>
-                            <Button px={4} colorScheme='blue' disabled={!quantitySubmit} onClick={submitHandler}>Save</Button>
-                            <Button colorScheme='red' onClick={onClose}>Cancel</Button>
+                            <Button px={4}
+                                onClick={submitHandler}
+                                isLoading={isLoading}
+                                disabled={!quantitySubmit || isLoading}
+                                colorScheme='blue'
+                            >
+                                Save
+                            </Button>
+                            <Button
+                                onClick={onClose}
+                                isLoading={isLoading}
+                                disabled={isLoading}
+                                colorScheme='red'
+                            >
+                                Cancel
+                            </Button>
                         </ButtonGroup>
                     </ModalFooter>
                 </ModalContent>
@@ -111,7 +125,7 @@ export const CancelModalConfirmation = ({ isOpen, onClose, cancelId, setCurrentP
     const toast = useToast()
 
     const fetchReasonsApi = async () => {
-        const res = await apiClient.get(`https://localhost:44382/api/Reason/GetAllActiveReason`)
+        const res = await apiClient.get(`Reason/GetAllActiveReason`)
         return res.data
     }
 
@@ -140,7 +154,7 @@ export const CancelModalConfirmation = ({ isOpen, onClose, cancelId, setCurrentP
     const cancelHandler = () => {
         setIsLoading(true)
         try {
-            const res = apiClient.put(`https://localhost:44382/api/Ordering/CancelOrders`,
+            const res = apiClient.put(`Ordering/CancelOrders`,
                 {
                     id: cancelId,
                     remarks: cancelRemarks,
@@ -150,6 +164,7 @@ export const CancelModalConfirmation = ({ isOpen, onClose, cancelId, setCurrentP
                 .then(res => {
                     setCurrentPage(currentPage)
                     ToastComponent("Success", "Order has been cancelled!", "success", toast)
+                    setIsLoading(false)
                     onClose()
                     fetchOrders()
                 })
@@ -200,7 +215,10 @@ export const CancelModalConfirmation = ({ isOpen, onClose, cancelId, setCurrentP
                     >
                         Yes
                     </Button>
-                    <Button colorScheme='red' onClick={onClose}>No</Button>
+                    <Button colorScheme='red' onClick={onClose}
+                        disabled={isLoading}
+                        isLoading={isLoading}
+                    >No</Button>
                 </ModalFooter>
             </ModalContent>
         </Modal>
@@ -285,6 +303,7 @@ export const ScheduleConfirmation = ({ isOpen, onClose, checkedItems, setChecked
 const ScheduleValidation = ({ isOpen, onClose, closeSchedule, preparationDate, checkedItems, setCheckedItems, fetchOrders, setCurrentPage, currentPage }) => {
 
     const toast = useToast()
+    const [isLoading, setIsLoading] = useState(false)
 
     const submitHandler = () => {
         const submitArray = checkedItems?.map(item => {
@@ -294,6 +313,7 @@ const ScheduleValidation = ({ isOpen, onClose, closeSchedule, preparationDate, c
                 preparedBy: currentUser.userName
             }
         })
+        setIsLoading(true)
         try {
             const res = apiClient.put(`Ordering/SchedulePreparedOrderedDate`, submitArray)
                 .then(res => {
@@ -303,9 +323,11 @@ const ScheduleValidation = ({ isOpen, onClose, closeSchedule, preparationDate, c
                     setCurrentPage(currentPage)
                     setCheckedItems([])
                     fetchOrders()
+                    setIsLoading(false)
                 })
                 .catch(err => {
                     ToastComponent("Error", "Schedule failed", "error", toast)
+                    setIsLoading(false)
                 })
         } catch (error) {
         }
@@ -329,12 +351,20 @@ const ScheduleValidation = ({ isOpen, onClose, closeSchedule, preparationDate, c
                     <ButtonGroup size='md' mt={10}>
                         <Button
                             px={5} colorScheme='blue'
-                            disabled={!preparationDate}
+                            isLoading={isLoading}
+                            disabled={!preparationDate || isLoading}
                             onClick={submitHandler}
                         >
                             Yes
                         </Button>
-                        <Button colorScheme='red' onClick={onClose}>Cancel</Button>
+                        <Button
+                            onClick={onClose}
+                            isLoading={isLoading}
+                            disabled={isLoading}
+                            colorScheme='red'
+                        >
+                            Cancel
+                        </Button>
                     </ButtonGroup>
                 </ModalFooter>
             </ModalContent>

@@ -48,7 +48,7 @@ const fetchRejectRMWHApi = async (pageNumber, pageSize, search) => {
   return res.data
 }
 
-const RejectRMWHReceiving = () => {
+const RejectRMWHReceiving = ({ fetchNotification }) => {
 
   const [rejectData, setRejectData] = useState([])
   const [qcReceivingId, setQcReceivingId] = useState(null)
@@ -258,6 +258,7 @@ const RejectRMWHReceiving = () => {
             fetchReject={fetchReject}
             isOpen={isConfirmModalOpen}
             onClose={closeConfirmModal}
+            fetchNotification={fetchNotification}
           />
         )
       }
@@ -269,6 +270,7 @@ const RejectRMWHReceiving = () => {
             fetchReject={fetchReject}
             isOpen={isReturnModalOpen}
             onClose={closeReturnModal}
+            fetchNotification={fetchNotification}
           />
         )
       }

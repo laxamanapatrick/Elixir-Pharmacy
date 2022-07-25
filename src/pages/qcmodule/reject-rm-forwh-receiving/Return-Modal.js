@@ -21,7 +21,7 @@ import { ToastComponent } from '../../../components/Toast';
 
 const currentUser = decodeUser()
 
-const ReturnModal = ({ qcReceivingId, fetchReject, isOpen, onClose }) => {
+const ReturnModal = ({ qcReceivingId, fetchReject, isOpen, onClose, fetchNotification }) => {
 
   const [isLoading, setIsLoading] = useState(false)
 
@@ -31,13 +31,14 @@ const ReturnModal = ({ qcReceivingId, fetchReject, isOpen, onClose }) => {
     try {
       setIsLoading(true)
       const res = apiClient.put(`Receiving/WarehouseReturnRejectbyQc/${qcReceivingId}`,
-      {
-        id: qcReceivingId,
-        rejectedBy: currentUser.userName
-      }
+        {
+          id: qcReceivingId,
+          rejectedBy: currentUser.userName
+        }
       ).then(res => {
         ToastComponent("Succes!", "Rejected Raw Material has been returned", "success", toast)
         fetchReject()
+        fetchNotification()
         onClose()
       }).catch(err => {
         ToastComponent("Error!", err.response.data, "error", toast)

@@ -12,14 +12,14 @@ import { SaveButton } from './preparation/Save-Button';
 import apiClient from '../../services/apiClient';
 import { usePagination } from '@ajna/pagination';
 
-const PreparationPage = () => {
+const PreparationPage = ({ fetchNotification }) => {
 
 
   const [transformId, setTransformId] = useState(null)
   const [batch, setBatch] = useState(null)
   const [itemCode, setItemCode] = useState("")
   const [weight, setWeight] = useState('')
-  
+
 
   const [information, setInformation] = useState([])
   const [requirements, setRequirements] = useState([])
@@ -148,6 +148,7 @@ const PreparationPage = () => {
             disableSave={disableSave}
             requirements={requirements}
             setDisableSave={setDisableSave}
+            fetchNotification={fetchNotification}
           />
         </VStack>
       </Flex>

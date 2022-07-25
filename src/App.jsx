@@ -81,6 +81,11 @@ import RejectedMO from './pages/moveorderapproval/Rejected-MO';
 import ReportsPage from './pages/ReportsPage';
 import AppScroll from './components/AppScroll';
 
+import apiClient from './services/apiClient';
+const fetchNotificationApi = async () => {
+  const res = await apiClient.get(`Receiving/GetNotification`)
+  return res.data
+}
 
 function App() {
   const [isSidebarVisible, setIsSidebarVisible] = useState(false)
@@ -88,6 +93,22 @@ function App() {
 
   const [isMobile] = useMediaQuery('(max-width: 1180px)')
   const user = decodeUser()
+
+  const [notification, setNotification] = useState([])
+
+  const fetchNotification = () => {
+    fetchNotificationApi().then(res => {
+      setNotification(res)
+    })
+  }
+
+  useEffect(() => {
+    fetchNotification()
+
+    return () => {
+      setNotification([])
+    }
+  }, [])
 
   useEffect(() => {
     setIsSidebarVisible(isMobile)
@@ -113,13 +134,13 @@ function App() {
             <Route path="miscellaneous-issue" element={user ? <MiscellaneousIssuePage /> : <Navigate to="/login" />} />
           </Route>
 
-          <Route path="qc-module" element={user ? <QcModulePage /> : <Navigate to="/login" />}>
-            <Route path="qc-receiving" element={user ? <QCReceivingPage /> : <Navigate to="/login" />} />
-            <Route path="wh-receiving" element={user ? <RMWHReceivingPage /> : <Navigate to="/login" />} />
-            <Route path="wh-confirm-reject" element={user ? <WHConfirmReject /> : <Navigate to="/login" />} />
-            <Route path="rm-nearly-expire" element={user ? <RMNearlyExpirePage /> : <Navigate to="/login" />} />
-            <Route path="approval-wh-rejection" element={user ? <RejectRMWHReceiving /> : <Navigate to="/login" />} />
-            <Route path="cancelled-rm" element={user ? <CancelledRMPage /> : <Navigate to="/login" />} />
+          <Route path="qc-module" element={user ? <QcModulePage notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />}>
+            <Route path="qc-receiving" element={user ? <QCReceivingPage notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />} />
+            <Route path="wh-receiving" element={user ? <RMWHReceivingPage notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />} />
+            <Route path="wh-confirm-reject" element={user ? <WHConfirmReject notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />} />
+            <Route path="rm-nearly-expire" element={user ? <RMNearlyExpirePage notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />} />
+            <Route path="approval-wh-rejection" element={user ? <RejectRMWHReceiving notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />} />
+            <Route path="cancelled-rm" element={user ? <CancelledRMPage notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />} />
           </Route>
 
           <Route path="receiving" element={user ? <ReceivingPage /> : <Navigate to="/login" />}>
@@ -134,15 +155,15 @@ function App() {
             <Route path="order-summary" element={user ? <OrderSummaryPage /> : <Navigate to="/login" />} />
           </Route>
 
-          <Route path="transformation" element={user ? <TransformationPage /> : <Navigate to="/login" />}>
-            <Route path="transformation-planning" element={user ? <TransformationPlanningPage /> : <Navigate to="/login" />}>
-              <Route path="add-request" element={user ? <AddRequest /> : <Navigate to="/login" />} />
-              <Route path="status-of-request" element={user ? <StatusOfRequest /> : <Navigate to="/login" />} />
-              <Route path="request-reject" element={user ? <RequestReject /> : <Navigate to="/login" />} />
+          <Route path="transformation" element={user ? <TransformationPage notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />}>
+            <Route path="transformation-planning" element={user ? <TransformationPlanningPage notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />}>
+              <Route path="add-request" element={user ? <AddRequest notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />} />
+              <Route path="status-of-request" element={user ? <StatusOfRequest notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />} />
+              <Route path="request-reject" element={user ? <RequestReject notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />} />
             </Route>
-            <Route path="approval-request" element={user ? <ApprovalRequestPage /> : <Navigate to="/login" />} />
-            <Route path="preparation" element={user ? <PreparationPage /> : <Navigate to="/login" />} />
-            <Route path="mixing" element={user ? <MixingPage /> : <Navigate to="/login" />} />
+            <Route path="approval-request" element={user ? <ApprovalRequestPage notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />} />
+            <Route path="preparation" element={user ? <PreparationPage notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />} />
+            <Route path="mixing" element={user ? <MixingPage notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />} />
           </Route>
 
           <Route path="import" element={user ? <ImportPage /> : <Navigate to="/login" />}>
@@ -173,10 +194,10 @@ function App() {
             <Route path="reason" element={user ? <ReasonPage /> : <Navigate to="/login" />} />
           </Route>
 
-          <Route path="move-order-approval" element={user ? <MoveOrderApproval /> : <Navigate to='/login' />}>
-            <Route path="for-approval" element={user ? <ForApprovalMO /> : <Navigate to="/login" />} />
-            <Route path="approved-mo" element={user ? <ApprovedMO /> : <Navigate to="/login" />} />
-            <Route path="rejected-mo" element={user ? <RejectedMO /> : <Navigate to="/login" />} />
+          <Route path="move-order-approval" element={user ? <MoveOrderApproval notification={notification} fetchNotification={fetchNotification} /> : <Navigate to='/login' />}>
+            <Route path="for-approval" element={user ? <ForApprovalMO notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />} />
+            <Route path="approved-mo" element={user ? <ApprovedMO notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />} />
+            <Route path="rejected-mo" element={user ? <RejectedMO notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />} />
           </Route>
 
           <Route path="reports" element={user ? <ReportsPage /> : <Navigate to="/login" />}>

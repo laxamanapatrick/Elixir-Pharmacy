@@ -59,7 +59,8 @@ const RequestReject = ({ fetchNotification }) => {
     <VStack spacing={5} w='full' h='auto'>
       <ListofReject rejects={rejects} setTransformId={setTransformId} transformId={transformId} setEditData={setEditData} />
       <ListofRawMaterialsRequirements requirements={requirements} transformId={transformId} />
-      <SubmitButtons transformId={transformId} setTransformId={setTransformId} fetchRejected={fetchRejected} fetchRequirements={fetchRequirements} editData={editData} fetchNotification={fetchNotification} />
+      <SubmitButtons transformId={transformId} setTransformId={setTransformId} fetchRejected={fetchRejected} 
+      fetchRequirements={fetchRequirements} editData={editData} fetchNotification={fetchNotification} />
     </VStack>
   )
 }

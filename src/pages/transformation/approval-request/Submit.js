@@ -4,9 +4,10 @@ import { BsFillQuestionOctagonFill } from 'react-icons/bs'
 import apiClient from '../../../services/apiClient'
 import { ToastComponent } from '../../../components/Toast'
 
-export const Submit = ({ transformId, setTransformId, fetchRequestByStatus, fetchRequirements }) => {
+export const Submit = ({ transformId, setTransformId, fetchRequestByStatus, fetchRequirements, fetchNotification }) => {
 
     const toast = useToast()
+    const [isLoading, setIsLoading] = useState(false)
 
     const [reasons, setReasons] = useState([])
     const [rejectRemarks, setRejectRemarks] = useState("")
@@ -46,6 +47,7 @@ export const Submit = ({ transformId, setTransformId, fetchRequestByStatus, fetc
     }
 
     const submitApproveHandler = () => {
+        setIsLoading(true)
         try {
             const res = apiClient.put(`Planning/ApproveTransformRequest/${transformId}`,
                 {
@@ -56,16 +58,20 @@ export const Submit = ({ transformId, setTransformId, fetchRequestByStatus, fetc
                     setTransformId("")
                     fetchRequirements()
                     fetchRequestByStatus()
+                    fetchNotification()
+                    setIsLoading(false)
                     closeApprove()
                 })
                 .catch(err => {
                     ToastComponent("Error", err.response.data, "error", toast)
+                    setIsLoading(false)
                 })
         } catch (error) {
         }
     }
 
     const submitRejectHandler = () => {
+        setIsLoading(true)
         try {
             const res = apiClient.put(`Planning/RejectTransformationRequest/${transformId}`,
                 {
@@ -77,10 +83,13 @@ export const Submit = ({ transformId, setTransformId, fetchRequestByStatus, fetc
                     setTransformId("")
                     fetchRequirements()
                     fetchRequestByStatus()
+                    fetchNotification()
+                    setIsLoading(false)
                     closeReject()
                 })
                 .catch(err => {
                     ToastComponent("Error", err.response.data, "error", toast)
+                    setIsLoading(false)
                 })
         } catch (error) {
         }
@@ -111,11 +120,18 @@ export const Submit = ({ transformId, setTransformId, fetchRequestByStatus, fetc
                     <ModalFooter>
                         <Button
                             onClick={() => submitApproveHandler()}
+                            isLoading={isLoading}
+                            disabled={isLoading}
                             colorScheme='blue' mr={3} _hover={{ bgColor: 'accent' }}
                         >
                             Yes
                         </Button>
-                        <Button variant='ghost' onClick={closeApprove}>No</Button>
+                        <Button variant='ghost' onClick={closeApprove}
+                            isLoading={isLoading}
+                            disabled={isLoading}
+                        >
+                            No
+                        </Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
@@ -154,12 +170,18 @@ export const Submit = ({ transformId, setTransformId, fetchRequestByStatus, fetc
                     <ModalFooter>
                         <Button
                             onClick={() => submitRejectHandler()}
-                            disabled={!rejectRemarks}
+                            isLoading={isLoading}
+                            disabled={!rejectRemarks || isLoading}
                             colorScheme='blue' mr={3} _hover={{ bgColor: 'accent' }}
                         >
                             Yes
                         </Button>
-                        <Button variant='ghost' onClick={closeReject}>No</Button>
+                        <Button variant='ghost' onClick={closeReject}
+                            isLoading={isLoading}
+                            disabled={isLoading}
+                        >
+                            No
+                        </Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>

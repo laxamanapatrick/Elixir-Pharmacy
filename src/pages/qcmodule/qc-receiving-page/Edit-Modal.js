@@ -37,7 +37,7 @@ import { ReceivingContext } from '../../../context/ReceivingContext'
 const currentUser = decodeUser()
 
 
-export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo }) => {
+export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo, fetchNotification }) => {
 
   const [manufacturingDate, setManufacturingDate] = useState(null)
   const [expectedDelivery, setExpectedDelivery] = useState(null)
@@ -398,6 +398,7 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo }) => {
                 submitDataThree={submitDataThree}
                 isSubmitDisabled={isSubmitDisabled}
                 fetchPo={fetchPo}
+                fetchNotification={fetchNotification}
                 closeModal={onClose}
               />
 

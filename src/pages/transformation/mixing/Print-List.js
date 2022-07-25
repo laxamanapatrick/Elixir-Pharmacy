@@ -40,11 +40,14 @@ export const SaveConfirmation = ({ isOpen,
   requests,
   totalWeight,
   setTotalWeight,
-  setCurrentPage
+  setCurrentPage,
+  fetchNotification
 }) => {
 
   const [displayData, setDisplayData] = useState([])
   const toast = useToast()
+
+  const [isLoading, setIsLoading] = useState(false)
 
   const { isOpen: isPrint, onOpen: openPrint, onClose: closePrint } = useDisclosure()
 
@@ -70,6 +73,7 @@ export const SaveConfirmation = ({ isOpen,
   }
 
   const submitHandler = () => {
+    setIsLoading(true)
     try {
       const res = apiClient.put(`Preparation/FinishedMixedMaterialsForWarehouse/${transformId}`, {
         transformId: transformId,
@@ -95,6 +99,8 @@ export const SaveConfirmation = ({ isOpen,
           fetchMixingRequest()
           fetchRequirements()
           fetchBatchRemaining()
+          fetchNotification()
+          setIsLoading(false)
           setDisableSave(true)
           if (batchRemaining === 0) {
             setMixingCue(false)
@@ -105,6 +111,7 @@ export const SaveConfirmation = ({ isOpen,
         })
         .catch(err => {
           ToastComponent('Error', err.response.data, 'error', toast)
+          setIsLoading(false)
         })
     } catch (error) {
     }
@@ -171,12 +178,19 @@ export const SaveConfirmation = ({ isOpen,
             <ButtonGroup size='sm' mt={4}>
               <Button
                 onClick={submitHandler}
-                disabled={!lotCategory || !expirationDate}
+                disabled={!lotCategory || !expirationDate || isLoading}
+                isLoading={isLoading}
                 colorScheme='blue'
               >
                 Yes
               </Button>
-              <Button colorScheme='red' onClick={onClose}>No</Button>
+              <Button
+                disabled={isLoading}
+                isLoading={isLoading}
+                colorScheme='red' onClick={onClose}
+              >
+                No
+              </Button>
             </ButtonGroup>
           </ModalFooter>
         </ModalContent>
