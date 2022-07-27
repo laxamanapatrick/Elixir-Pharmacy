@@ -243,7 +243,11 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
                                             expirationDate: rawMatsInfo.expirationDate,
                                             quantity: Number(e.target.value)
                                         })}
-                                        w='full' type='number'
+                                        type="number"
+                                        onWheel={(e) => e.target.blur()}
+                                        onKeyDown={(e) => ["E", "e", "+", "-"].includes(e.key) && e.preventDefault()}
+                                        onPaste={(e) => e.preventDefault()}
+                                        w='full'
                                         bgColor='#fff8dc'
                                     />
                                 </HStack>

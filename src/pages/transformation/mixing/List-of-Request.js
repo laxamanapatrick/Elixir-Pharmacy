@@ -12,7 +12,7 @@ import {
 import PageScrollTransformation from '../../../components/PageScroll-Transformation'
 
 export const ListofRequest = ({ setTransformId, transformId, setBatchRemaining, setCurrentPage, 
-    currentPage, pagesCount, requests, setQuantity, setBatch }) => {
+    currentPage, pagesCount, requests, setQuantity, setBatch, setMixingCue }) => {
 
     useEffect(() => {
         const requestData = requests?.mixing
@@ -26,6 +26,7 @@ export const ListofRequest = ({ setTransformId, transformId, setBatchRemaining, 
 
     const handlePageChange = (nextPage) => {
         setCurrentPage(nextPage)
+        setMixingCue(false)
     }
 
     return (
@@ -91,7 +92,7 @@ export const ListofRequest = ({ setTransformId, transformId, setBatchRemaining, 
                                         <Td>{item.itemDescription}</Td>
                                         <Td>{item.batch}</Td>
                                         <Td>{item.version}</Td>
-                                        <Td>{item.quantity}</Td>
+                                        <Td>{item.quantity.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
                                         <Td>{item.prodPlan}</Td>
                                         <Td>{"IN-PROCESS"}</Td>
                                     </Tr>

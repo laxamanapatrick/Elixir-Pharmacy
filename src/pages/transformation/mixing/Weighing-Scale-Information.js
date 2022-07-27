@@ -6,7 +6,7 @@ import { SaveConfirmation } from './Print-List'
 import DatePicker from "react-datepicker";
 
 export const WeighingScaleInformation = ({ transformId, batchRemaining, fetchMixingRequest, fetchRequirements,
-    fetchBatchRemaining, setMixingCue, quantity, requests, batch, setCurrentPage, fetchNotification }) => {
+    fetchBatchRemaining, setMixingCue, quantity, requests, batch, setCurrentPage, fetchNotification, quantityBasis }) => {
 
     const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -23,7 +23,7 @@ export const WeighingScaleInformation = ({ transformId, batchRemaining, fetchMix
         }
     }, [totalWeight])
 
-    const quantityPerBatch = Number(quantity) / Number(batch)
+    const quantityPerBatch = Number(quantityBasis) / Number(batch)
     const weightHandler = (data) => {
         setTotalWeight(data)
         const minAllowable = Number(quantityPerBatch) - (Number(quantityPerBatch) * 0.001)
@@ -34,13 +34,9 @@ export const WeighingScaleInformation = ({ transformId, batchRemaining, fetchMix
         else {
             setDisableSave(false)
         }
-        // if (data) {
-        //     setDisableSave(false)
-        // } else {
-        //     setTotalWeight(null)
-        //     setDisableSave(true)
-        // }
     }
+
+    console.log(quantityBasis)
 
     return (
         <Flex w='full' flexDirection='column'>
@@ -53,7 +49,7 @@ export const WeighingScaleInformation = ({ transformId, batchRemaining, fetchMix
                     <Text bgColor='gray.200' border='1px' px={12} fontSize='sm'>1</Text>
                 </HStack>
                 <HStack spacing={5}>
-                    <Text bgColor='secondary' color='white' px={10} textAlign='start' fontSize='sm'>Quantity per Batch:</Text>
+                    <Text bgColor='secondary' color='white' px={10} textAlign='start' fontSize='sm'>Allowed max quantity on this batch:</Text>
                     <Text bgColor='#fff8dc' border='1px' px={12} fontSize='sm'>{quantityPerBatch ? quantityPerBatch : 0}</Text>
                 </HStack>
                 <HStack spacing={1}>

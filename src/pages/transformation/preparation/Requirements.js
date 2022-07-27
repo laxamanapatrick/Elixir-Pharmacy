@@ -37,7 +37,7 @@ export const Requirements = ({ requirements, setItemCode, itemCode }) => {
                   <Td>{item.rawmaterialDescription}</Td>
                   <Td>{item.uom}</Td>
                   <Td>{item.batch}</Td>
-                  <Td>{item.rawmaterialQuantity}</Td>
+                  <Td>{item.rawmaterialQuantity.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
                 </Tr>
               )
             }

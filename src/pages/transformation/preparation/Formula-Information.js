@@ -109,7 +109,7 @@ export const FormulaInformation = ({ setTransformId, setBatch,
                 <Tr key={i}>
                   <Td>{item.itemCode}</Td>
                   <Td>{item.itemDescription}</Td>
-                  <Td>{item.quantity}</Td>
+                  <Td>{item.quantity.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
                 </Tr>
               )
             }

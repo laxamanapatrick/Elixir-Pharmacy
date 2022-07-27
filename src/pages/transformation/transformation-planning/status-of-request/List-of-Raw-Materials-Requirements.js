@@ -82,7 +82,7 @@ export const ListofRawMaterialsRequirements = ({ transformId, status }) => {
                                         <Td>{r.uom}</Td>
                                         <Td>{r.batch}</Td>
                                         <Td>{r.version}</Td>
-                                        <Td>{r.quantity}</Td>
+                                        <Td>{r.quantity.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
                                         <Td>{r.prodPlan}</Td>
                                         {/* <Td>{r.addedBy}</Td> */}
                                     </Tr>

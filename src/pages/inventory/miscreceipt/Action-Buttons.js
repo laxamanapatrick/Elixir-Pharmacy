@@ -2,7 +2,7 @@ import React from 'react'
 import { Button, ButtonGroup, Flex, useDisclosure } from '@chakra-ui/react'
 import { CancelConfirmation, EditModal, SaveConfirmation } from './Action-Modals'
 
-export const ActionButtons = ({ listDataTempo, setListDataTempo, selectorId, rowIndex }) => {
+export const ActionButtons = ({ listDataTempo, setListDataTempo, selectorId, rowIndex, totalQuantity, supplierData }) => {
 
     const { isOpen: isEdit, onClose: closeEdit, onOpen: openEdit } = useDisclosure()
     const editHandler = () => {
@@ -49,6 +49,8 @@ export const ActionButtons = ({ listDataTempo, setListDataTempo, selectorId, row
                         onClose={closeSave}
                         listDataTempo={listDataTempo}
                         setListDataTempo={setListDataTempo}
+                        totalQuantity={totalQuantity}
+                        supplierData={supplierData}
                     />
                 )
             }

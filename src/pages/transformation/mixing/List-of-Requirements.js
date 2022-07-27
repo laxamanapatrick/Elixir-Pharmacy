@@ -1,8 +1,17 @@
+import React, { useEffect } from 'react'
 import { Flex, Table, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react'
-import React from 'react'
 import PageScrollTransformation from '../../../components/PageScroll-Transformation'
 
-export const ListofRequirements = ({ requirements, requests }) => {
+export const ListofRequirements = ({ requirements, requests, setQuantityBasis }) => {
+
+    //Quantity Basis Provider
+    useEffect(() => {
+        if (requirements.length) {
+            let totalQuantity = requirements?.map((item) => parseFloat(item.weighingScale))
+            let sum = totalQuantity?.reduce((a, b) => a + b)
+            setQuantityBasis(sum)
+        }
+    }, [requirements])
 
     return (
         <Flex w='full' flexDirection='column'>
@@ -33,7 +42,7 @@ export const ListofRequirements = ({ requirements, requests }) => {
                                         <Td>{item.itemDescription}</Td>
                                         <Td>{item.batch}</Td>
                                         <Td>{item.quantityBatch}</Td>
-                                        <Td>{item.totalQuantity}</Td>
+                                        <Td>{item.totalQuantity.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
                                         <Td>{item.weighingScale}</Td>
                                     </Tr>
                                 )

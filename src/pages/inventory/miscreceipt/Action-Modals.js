@@ -27,14 +27,14 @@ export const AddConfirmation = ({ isOpen, onClose, closeAddModal, details, setDe
     setRawMatsInfo({
       itemCode: '',
       itemDescription: '',
-      supplier: '',
+      supplier: rawMatsInfo.supplier,
       uom: '',
       expirationDate: '',
       quantity: ''
     })
-    supplierRef.current.value = ''
+    // supplierRef.current.value = ''
     setSelectorId('')
-    setDetails('')
+    // setDetails('')
     setIsLoading(false)
     onClose()
     closeAddModal()
@@ -71,36 +71,62 @@ export const AddConfirmation = ({ isOpen, onClose, closeAddModal, details, setDe
   )
 }
 
-export const SaveConfirmation = ({ isOpen, onClose, listDataTempo, setListDataTempo }) => {
+export const SaveConfirmation = ({ isOpen, onClose, listDataTempo, setListDataTempo, supplierData, totalQuantity }) => {
 
   const [isLoading, setIsLoading] = useState(false)
   const toast = useToast()
 
   const saveSubmitHandler = () => {
-    const submitArray = listDataTempo.map(item => {
-      return {
-        itemCode: item.itemCode,
-        itemDescription: item.itemDescription,
-        uom: item.uom,
-        supplier: item.supplier,
-        expirationDate: item.expirationDate,
-        quantity: item.quantity,
-        remarks: item.description,
-        preparedBy: currentUser.userName
+
+    const firstSubmit = {
+      supplierCode: supplierData.supplierCode,
+      supplier: supplierData.supplierName,
+      totalQuantity: totalQuantity,
+      remarks: listDataTempo[0]?.description,
+      preparedBy: currentUser?.userName
+    }
+
+    if (totalQuantity > 0) {
+      setIsLoading(true)
+      try {
+        const res = apiClient.post(`Miscellaneous/AddNewMiscellaneousReceipt`, firstSubmit)
+          .then(res => {
+            const id = res.data.id
+
+            //SECOND POST IF MAY ID
+            if (id) {
+              const submitArray = listDataTempo.map(item => {
+                return {
+                  miscellaneousReceiptId: id,
+                  itemCode: item.itemCode,
+                  itemDescription: item.itemDescription,
+                  uom: item.uom,
+                  supplier: item.supplier,
+                  expiration: item.expirationDate,
+                  actualGood: item.quantity,
+                  remarks: item.description,
+                  receivedBy: currentUser.userName
+                }
+              })
+              try {
+                const res = apiClient.post(`Miscellaneous/AddNewMiscellaneousReceiptInWarehouse`, submitArray)
+                ToastComponent("Success", "Information saved", "success", toast)
+                setListDataTempo([])
+                setIsLoading(false)
+                onClose()
+              } catch (error) {
+                console.log(error)
+              }
+              console.log(submitArray)
+            }
+
+          })
+          .catch(err => {
+            ToastComponent("Error", "Information was not saved", "error", toast)
+            setIsLoading(false)
+          })
+      } catch (error) {
       }
-    })
-    setIsLoading(true)
-    try {
-      const res = apiClient.post(`Miscellaneous/AddNewMiscellaneousReceipt`, submitArray)
-        .then(res => {
-          ToastComponent("Success", "Information saved", "success", toast)
-          setListDataTempo([])
-          onClose()
-        })
-        .catch(err => {
-          ToastComponent("Error", "Information was not saved", "error", toast)
-        })
-    } catch (error) {
     }
   }
 

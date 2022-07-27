@@ -71,7 +71,7 @@ export const RequirementsInformation = ({ information, setWeight, setDisableSave
 
       <Flex w='90%' justifyContent='space-between'>
         <Text w='45%' pl={2} bgColor='secondary' color='white'>Quantity Needed:</Text>
-        <Text w='45%' pl={2} bgColor='gray.200' border='1px'>{information.quantityNeeded ? information.quantityNeeded : ''}</Text>
+        <Text w='45%' pl={2} bgColor='gray.200' border='1px'>{information.quantityNeeded ? information.quantityNeeded.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 }) : ''}</Text>
       </Flex>
 
       <Flex w='90%' justifyContent='space-between'>

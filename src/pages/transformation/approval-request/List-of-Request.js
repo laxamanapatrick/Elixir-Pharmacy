@@ -98,7 +98,7 @@ export const ListofRequest = ({ setTransformId, transformId, setStatus, requests
                     <Td>{r.uom}</Td>
                     <Td>{r.batch}</Td>
                     <Td>{r.version}</Td>
-                    <Td>{r.quantity * r.batch}</Td>
+                    <Td>{(r.quantity * r.batch).toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
                     <Td>{r.prodPlan}</Td>
                     <Td>{r.addedBy}</Td>
                   </Tr>

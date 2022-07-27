@@ -1,13 +1,15 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Flex, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from '@chakra-ui/react'
 import PageScrollReusable from '../../../components/PageScroll-Reusable'
 
-export const ListofReceipt = ({ listDataTempo, selectorId, setSelectorId, setEditableData, setRowIndex }) => {
+export const ListofReceipt = ({ listDataTempo, selectorId, setSelectorId, setEditableData, setRowIndex, setTotalQuantity }) => {
 
     const TableHead = [
         "Line", "Item Code", "Item Description",
         // "Category", 
-        "UOM", "Quantity", "Supplier", "Expiration Date"
+        "UOM", "Quantity",
+        // "Supplier", 
+        "Expiration Date"
     ]
 
     const rowHandler = (item, i) => {
@@ -16,6 +18,15 @@ export const ListofReceipt = ({ listDataTempo, selectorId, setSelectorId, setEdi
         const index = listDataTempo.indexOf(item)
         setRowIndex(index)
     }
+
+    useEffect(() => {
+        if (listDataTempo.length) {
+            let sumQuantity = listDataTempo.map((q) => parseFloat(q.quantity))
+            let sum = sumQuantity.reduce((a, b) => a + b)
+            setTotalQuantity(sum)
+        }
+
+    }, [listDataTempo])
 
     return (
         <Flex justifyContent='center' flexDirection='column' w='full'>
@@ -42,7 +53,7 @@ export const ListofReceipt = ({ listDataTempo, selectorId, setSelectorId, setEdi
                                             <Td>{item?.itemDescription}</Td>
                                             <Td>{item?.uom}</Td>
                                             <Td>{item?.quantity}</Td>
-                                            <Td>{item?.supplier}</Td>
+                                            {/* <Td>{item?.supplier}</Td> */}
                                             <Td>{item?.expirationDate}</Td>
                                         </Tr>
                                     )

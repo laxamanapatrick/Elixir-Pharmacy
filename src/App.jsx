@@ -209,8 +209,8 @@ function App() {
   );
 }
 
-function Layout({ isSidebarVisible, sideBarHandler }) {
 
+function Layout({ isSidebarVisible, sideBarHandler }) {
 
   return (
     <Flex bgColor='white' h='100vh'>

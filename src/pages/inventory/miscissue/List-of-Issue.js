@@ -7,7 +7,9 @@ export const ListofIssue = ({ listDataTempo, selectorId, setSelectorId, setEdita
     const TableHead = [
         "Line", "Item Code", "Item Description",
         // "Category", 
-        "UOM", "Quantity", "Customer", "Expiration Date"
+        "UOM", "Quantity", 
+        // "Customer", 
+        "Expiration Date"
     ]
 
     const rowHandler = (item, i) => {
@@ -42,7 +44,7 @@ export const ListofIssue = ({ listDataTempo, selectorId, setSelectorId, setEdita
                                             <Td>{item?.itemDescription}</Td>
                                             <Td>{item?.uom}</Td>
                                             <Td>{item?.quantity}</Td>
-                                            <Td>{item?.customer}</Td>
+                                            {/* <Td>{item?.customer}</Td> */}
                                             <Td>{item?.expirationDate}</Td>
                                         </Tr>
                                     )

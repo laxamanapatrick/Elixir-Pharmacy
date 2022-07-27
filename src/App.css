@@ -1,6 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Redressed&display=swap') .App {
-  text-align: center;
-}
+@import url('https://fonts.googleapis.com/css2?family=Redressed&display=swap');
+
+
 
 .App-logo {
   height: 40vmin;
@@ -23,6 +23,7 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+
 
 .App-link {
   color: #61dafb;

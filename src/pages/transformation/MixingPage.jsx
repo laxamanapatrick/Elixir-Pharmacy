@@ -45,6 +45,8 @@ const MixingPage = ({ fetchNotification }) => {
   const [quantity, setQuantity] = useState(null)
   const [batchRemaining, setBatchRemaining] = useState(null)
 
+  const [quantityBasis, setQuantityBasis] = useState('')
+
   const fetchMixingRequest = () => {
     fetchMixingRequestApi(currentPage).then(res => {
       setRequests(res)
@@ -105,8 +107,9 @@ const MixingPage = ({ fetchNotification }) => {
           requests={requests}
           setQuantity={setQuantity}
           setBatch={setBatch}
+          setMixingCue={setMixingCue}
         />
-        <ListofRequirements requirements={requirements} requests={requests} />
+        <ListofRequirements requirements={requirements} requests={requests} setQuantityBasis={setQuantityBasis} />
         {
           mixingCue &&
           <WeighingScaleInformation
@@ -121,6 +124,7 @@ const MixingPage = ({ fetchNotification }) => {
             batch={batch}
             setCurrentPage={setCurrentPage}
             fetchNotification={fetchNotification}
+            quantityBasis={quantityBasis}
           />
         }
       </Box>

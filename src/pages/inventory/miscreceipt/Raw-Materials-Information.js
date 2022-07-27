@@ -5,7 +5,7 @@ import { AddConfirmation } from './Action-Modals'
 import moment from 'moment'
 
 export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, listDataTempo, setListDataTempo, details, setDetails,
-    suppliers, rawMats, uoms, setSelectorId
+    suppliers, rawMats, uoms, setSelectorId, setSupplierData
 }) => {
 
     const supplierRef = useRef()
@@ -32,6 +32,10 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, listDataT
                 expirationDate: rawMatsInfo.expirationDate,
                 quantity: rawMatsInfo.quantity
             })
+            setSupplierData({
+                supplierCode: supplierCode,
+                supplierName: supplierName
+            })
         } else {
             setRawMatsInfo({
                 itemCode: rawMatsInfo.itemCode,
@@ -41,6 +45,10 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, listDataT
                 expirationDate: rawMatsInfo.expirationDate,
                 quantity: rawMatsInfo.quantity
             })
+            setSupplierData({
+                supplierCode: '',
+                supplierName: ''
+            })
         }
     }
 
@@ -48,7 +56,7 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, listDataT
         <Flex justifyContent='center' flexDirection='column' w='full'>
             <VStack w='full' spacing={6}>
                 <Text bgColor='secondary' w='full' color='white' textAlign='center' fontWeight='semibold'>Raw Materials Information</Text>
-                <Flex w='95%' justifyContent='space-between'>
+                <Flex w='full' justifyContent='space-between'>
 
                     <VStack alignItems='start' w='40%' mx={5}>
 
@@ -85,14 +93,14 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, listDataT
                     </VStack>
 
                 </Flex>
-                <VStack alignItems='start' w='92%' mx={5}>
+                <VStack alignItems='start' w='full'>
                     {/* Details */}
                     <HStack w='full'>
                         <Text w='auto' bgColor='secondary' color='white' pl={2} pr={5} py={2.5} fontSize='xs'>Details: </Text>
                         <Input
                             onChange={(e) => detailHandler(e.target.value)}
                             value={details}
-                            minW='93%' w='auto' bgColor='#fff8dc'
+                            w='full' bgColor='#fff8dc'
                         />
                     </HStack>
                 </VStack>
@@ -256,7 +264,12 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
                                             expirationDate: rawMatsInfo.expirationDate,
                                             quantity: Number(e.target.value)
                                         })}
-                                        w='full' type='number' bgColor='#fff8dc'
+                                        type="number"
+                                        onWheel={(e) => e.target.blur()}
+                                        onKeyDown={(e) => ["E", "e", "+", "-"].includes(e.key) && e.preventDefault()}
+                                        onPaste={(e) => e.preventDefault()}
+                                        w='full'
+                                        bgColor='#fff8dc'
                                     />
                                 </HStack>
 

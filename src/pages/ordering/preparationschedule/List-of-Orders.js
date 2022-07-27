@@ -31,7 +31,7 @@ export const ListofOrders = ({ setCurrentPage, currentPage, pagesCount,
 
     const [dateNeeded, setDateNeeded] = useState('')
     const [disableIfStock, setDisableIfStock] = useState(false)
-    const [disableIfDateNeeded, setDisableIfDateNeeded] = useState(false)
+    const dateToday = new Date()
 
     const { isOpen: isEdit, onOpen: openEdit, onClose: closeEdit } = useDisclosure()
     const { isOpen: isCancel, onOpen: openCancel, onClose: closeCancel } = useDisclosure()
@@ -72,14 +72,13 @@ export const ListofOrders = ({ setCurrentPage, currentPage, pagesCount,
             setCancelId('')
         }
     }
-    
+
     useEffect(() => {
         orders.map((item) => {
             // item.stockOnHand < item.quantityOrder
-            setTransactId(item.id)
-            const dateValidation = moment(item.dateNeeded).subtract(1, 'days').format("MM/DD/yyyy")
             // item.dateNeeded === dateValidation
-            if (item.dateNeeded === dateValidation || item.stockOnHand < item.quantityOrder) {
+            setTransactId(item.id)
+            if (item.stockOnHand < item.quantityOrder) {
                 setDisableIfStock(true)
             } else {
                 setDisableIfStock(false)
@@ -179,7 +178,7 @@ export const ListofOrders = ({ setCurrentPage, currentPage, pagesCount,
                                 <Th color='white'>Item Description</Th>
                                 <Th color='white'>UOM</Th>
                                 <Th color='white'>Quantity Order</Th>
-                                <Th color='white'>Stock on hand</Th>
+                                <Th color='white'>Reserve</Th>
                                 <Th color='white'>Edit</Th>
                                 <Th color='white'>Cancel</Th>
                             </Tr>
@@ -224,7 +223,7 @@ export const ListofOrders = ({ setCurrentPage, currentPage, pagesCount,
                                         <Td>{item.itemCode}</Td>
                                         <Td>{item.itemDescription}</Td>
                                         <Td>{item.uom}</Td>
-                                        <Td>{item.quantityOrder}</Td>
+                                        <Td>{item.quantityOrder.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
                                         <Td>{item.stockOnHand}</Td>
                                         <Td>
                                             <Button
