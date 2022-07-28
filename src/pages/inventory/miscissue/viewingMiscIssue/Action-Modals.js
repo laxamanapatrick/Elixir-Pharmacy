@@ -5,7 +5,7 @@ import apiClient from '../../../../services/apiClient'
 import { ToastComponent } from '../../../../components/Toast'
 import PageScrollReusable from '../../../../components/PageScroll-Reusable'
 
-export const StatusConfirmation = ({ isOpen, onClose, statusBody, fetchReceipts }) => {
+export const StatusConfirmation = ({ isOpen, onClose, statusBody, fetchIssues }) => {
 
     const toast = useToast()
     const [isLoading, setIsLoading] = useState(false)
@@ -20,7 +20,7 @@ export const StatusConfirmation = ({ isOpen, onClose, statusBody, fetchReceipts 
         setIsLoading(true)
         apiClient.put(`Miscellaneous/${routeLabel}`, { id: statusBody.id }).then((res) => {
             ToastComponent("Success", "Status updated", "success", toast)
-            fetchReceipts()
+            fetchIssues()
             setIsLoading(false)
             onClose()
         }).catch(err => {

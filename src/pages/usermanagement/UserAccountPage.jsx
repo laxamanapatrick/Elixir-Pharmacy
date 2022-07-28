@@ -172,6 +172,8 @@ const UserAccountPage = () => {
     reset()
   }
 
+  console.log(users)
+
   return (
     <Flex p={5} w="full" flexDirection='column'>
       <Flex mb={2} justifyContent='space-between'>
@@ -286,6 +288,7 @@ const UserAccountPage = () => {
             />
           )
         }
+
         <Stack>
           <Pagination
             pagesCount={pagesCount}

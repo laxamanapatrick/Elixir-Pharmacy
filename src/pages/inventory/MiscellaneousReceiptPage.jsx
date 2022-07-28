@@ -4,6 +4,7 @@ import { ActionButtons } from './miscreceipt/Action-Buttons';
 import { ListofReceipt } from './miscreceipt/List-of-Receipt';
 import { RawMaterialsInformation } from './miscreceipt/Raw-Materials-Information';
 import apiClient from '../../services/apiClient'
+import { ListofReceipts } from './miscreceipt/viewingMiscReceipt/List';
 
 const fetchSuppliersApi = async () => {
   const res = await apiClient.get(`Supplier/GetAllActiveSupplier`)
@@ -118,10 +119,10 @@ const MiscellaneousReceiptPage = () => {
         </HStack>
       </Flex>
 
-      {
-        navigation === 1 ?
-          <>
-            <VStack w='full' p={5} spacing={10}>
+      <VStack w='full' p={5} spacing={10} border='1px' height={listDataTempo.length === 0 ? '85vh' : 'auto'}>
+        {
+          navigation === 1 ?
+            <>
               <RawMaterialsInformation
                 rawMatsInfo={rawMatsInfo} setRawMatsInfo={setRawMatsInfo}
                 details={details} setDetails={setDetails}
@@ -153,15 +154,15 @@ const MiscellaneousReceiptPage = () => {
                   </>
                   : ''
               }
-            </VStack>
-          </>
-          : navigation === 2 ?
-            <>
-              Receipt Viewing
             </>
-            :
-            ''
-      }
+            : navigation === 2 ?
+              <>
+                <ListofReceipts />
+              </>
+              :
+              ''
+        }
+      </VStack>
 
     </Flex>
   )

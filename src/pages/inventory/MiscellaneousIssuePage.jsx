@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Flex, HStack, VStack } from '@chakra-ui/react';
 import { RawMaterialsInformation } from './miscissue/Raw-Materials-Information';
 import { ListofIssue } from './miscissue/List-of-Issue';
+import { ListofIssues } from './miscissue/viewingMiscIssue/List-Issue';
 import { ActionButton } from './miscissue/Action-Button';
 import apiClient from '../../services/apiClient'
 
@@ -114,11 +115,11 @@ const MiscellaneousIssuePage = () => {
         </HStack>
       </Flex>
 
-      {
-        navigation === 1 ?
+      <VStack w='full' p={5} spacing={10} border='1px' height={listDataTempo.length === 0 ? '85vh' : 'auto'}>
+        {
+          navigation === 1 ?
 
-          <>
-            <VStack w='full' p={5} spacing={10}>
+            <>
               <RawMaterialsInformation
                 rawMatsInfo={rawMatsInfo} setRawMatsInfo={setRawMatsInfo}
                 details={details} setDetails={setDetails}
@@ -146,16 +147,16 @@ const MiscellaneousIssuePage = () => {
                   </>
                   : ''
               }
-            </VStack>
-          </>
-
-          : navigation === 2 ?
-            <>
-              Receipt Viewing
             </>
-            :
-            ''
-      }
+
+            : navigation === 2 ?
+              <>
+                <ListofIssues />
+              </>
+              :
+              ''
+        }
+      </VStack>
 
     </Flex>
 

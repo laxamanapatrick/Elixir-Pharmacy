@@ -15,14 +15,14 @@ import apiClient from '../../../../services/apiClient'
 import { ToastComponent } from '../../../../components/Toast'
 import { StatusConfirmation, ViewModal } from './Action-Modals'
 
-const fetchReceiptsApi = async (pageNumber, pageSize, search, status) => {
+const fetchIssuesApi = async (pageNumber, pageSize, search, status) => {
     const res = await apiClient.get(`Miscellaneous/GetAllMiscellaneousReceiptPaginationOrig?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${search}&status=${status}`);
     return res.data
 }
 
-export const ListofReceipts = () => {
+export const ListofIssues = () => {
 
-    const [receiptData, setReceiptData] = useState([])
+    const [issueData, setIssueData] = useState([])
 
     const [pageTotal, setPageTotal] = useState(undefined)
     const [status, setStatus] = useState(true)
@@ -48,15 +48,15 @@ export const ListofReceipts = () => {
 
     })
 
-    const fetchReceipts = () => {
-        fetchReceiptsApi(currentPage, pageSize, search, status).then(res => {
-            setReceiptData(res)
+    const fetchIssues = () => {
+        fetchIssuesApi(currentPage, pageSize, search, status).then(res => {
+            setIssueData(res)
             setPageTotal(res.totalCount)
         })
     }
 
     useEffect(() => {
-        fetchReceipts()
+        fetchIssues()
     }, [status, pageSize, currentPage, search]);
 
     const handlePageChange = (nextPage) => {
@@ -136,8 +136,8 @@ export const ListofReceipts = () => {
                     <Table size='sm'>
                         <Thead bgColor='secondary'>
                             <Tr>
-                                <Th color='white'>Supplier Code</Th>
-                                <Th color='white'>Supplier Name</Th>
+                                <Th color='white'>Customer Code</Th>
+                                <Th color='white'>Customer Name</Th>
                                 <Th color='white'>Total Quantity</Th>
                                 <Th color='white'>Prepared Date</Th>
                                 <Th color='white'>Prepared By</Th>
@@ -147,7 +147,7 @@ export const ListofReceipts = () => {
                         </Thead>
                         <Tbody>
                             {
-                                receiptData?.receipt?.map((receipt, i) =>
+                                issueData?.receipt?.map((receipt, i) =>
                                     <Tr key={i}>
                                         <Td>{receipt.supplierCode}</Td>
                                         <Td>{receipt.supplierName}</Td>
@@ -219,7 +219,7 @@ export const ListofReceipts = () => {
                         isOpen={isStatus}
                         onClose={closeStatus}
                         statusBody={statusBody}
-                        fetchReceipts={fetchReceipts}
+                        fetchIssues={fetchIssues}
                     />
                 )
             }

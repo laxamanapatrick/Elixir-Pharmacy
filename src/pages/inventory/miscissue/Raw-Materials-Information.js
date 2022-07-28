@@ -129,11 +129,12 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
             const newData = JSON.parse(data)
             const itemCode = newData.itemCode
             const itemDescription = newData.itemDescription
+            const uom = newData.uom
             setRawMatsInfo({
                 itemCode: itemCode,
                 itemDescription: itemDescription,
                 customer: rawMatsInfo.customer,
-                uom: rawMatsInfo.uom,
+                uom: uom,
                 expirationDate: rawMatsInfo.expirationDate,
                 quantity: rawMatsInfo.quantity
             })
@@ -142,7 +143,7 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
                 itemCode: '',
                 itemDescription: '',
                 customer: rawMatsInfo.customer,
-                uom: rawMatsInfo.uom,
+                uom: '',
                 expirationDate: rawMatsInfo.expirationDate,
                 quantity: rawMatsInfo.quantity
             })
@@ -157,9 +158,10 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
             <Modal isOpen={isOpen} onClose={() => { }} isCentered size='5xl'>
                 <ModalContent>
                     <ModalHeader mb={4}>
-                        <Flex justifyContent='center'>
-                            Raw Materials Information
-                        </Flex>
+                        <VStack justifyContent='center' spacing={-2}>
+                            <Text>Raw Materials Information</Text>
+                            <Text fontSize='xs'>Miscellaneous Issue</Text>
+                        </VStack>
                     </ModalHeader>
                     <ModalCloseButton onClick={onClose} />
                     <ModalBody mb={5}>
@@ -204,33 +206,6 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
                                     />
                                 </HStack>
 
-                                {/* UOM */}
-                                < HStack w='full'>
-                                    <Text minW='50%' w='auto' bgColor='secondary' color='white' pl={2} pr={7} py={2.5} fontSize='xs'>UOM: </Text>
-                                    {
-                                        uoms.length > 0 ?
-                                            <Select
-                                                onChange={(e) => setRawMatsInfo({
-                                                    itemCode: rawMatsInfo.itemCode,
-                                                    itemDescription: rawMatsInfo.itemDescription,
-                                                    customer: rawMatsInfo.customer,
-                                                    uom: e.target.value,
-                                                    expirationDate: rawMatsInfo.expirationDate,
-                                                    quantity: rawMatsInfo.quantity
-                                                })}
-                                                w='full' placeholder=' '
-                                                bgColor='#fff8dc'
-                                            >
-                                                {
-                                                    uoms?.map((item, i) =>
-                                                        <option key={i} value={item.uoM_Code}>{item.uoM_Code}</option>
-                                                    )
-                                                }
-                                            </Select>
-                                            : <Spinner />
-                                    }
-                                </HStack>
-
                                 {/* Quantity */}
                                 <HStack w='full'>
                                     <Text minW='50%' w='auto' bgColor='secondary' color='white' pl={2} pr={7} py={2.5} fontSize='xs'>Quantity: </Text>
@@ -251,15 +226,20 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
                                         bgColor='#fff8dc'
                                     />
                                 </HStack>
-
                             </VStack>
+
                             <VStack alignItems='start' w='40%' mx={5}>
                                 {/* Item Description */}
                                 <HStack w='full'>
                                     <Text minW='50%' w='auto' bgColor='secondary' color='white' pl={2} pr={10} py={2.5} fontSize='xs'>Item Description: </Text>
-                                    <Text w='full' border='1px' borderColor='gray.200' py={1.5}>{rawMatsInfo.itemDescription ? rawMatsInfo.itemDescription : 'Select an item code'}</Text>
+                                    <Text textAlign='center' w='full' bgColor='gray.200' border='1px' borderColor='gray.200' py={1.5}>{rawMatsInfo.itemDescription ? rawMatsInfo.itemDescription : 'Select an item code'}</Text>
                                 </HStack>
 
+                                {/* UOM */}
+                                < HStack w='full'>
+                                    <Text minW='50%' w='auto' bgColor='secondary' color='white' pl={2} pr={7} py={2.5} fontSize='xs'>UOM: </Text>
+                                    <Text textAlign='center' w='full' bgColor='gray.200' border='1px' borderColor='gray.200' py={1.5}>{rawMatsInfo.uom ? rawMatsInfo.uom : 'Select an item code'}</Text>
+                                </HStack>
                             </VStack>
                         </Flex>
                     </ModalBody>

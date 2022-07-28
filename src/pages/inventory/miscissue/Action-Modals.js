@@ -27,14 +27,14 @@ export const AddConfirmation = ({ isOpen, onClose, closeAddModal, details, setDe
     setRawMatsInfo({
       itemCode: '',
       itemDescription: '',
-      customer: '',
+      customer: rawMatsInfo.customer,
       uom: '',
       expirationDate: '',
       quantity: ''
     })
-    customerRef.current.value = ''
+    // customerRef.current.value = ''
     setSelectorId('')
-    setDetails('')
+    // setDetails('')
     setIsLoading(false)
     onClose()
     closeAddModal()
