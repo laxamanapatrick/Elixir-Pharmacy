@@ -40,7 +40,9 @@ const fetchLotCategoryApi = async () => {
     return res.data
 }
 
-const ScannedModal = ({ receivingId, itemCodeData, setReceivingDate, setLotCategory, setActualGood, quantity, remarks, sumQuantity, actualGood }) => {
+const ScannedModal = ({ receivingId, itemCodeData, setReceivingDate, 
+    setLotCategory, setActualGood, quantity, remarks, sumQuantity, actualGood, lotCategory, receivingDate
+}) => {
 
     const [receivingDateDisplay, setReceivingDateDisplay] = useState(null)
     const [lotCategories, setLotCategories] = useState([])
@@ -261,6 +263,8 @@ const ScannedModal = ({ receivingId, itemCodeData, setReceivingDate, setLotCateg
                                 lotCategories.length > 0 ?
                                     (<Select
                                         onChange={(e) => setLotCategory(e.target.value)}
+                                        disabled={!receivingDate}
+                                        title={!receivingDate ? 'Please provide a Receiving Date first' : 'Select a lot category'}
                                         // isInvalid={errors.rms}
                                         placeholder='Select Lot Category'
                                         bgColor='#ffffe0'

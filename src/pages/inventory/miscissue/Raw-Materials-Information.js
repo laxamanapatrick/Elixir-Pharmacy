@@ -5,7 +5,7 @@ import { AddConfirmation } from './Action-Modals'
 import moment from 'moment'
 
 export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, listDataTempo, setListDataTempo, details, setDetails,
-    customers, rawMats, uoms, expiryDates, setSelectorId, setCustomerData
+    customers, rawMats, uoms, expiryDates, setSelectorId, setCustomerData, setWarehouseId
 }) => {
 
     const customerRef = useRef()
@@ -132,6 +132,7 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, listDataT
                         expiryDates={expiryDates}
                         setSelectorId={setSelectorId}
                         setCustomerData={setCustomerData}
+                        setWarehouseId={setWarehouseId}
                         isOpen={isModal}
                         onClose={closeModal}
                     />
@@ -144,7 +145,7 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, listDataT
 
 
 export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMatsInfo, setRawMatsInfo,
-    listDataTempo, setListDataTempo, customerRef, rawMats, uoms, expiryDates, setSelectorId, setCustomerData
+    listDataTempo, setListDataTempo, customerRef, rawMats, uoms, expiryDates, setSelectorId, setCustomerData, setWarehouseId
 }) => {
 
     const [availableStock, setAvailableStock] = useState('')
@@ -187,7 +188,9 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
         if (data) {
             const newData = JSON.parse(data)
             const expirationDate = newData.expirationDate
+            const warehouseId = newData.warehouseId
             setAvailableStock(newData.remainingStocks)
+            setWarehouseId(warehouseId)
             setRawMatsInfo({
                 itemCode: rawMatsInfo.itemCode,
                 itemDescription: rawMatsInfo.itemDescription,
@@ -198,6 +201,7 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
             })
         } else {
             setAvailableStock('')
+            setWarehouseId('')
             setRawMatsInfo({
                 itemCode: rawMatsInfo.itemCode,
                 itemDescription: rawMatsInfo.itemDescription,

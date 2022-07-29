@@ -8,7 +8,7 @@ import { others, VStack } from '@chakra-ui/react'
 const fetchOrderSummaryApi = async (dateFrom, dateTo) => {
   const newDateFrom = moment(dateFrom).format("yyyy-MM-DD")
   const newDateTo = moment(dateTo).format("yyyy-MM-DD")
-  const res = await apiClient.get(`https://localhost:44382/api/Ordering/OrderSummary?DateFrom=${newDateFrom}&DateTo=${newDateTo}`)
+  const res = await apiClient.get(`Ordering/OrderSummary?DateFrom=${newDateFrom}&DateTo=${newDateTo}`)
   return res.data
 }
 

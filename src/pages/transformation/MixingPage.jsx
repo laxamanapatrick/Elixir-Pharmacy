@@ -114,7 +114,8 @@ const MixingPage = ({ fetchNotification }) => {
           mixingCue &&
           <WeighingScaleInformation
             transformId={transformId}
-            batchRemaining={batchRemaining}
+            batchRemaining={batchRemaining?.remainingBatch}
+            totalWeighingScale={batchRemaining?.totalWeighingScale}
             fetchMixingRequest={fetchMixingRequest}
             fetchRequirements={fetchRequirements}
             fetchBatchRemaining={fetchBatchRemaining}

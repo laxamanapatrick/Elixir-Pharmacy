@@ -6,7 +6,8 @@ import { SaveConfirmation } from './Print-List'
 import DatePicker from "react-datepicker";
 
 export const WeighingScaleInformation = ({ transformId, batchRemaining, fetchMixingRequest, fetchRequirements,
-    fetchBatchRemaining, setMixingCue, quantity, requests, batch, setCurrentPage, fetchNotification, quantityBasis }) => {
+    fetchBatchRemaining, setMixingCue, quantity, requests, batch, setCurrentPage, fetchNotification, quantityBasis,
+    totalWeighingScale }) => {
 
     const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -23,20 +24,31 @@ export const WeighingScaleInformation = ({ transformId, batchRemaining, fetchMix
         }
     }, [totalWeight])
 
-    const quantityPerBatch = Number(quantityBasis) / Number(batch)
+    const quantityPerBatch = Number(quantity) / Number(batch)
+    const finalMax = (Number(quantityBasis) - Number(totalWeighingScale)).toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })
     const weightHandler = (data) => {
         setTotalWeight(data)
-        const minAllowable = Number(quantityPerBatch) - (Number(quantityPerBatch) * 0.001)
-        const maxAllowable = Number(quantityPerBatch)
-        if (Number(data) < minAllowable || Number(data) > maxAllowable) {
-            setDisableSave(true)
-        }
-        else {
-            setDisableSave(false)
+        if (batchRemaining > 1) {
+            const minAllowable = Number(quantityPerBatch) - (Number(quantityPerBatch) * 0.001)
+            const maxAllowable = Number(quantity) / Number(batch)
+            if (Number(data) < minAllowable || Number(data) > maxAllowable) {
+                setDisableSave(true)
+            }
+            else {
+                setDisableSave(false)
+            }
+        } else {
+            const minAllowable = Number(quantityPerBatch) - (Number(quantityPerBatch) * 0.001)
+            console.log(minAllowable)
+            const maxAllowable = Number(finalMax)
+            if (Number(data) < minAllowable || Number(data) > maxAllowable) {
+                setDisableSave(true)
+            }
+            else {
+                setDisableSave(false)
+            }
         }
     }
-
-    console.log(quantityBasis)
 
     return (
         <Flex w='full' flexDirection='column'>
@@ -49,8 +61,19 @@ export const WeighingScaleInformation = ({ transformId, batchRemaining, fetchMix
                     <Text bgColor='gray.200' border='1px' px={12} fontSize='sm'>1</Text>
                 </HStack>
                 <HStack spacing={5}>
-                    <Text bgColor='secondary' color='white' px={10} textAlign='start' fontSize='sm'>Allowed max quantity on this batch:</Text>
-                    <Text bgColor='#fff8dc' border='1px' px={12} fontSize='sm'>{quantityPerBatch ? quantityPerBatch : 0}</Text>
+                    <Text bgColor='secondary' color='white' px={10} textAlign='start' fontSize='sm'>
+                        {batchRemaining === 1 ? 'Allowed max quantity on this batch:' : 'Quantity per batch:'}
+                    </Text>
+                    <Text bgColor='#fff8dc' border='1px' px={12} fontSize='sm'
+                    >
+                        {
+                            batchRemaining === 1
+                                ?
+                                finalMax.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })
+                                :
+                                quantityPerBatch.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })
+                        }
+                    </Text>
                 </HStack>
                 <HStack spacing={1}>
                     <Text bgColor='secondary' color='white' px={10} textAlign='start' fontSize='sm'>Weighing Scale:</Text>

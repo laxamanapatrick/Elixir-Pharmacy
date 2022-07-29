@@ -82,7 +82,7 @@ export const MRPTable = ({ mrpData, setSelectorId, selectorId, setRawMatsInfo })
                                     bgColor={
                                         selectorId === i + 1 ? 'table_accent' : 'none'
                                             &&
-                                            item.soh === 0 ? 'none' : 'pink'
+                                            item.bufferLevel > item.reserve ? 'pink' : 'none'
                                     }
                                     cursor='pointer'
                                 >

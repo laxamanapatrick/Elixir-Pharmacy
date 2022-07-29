@@ -12,7 +12,7 @@ export const ConfirmModal = ({ isOpen, onClose, resultArray, setIsLoading, setEr
     const syncHandler = () => {
         try {
             setIsLoading(true)
-            const res = apiClient.post(`https://localhost:44382/api/Ordering/AddNewOrders`,
+            const res = apiClient.post(`Ordering/AddNewOrders`,
                 resultArray.map(item => ({
                     transactId: item?.transactId,
                     customerName: item?.customerName,

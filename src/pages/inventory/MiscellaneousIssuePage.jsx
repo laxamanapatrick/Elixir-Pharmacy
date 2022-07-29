@@ -29,6 +29,8 @@ const MiscellaneousIssuePage = () => {
   const [rawMats, setRawMats] = useState([])
   const [uoms, setUoms] = useState([])
 
+  const [warehouseId, setWarehouseId] = useState('')
+
   const [expiryDates, setExpiryDates] = useState([])
 
   const [totalQuantity, setTotalQuantity] = useState('')
@@ -155,6 +157,7 @@ const MiscellaneousIssuePage = () => {
                 customers={customers} rawMats={rawMats} uoms={uoms} expiryDates={expiryDates}
                 setSelectorId={setSelectorId}
                 setCustomerData={setCustomerData}
+                setWarehouseId={setWarehouseId}
               />
               {
                 listDataTempo.length > 0 ?
@@ -175,6 +178,8 @@ const MiscellaneousIssuePage = () => {
                       selectorId={selectorId}
                       //cancel key
                       rowIndex={rowIndex}
+                      //warehouse Id
+                      warehouseId={warehouseId}
                     />
                   </>
                   : ''

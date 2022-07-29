@@ -132,7 +132,7 @@ export const EditConfirmation = ({ isOpen, onClose, selectorId, rowIndex, setLis
   )
 }
 
-export const SaveConfirmation = ({ isOpen, onClose, listDataTempo, setListDataTempo, customerData, totalQuantity }) => {
+export const SaveConfirmation = ({ isOpen, onClose, listDataTempo, setListDataTempo, customerData, totalQuantity, warehouseId }) => {
 
   const [isLoading, setIsLoading] = useState(false)
   const toast = useToast()
@@ -159,6 +159,7 @@ export const SaveConfirmation = ({ isOpen, onClose, listDataTempo, setListDataTe
               const submitArray = listDataTempo.map(item => {
                 return {
                   IssuePKey: id,
+                  warehouseId: warehouseId,
                   itemCode: item.itemCode,
                   itemDescription: item.itemDescription,
                   uom: item.uom,

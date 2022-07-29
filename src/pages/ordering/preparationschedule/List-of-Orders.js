@@ -38,6 +38,7 @@ export const ListofOrders = ({ setCurrentPage, currentPage, pagesCount,
     const { isOpen: isSchedule, onOpen: openSchedule, onClose: closeSchedule } = useDisclosure()
 
     const handlePageChange = (nextPage) => {
+        setCheckedItems([])
         setCurrentPage(nextPage)
     }
 
@@ -73,14 +74,15 @@ export const ListofOrders = ({ setCurrentPage, currentPage, pagesCount,
         }
     }
 
+    //Buton disabler for ous and backdate needed
     useEffect(() => {
-        orders.map((item) => {
-            // item.stockOnHand < item.quantityOrder
-            // item.dateNeeded === dateValidation
+        orders.every((item) => {
+            const days = item.days
             setTransactId(item.id)
-            if (item.stockOnHand < item.quantityOrder) {
+            if (item.stockOnHand < item.quantityOrder || days < 0) {
                 setDisableIfStock(true)
-            } else {
+            }
+            else {
                 setDisableIfStock(false)
             }
         }

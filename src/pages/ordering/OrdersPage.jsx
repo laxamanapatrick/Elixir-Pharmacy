@@ -12,10 +12,13 @@ const fetchGenusOrdersApi = async (fromDate, toDate) => {
 
 const OrdersPage = () => {
 
+  const dateVar = new Date()
+  const startDate = dateVar.setDate(dateVar.getDate() - 3)
+
   const [genusOrders, setGenusOrders] = useState([])
 
-  const [fromDate, setFromDate] = useState('')
-  const [toDate, setToDate] = useState('')
+  const [fromDate, setFromDate] = useState(startDate)
+  const [toDate, setToDate] = useState(new Date())
 
   const [search, setSearch] = useState('')
 

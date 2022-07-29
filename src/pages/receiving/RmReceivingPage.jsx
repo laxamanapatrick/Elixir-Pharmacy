@@ -26,7 +26,7 @@ const RmReceivingPage = () => {
 
   const [itemCodeData, setItemCodeData] = useState([])
 
-  const [receivingDate, setReceivingDate] = useState([])
+  const [receivingDate, setReceivingDate] = useState('')
   const [lotCategory, setLotCategory] = useState("")
   const [actualGood, setActualGood] = useState(0)
 
@@ -56,7 +56,7 @@ const RmReceivingPage = () => {
     if (code) {
       fetchItemCodeData()
     }
-    
+
     return () => {
       setItemCodeData([])
     }
@@ -112,8 +112,8 @@ const RmReceivingPage = () => {
               code != itemCodeData.itemCode ? <ItemNotFound /> :
                 <ScannedModal
                   itemCodeData={itemCodeData}
-                  setReceivingDate={setReceivingDate}
-                  setLotCategory={setLotCategory}
+                  setReceivingDate={setReceivingDate} receivingDate={receivingDate}
+                  setLotCategory={setLotCategory} lotCategory={lotCategory}
                   setActualGood={setActualGood}
                   quantity={quantity}
                   remarks={remarks}
@@ -127,7 +127,7 @@ const RmReceivingPage = () => {
         {/* Save Button */}
 
         {
-          !(lotCategory && receivingDate) ? "" : (
+          !lotCategory || !receivingDate ? '' : (
             <ScannedModalSubmit
               code={code}
               receivingDate={receivingDate}

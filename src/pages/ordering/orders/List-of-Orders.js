@@ -40,7 +40,7 @@ export const ListofOrders = ({ genusOrders, fetchingData, setFromDate, setToDate
     })
 
     const dateVar = new Date()
-    const startDate = dateVar.setDate(dateVar.getDate() - 5)
+    const startDate = dateVar.setDate(dateVar.getDate() - 3)
 
     return (
         <Flex w='full' p={5} flexDirection='column'>
@@ -54,6 +54,7 @@ export const ListofOrders = ({ genusOrders, fetchingData, setFromDate, setToDate
                     <DatePicker
                         onChange={(date) => setFromDate(date)}
                         selected={fromDate}
+                        minDate={startDate}
                         shouldCloseOnSelect
                         dateFormat="yyyy-MM-dd"
                     />
