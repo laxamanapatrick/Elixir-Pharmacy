@@ -132,36 +132,62 @@ export const EditConfirmation = ({ isOpen, onClose, selectorId, rowIndex, setLis
   )
 }
 
-export const SaveConfirmation = ({ isOpen, onClose, listDataTempo, setListDataTempo }) => {
+export const SaveConfirmation = ({ isOpen, onClose, listDataTempo, setListDataTempo, customerData, totalQuantity }) => {
 
   const [isLoading, setIsLoading] = useState(false)
   const toast = useToast()
 
   const saveSubmitHandler = () => {
-    const submitArray = listDataTempo.map(item => {
-      return {
-        itemCode: item.itemCode,
-        itemDescription: item.itemDescription,
-        uom: item.uom,
-        customer: item.customer,
-        expirationDate: item.expirationDate,
-        quantity: item.quantity,
-        remarks: item.description,
-        preparedBy: currentUser.userName
+
+    const firstSubmit = {
+      customerCode: customerData.customerCode,
+      customer: customerData.customer,
+      totalQuantity: totalQuantity,
+      remarks: listDataTempo[0]?.description,
+      preparedBy: currentUser?.userName
+    }
+
+    if (totalQuantity > 0) {
+      setIsLoading(true)
+      try {
+        const res = apiClient.post(`Miscellaneous/AddNewMiscellaneousIssue`, firstSubmit)
+          .then(res => {
+            const id = res.data.id
+
+            //SECOND POST IF MAY ID
+            if (id) {
+              const submitArray = listDataTempo.map(item => {
+                return {
+                  IssuePKey: id,
+                  itemCode: item.itemCode,
+                  itemDescription: item.itemDescription,
+                  uom: item.uom,
+                  customer: item.supplier,
+                  expirationdate: item.expirationDate,
+                  quantity: item.quantity,
+                  remarks: item.description,
+                  preparedBy: currentUser.userName
+                }
+              })
+              try {
+                const res = apiClient.post(`Miscellaneous/AddNewMiscellaneousIssueDetails`, submitArray)
+                ToastComponent("Success", "Information saved", "success", toast)
+                setListDataTempo([])
+                setIsLoading(false)
+                onClose()
+              } catch (error) {
+                console.log(error)
+              }
+              console.log(submitArray)
+            }
+
+          })
+          .catch(err => {
+            ToastComponent("Error", "Information was not saved", "error", toast)
+            setIsLoading(false)
+          })
+      } catch (error) {
       }
-    })
-    setIsLoading(true)
-    try {
-      const res = apiClient.post(`Miscellaneous/AddNewMiscellaneousIssue`, submitArray)
-        .then(res => {
-          ToastComponent("Success", "Information saved", "success", toast)
-          setListDataTempo([])
-          onClose()
-        })
-        .catch(err => {
-          ToastComponent("Error", "Information was not saved", "error", toast)
-        })
-    } catch (error) {
     }
   }
 

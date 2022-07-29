@@ -13,9 +13,9 @@ export const StatusConfirmation = ({ isOpen, onClose, statusBody, fetchIssues })
     const submitHandler = () => {
         let routeLabel;
         if (statusBody.status) {
-            routeLabel = "InActiveReceipt"
+            routeLabel = "InActiveIssue"
         } else {
-            routeLabel = "ActivateReceipt"
+            routeLabel = "ActivateIssue"
         }
         setIsLoading(true)
         apiClient.put(`Miscellaneous/${routeLabel}`, { id: statusBody.id }).then((res) => {
@@ -39,7 +39,7 @@ export const StatusConfirmation = ({ isOpen, onClose, statusBody, fetchIssues })
                 <ModalCloseButton onClick={onClose} />
                 <ModalBody mb={5}>
                     <Flex justifyContent='center'>
-                        <Text>{`Are you sure you want to set this receipt ${statusBody?.status ? 'inactive' : 'active'}?`}</Text>
+                        <Text>{`Are you sure you want to set this issue ${statusBody?.status ? 'inactive' : 'active'}?`}</Text>
                     </Flex>
                 </ModalBody>
                 <ModalFooter>
@@ -55,22 +55,22 @@ export const StatusConfirmation = ({ isOpen, onClose, statusBody, fetchIssues })
 
 export const ViewModal = ({ isOpen, onClose, statusBody }) => {
 
-    const [receiptDetailsData, setReceiptDetailsData] = useState([])
+    const [issuesDetailsData, setIssuesDetailsData] = useState([])
 
     const id = statusBody.id
-    const fetchReceiptDetailsApi = async (id) => {
-        const res = await apiClient.get(`Miscellaneous/GetAllDetailsFromWarehouseByMReceipt?id=${id}`)
+    const fetchIssuesDetailsApi = async (id) => {
+        const res = await apiClient.get(`Miscellaneous/GetAllDetailsInMiscellaneousIssue?id=${id}`)
         return res.data
     }
 
-    const fetchReceiptDetails = () => {
-        fetchReceiptDetailsApi(id).then(res => {
-            setReceiptDetailsData(res)
+    const fetchIssuesDetails = () => {
+        fetchIssuesDetailsApi(id).then(res => {
+            setIssuesDetailsData(res)
         })
     }
 
     useEffect(() => {
-        fetchReceiptDetails()
+        fetchIssuesDetails()
     }, [id])
 
     return (
@@ -95,11 +95,11 @@ export const ViewModal = ({ isOpen, onClose, statusBody }) => {
                                 </Thead>
                                 <Tbody>
                                     {
-                                        receiptDetailsData?.map((receiptdetails, i) =>
+                                        issuesDetailsData?.map((receiptdetails, i) =>
                                             <Tr key={i}>
                                                 <Td>{receiptdetails.itemCode}</Td>
                                                 <Td>{receiptdetails.itemDescription}</Td>
-                                                <Td>{receiptdetails.quantity}</Td>
+                                                <Td>{receiptdetails.totalQuantity}</Td>
                                             </Tr>
                                         )
                                     }
@@ -117,4 +117,3 @@ export const ViewModal = ({ isOpen, onClose, statusBody }) => {
         </Modal>
     )
 }
-

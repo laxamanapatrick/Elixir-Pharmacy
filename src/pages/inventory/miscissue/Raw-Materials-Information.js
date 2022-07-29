@@ -1,11 +1,11 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Button, ButtonGroup, Flex, HStack, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Select, Spinner, Text, useDisclosure, VStack } from '@chakra-ui/react'
 import { useLocation } from 'react-router-dom'
 import { AddConfirmation } from './Action-Modals'
 import moment from 'moment'
 
 export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, listDataTempo, setListDataTempo, details, setDetails,
-    customers, rawMats, uoms, setSelectorId
+    customers, rawMats, uoms, expiryDates, setSelectorId, setCustomerData
 }) => {
 
     const customerRef = useRef()
@@ -16,6 +16,39 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, listDataT
             setDetails(data)
         } else {
             setDetails('')
+        }
+    }
+
+    const customerHandler = (data) => {
+        if (data) {
+            const newData = JSON.parse(data)
+            const customerCode = newData.customerCode
+            const customer = newData.customerName
+            setRawMatsInfo({
+                itemCode: rawMatsInfo.itemCode,
+                itemDescription: rawMatsInfo.itemDescription,
+                customer: customer,
+                uom: rawMatsInfo.uom,
+                expirationDate: rawMatsInfo.expirationDate,
+                quantity: rawMatsInfo.quantity
+            })
+            setCustomerData({
+                customerCode: customerCode,
+                customer: customer
+            })
+        } else {
+            setRawMatsInfo({
+                itemCode: rawMatsInfo.itemCode,
+                itemDescription: rawMatsInfo.itemDescription,
+                customer: '',
+                uom: rawMatsInfo.uom,
+                expirationDate: rawMatsInfo.expirationDate,
+                quantity: rawMatsInfo.quantity
+            })
+            setCustomerData({
+                customerCode: '',
+                customer: ''
+            })
         }
     }
 
@@ -33,21 +66,14 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, listDataT
                             {
                                 customers.length > 0 ?
                                     <Select
-                                        onChange={(e) => setRawMatsInfo({
-                                            itemCode: rawMatsInfo.itemCode,
-                                            itemDescription: rawMatsInfo.itemDescription,
-                                            customer: e.target.value,
-                                            uom: rawMatsInfo.uom,
-                                            expirationDate: rawMatsInfo.expirationDate,
-                                            quantity: rawMatsInfo.quantity
-                                        })}
+                                        onChange={(e) => customerHandler(e.target.value)}
                                         ref={customerRef}
                                         w='full' placeholder=' '
                                         bgColor='#fff8dc'
                                     >
                                         {
                                             customers?.map((item, i) =>
-                                                <option key={i} value={item.customerName}>{item.customerCode}</option>
+                                                <option key={i} value={JSON.stringify(item)}>{item.customerCode}</option>
                                             )
                                         }
                                     </Select>
@@ -103,7 +129,9 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, listDataT
                         customerRef={customerRef}
                         rawMats={rawMats}
                         uoms={uoms}
+                        expiryDates={expiryDates}
                         setSelectorId={setSelectorId}
+                        setCustomerData={setCustomerData}
                         isOpen={isModal}
                         onClose={closeModal}
                     />
@@ -116,8 +144,10 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, listDataT
 
 
 export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMatsInfo, setRawMatsInfo,
-    listDataTempo, setListDataTempo, customerRef, rawMats, uoms, setSelectorId
+    listDataTempo, setListDataTempo, customerRef, rawMats, uoms, expiryDates, setSelectorId, setCustomerData
 }) => {
+
+    const [availableStock, setAvailableStock] = useState('')
 
     const { isOpen: isAdd, onClose: closeAdd, onOpen: openAdd } = useDisclosure()
     const openAddConfirmation = () => {
@@ -130,11 +160,13 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
             const itemCode = newData.itemCode
             const itemDescription = newData.itemDescription
             const uom = newData.uom
+            // const expirationDate = newData.expirationDate
             setRawMatsInfo({
                 itemCode: itemCode,
                 itemDescription: itemDescription,
                 customer: rawMatsInfo.customer,
                 uom: uom,
+                // expirationDate: expirationDate
                 expirationDate: rawMatsInfo.expirationDate,
                 quantity: rawMatsInfo.quantity
             })
@@ -144,11 +176,43 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
                 itemDescription: '',
                 customer: rawMatsInfo.customer,
                 uom: '',
+                // expirationDate: ''
                 expirationDate: rawMatsInfo.expirationDate,
                 quantity: rawMatsInfo.quantity
             })
         }
     }
+
+    const expiryDateHandler = (data) => {
+        if (data) {
+            const newData = JSON.parse(data)
+            const expirationDate = newData.expirationDate
+            setAvailableStock(newData.remainingStocks)
+            setRawMatsInfo({
+                itemCode: rawMatsInfo.itemCode,
+                itemDescription: rawMatsInfo.itemDescription,
+                customer: rawMatsInfo.customer,
+                uom: rawMatsInfo.uom,
+                expirationDate: expirationDate,
+                quantity: rawMatsInfo.quantity
+            })
+        } else {
+            setAvailableStock('')
+            setRawMatsInfo({
+                itemCode: rawMatsInfo.itemCode,
+                itemDescription: rawMatsInfo.itemDescription,
+                customer: rawMatsInfo.customer,
+                uom: rawMatsInfo.uom,
+                expirationDate: '',
+                quantity: rawMatsInfo.quantity
+            })
+        }
+    }
+
+    useEffect(() => {
+        setAvailableStock('')
+
+    }, [rawMatsInfo.itemCode])
 
     const newDate = new Date()
     const minDate = moment(newDate).format('yyyy-MM-DD')
@@ -191,7 +255,22 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
                                 {/* Expiration Date */}
                                 <HStack w='full'>
                                     <Text minW='50%' w='auto' bgColor='secondary' color='white' pl={2} pr={7} py={2.5} fontSize='xs'>Expiration Date: </Text>
-                                    <Input
+                                    {
+                                        expiryDates.length > 0 ?
+                                            <Select
+                                                onChange={(e) => expiryDateHandler(e.target.value)}
+                                                w='full' placeholder=' '
+                                                bgColor='#fff8dc'
+                                            >
+                                                {
+                                                    expiryDates?.map((item, i) =>
+                                                        <option key={i} value={JSON.stringify(item)}>{item.expirationDate}</option>
+                                                    )
+                                                }
+                                            </Select>
+                                            : <Text color='danger' fontStyle='italic'>No Available Stocks</Text>
+                                    }
+                                    {/* <Input
                                         onChange={(e) => setRawMatsInfo({
                                             itemCode: rawMatsInfo.itemCode,
                                             itemDescription: rawMatsInfo.itemDescription,
@@ -203,7 +282,8 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
                                         min={minDate}
                                         w='full' type='date'
                                         bgColor='#fff8dc'
-                                    />
+                                    /> */}
+                                    {/* <Text textAlign='center' w='full' bgColor='gray.200' border='1px' borderColor='gray.200' py={1.5}>{rawMatsInfo.expirationDate ? rawMatsInfo.expirationDate : 'Select an item code'}</Text> */}
                                 </HStack>
 
                                 {/* Quantity */}
@@ -239,6 +319,17 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
                                 < HStack w='full'>
                                     <Text minW='50%' w='auto' bgColor='secondary' color='white' pl={2} pr={7} py={2.5} fontSize='xs'>UOM: </Text>
                                     <Text textAlign='center' w='full' bgColor='gray.200' border='1px' borderColor='gray.200' py={1.5}>{rawMatsInfo.uom ? rawMatsInfo.uom : 'Select an item code'}</Text>
+                                </HStack>
+
+                                {/* Available Stocks */}
+                                < HStack w='full'>
+                                    <Text minW='50%' w='auto' bgColor='secondary' color='white' pl={2} pr={7} py={2.5} fontSize='xs'>Available Stock: </Text>
+                                    {expiryDates.length === 0
+                                        ?
+                                        <Text textAlign='center' w='full' bgColor='gray.200' border='1px' borderColor='gray.200' py={1.5}>No Available Stock</Text>
+                                        :
+                                        <Text textAlign='center' w='full' bgColor='gray.200' border='1px' borderColor='gray.200' py={1.5}>{availableStock ? availableStock : 'Select an expiration date'}</Text>
+                                    }
                                 </HStack>
                             </VStack>
                         </Flex>

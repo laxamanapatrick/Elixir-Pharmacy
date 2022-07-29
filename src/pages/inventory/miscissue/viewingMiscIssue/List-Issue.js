@@ -16,7 +16,7 @@ import { ToastComponent } from '../../../../components/Toast'
 import { StatusConfirmation, ViewModal } from './Action-Modals'
 
 const fetchIssuesApi = async (pageNumber, pageSize, search, status) => {
-    const res = await apiClient.get(`Miscellaneous/GetAllMiscellaneousReceiptPaginationOrig?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${search}&status=${status}`);
+    const res = await apiClient.get(`Miscellaneous/GetAllMiscellaneousIssuePaginationOrig?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${search}&status=${status}`);
     return res.data
 }
 
@@ -77,6 +77,7 @@ export const ListofIssues = () => {
     }
 
     const changeStatusHandler = (id, status) => {
+        console.log(id, status)
         if (id) {
             setStatusBody({
                 id: id,
@@ -116,7 +117,7 @@ export const ListofIssues = () => {
                     />
                     <Input
                         onChange={(e) => searchHandler(e.target.value)}
-                        type='text' placeholder='Search: Item Code'
+                        type='text' placeholder='Search: ID'
                         focusBorderColor='accent'
                     />
                 </InputGroup>
@@ -136,6 +137,7 @@ export const ListofIssues = () => {
                     <Table size='sm'>
                         <Thead bgColor='secondary'>
                             <Tr>
+                                <Th color='white'>ID</Th>
                                 <Th color='white'>Customer Code</Th>
                                 <Th color='white'>Customer Name</Th>
                                 <Th color='white'>Total Quantity</Th>
@@ -147,16 +149,17 @@ export const ListofIssues = () => {
                         </Thead>
                         <Tbody>
                             {
-                                issueData?.receipt?.map((receipt, i) =>
+                                issueData?.issue?.map((issue, i) =>
                                     <Tr key={i}>
-                                        <Td>{receipt.supplierCode}</Td>
-                                        <Td>{receipt.supplierName}</Td>
-                                        <Td>{receipt.totalQuantity}</Td>
-                                        <Td>{receipt.preparedDate}</Td>
-                                        <Td>{receipt.preparedBy}</Td>
+                                        <Td>{issue.issuePKey}</Td>
+                                        <Td>{issue.customerCode}</Td>
+                                        <Td>{issue.customer}</Td>
+                                        <Td>{issue.totalQuantity}</Td>
+                                        <Td>{issue.preparedDate}</Td>
+                                        <Td>{issue.preparedBy}</Td>
                                         <Td>
                                             <Button
-                                                onClick={() => viewHandler(receipt.id, receipt.isActive)}
+                                                onClick={() => viewHandler(issue.issuePKey, issue.isActive)}
                                                 colorScheme='blue' size='xs'
                                             >
                                                 View
@@ -164,10 +167,10 @@ export const ListofIssues = () => {
                                         </Td>
                                         <Td>
                                             <Button
-                                                onClick={() => changeStatusHandler(receipt.id, receipt.isActive)}
+                                                onClick={() => changeStatusHandler(issue.issuePKey, issue.isActive)}
                                                 colorScheme='red' size='xs'
                                             >
-                                                {receipt.isActive ? 'Inactivate' : 'Activate'}
+                                                {issue.isActive ? 'Inactivate' : 'Activate'}
                                             </Button>
                                         </Td>
                                     </Tr>

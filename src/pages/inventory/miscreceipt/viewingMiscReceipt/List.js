@@ -116,7 +116,7 @@ export const ListofReceipts = () => {
                     />
                     <Input
                         onChange={(e) => searchHandler(e.target.value)}
-                        type='text' placeholder='Search: Item Code'
+                        type='text' placeholder='Search: ID'
                         focusBorderColor='accent'
                     />
                 </InputGroup>
@@ -136,6 +136,7 @@ export const ListofReceipts = () => {
                     <Table size='sm'>
                         <Thead bgColor='secondary'>
                             <Tr>
+                                <Th color='white'>ID</Th>
                                 <Th color='white'>Supplier Code</Th>
                                 <Th color='white'>Supplier Name</Th>
                                 <Th color='white'>Total Quantity</Th>
@@ -149,6 +150,7 @@ export const ListofReceipts = () => {
                             {
                                 receiptData?.receipt?.map((receipt, i) =>
                                     <Tr key={i}>
+                                        <Td>{receipt.id}</Td>
                                         <Td>{receipt.supplierCode}</Td>
                                         <Td>{receipt.supplierName}</Td>
                                         <Td>{receipt.totalQuantity}</Td>

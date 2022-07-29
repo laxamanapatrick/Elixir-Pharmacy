@@ -1,23 +1,32 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Flex, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from '@chakra-ui/react'
 import PageScrollReusable from '../../../components/PageScroll-Reusable'
 
-export const ListofIssue = ({ listDataTempo, selectorId, setSelectorId, setEditableData, setRowIndex }) => {
+export const ListofIssue = ({ listDataTempo, selectorId, setSelectorId, setEditableData, setRowIndex, setTotalQuantity }) => {
 
     const TableHead = [
         "Line", "Item Code", "Item Description",
         // "Category", 
-        "UOM", "Quantity", 
+        "UOM", "Quantity",
         // "Customer", 
         "Expiration Date"
     ]
 
     const rowHandler = (item, i) => {
-        setSelectorId(i+1)
+        setSelectorId(i + 1)
         setEditableData(item)
         const index = listDataTempo.indexOf(item)
         setRowIndex(index)
     }
+
+    useEffect(() => {
+        if (listDataTempo.length) {
+            let sumQuantity = listDataTempo.map((q) => parseFloat(q.quantity))
+            let sum = sumQuantity.reduce((a, b) => a + b)
+            setTotalQuantity(sum)
+        }
+
+    }, [listDataTempo])
 
     return (
         <Flex justifyContent='center' flexDirection='column' w='full'>
@@ -35,10 +44,10 @@ export const ListofIssue = ({ listDataTempo, selectorId, setSelectorId, setEdita
                                 {
                                     listDataTempo?.map((item, i) =>
                                         <Tr key={i}
-                                        onClick={() => rowHandler(item,i)}
-                                        bgColor={selectorId === i+1 ? 'table_accent' : 'none'}
+                                            onClick={() => rowHandler(item, i)}
+                                            bgColor={selectorId === i + 1 ? 'table_accent' : 'none'}
                                         >
-                                            <Td>{i+1}</Td>
+                                            <Td>{i + 1}</Td>
                                             <Td>{item?.itemCode}</Td>
                                             <Td>{item?.itemDescription}</Td>
                                             <Td>{item?.uom}</Td>

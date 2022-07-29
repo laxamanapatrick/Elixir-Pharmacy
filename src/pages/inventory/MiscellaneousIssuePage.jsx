@@ -14,6 +14,10 @@ const fetchRawMatsApi = async () => {
   const res = await apiClient.get(`RawMaterial/GetAllActiveRawMaterials`)
   return res.data
 }
+const fetchExpiryDatesApi = async (itemCode) => {
+  const res = await apiClient.get(`Miscellaneous/GetAllAvailableStocksForMIsssue?itemcode=${itemCode}`)
+  return res.data
+}
 const fetchUOMsApi = async () => {
   const res = await apiClient.get(`Uom/GetAllActiveUOM`)
   return res.data
@@ -25,6 +29,14 @@ const MiscellaneousIssuePage = () => {
   const [rawMats, setRawMats] = useState([])
   const [uoms, setUoms] = useState([])
 
+  const [expiryDates, setExpiryDates] = useState([])
+
+  const [totalQuantity, setTotalQuantity] = useState('')
+  const [customerData, setCustomerData] = useState({
+    customerCode: '',
+    customer: ''
+  })
+
   const [navigation, setNavigation] = useState('')
 
   const [rawMatsInfo, setRawMatsInfo] = useState({
@@ -35,6 +47,7 @@ const MiscellaneousIssuePage = () => {
     expirationDate: '',
     quantity: ''
   })
+  const itemCode = rawMatsInfo.itemCode
 
   const [details, setDetails] = useState('')
   const [listDataTempo, setListDataTempo] = useState([])
@@ -72,6 +85,21 @@ const MiscellaneousIssuePage = () => {
       setRawMats([])
     }
   }, [])
+
+  //Expiry Dates
+  const fetchExpiryDates = () => {
+    fetchExpiryDatesApi(itemCode).then(res => {
+      setExpiryDates(res)
+    })
+  }
+
+  useEffect(() => {
+    fetchExpiryDates()
+
+    return () => {
+      setExpiryDates([])
+    }
+  }, [itemCode])
 
   //UOM Fetching
   const fetchUOMs = () => {
@@ -124,8 +152,9 @@ const MiscellaneousIssuePage = () => {
                 rawMatsInfo={rawMatsInfo} setRawMatsInfo={setRawMatsInfo}
                 details={details} setDetails={setDetails}
                 listDataTempo={listDataTempo} setListDataTempo={setListDataTempo}
-                customers={customers} rawMats={rawMats} uoms={uoms}
+                customers={customers} rawMats={rawMats} uoms={uoms} expiryDates={expiryDates}
                 setSelectorId={setSelectorId}
+                setCustomerData={setCustomerData}
               />
               {
                 listDataTempo.length > 0 ?
@@ -135,10 +164,13 @@ const MiscellaneousIssuePage = () => {
                       selectorId={selectorId} setSelectorId={setSelectorId}
                       setEditableData={setEditableData}
                       setRowIndex={setRowIndex}
+                      setTotalQuantity={setTotalQuantity}
                     />
                     <ActionButton
                       listDataTempo={listDataTempo}
                       setListDataTempo={setListDataTempo}
+                      totalQuantity={totalQuantity}
+                      customerData={customerData}
                       editableData={editableData}
                       selectorId={selectorId}
                       //cancel key
