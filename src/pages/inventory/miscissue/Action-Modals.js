@@ -23,6 +23,7 @@ export const AddConfirmation = ({ isOpen, onClose, closeAddModal, details, setDe
       "quantity": rawMatsInfo.quantity,
       "description": details
     }
+  
     setListDataTempo(current => [...current, addToArray])
     setRawMatsInfo({
       itemCode: '',
