@@ -1,17 +1,21 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Flex, HStack, VStack } from '@chakra-ui/react';
-import { ActionButtons } from './miscreceipt/Action-Buttons';
-import { ListofReceipt } from './miscreceipt/List-of-Receipt';
-import { RawMaterialsInformation } from './miscreceipt/Raw-Materials-Information';
+import { RawMaterialsInformation } from './miscissue/Raw-Materials-Information';
+import { ListofIssue } from './miscissue/List-of-Issue';
+import { ListofIssues } from './miscissue/viewingMiscIssue/List-Issue';
+import { ActionButton } from './miscissue/Action-Button';
 import apiClient from '../../services/apiClient'
-import { ListofReceipts } from './miscreceipt/viewingMiscReceipt/List';
 
-const fetchSuppliersApi = async () => {
-  const res = await apiClient.get(`Supplier/GetAllActiveSupplier`)
+const fetchCustomersApi = async () => {
+  const res = await apiClient.get(`Customer/GetAllActiveCustomer`)
   return res.data
 }
 const fetchRawMatsApi = async () => {
   const res = await apiClient.get(`RawMaterial/GetAllActiveRawMaterials`)
+  return res.data
+}
+const fetchExpiryDatesApi = async (itemCode) => {
+  const res = await apiClient.get(`Miscellaneous/GetAllAvailableStocksForMIsssue?itemcode=${itemCode}`)
   return res.data
 }
 const fetchUOMsApi = async () => {
@@ -19,18 +23,20 @@ const fetchUOMsApi = async () => {
   return res.data
 }
 
-const MiscellaneousReceiptPage = () => {
+const MiscellaneousIssuePage = () => {
 
-  const supplierRef = useRef()
-
-  const [suppliers, setSuppliers] = useState([])
+  const [customers, setCustomers] = useState([])
   const [rawMats, setRawMats] = useState([])
   const [uoms, setUoms] = useState([])
 
+  const [warehouseId, setWarehouseId] = useState('')
+
+  const [expiryDates, setExpiryDates] = useState([])
+
   const [totalQuantity, setTotalQuantity] = useState('')
-  const [supplierData, setSupplierData] = useState({
-    supplierCode: '',
-    supplierName: ''
+  const [customerData, setCustomerData] = useState({
+    customerCode: '',
+    customer: ''
   })
 
   const [navigation, setNavigation] = useState('')
@@ -38,11 +44,13 @@ const MiscellaneousReceiptPage = () => {
   const [rawMatsInfo, setRawMatsInfo] = useState({
     itemCode: '',
     itemDescription: '',
-    supplier: '',
+    customer: '',
     uom: '',
     expirationDate: '',
     quantity: ''
   })
+  const itemCode = rawMatsInfo.itemCode
+
   const [details, setDetails] = useState('')
   const [listDataTempo, setListDataTempo] = useState([])
   const [selectorId, setSelectorId] = useState('')
@@ -51,17 +59,17 @@ const MiscellaneousReceiptPage = () => {
   const [editableData, setEditableData] = useState({})
 
   //Supplier Fetching
-  const fetchSuppliers = () => {
-    fetchSuppliersApi().then(res => {
-      setSuppliers(res)
+  const fetchCustomers = () => {
+    fetchCustomersApi().then(res => {
+      setCustomers(res)
     })
   }
 
   useEffect(() => {
-    fetchSuppliers()
+    fetchCustomers()
 
     return () => {
-      setSuppliers([])
+      setCustomers([])
     }
   }, [])
 
@@ -80,6 +88,21 @@ const MiscellaneousReceiptPage = () => {
     }
   }, [])
 
+  //Expiry Dates
+  const fetchExpiryDates = () => {
+    fetchExpiryDatesApi(itemCode).then(res => {
+      setExpiryDates(res)
+    })
+  }
+
+  useEffect(() => {
+    fetchExpiryDates()
+
+    return () => {
+      setExpiryDates([])
+    }
+  }, [itemCode])
+
   //UOM Fetching
   const fetchUOMs = () => {
     fetchUOMsApi().then(res => {
@@ -96,6 +119,7 @@ const MiscellaneousReceiptPage = () => {
   }, [])
 
   return (
+
     <Flex px={5} pt={5} pb={0} w='full' flexDirection='column'>
 
       <Flex w='full' justifyContent='space-between'>
@@ -107,7 +131,7 @@ const MiscellaneousReceiptPage = () => {
             border='1px' borderColor='gray.300' size='sm'
             onClick={() => setNavigation(1)}
           >
-            Add Receipt
+            Add Issue
           </Button>
           <Button
             bgColor={navigation === 2 ? 'secondary' : ''}
@@ -116,7 +140,7 @@ const MiscellaneousReceiptPage = () => {
             border='1px' borderColor='gray.300' size='sm'
             onClick={() => setNavigation(2)}
           >
-            View Receipts
+            View Issues
           </Button>
         </HStack>
       </Flex>
@@ -124,46 +148,47 @@ const MiscellaneousReceiptPage = () => {
       <VStack w='full' p={5} spacing={10} border='1px' height={listDataTempo.length === 0 ? '85vh' : 'auto'}>
         {
           navigation === 1 ?
+
             <>
               <RawMaterialsInformation
                 rawMatsInfo={rawMatsInfo} setRawMatsInfo={setRawMatsInfo}
                 details={details} setDetails={setDetails}
                 listDataTempo={listDataTempo} setListDataTempo={setListDataTempo}
-                suppliers={suppliers} rawMats={rawMats} uoms={uoms}
+                customers={customers} rawMats={rawMats} uoms={uoms} expiryDates={expiryDates}
                 setSelectorId={setSelectorId}
-                setSupplierData={setSupplierData}
-                supplierRef={supplierRef}
+                setCustomerData={setCustomerData}
+                setWarehouseId={setWarehouseId}
               />
               {
                 listDataTempo.length > 0 ?
                   <>
-                    <ListofReceipt
+                    <ListofIssue
                       listDataTempo={listDataTempo}
                       selectorId={selectorId} setSelectorId={setSelectorId}
                       setEditableData={setEditableData}
                       setRowIndex={setRowIndex}
                       setTotalQuantity={setTotalQuantity}
                     />
-                    <ActionButtons
+                    <ActionButton
                       listDataTempo={listDataTempo}
                       setListDataTempo={setListDataTempo}
                       totalQuantity={totalQuantity}
-                      supplierData={supplierData}
+                      customerData={customerData}
                       editableData={editableData}
                       selectorId={selectorId}
-                      supplierRef={supplierRef}
-                      setDetails={setDetails}
-                      setRawMatsInfo={setRawMatsInfo}
                       //cancel key
                       rowIndex={rowIndex}
+                      //warehouse Id
+                      warehouseId={warehouseId}
                     />
                   </>
                   : ''
               }
             </>
+
             : navigation === 2 ?
               <>
-                <ListofReceipts />
+                <ListofIssues />
               </>
               :
               ''
@@ -171,7 +196,8 @@ const MiscellaneousReceiptPage = () => {
       </VStack>
 
     </Flex>
+
   )
 }
 
-export default MiscellaneousReceiptPage;
+export default MiscellaneousIssuePage;

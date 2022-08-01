@@ -23,7 +23,7 @@ export const Header = (props) => {
         navigate('/login')
         window.location.reload(false);
     }
-
+    
     const { sideBarHandler } = props
     return <Flex bgColor='primary' h='54px' justifyContent='space-between' pl={2} pr={2} alignItems='center'>
         <HStack>

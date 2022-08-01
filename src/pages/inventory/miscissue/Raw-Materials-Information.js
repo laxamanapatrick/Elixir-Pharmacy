@@ -1,14 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Button, ButtonGroup, Flex, HStack, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Select, Spinner, Text, useDisclosure, VStack } from '@chakra-ui/react'
-import { useLocation } from 'react-router-dom'
-import { AddConfirmation } from './Action-Modals'
+import { AddConfirmation } from './Action-Modal'
 import moment from 'moment'
 
-export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, listDataTempo, setListDataTempo, details, setDetails,
-    customers, rawMats, uoms, expiryDates, setSelectorId, setCustomerData, setWarehouseId
+export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, details, setDetails, customerRef,
+    customers, rawMats, uoms, expiryDates, setSelectorId, setCustomerData, setWarehouseId, warehouseId, fetchActiveMiscIssues, customerData
 }) => {
 
-    const customerRef = useRef()
     const { isOpen: isModal, onClose: closeModal, onOpen: openModal } = useDisclosure()
 
     const detailHandler = (data) => {
@@ -122,8 +120,6 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, listDataT
                     <RawMatsInfoModal
                         rawMatsInfo={rawMatsInfo}
                         setRawMatsInfo={setRawMatsInfo}
-                        listDataTempo={listDataTempo}
-                        setListDataTempo={setListDataTempo}
                         details={details}
                         setDetails={setDetails}
                         customerRef={customerRef}
@@ -132,7 +128,10 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, listDataT
                         expiryDates={expiryDates}
                         setSelectorId={setSelectorId}
                         setCustomerData={setCustomerData}
+                        warehouseId={warehouseId}
                         setWarehouseId={setWarehouseId}
+                        fetchActiveMiscIssues={fetchActiveMiscIssues}
+                        customerData={customerData}
                         isOpen={isModal}
                         onClose={closeModal}
                     />
@@ -145,7 +144,7 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, listDataT
 
 
 export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMatsInfo, setRawMatsInfo,
-    listDataTempo, setListDataTempo, customerRef, rawMats, uoms, expiryDates, setSelectorId, setCustomerData, setWarehouseId
+    customerRef, rawMats, expiryDates, setSelectorId, setCustomerData, setWarehouseId, warehouseId, fetchActiveMiscIssues, customerData
 }) => {
 
     const [availableStock, setAvailableStock] = useState('')
@@ -187,8 +186,8 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
     const expiryDateHandler = (data) => {
         if (data) {
             const newData = JSON.parse(data)
-            const expirationDate = newData.expirationDate
             const warehouseId = newData.warehouseId
+            const expirationDate = newData.expirationDate
             setAvailableStock(newData.remainingStocks)
             setWarehouseId(warehouseId)
             setRawMatsInfo({
@@ -344,8 +343,9 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
                                 onClick={openAddConfirmation}
                                 disabled={
                                     !rawMatsInfo.itemCode || !rawMatsInfo.customer || !rawMatsInfo.uom ||
-                                    !rawMatsInfo.expirationDate || !rawMatsInfo.quantity || !details
+                                    !rawMatsInfo.expirationDate || !rawMatsInfo.quantity || !details || rawMatsInfo.quantity > availableStock
                                 }
+                                title={rawMatsInfo.quantity > availableStock ? 'Quantity must not be greater than available stock' : ''}
                                 colorScheme='blue' px={4}
                             >
                                 Add
@@ -361,10 +361,13 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
                         isOpen={isAdd}
                         onClose={closeAdd}
                         closeAddModal={onClose}
-                        details={details} setDetails={setDetails} rawMatsInfo={rawMatsInfo} setRawMatsInfo={setRawMatsInfo}
-                        listDataTempo={listDataTempo} setListDataTempo={setListDataTempo}
+                        details={details} setDetails={setDetails}
+                        rawMatsInfo={rawMatsInfo} setRawMatsInfo={setRawMatsInfo}
                         customerRef={customerRef}
                         setSelectorId={setSelectorId}
+                        warehouseId={warehouseId} setWarehouseId={setWarehouseId}
+                        fetchActiveMiscIssues={fetchActiveMiscIssues}
+                        customerData={customerData}
                     />
                 )
             }

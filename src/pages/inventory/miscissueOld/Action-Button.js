@@ -1,10 +1,13 @@
 import React from 'react'
 import { Button, ButtonGroup, Flex, useDisclosure } from '@chakra-ui/react'
-import { CancelConfirmation, EditModal, SaveConfirmation } from './Action-Modal'
+import { CancelConfirmation, EditModal, SaveConfirmation } from './Action-Modals'
 
-export const ActionButton = ({ selectorId, setSelectorId, totalQuantity, customerData, details,
-    warehouseId, miscData, setTotalQuantity, fetchActiveMiscIssues, isLoading, setIsLoading, customerRef, setDetails, setRawMatsInfo
-}) => {
+export const ActionButton = ({ listDataTempo, setListDataTempo, selectorId, rowIndex, totalQuantity, customerData, warehouseId }) => {
+
+    const { isOpen: isEdit, onClose: closeEdit, onOpen: openEdit } = useDisclosure()
+    const editHandler = () => {
+        openEdit()
+    }
 
     const { isOpen: isSave, onClose: closeSave, onOpen: openSave } = useDisclosure()
     const saveHandler = () => {
@@ -21,26 +24,34 @@ export const ActionButton = ({ selectorId, setSelectorId, totalQuantity, custome
             <Flex w='full' justifyContent='end'>
                 <ButtonGroup size='xs'>
                     {/* <Button colorScheme='yellow' color='white' px={5} disabled={!selectorId} onClick={editHandler}>Edit</Button> */}
-                    <Button colorScheme='blue' px={5} isLoading={isLoading} disabled={miscData.length === 0 || isLoading} onClick={saveHandler}>Save</Button>
+                    <Button colorScheme='blue' px={5} disabled={listDataTempo.length === 0} onClick={saveHandler}>Save</Button>
                     <Button colorScheme='red' px={3} disabled={!selectorId} onClick={cancelHandler}>Cancel</Button>
                 </ButtonGroup>
             </Flex>
+
+            {
+                isEdit && (
+                    <EditModal
+                        isOpen={isEdit}
+                        onClose={closeEdit}
+                        selectorId={selectorId}
+                        rowIndex={rowIndex}
+                        setListDataTempo={setListDataTempo}
+                        listDataTempo={listDataTempo}
+                    />
+                )
+            }
 
             {
                 isSave && (
                     <SaveConfirmation
                         isOpen={isSave}
                         onClose={closeSave}
-                        totalQuantity={totalQuantity} setTotalQuantity={setTotalQuantity}
+                        listDataTempo={listDataTempo}
+                        setListDataTempo={setListDataTempo}
+                        totalQuantity={totalQuantity}
                         customerData={customerData}
-                        details={details}
-                        miscData={miscData}
-                        fetchActiveMiscIssues={fetchActiveMiscIssues}
                         warehouseId={warehouseId}
-                        isLoading={isLoading} setIsLoading={setIsLoading}
-                        customerRef={customerRef}
-                        setDetails={setDetails}
-                        setRawMatsInfo={setRawMatsInfo}
                     />
                 )
             }
@@ -51,8 +62,9 @@ export const ActionButton = ({ selectorId, setSelectorId, totalQuantity, custome
                         isOpen={isCancel}
                         onClose={closeCancel}
                         selectorId={selectorId}
-                        setSelectorId={setSelectorId}
-                        fetchActiveMiscIssues={fetchActiveMiscIssues}
+                        rowIndex={rowIndex}
+                        setListDataTempo={setListDataTempo}
+                        listDataTempo={listDataTempo}
                     />
                 )
             }

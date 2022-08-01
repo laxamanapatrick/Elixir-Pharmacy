@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Button, ButtonGroup, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Text, Table, Tbody, Td, Th, Thead, Tr, useToast } from '@chakra-ui/react'
+import { Button, ButtonGroup, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Text, Table, Tbody, Td, Th, Thead, Tr, useToast, VStack, HStack } from '@chakra-ui/react'
 import { BsQuestionOctagonFill } from 'react-icons/bs'
 import apiClient from '../../../../services/apiClient'
 import { ToastComponent } from '../../../../components/Toast'
 import PageScrollReusable from '../../../../components/PageScroll-Reusable'
+import moment from 'moment'
 
 export const StatusConfirmation = ({ isOpen, onClose, statusBody, fetchIssues }) => {
 
@@ -76,9 +77,19 @@ export const ViewModal = ({ isOpen, onClose, statusBody }) => {
     return (
         <Modal isOpen={isOpen} onClose={() => { }} size='5xl' isCentered>
             <ModalContent>
-                <ModalHeader>
-                    <Flex justifyContent='center'>
-                        <Text>Receipt Details</Text>
+                <ModalHeader mt={5} fontSize='md'>
+                    <Flex fontSize='xl' justifyContent='center'><Text>Issue Details</Text></Flex>
+                    <Flex justifyContent='space-between'>
+                        <VStack alignItems='start' spacing={-1}>
+                            <Text>Customer Code: {issuesDetailsData[0]?.customerCode}</Text>
+                            <Text>Customer Name: {issuesDetailsData[0]?.customer}</Text>
+                            <Text>Details: {issuesDetailsData[0]?.remarks}</Text>
+                        </VStack>
+                        <VStack alignItems='start' spacing={-1}>
+                            <Text>Transaction ID: {issuesDetailsData[0]?.issuePKey}</Text>
+                            <Text>Transaction Date: {moment(issuesDetailsData[0]?.preparedDate).format('yyyy-MM-DD')}</Text>
+                            <Text>Transact By: {issuesDetailsData[0]?.preparedBy}</Text>
+                        </VStack>
                     </Flex>
                 </ModalHeader>
                 <ModalCloseButton onClick={onClose} />

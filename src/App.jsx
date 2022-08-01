@@ -1,4 +1,4 @@
-import { Flex, useMediaQuery } from '@chakra-ui/react';
+import { Button, ButtonGroup, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Text, useDisclosure, useMediaQuery, useToast, VStack } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import './App.css';
@@ -7,6 +7,10 @@ import Sidebar from './components/Sidebar';
 import { Route, Routes } from 'react-router-dom';
 import { decodeUser } from './services/decode-user';
 import { Context } from './context/Context';
+import AppScroll from './components/AppScroll';
+import apiClient from './services/apiClient';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { ToastComponent } from './components/Toast';
 
 import LoginPage from './pages/LoginPage';
 import NotFoundPage from './pages/NotFoundPage'
@@ -79,15 +83,16 @@ import ApprovedMO from './pages/moveorderapproval/Approved-MO';
 import RejectedMO from './pages/moveorderapproval/Rejected-MO';
 
 import ReportsPage from './pages/ReportsPage';
-import AppScroll from './components/AppScroll';
+import Reports from './pages/reports/Reports';
+import { BsPatchQuestionFill } from 'react-icons/bs';
 
-import apiClient from './services/apiClient';
 const fetchNotificationApi = async () => {
   const res = await apiClient.get(`Receiving/GetNotification`)
   return res.data
 }
 
 function App() {
+
   const [isSidebarVisible, setIsSidebarVisible] = useState(false)
   const [selectedMenu, setSelectedMenu] = useState()
 
@@ -118,6 +123,40 @@ function App() {
     setIsSidebarVisible(prev => !prev)
   }
 
+  //Miscellaneous Issue Fetch and Cancel Feature
+  const [miscData, setMiscData] = useState([])
+  const [navigation, setNavigation] = useState('')
+  //Get Added Misc Issues per Item
+  const userId = user?.id
+  const fetchActiveMiscIssuesApi = async (userId) => {
+    const res = await apiClient.get(`Miscellaneous/GetAllActiveMiscellaneousIssueTransaction?empId=${userId}`)
+    return res.data
+  }
+  //Misc Issue Data
+  const fetchActiveMiscIssues = () => {
+    fetchActiveMiscIssuesApi(userId).then(res => {
+      setMiscData(res)
+    })
+  }
+  useEffect(() => {
+    fetchActiveMiscIssues()
+
+    return () => {
+      setMiscData([])
+    }
+  }, [userId])
+  // Open modal to cancel all ID on table if re-routed without saving
+  const { isOpen: isArrayCancel, onClose: closeArrayCancel, onOpen: openArrayCancel } = useDisclosure()
+  const path = useLocation()
+  const pathMiscIssue = "/inventory/miscellaneous-issue"
+  useEffect(() => {
+    if (path.pathname !== pathMiscIssue && miscData?.length > 0) {
+      openArrayCancel()
+    }
+  }, [path.pathname !== pathMiscIssue])
+
+
+
   return (
 
     <Context.Provider value={{ selectedMenu, setSelectedMenu }}>
@@ -131,7 +170,9 @@ function App() {
             <Route path="move-order" element={user ? <MoveOrderPage /> : <Navigate to="/login" />} />
             <Route path="transact-move-order" element={user ? <TransactMoveOrderPage /> : <Navigate to="/login" />} />
             <Route path="miscellaneous-receipt" element={user ? <MiscellaneousReceiptPage /> : <Navigate to="/login" />} />
-            <Route path="miscellaneous-issue" element={user ? <MiscellaneousIssuePage /> : <Navigate to="/login" />} />
+            <Route path="miscellaneous-issue" element={user ?
+              <MiscellaneousIssuePage miscData={miscData} fetchActiveMiscIssues={fetchActiveMiscIssues} navigation={navigation} setNavigation={setNavigation} />
+              : <Navigate to="/login" />} />
           </Route>
 
           <Route path="qc-module" element={user ? <QcModulePage notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />}>
@@ -201,14 +242,27 @@ function App() {
           </Route>
 
           <Route path="reports" element={user ? <ReportsPage /> : <Navigate to="/login" />}>
-
+            <Route path="reports" element={user ? <Reports /> : <Navigate to="/login" />} />
           </Route>
         </Route>
       </Routes >
-    </Context.Provider>
-  );
-}
 
+      {
+        isArrayCancel && (
+          <CancelArrayModalConfirmation
+            isOpen={isArrayCancel}
+            onClose={closeArrayCancel}
+            miscData={miscData}
+            fetchActiveMiscIssues={fetchActiveMiscIssues}
+            setNavigation={setNavigation}
+          />
+        )
+      }
+
+    </Context.Provider>
+
+  )
+}
 
 function Layout({ isSidebarVisible, sideBarHandler }) {
 
@@ -231,5 +285,68 @@ function Layout({ isSidebarVisible, sideBarHandler }) {
     </Flex >
   );
 }
-
 export default App;
+
+//Misc Issue Cancel Array
+const CancelArrayModalConfirmation = ({ isOpen, onClose, miscData, fetchActiveMiscIssues, setNavigation }) => {
+
+  const [isLoading, setIsLoading] = useState(false)
+  const toast = useToast()
+  const navigate = useNavigate()
+
+  const cancelArraySubmitHandler = () => {
+    setIsLoading(true)
+    try {
+      const cancelArray = miscData?.map(item => {
+        return {
+          id: item.id
+        }
+      })
+      const res = apiClient.put(`Miscellaneous/CancelItemCodeInMiscellaneousIssue`, cancelArray)
+        .then(res => {
+          ToastComponent("Warning", "Items has been cancelled", "success", toast)
+          fetchActiveMiscIssues()
+          onClose()
+        })
+        .catch(err => {
+          // ToastComponent("Error", "Item was not cancelled", "Error", toast)
+        })
+    } catch (error) {
+    }
+  }
+
+  const noHandler = () => {
+    setNavigation(1)
+    navigate('/inventory/miscellaneous-issue')
+    onClose()
+  }
+
+  return (
+    <Modal isOpen={isOpen} onClose={() => { }} isCentered size='xl'>
+      <ModalContent bgColor='secondary' color='white' pt={10} pb={5}>
+        <ModalHeader>
+          <VStack justifyContent='center'>
+            <BsPatchQuestionFill fontSize='50px' />
+            <Text textAlign='center' fontSize='sm'>[Miscellaneous Issue]</Text>
+          </VStack>
+        </ModalHeader>
+        <ModalCloseButton onClick={onClose} />
+
+        <ModalBody mb={5}>
+          <VStack spacing={0}>
+            <Text textAlign='center' fontSize='lg'>Your created lists will be cancelled.</Text>
+            <Text textAlign='center' fontSize='sm'>Are you sure you want to leave this page?</Text>
+          </VStack>
+        </ModalBody>
+
+        <ModalFooter>
+          <ButtonGroup>
+            <Button onClick={cancelArraySubmitHandler} isLoading={isLoading} disabled={isLoading} colorScheme='blue'>Yes</Button>
+            <Button onClick={noHandler} isLoading={isLoading} colorScheme='red'>No</Button>
+          </ButtonGroup>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  )
+
+}

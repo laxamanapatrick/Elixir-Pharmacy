@@ -1,30 +1,32 @@
 import React, { useEffect } from 'react'
-import { Button, Flex, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from '@chakra-ui/react'
+import { Flex, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from '@chakra-ui/react'
 import PageScrollReusable from '../../../components/PageScroll-Reusable'
 
-export const ListofIssue = ({ miscData, selectorId, setSelectorId, setEditableData, setRowIndex, setTotalQuantity }) => {
+export const ListofIssue = ({ listDataTempo, selectorId, setSelectorId, setEditableData, setRowIndex, setTotalQuantity }) => {
 
     const TableHead = [
-        "Line", "ID", "Item Code", "Item Description",
+        "Line", "Item Code", "Item Description",
         // "Category", 
         "UOM", "Quantity",
         // "Customer", 
         "Expiration Date"
     ]
 
-    const rowHandler = ({ id }) => {
-        setSelectorId(id)
-        // const index = miscData.indexOf(item)
+    const rowHandler = (item, i) => {
+        setSelectorId(i + 1)
+        setEditableData(item)
+        const index = listDataTempo.indexOf(item)
+        setRowIndex(index)
     }
 
     useEffect(() => {
-        if (miscData.length) {
-            let sumQuantity = miscData.map((q) => parseFloat(q.totalQuantity))
+        if (listDataTempo.length) {
+            let sumQuantity = listDataTempo.map((q) => parseFloat(q.quantity))
             let sum = sumQuantity.reduce((a, b) => a + b)
             setTotalQuantity(sum)
         }
 
-    }, [miscData])
+    }, [listDataTempo])
 
     return (
         <Flex justifyContent='center' flexDirection='column' w='full'>
@@ -40,18 +42,16 @@ export const ListofIssue = ({ miscData, selectorId, setSelectorId, setEditableDa
                             </Thead>
                             <Tbody>
                                 {
-                                    miscData?.map((item, i) =>
+                                    listDataTempo?.map((item, i) =>
                                         <Tr key={i}
-                                            onClick={() => rowHandler(item)}
-                                            bgColor={selectorId === item.id ? 'table_accent' : 'none'}
-                                            cursor='pointer'
+                                            onClick={() => rowHandler(item, i)}
+                                            bgColor={selectorId === i + 1 ? 'table_accent' : 'none'}
                                         >
                                             <Td>{i + 1}</Td>
-                                            <Td>{item?.id}</Td>
                                             <Td>{item?.itemCode}</Td>
                                             <Td>{item?.itemDescription}</Td>
                                             <Td>{item?.uom}</Td>
-                                            <Td>{item?.totalQuantity}</Td>
+                                            <Td>{item?.quantity}</Td>
                                             {/* <Td>{item?.customer}</Td> */}
                                             <Td>{item?.expirationDate}</Td>
                                         </Tr>

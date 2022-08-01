@@ -71,7 +71,7 @@ export const AddConfirmation = ({ isOpen, onClose, closeAddModal, details, setDe
   )
 }
 
-export const SaveConfirmation = ({ isOpen, onClose, listDataTempo, setListDataTempo, supplierData, totalQuantity }) => {
+export const SaveConfirmation = ({ isOpen, onClose, listDataTempo, setListDataTempo, supplierData, totalQuantity, supplierRef, setDetails, setRawMatsInfo }) => {
 
   const [isLoading, setIsLoading] = useState(false)
   const toast = useToast()
@@ -112,6 +112,16 @@ export const SaveConfirmation = ({ isOpen, onClose, listDataTempo, setListDataTe
                 const res = apiClient.post(`Miscellaneous/AddNewMiscellaneousReceiptInWarehouse`, submitArray)
                 ToastComponent("Success", "Information saved", "success", toast)
                 setListDataTempo([])
+                supplierRef.current.value = ''
+                setDetails('')
+                setRawMatsInfo({
+                  itemCode: '',
+                  itemDescription: '',
+                  supplier: '',
+                  uom: '',
+                  expirationDate: '',
+                  quantity: ''
+                })
                 setIsLoading(false)
                 onClose()
               } catch (error) {
