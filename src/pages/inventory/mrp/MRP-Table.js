@@ -38,7 +38,7 @@ export const MRPTable = ({ mrpData, setSelectorId, selectorId, setRawMatsInfo, p
                 soh: soh,
                 bufferLevel: bufferLevel,
                 suggestedPo: suggestedPo,
-                lastUsed: 'No data on backend yet'
+                lastUsed: 'No data'
             })
         } else {
             setSelectorId('')
@@ -159,7 +159,7 @@ export const MRPTable = ({ mrpData, setSelectorId, selectorId, setRawMatsInfo, p
                 </Table>
             </PageScrollReusable>
 
-            <Flex mt={5} justifyContent='end'>
+            <Flex mt={5} justifyContent='end' w='full'>
                 <Stack>
                     <Pagination
                         pagesCount={pagesCount}

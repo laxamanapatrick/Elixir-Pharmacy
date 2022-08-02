@@ -40,6 +40,7 @@ const MrpPage = () => {
   const fetchMRP = () => {
     fetchMRPApi(currentPage, pageSize, search).then(res => {
       setMrpData(res)
+      setPageTotal(res.totalCount)
     })
   }
 

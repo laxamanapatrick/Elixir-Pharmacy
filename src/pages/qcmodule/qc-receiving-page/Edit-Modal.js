@@ -126,7 +126,8 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo, fetchNo
     expiry_Date: moment(expiryDate).format("YYYY-MM-DD"),
     actual_Delivered: Number(actualDelivered),
     batch_No: Number(batchNo),
-    totalReject: sumQuantity
+    totalReject: sumQuantity,
+    qcBy: currentUser.userName
   }
 
   return (

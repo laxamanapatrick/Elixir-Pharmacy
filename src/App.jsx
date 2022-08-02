@@ -84,7 +84,7 @@ import RejectedMO from './pages/moveorderapproval/Rejected-MO';
 
 import ReportsPage from './pages/ReportsPage';
 import Reports from './pages/reports/Reports';
-import { BsPatchQuestionFill } from 'react-icons/bs';
+import { RiFileWarningFill } from 'react-icons/ri';
 
 const fetchNotificationApi = async () => {
   const res = await apiClient.get(`Receiving/GetNotification`)
@@ -326,11 +326,12 @@ const CancelArrayModalConfirmation = ({ isOpen, onClose, miscData, fetchActiveMi
       <ModalContent bgColor='secondary' color='white' pt={10} pb={5}>
         <ModalHeader>
           <VStack justifyContent='center'>
-            <BsPatchQuestionFill fontSize='50px' />
-            <Text textAlign='center' fontSize='sm'>[Miscellaneous Issue]</Text>
+            <RiFileWarningFill color='yellow' fontSize='50px' />
+            <Text color='warning' textAlign='center' fontSize='lg'>[Warning]</Text>
+            <Text color='warning' textAlign='center' fontSize='sm'>[Miscellaneous Issue]</Text>
           </VStack>
         </ModalHeader>
-        <ModalCloseButton onClick={onClose} />
+        <ModalCloseButton onClick={noHandler} />
 
         <ModalBody mb={5}>
           <VStack spacing={0}>
