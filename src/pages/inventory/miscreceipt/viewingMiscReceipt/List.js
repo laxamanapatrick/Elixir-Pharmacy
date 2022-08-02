@@ -3,7 +3,6 @@ import { Button, Flex, HStack, Input, InputGroup, InputLeftElement, Select, Stac
 import { FaSearch } from 'react-icons/fa'
 import {
     Pagination,
-    usePagination,
     PaginationNext,
     PaginationPage,
     PaginationPrevious,
@@ -15,18 +14,9 @@ import apiClient from '../../../../services/apiClient'
 import { ToastComponent } from '../../../../components/Toast'
 import { StatusConfirmation, ViewModal } from './Action-Modals'
 
-const fetchReceiptsApi = async (pageNumber, pageSize, search, status) => {
-    const res = await apiClient.get(`Miscellaneous/GetAllMiscellaneousReceiptPaginationOrig?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${search}&status=${status}`);
-    return res.data
-}
 
-export const ListofReceipts = () => {
 
-    const [receiptData, setReceiptData] = useState([])
-
-    const [pageTotal, setPageTotal] = useState(undefined)
-    const [status, setStatus] = useState(true)
-    const [search, setSearch] = useState("")
+export const ListofReceipts = ({ receiptData, setCurrentPage, setPageSize, setStatus, setSearch, pagesCount, currentPage, pages, fetchReceipts }) => {
 
     const [statusBody, setStatusBody] = useState({
         id: '',
@@ -35,29 +25,6 @@ export const ListofReceipts = () => {
 
     const { isOpen: isStatus, onClose: closeStatus, onOpen: openStatus } = useDisclosure()
     const { isOpen: isView, onClose: closeView, onOpen: openView } = useDisclosure()
-
-    const outerLimit = 2;
-    const innerLimit = 2;
-    const { currentPage, setCurrentPage, pagesCount, pages, setPageSize, pageSize } = usePagination({
-        total: pageTotal,
-        limits: {
-            outer: outerLimit,
-            inner: innerLimit,
-        },
-        initialState: { currentPage: 1, pageSize: 5 },
-
-    })
-
-    const fetchReceipts = () => {
-        fetchReceiptsApi(currentPage, pageSize, search, status).then(res => {
-            setReceiptData(res)
-            setPageTotal(res.totalCount)
-        })
-    }
-
-    useEffect(() => {
-        fetchReceipts()
-    }, [status, pageSize, currentPage, search]);
 
     const handlePageChange = (nextPage) => {
         setCurrentPage(nextPage)

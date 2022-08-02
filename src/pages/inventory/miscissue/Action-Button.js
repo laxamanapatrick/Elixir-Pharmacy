@@ -1,19 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button, ButtonGroup, Flex, useDisclosure } from '@chakra-ui/react'
-import { CancelConfirmation, EditModal, SaveConfirmation } from './Action-Modal'
+import { AllCancelConfirmation, SaveConfirmation } from './Action-Modal'
 
 export const ActionButton = ({ selectorId, setSelectorId, totalQuantity, customerData, details,
-    warehouseId, miscData, setTotalQuantity, fetchActiveMiscIssues, isLoading, setIsLoading, customerRef, setDetails, setRawMatsInfo
+    warehouseId, miscData, setTotalQuantity, fetchActiveMiscIssues, isLoading, setIsLoading, customerRef, 
+    setDetails, setRawMatsInfo, fetchExpiryDates
 }) => {
+
+    const [hideButton, setHideButton] = useState(false)
 
     const { isOpen: isSave, onClose: closeSave, onOpen: openSave } = useDisclosure()
     const saveHandler = () => {
+        setHideButton(true)
         openSave()
     }
 
-    const { isOpen: isCancel, onClose: closeCancel, onOpen: openCancel } = useDisclosure()
+    const { isOpen: allIsCancel, onClose: allCloseCancel, onOpen: openAllCancel } = useDisclosure()
     const cancelHandler = () => {
-        openCancel()
+        openAllCancel()
     }
 
     return (
@@ -21,8 +25,15 @@ export const ActionButton = ({ selectorId, setSelectorId, totalQuantity, custome
             <Flex w='full' justifyContent='end'>
                 <ButtonGroup size='xs'>
                     {/* <Button colorScheme='yellow' color='white' px={5} disabled={!selectorId} onClick={editHandler}>Edit</Button> */}
-                    <Button colorScheme='blue' px={5} isLoading={isLoading} disabled={miscData.length === 0 || isLoading} onClick={saveHandler}>Save</Button>
-                    <Button colorScheme='red' px={3} disabled={!selectorId} onClick={cancelHandler}>Cancel</Button>
+                    <Button
+                        onClick={saveHandler}
+                        disabled={miscData.length === 0 || isLoading || hideButton}
+                        isLoading={isLoading}
+                        colorScheme='blue' px={5}
+                    >
+                        Save
+                    </Button>
+                    <Button colorScheme='red' px={3} onClick={cancelHandler}>Cancel All</Button>
                 </ButtonGroup>
             </Flex>
 
@@ -41,18 +52,21 @@ export const ActionButton = ({ selectorId, setSelectorId, totalQuantity, custome
                         customerRef={customerRef}
                         setDetails={setDetails}
                         setRawMatsInfo={setRawMatsInfo}
+                        setHideButton={setHideButton}
                     />
                 )
             }
 
             {
-                isCancel && (
-                    <CancelConfirmation
-                        isOpen={isCancel}
-                        onClose={closeCancel}
-                        selectorId={selectorId}
+                allIsCancel && (
+                    <AllCancelConfirmation
+                        isOpen={allIsCancel}
+                        onClose={allCloseCancel}
+                        miscData={miscData}
                         setSelectorId={setSelectorId}
                         fetchActiveMiscIssues={fetchActiveMiscIssues}
+                        setHideButton={setHideButton}
+                        fetchExpiryDates={fetchExpiryDates}
                     />
                 )
             }

@@ -8,7 +8,7 @@ export const RawMatertialInformation = ({ rawMatsInfo, mrpDataLength }) => {
 
         <Flex w='full' justifyContent='space-between'>
           <Text textAlign='center' fontWeight='semibold'>Raw Materials Information:</Text>
-          <Text textAlign='center' fontWeight='semibold'>Total Records: {mrpDataLength}</Text>
+          <Text textAlign='center' fontWeight='semibold'>Total Records/page: {mrpDataLength}</Text>
         </Flex>
 
         <VStack w='full' spacing={6} bgColor='secondary' py={10}>

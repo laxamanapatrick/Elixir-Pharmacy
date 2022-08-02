@@ -94,7 +94,7 @@ export const AddConfirmation = ({ isOpen, onClose, closeAddModal, details, setDe
 }
 
 export const SaveConfirmation = ({ isOpen, onClose, totalQuantity, details, customerData, setTotalQuantity,
-    miscData, fetchActiveMiscIssues, isLoading, setIsLoading, customerRef, setDetails, setRawMatsInfo
+    miscData, fetchActiveMiscIssues, isLoading, setIsLoading, customerRef, setDetails, setRawMatsInfo, setHideButton
 }) => {
 
     const toast = useToast()
@@ -141,6 +141,7 @@ export const SaveConfirmation = ({ isOpen, onClose, totalQuantity, details, cust
                                             quantity: ''
                                         })
                                         setIsLoading(false)
+                                        setHideButton(false)
                                     })
                             } catch (error) {
                                 console.log(error)
@@ -157,6 +158,11 @@ export const SaveConfirmation = ({ isOpen, onClose, totalQuantity, details, cust
         }
     }
 
+    const closeHandler = () => {
+        setHideButton(false)
+        onClose()
+    }
+
     return (
         <Modal isOpen={isOpen} onClose={() => { }} isCentered size='xl'>
             <ModalContent bgColor='secondary' color='white' pt={10} pb={5}>
@@ -165,7 +171,7 @@ export const SaveConfirmation = ({ isOpen, onClose, totalQuantity, details, cust
                         <BsPatchQuestionFill fontSize='50px' />
                     </Flex>
                 </ModalHeader>
-                <ModalCloseButton onClick={onClose} />
+                <ModalCloseButton onClick={closeHandler} />
 
                 <ModalBody mb={5}>
                     <Text textAlign='center' fontSize='lg'>Are you sure you want to save this information?</Text>
@@ -174,7 +180,7 @@ export const SaveConfirmation = ({ isOpen, onClose, totalQuantity, details, cust
                 <ModalFooter>
                     <ButtonGroup>
                         <Button onClick={saveSubmitHandler} isLoading={isLoading} disabled={isLoading} colorScheme='blue'>Yes</Button>
-                        <Button onClick={onClose} isLoading={isLoading} colorScheme='red'>No</Button>
+                        <Button onClick={closeHandler} isLoading={isLoading} colorScheme='red'>No</Button>
                     </ButtonGroup>
                 </ModalFooter>
             </ModalContent>
@@ -182,11 +188,10 @@ export const SaveConfirmation = ({ isOpen, onClose, totalQuantity, details, cust
     )
 }
 
-export const CancelConfirmation = ({ isOpen, onClose, selectorId, setSelectorId, fetchActiveMiscIssues }) => {
+export const CancelConfirmation = ({ isOpen, onClose, selectorId, setSelectorId, fetchActiveMiscIssues, fetchExpiryDates }) => {
 
     const [isLoading, setIsLoading] = useState(false)
     const toast = useToast()
-
 
     const cancelSubmitHandler = () => {
         setIsLoading(true)
@@ -195,11 +200,14 @@ export const CancelConfirmation = ({ isOpen, onClose, selectorId, setSelectorId,
                 .then(res => {
                     ToastComponent("Success", "Item has been cancelled", "success", toast)
                     fetchActiveMiscIssues()
+                    fetchExpiryDates()
+                    setIsLoading(false)
                     setSelectorId('')
                     onClose()
                 })
                 .catch(err => {
-                    ToastComponent("Error", "Item was not cancelled", "Error", toast)
+                    ToastComponent("Error", "Item was not cancelled", "error", toast)
+                    setIsLoading(false)
                 })
         } catch (error) {
         }
@@ -230,17 +238,61 @@ export const CancelConfirmation = ({ isOpen, onClose, selectorId, setSelectorId,
     )
 }
 
+export const AllCancelConfirmation = ({ isOpen, onClose, miscData, setSelectorId, fetchActiveMiscIssues, setHideButton, fetchExpiryDates }) => {
 
+    const [isLoading, setIsLoading] = useState(false)
+    const toast = useToast()
 
+    const allCancelSubmitHandler = () => {
+        setIsLoading(true)
+        const allId = miscData.map(item => {
+            return {
+                id: item.id
+            }
+        })
+        try {
+            const res = apiClient.put(`Miscellaneous/CancelItemCodeInMiscellaneousIssue`, allId)
+                .then(res => {
+                    ToastComponent("Success", "Items has been cancelled", "success", toast)
+                    fetchActiveMiscIssues()
+                    fetchExpiryDates()
+                    setSelectorId('')
+                    setHideButton(false)
+                    setIsLoading(false)
+                    onClose()
+                })
+                .catch(err => {
+                    ToastComponent("Error", "Item was not cancelled", "error", toast)
+                    setIsLoading(false)
+                })
+        } catch (error) {
+        }
+    }
 
+    return (
+        <Modal isOpen={isOpen} onClose={() => { }} isCentered size='xl'>
+            <ModalContent bgColor='secondary' color='white' pt={10} pb={5}>
+                <ModalHeader>
+                    <Flex justifyContent='center'>
+                        <BsPatchQuestionFill fontSize='50px' />
+                    </Flex>
+                </ModalHeader>
+                <ModalCloseButton onClick={onClose} />
 
+                <ModalBody mb={5}>
+                    <Text textAlign='center' fontSize='lg'>Are you sure you want to cancel all items in the list?</Text>
+                </ModalBody>
 
-
-
-
-
-
-
+                <ModalFooter>
+                    <ButtonGroup>
+                        <Button onClick={allCancelSubmitHandler} isLoading={isLoading} disabled={isLoading} colorScheme='blue'>Yes</Button>
+                        <Button onClick={onClose} isLoading={isLoading} colorScheme='red'>No</Button>
+                    </ButtonGroup>
+                </ModalFooter>
+            </ModalContent>
+        </Modal>
+    )
+}
 
 
 

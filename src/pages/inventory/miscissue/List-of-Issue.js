@@ -1,20 +1,32 @@
 import React, { useEffect } from 'react'
-import { Button, Flex, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from '@chakra-ui/react'
+import { Button, Flex, Table, Tbody, Td, Text, Th, Thead, Tr, useDisclosure, VStack } from '@chakra-ui/react'
 import PageScrollReusable from '../../../components/PageScroll-Reusable'
+import { CancelConfirmation } from './Action-Modal'
 
-export const ListofIssue = ({ miscData, selectorId, setSelectorId, setEditableData, setRowIndex, setTotalQuantity }) => {
+export const ListofIssue = ({ miscData, selectorId, setSelectorId, setTotalQuantity, fetchActiveMiscIssues, fetchExpiryDates }) => {
 
     const TableHead = [
         "Line", "ID", "Item Code", "Item Description",
         // "Category", 
         "UOM", "Quantity",
         // "Customer", 
-        "Expiration Date"
+        "Expiration Date",
+        "Cancel"
     ]
 
-    const rowHandler = ({ id }) => {
-        setSelectorId(id)
-        // const index = miscData.indexOf(item)
+    // const rowHandler = ({ id }) => {
+    //     setSelectorId(id)
+    //     // const index = miscData.indexOf(item)
+    // }
+
+    const { isOpen: isCancel, onClose: closeCancel, onOpen: openCancel } = useDisclosure()
+    const cancelHandler = (id) => {
+        if (id) {
+            setSelectorId(id)
+            openCancel()
+        } else {
+            setSelectorId('')
+        }
     }
 
     useEffect(() => {
@@ -42,9 +54,9 @@ export const ListofIssue = ({ miscData, selectorId, setSelectorId, setEditableDa
                                 {
                                     miscData?.map((item, i) =>
                                         <Tr key={i}
-                                            onClick={() => rowHandler(item)}
-                                            bgColor={selectorId === item.id ? 'table_accent' : 'none'}
-                                            cursor='pointer'
+                                        // onClick={() => rowHandler(item)}
+                                        // bgColor={selectorId === item.id ? 'table_accent' : 'none'}
+                                        // cursor='pointer'
                                         >
                                             <Td>{i + 1}</Td>
                                             <Td>{item?.id}</Td>
@@ -54,6 +66,14 @@ export const ListofIssue = ({ miscData, selectorId, setSelectorId, setEditableDa
                                             <Td>{item?.totalQuantity}</Td>
                                             {/* <Td>{item?.customer}</Td> */}
                                             <Td>{item?.expirationDate}</Td>
+                                            <Td>
+                                                <Button
+                                                    onClick={() => cancelHandler(item.id)}
+                                                    colorScheme='red' size='xs'
+                                                >
+                                                    Cancel
+                                                </Button>
+                                            </Td>
                                         </Tr>
                                     )
                                 }
@@ -62,7 +82,20 @@ export const ListofIssue = ({ miscData, selectorId, setSelectorId, setEditableDa
                     </PageScrollReusable>
                 </Flex>
             </VStack>
-        </Flex>
 
+            {
+                isCancel && (
+                    <CancelConfirmation
+                        isOpen={isCancel}
+                        onClose={closeCancel}
+                        selectorId={selectorId}
+                        setSelectorId={setSelectorId}
+                        fetchActiveMiscIssues={fetchActiveMiscIssues}
+                        fetchExpiryDates={fetchExpiryDates}
+                    />
+                )
+            }
+
+        </Flex>
     )
 }

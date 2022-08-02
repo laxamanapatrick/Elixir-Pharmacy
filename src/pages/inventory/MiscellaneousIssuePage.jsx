@@ -95,7 +95,16 @@ const MiscellaneousIssuePage = ({ miscData, fetchActiveMiscIssues, navigation, s
     return () => {
       setExpiryDates([])
     }
-  }, [itemCode])
+  }, [itemCode, navigation])
+
+  //Refetch on change navigation
+  useEffect(() => {
+    if (navigation) {
+      fetchCustomers()
+      fetchRawMats()
+      fetchExpiryDates()
+    }
+  }, [navigation])
 
   return (
 
@@ -148,6 +157,8 @@ const MiscellaneousIssuePage = ({ miscData, fetchActiveMiscIssues, navigation, s
                       selectorId={selectorId} setSelectorId={setSelectorId}
                       setTotalQuantity={setTotalQuantity}
                       miscData={miscData}
+                      fetchActiveMiscIssues={fetchActiveMiscIssues}
+                      fetchExpiryDates={fetchExpiryDates}
                     />
                     <ActionButton
                       setIsLoading={setIsLoading}
@@ -163,6 +174,7 @@ const MiscellaneousIssuePage = ({ miscData, fetchActiveMiscIssues, navigation, s
                       setRawMatsInfo={setRawMatsInfo}
                       //warehouse Id
                       warehouseId={warehouseId}
+                      fetchExpiryDates={fetchExpiryDates}
                     />
                   </>
                   : ''

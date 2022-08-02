@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Button, Flex, HStack, VStack } from '@chakra-ui/react';
+import { usePagination } from '@ajna/pagination'
 import { ActionButtons } from './miscreceipt/Action-Buttons';
 import { ListofReceipt } from './miscreceipt/List-of-Receipt';
 import { RawMaterialsInformation } from './miscreceipt/Raw-Materials-Information';
@@ -16,6 +17,12 @@ const fetchRawMatsApi = async () => {
 }
 const fetchUOMsApi = async () => {
   const res = await apiClient.get(`Uom/GetAllActiveUOM`)
+  return res.data
+}
+
+//Receipts Viewing
+const fetchReceiptsApi = async (pageNumber, pageSize, search, status) => {
+  const res = await apiClient.get(`Miscellaneous/GetAllMiscellaneousReceiptPaginationOrig?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${search}&status=${status}`);
   return res.data
 }
 
@@ -95,6 +102,46 @@ const MiscellaneousReceiptPage = () => {
     }
   }, [])
 
+
+
+  //Receipts Viewing
+  const [receiptData, setReceiptData] = useState([])
+  const [pageTotal, setPageTotal] = useState(undefined)
+  const [status, setStatus] = useState(true)
+  const [search, setSearch] = useState("")
+  const outerLimit = 2;
+  const innerLimit = 2;
+  const { currentPage, setCurrentPage, pagesCount, pages, setPageSize, pageSize } = usePagination({
+    total: pageTotal,
+    limits: {
+      outer: outerLimit,
+      inner: innerLimit,
+    },
+    initialState: { currentPage: 1, pageSize: 5 },
+
+  })
+  const fetchReceipts = () => {
+    fetchReceiptsApi(currentPage, pageSize, search, status).then(res => {
+      setReceiptData(res)
+      setPageTotal(res.totalCount)
+    })
+  }
+
+  useEffect(() => {
+    fetchReceipts()
+  }, [status, pageSize, currentPage, search]);
+
+
+  //Refetch on change navigation
+  useEffect(() => {
+    if (navigation) {
+      fetchReceipts()
+      fetchSuppliers()
+      fetchRawMats()
+      fetchUOMs()
+    }
+  }, [navigation])
+
   return (
     <Flex px={5} pt={5} pb={0} w='full' flexDirection='column'>
 
@@ -163,7 +210,17 @@ const MiscellaneousReceiptPage = () => {
             </>
             : navigation === 2 ?
               <>
-                <ListofReceipts />
+                <ListofReceipts
+                  receiptData={receiptData}
+                  setCurrentPage={setCurrentPage}
+                  setPageSize={setPageSize}
+                  setStatus={setStatus}
+                  setSearch={setSearch}
+                  pagesCount={pagesCount}
+                  currentPage={currentPage}
+                  pages={pages}
+                  fetchReceipts={fetchReceipts}
+                />
               </>
               :
               ''
