@@ -27,8 +27,6 @@ export const WarehouseReceivingHistory = ({ dateFrom, dateTo, sample }) => {
     }
   }, [dateFrom, dateTo, sample])
 
-  const { } = useDisclosure()
-
   return (
     <Flex w='full' flexDirection='column'>
       <Flex border='1px'>
@@ -62,32 +60,36 @@ export const WarehouseReceivingHistory = ({ dateFrom, dateTo, sample }) => {
               </Tr>
             </Thead>
             <Tbody>
-              <Tr>
-                <Td>Body</Td>
-                <Td>Body</Td>
-                <Td>Body</Td>
-                {
-                  buttonChanger
-                    ?
-                    <>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                    </>
-                    :
-                    <>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                    </>
-                }
-              </Tr>
+              {
+                warehouseData?.map((item, i) =>
+                  <Tr key={i}>
+                    <Td>{item.id}</Td>
+                    <Td>{item.receivedDate}</Td>
+                    <Td>{item.poNumber}</Td>
+                    {
+                      buttonChanger
+                        ?
+                        <>
+                          <Td>{item.itemCode}</Td>
+                          <Td>{item.itemDescription}</Td>
+                          <Td>{item.uom}</Td>
+                          <Td>{item.category}</Td>
+                          <Td>{item.quantity}</Td>
+                          <Td>{item.manufacturingDate}</Td>
+                        </>
+                        :
+                        <>
+                          <Td>{item.expirationDate}</Td>
+                          <Td>{item.totalReject}</Td>
+                          <Td>{item.supplierName}</Td>
+                          <Td>{item.price}</Td>
+                          <Td>{`Nodata`}</Td>
+                          <Td>{item.receivedBy}</Td>
+                        </>
+                    }
+                  </Tr>
+                )
+              }
             </Tbody>
           </Table>
         </PageScrollReusable>

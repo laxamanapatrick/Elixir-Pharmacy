@@ -27,8 +27,6 @@ export const TransformationReportHistory = ({ dateFrom, dateTo, sample }) => {
     }
   }, [dateFrom, dateTo, sample])
 
-  const { } = useDisclosure()
-
   return (
     <Flex w='full' flexDirection='column'>
       <Flex border='1px'>
@@ -46,11 +44,11 @@ export const TransformationReportHistory = ({ dateFrom, dateTo, sample }) => {
                       <Th color='white'>version</Th>
                       <Th color='white'>batch</Th>
                       <Th color='white'>total_quantity</Th>
-                      <Th color='white'>item_code(recipe)</Th>
-                      <Th color='white'>description</Th>
                     </>
                     :
                     <>
+                      <Th color='white'>item_code(recipe)</Th>
+                      <Th color='white'>description</Th>
                       <Th color='white'>quantity</Th>
                       <Th color='white'>date_transformed</Th>
                     </>
@@ -58,28 +56,32 @@ export const TransformationReportHistory = ({ dateFrom, dateTo, sample }) => {
               </Tr>
             </Thead>
             <Tbody>
-              <Tr>
-                <Td>Body</Td>
-                <Td>Body</Td>
-                <Td>Body</Td>
-                {
-                  buttonChanger
-                    ?
-                    <>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                    </>
-                    :
-                    <>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                    </>
-                }
-              </Tr>
+              {
+                transformationData?.map((item, i) =>
+                  <Tr key={i}>
+                    <Td>{item.transformationId}</Td>
+                    <Td>{item.planningDate}</Td>
+                    <Td>{item.itemCode_Formula}</Td>
+                    {
+                      buttonChanger
+                        ?
+                        <>
+                          <Td>{item.itemDescription_Formula}</Td>
+                          <Td>{item.version}</Td>
+                          <Td>{item.batch}</Td>
+                          <Td>{item.formula_Quantity}</Td>
+                        </>
+                        :
+                        <>
+                          <Td>{item.itemCode_Recipe}</Td>
+                          <Td>{item.itemDescription_Recipe}</Td>
+                          <Td>{item.recipe_Quantity}</Td>
+                          <Td>{item.dateTransformed}</Td>
+                        </>
+                    }
+                  </Tr>
+                )
+              }
             </Tbody>
           </Table>
         </PageScrollReusable>

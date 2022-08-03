@@ -27,8 +27,6 @@ export const QCReceivingHistory = ({ dateFrom, dateTo, sample }) => {
     }
   }, [dateFrom, dateTo, sample])
 
-  const { } = useDisclosure()
-
   return (
     <Flex w='full' flexDirection='column'>
       <Flex border='1px'>
@@ -62,32 +60,36 @@ export const QCReceivingHistory = ({ dateFrom, dateTo, sample }) => {
               </Tr>
             </Thead>
             <Tbody>
-              <Tr>
-                <Td>Body</Td>
-                <Td>Body</Td>
-                <Td>Body</Td>
-                {
-                  buttonChanger
-                    ?
-                    <>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                    </>
-                    :
-                    <>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                    </>
-                }
-              </Tr>
+              {
+                qcData?.map((item, i) =>
+                  <Tr key={i}>
+                    <Td>{item.id}</Td>
+                    <Td>{item.qcDate}</Td>
+                    <Td>{item.poNumber}</Td>
+                    {
+                      buttonChanger
+                        ?
+                        <>
+                          <Td>{item.itemCode}</Td>
+                          <Td>{item.itemDescription}</Td>
+                          <Td>{item.uom}</Td>
+                          <Td>{item.category}</Td>
+                          <Td>{item.quantity}</Td>
+                          <Td>{item.manufacturingDate}</Td>
+                        </>
+                        :
+                        <>
+                          <Td>{item.expirationDate}</Td>
+                          <Td>{item.totalReject}</Td>
+                          <Td>{item.supplierName}</Td>
+                          <Td>{item.price}</Td>
+                          <Td>{`No data`}</Td>
+                          <Td>{item.qcBy}</Td>
+                        </>
+                    }
+                  </Tr>
+                )
+              }
             </Tbody>
           </Table>
         </PageScrollReusable>

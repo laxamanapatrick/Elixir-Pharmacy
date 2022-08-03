@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Flex, Table, Tbody, Td, Th, Thead, Tr, useDisclosure, Button } from '@chakra-ui/react'
 import apiClient from '../../../services/apiClient'
 import PageScrollReusable from '../../../components/PageScroll-Reusable'
+import moment from 'moment'
 
 const fetchSummaryOrdersApi = async (dateFrom, dateTo) => {
   const res = await apiClient.get(`Report/MoveOrderHistory?dateFrom=${dateFrom}&dateTo=${dateTo}`)
@@ -26,8 +27,6 @@ export const SummaryofOrders = ({ dateFrom, dateTo, sample }) => {
       setOrdersData([])
     }
   }, [dateFrom, dateTo, sample])
-
-  const { } = useDisclosure()
 
   return (
     <Flex w='full' flexDirection='column'>
@@ -59,29 +58,33 @@ export const SummaryofOrders = ({ dateFrom, dateTo, sample }) => {
               </Tr>
             </Thead>
             <Tbody>
-              <Tr>
-                <Td>Body</Td>
-                <Td>Body</Td>
-                <Td>Body</Td>
-                {
-                  buttonChanger
-                    ?
-                    <>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                    </>
-                    :
-                    <>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                    </>
-                }
-              </Tr>
+              {
+                ordersData?.map((item, i) =>
+                  <Tr key={i}>
+                    <Td>{item.moveOrderId}</Td>
+                    <Td>{item.customerCode}</Td>
+                    <Td>{item.customerName}</Td>
+                    {
+                      buttonChanger
+                        ?
+                        <>
+                          <Td>{item.itemCode}</Td>
+                          <Td>{item.itemDescription}</Td>
+                          <Td>{item.uom}</Td>
+                          <Td>{item.category}</Td>
+                          <Td>{item.quantity}</Td>
+                          <Td>{item.expirationDate}</Td>
+                        </>
+                        :
+                        <>
+                          <Td>{item.transactionType}</Td>
+                          <Td>{item.moveOrderBy}</Td>
+                          <Td>{moment(item.moveOrderDate).format('yyyy-MM-DD')}</Td>
+                        </>
+                    }
+                  </Tr>
+                )
+              }
             </Tbody>
           </Table>
         </PageScrollReusable>

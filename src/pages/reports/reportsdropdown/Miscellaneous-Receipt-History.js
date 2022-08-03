@@ -27,8 +27,6 @@ export const MiscellaneousReceiptHistory = ({ dateFrom, dateTo, sample }) => {
     }
   }, [dateFrom, dateTo, sample])
 
-  const { } = useDisclosure()
-
   return (
     <Flex w='full' flexDirection='column'>
       <Flex border='1px'>
@@ -59,29 +57,33 @@ export const MiscellaneousReceiptHistory = ({ dateFrom, dateTo, sample }) => {
               </Tr>
             </Thead>
             <Tbody>
-              <Tr>
-                <Td>Body</Td>
-                <Td>Body</Td>
-                <Td>Body</Td>
-                {
-                  buttonChanger
-                    ?
-                    <>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                    </>
-                    :
-                    <>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                    </>
-                }
-              </Tr>
+              {
+                miscReceiptData?.map((item, i) =>
+                  <Tr key={i}>
+                    <Td>{item.receiptId}</Td>
+                    <Td>{item.supplierCode}</Td>
+                    <Td>{item.supplierName}</Td>
+                    {
+                      buttonChanger
+                        ?
+                        <>
+                          <Td>{item.details}</Td>
+                          <Td>{item.itemCode}</Td>
+                          <Td>{item.itemDescription}</Td>
+                          <Td>{item.uom}</Td>
+                          <Td>{item.category}</Td>
+                          <Td>{item.quantity}</Td>
+                        </>
+                        :
+                        <>
+                          <Td>{item.expirationDate}</Td>
+                          <Td>{item.transactBy}</Td>
+                          <Td>{item.transactDate}</Td>
+                        </>
+                    }
+                  </Tr>
+                )
+              }
             </Tbody>
           </Table>
         </PageScrollReusable>
