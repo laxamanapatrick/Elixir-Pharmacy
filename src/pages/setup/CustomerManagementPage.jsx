@@ -406,7 +406,7 @@ const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSub
 
   const fetchFarms = async () => {
     try {
-      const res = await apiClient.get('Customer/GetAllFarms')
+      const res = await apiClient.get('Customer/GetAllActiveFarms')
       setFarms(res.data)
     } catch (error) {
 

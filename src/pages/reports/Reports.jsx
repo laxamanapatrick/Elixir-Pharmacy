@@ -23,7 +23,7 @@ const Reports = () => {
                     <Flex w='full' justifyContent='space-between'>
                         <Select
                             onChange={(e) => setSample(e.target.value)}
-                            placeholder=' ' bgColor='#fff8dc' mt={6} w='17%'
+                            placeholder=' ' bgColor='#fff8dc' mt={6} w='19%'
                         >
                             <option value={1}>QC Receiving History</option>
                             <option value={2}>Warehouse Receiving History</option>
@@ -31,7 +31,7 @@ const Reports = () => {
                             <option value={4}>Move Order Transaction History</option>
                             <option value={5}>Miscellaneous Issue History</option>
                             <option value={6}>Miscellaneous Receipt History</option>
-                            <option value={7}>Summary of Orders</option>
+                            {/* <option value={7}>Summary of Orders</option> */}
                         </Select>
                         <HStack>
                             <VStack>
@@ -64,10 +64,10 @@ const Reports = () => {
                                                 :
                                                 sample == 6 ?
                                                     <MiscellaneousReceiptHistory dateFrom={dateFrom} dateTo={dateTo} sample={sample} />
-                                                    :
-                                                    sample == 7 ?
-                                                        <SummaryofOrders dateFrom={dateFrom} dateTo={dateTo} sample={sample} />
-                                                        : ''
+                                                    : ''
+                                                    // sample == 7 ?
+                                                    //     <SummaryofOrders dateFrom={dateFrom} dateTo={dateTo} sample={sample} />
+                                                    //     : ''
                         }
                     </Flex>
                 </Flex>

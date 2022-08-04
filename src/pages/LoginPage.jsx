@@ -53,7 +53,7 @@ const LoginPage = () => {
                 <VStack spacing={4} bgColor='gray.600' pl={10} pr={10} pt={4} pb={3} rounded={6}>
                     <VStack>
                         <Image width='85px' src='/images/logo.png'></Image>
-                        <Heading color='#18b58f' size='md' fontFamily="Redressed, cursive">Elixir</Heading>
+                        <Heading color='#18b58f' size='md' fontFamily="">Elixir</Heading>
                     </VStack>
                     <Box>
                         <Input variant='filled' size='sm' placeholder='Username' {...register("userName")} />

@@ -22,7 +22,6 @@ export const RequirementsInformation = ({ information, setWeight, setDisableSave
     const minAllowable = Number(information?.quantityNeeded) - (Number(information?.quantityNeeded) * 0.001)
     const maxAllowable = Number(information?.quantityNeeded) * 1.001
 
-    console.log(minAllowable, maxAllowable)
     if (data < minAllowable || data > maxAllowable) {
       setDisableSave(true)
       // setWeight('')

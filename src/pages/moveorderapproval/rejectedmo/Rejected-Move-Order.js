@@ -20,7 +20,7 @@ export const RejectedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, page
     const { isOpen: isReturn, onOpen: openReturn, onClose: closeReturn } = useDisclosure()
 
     const TableHead = [
-        "Line", "Order ID", "Farm", "Farm Code", "Category", "Total Quantity Order", "Prepared Date",
+        "Line", "Order ID", "Customer Code", "Customer Name", "Category", "Total Quantity Order", "Prepared Date",
         // "Date Needed", 
         // "Reject Date", 
         "Remarks", "Reject"
@@ -80,8 +80,8 @@ export const RejectedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, page
                                     <Tr key={i}>
                                         <Td>{i + 1}</Td>
                                         <Td>{data.orderNo}</Td>
-                                        <Td>{data.farmName}</Td>
                                         <Td>{data.farmCode}</Td>
+                                        <Td>{data.farmName}</Td>
                                         <Td>{data.category}</Td>
                                         <Td>{data.quantity}</Td>
                                         <Td>{moment(data.preparedDate).format("MM/DD/yyyy")}</Td>

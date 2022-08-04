@@ -37,7 +37,7 @@ export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage
     }
 
     const TableHead = [
-        "Line", "Order ID", "Farm", "Farm Code", "Category", "Total Quantity Order", "Order Date", 
+        "Line", "Order ID", "Customer Code", "Customer Name", "Category", "Total Quantity Order", "Order Date", 
         // "Date Needed", 
         "Prepared Date", "Status"
     ]
@@ -128,8 +128,8 @@ export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage
                                             <Td>{i + 1}</Td>
                                         }
                                         <Td>{order.id}</Td>
-                                        <Td>{order.farm}</Td>
                                         <Td>{order.farmCode}</Td>
+                                        <Td>{order.farm}</Td>
                                         <Td>{order.category}</Td>
                                         <Td>{order.totalOrders}</Td>
                                         <Td>{order.orderDate}</Td>

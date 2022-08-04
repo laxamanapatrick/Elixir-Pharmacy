@@ -6,9 +6,7 @@ import { ListofOutOfStocks } from './ordersummary/List-of-OutOfStocks'
 import { others, VStack } from '@chakra-ui/react'
 
 const fetchOrderSummaryApi = async (dateFrom, dateTo) => {
-  const newDateFrom = moment(dateFrom).format("yyyy-MM-DD")
-  const newDateTo = moment(dateTo).format("yyyy-MM-DD")
-  const res = await apiClient.get(`Ordering/OrderSummary?DateFrom=${newDateFrom}&DateTo=${newDateTo}`)
+  const res = await apiClient.get(`Ordering/OrderSummary?DateFrom=${dateFrom}&DateTo=${dateTo}`)
   return res.data
 }
 
@@ -21,8 +19,10 @@ const fetchOutofStocksApi = async (itemCode, orderDate) => {
 
 const OrderSummaryPage = () => {
 
-  const [dateFrom, setDateFrom] = useState('')
-  const [dateTo, setDateTo] = useState('')
+  const [dateFrom, setDateFrom] = useState(moment(new Date()).format('yyyy-MM-DD'))
+
+  const [dateTo, setDateTo] = useState(moment(new Date()).format('yyyy-MM-DD'))
+
   const [orderSummary, setOrderSummary] = useState([])
   const [orderId, setOrderId] = useState('')
 

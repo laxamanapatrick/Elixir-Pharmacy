@@ -35,6 +35,7 @@ export const ConfirmModal = ({ isOpen, onClose, resultArray, setIsLoading, setEr
             )
                 .then(res => {
                     ToastComponent("Success", "Orders Synced!", "success", toast)
+                    onClose()
                     setIsLoading(false)
                 })
                 .catch(err => {

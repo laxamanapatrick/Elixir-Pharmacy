@@ -13,7 +13,7 @@ export const ActualItemQuantity = ({ warehouseId, setWarehouseId, barcodeData, o
     const barcodeRef = useRef(null)
 
     const [quantity, setQuantity] = useState('')
-    const expirationDate = moment(barcodeData?.expirationDate).format("yyyy-MM-DD")
+    const expirationDate = moment(barcodeData?.orders?.expirationDate).format("yyyy-MM-DD")
     const [inputValidate, setInputValidate] = useState(true)
 
     const toast = useToast()
@@ -50,16 +50,15 @@ export const ActualItemQuantity = ({ warehouseId, setWarehouseId, barcodeData, o
     //Barcode Validation of Nearly Expired inventory
     useEffect(() => {
         if (barcodeData?.orders?.warehouseId) {
-            if (warehouseId != nearlyExpireBarcode) {
+            if (barcodeData?.orders?.warehouseId != barcodeData?.warehouseId) {
                 ToastComponent(
                     "Warning",
-                    `The barcode ${nearlyExpireBarcode} will expire earlier than provided barcode ${warehouseId}`,
+                    `The barcode ${barcodeData?.warehouseId} will expire earlier than provided barcode ${barcodeData?.orders?.warehouseId}`,
                     "warning",
                     toast
                 )
             }
         }
-
     }, [barcodeData])
 
     return (

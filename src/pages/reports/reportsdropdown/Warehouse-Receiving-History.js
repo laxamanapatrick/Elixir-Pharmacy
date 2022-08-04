@@ -52,8 +52,6 @@ export const WarehouseReceivingHistory = ({ dateFrom, dateTo, sample }) => {
                       <Th color='white'>expiration_date</Th>
                       <Th color='white'>total_reject</Th>
                       <Th color='white'>supplier_name</Th>
-                      <Th color='white'>price</Th>
-                      <Th color='white'>checklist_result</Th>
                       <Th color='white'>qc_by</Th>
                     </>
                 }
@@ -63,9 +61,9 @@ export const WarehouseReceivingHistory = ({ dateFrom, dateTo, sample }) => {
               {
                 warehouseData?.map((item, i) =>
                   <Tr key={i}>
-                    <Td>{item.id}</Td>
-                    <Td>{item.receivedDate}</Td>
-                    <Td>{item.poNumber}</Td>
+                    <Td>{item.warehouseId}</Td>
+                    <Td>{item.receiveDate}</Td>
+                    <Td>{item.poNumber ? item.poNumber : ''}</Td>
                     {
                       buttonChanger
                         ?
@@ -73,7 +71,7 @@ export const WarehouseReceivingHistory = ({ dateFrom, dateTo, sample }) => {
                           <Td>{item.itemCode}</Td>
                           <Td>{item.itemDescription}</Td>
                           <Td>{item.uom}</Td>
-                          <Td>{item.category}</Td>
+                          <Td>{item.category ? item.category : 'Miscellaneous'}</Td>
                           <Td>{item.quantity}</Td>
                           <Td>{item.manufacturingDate}</Td>
                         </>
@@ -82,8 +80,6 @@ export const WarehouseReceivingHistory = ({ dateFrom, dateTo, sample }) => {
                           <Td>{item.expirationDate}</Td>
                           <Td>{item.totalReject}</Td>
                           <Td>{item.supplierName}</Td>
-                          <Td>{item.price}</Td>
-                          <Td>{`Nodata`}</Td>
                           <Td>{item.receivedBy}</Td>
                         </>
                     }

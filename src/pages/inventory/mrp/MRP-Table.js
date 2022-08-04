@@ -92,17 +92,19 @@ export const MRPTable = ({ mrpData, setSelectorId, selectorId, setRawMatsInfo, p
                                         <Th color='white'>Reserve</Th>
                                         <Th color='white'>Buffer Level</Th>
                                         <Th color='white'>{`Receive (IN)`}</Th>
+                                        <Th color='white'>{`Receipt (IN)`}</Th>
+                                        <Th color='white'>{`Move Order (OUT)`}</Th>
                                     </>
                                     :
                                     <>
-                                        <Th color='white'>{`Receipt (IN)`}</Th>
-                                        <Th color='white'>{`Move Order (OUT)`}</Th>
                                         <Th color='white'>{`Issue (OUT)`}</Th>
                                         <Th color='white'>QA Receiving</Th>
                                         <Th color='white'>Last Used</Th>
                                         <Th color='white'>Movement Status</Th>
                                         <Th color='white'>Classification ABC</Th>
                                         <Th color='white'>Suggested PO</Th>
+                                        <Th color='white'>Average Issuance</Th>
+                                        <Th color='white'>Days Level</Th>
                                     </>
                             }
                         </Tr>
@@ -138,18 +140,19 @@ export const MRPTable = ({ mrpData, setSelectorId, selectorId, setRawMatsInfo, p
                                                 <Td>{item.reserve.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
                                                 <Td>{item.bufferLevel.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
                                                 <Td>{item.receiveIn.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
-
+                                                <Td>{item.receiptIn.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                                                <Td>{item.moveOrderOut.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
                                             </>
                                             :
                                             <>
-                                                <Td>{item.receiptIn.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
-                                                <Td>{item.moveOrderOut.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
                                                 <Td>{item.issueOut.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
                                                 <Td>{item.qcReceiving.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
                                                 <Td>{`Last Used`}</Td>
                                                 <Td>{`Movement Status`}</Td>
                                                 <Td>{`Classification ABC`}</Td>
                                                 <Td>{item.suggestedPo.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                                                <Td>{item.averageIssuance.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                                                <Td>{item.daysLevel}</Td>
                                             </>
                                     }
                                 </Tr>

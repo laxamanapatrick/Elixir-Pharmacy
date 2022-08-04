@@ -47,6 +47,7 @@ export const ListofReject = ({ rejects, setTransformId, transformId, setEditData
                                 <Th color='white'>Quantity</Th>
                                 <Th color='white'>Prod Plan</Th>
                                 <Th color='white'>Request By</Th>
+                                <Th color='white'>Remarks</Th>
                             </Tr>
                         </Thead>
                         <Tbody>
@@ -65,6 +66,7 @@ export const ListofReject = ({ rejects, setTransformId, transformId, setEditData
                                     <Td>{reject.quantity}</Td>
                                     <Td>{reject.prodPlan}</Td>
                                     <Td>{reject.addedBy}</Td>
+                                    <Td>{reject.rejectRemarks}</Td>
                                 </Tr>
                             )}
                         </Tbody>

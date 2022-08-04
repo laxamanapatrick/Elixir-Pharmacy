@@ -7,7 +7,7 @@ export const ListofOutOfStocks = ({ noStockData }) => {
 
   const TableHead = [
     "Line", "Order Date", "Date Needed",
-    "Farm", "Farm Code", "Category", "Item Code", "Item Description",
+    "Customer Code", "Customer Name", "Category", "Item Code", "Item Description",
     "UOM", "Quantity Order"
   ]
 
@@ -33,8 +33,8 @@ export const ListofOutOfStocks = ({ noStockData }) => {
                     <Td>{i + 1}</Td>
                     <Td>{stock.orderDate}</Td>
                     <Td>{stock.dateNeeded}</Td>
-                    <Td>{stock.farm}</Td>
                     <Td>{stock.farmCode}</Td>
+                    <Td>{stock.farm}</Td>
                     <Td>{stock.category}</Td>
                     <Td>{stock.itemCode}</Td>
                     <Td>{stock.itemDescription}</Td>

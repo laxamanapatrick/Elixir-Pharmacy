@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Flex, Table, Tbody, Td, Th, Thead, Tr, useDisclosure, Button } from '@chakra-ui/react'
 import apiClient from '../../../services/apiClient'
 import PageScrollReusable from '../../../components/PageScroll-Reusable'
+import moment from 'moment'
 
 const fetchMiscellaenouseReceiptApi = async (dateFrom, dateTo) => {
   const res = await apiClient.get(`Report/MiscellaneousReceiptReport?dateFrom=${dateFrom}&dateTo=${dateTo}`)
@@ -44,7 +45,7 @@ export const MiscellaneousReceiptHistory = ({ dateFrom, dateTo, sample }) => {
                       <Th color='white'>item_code</Th>
                       <Th color='white'>item_description</Th>
                       <Th color='white'>uom</Th>
-                      <Th color='white'>category</Th>
+                      {/* <Th color='white'>category</Th> */}
                       <Th color='white'>quantity</Th>
                     </>
                     :
@@ -71,14 +72,14 @@ export const MiscellaneousReceiptHistory = ({ dateFrom, dateTo, sample }) => {
                           <Td>{item.itemCode}</Td>
                           <Td>{item.itemDescription}</Td>
                           <Td>{item.uom}</Td>
-                          <Td>{item.category}</Td>
+                          {/* <Td>{item.category}</Td> */}
                           <Td>{item.quantity}</Td>
                         </>
                         :
                         <>
                           <Td>{item.expirationDate}</Td>
                           <Td>{item.transactBy}</Td>
-                          <Td>{item.transactDate}</Td>
+                          <Td>{moment(item.transactDate).format('yyyy-MM-DD')}</Td>
                         </>
                     }
                   </Tr>

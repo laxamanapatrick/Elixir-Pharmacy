@@ -19,7 +19,7 @@ export const ApprovedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, page
     setOrderId, orderId, printData }) => {
 
     const TableHead = [
-        "Line", "Order ID", "Farm Code", "Category", "Total Quantity Order", "Prepared Date",
+        "Line", "Order ID", "Customer Code", "Category", "Total Quantity Order", "Prepared Date",
         // "Date Needed", 
         // "Approved Date", 
         "Track", "Print", "Reject"

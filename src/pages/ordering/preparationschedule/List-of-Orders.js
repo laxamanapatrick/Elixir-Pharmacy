@@ -173,8 +173,8 @@ export const ListofOrders = ({ setCurrentPage, currentPage, pagesCount,
                                 <Th color='white'>ID</Th>
                                 <Th color='white'>Order Date</Th>
                                 <Th color='white'>Date Needed</Th>
-                                <Th color='white'>Farm</Th>
-                                <Th color='white'>Farm Code</Th>
+                                <Th color='white'>Customer Code</Th>
+                                <Th color='white'>Customer Name</Th>
                                 <Th color='white'>Category</Th>
                                 <Th color='white'>Item Code</Th>
                                 <Th color='white'>Item Description</Th>
@@ -219,8 +219,8 @@ export const ListofOrders = ({ setCurrentPage, currentPage, pagesCount,
                                         <Td>{item.id}</Td>
                                         <Td>{item.orderDate}</Td>
                                         <Td>{item.dateNeeded}</Td>
-                                        <Td>{item.farm}</Td>
                                         <Td>{item.farmCode}</Td>
+                                        <Td>{item.farm}</Td>
                                         <Td>{item.category.toUpperCase()}</Td>
                                         <Td>{item.itemCode}</Td>
                                         <Td>{item.itemDescription}</Td>

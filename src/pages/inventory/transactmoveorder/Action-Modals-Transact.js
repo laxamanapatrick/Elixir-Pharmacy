@@ -62,12 +62,12 @@ export const ViewModal = ({ isOpen, onClose, moveOrderInformation, moveOrderList
                                         /> */}
                                     </HStack>
                                     <HStack w='full' justifyContent='start' mt={2}>
-                                        <Text fontSize='sm'>Farm Code:</Text>
+                                        <Text fontSize='sm'>Customer Code:</Text>
                                         <Text textAlign='center' w='30.5%' fontSize='sm' bgColor='gray.200' border='1px' py={1}
                                         >
                                             {moveOrderInformation.farmCode ? moveOrderInformation.farmCode : 'Please select a list'}
                                         </Text>
-                                        <Text fontSize='sm'>Farm Name:</Text>
+                                        <Text fontSize='sm'>Customer Name:</Text>
                                         <Text textAlign='center' w='69.5%' fontSize='sm' bgColor='gray.200' border='1px' py={1}
                                         >
                                             {moveOrderInformation.farmName ? moveOrderInformation.farmName : 'Please select a list'}

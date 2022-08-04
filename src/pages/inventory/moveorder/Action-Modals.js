@@ -3,6 +3,9 @@ import { Button, ButtonGroup, Flex, Modal, ModalBody, ModalCloseButton, ModalCon
 import { RiQuestionnaireLine } from 'react-icons/ri'
 import apiClient from '../../../services/apiClient'
 import { ToastComponent } from '../../../components/Toast'
+import { decodeUser } from '../../../services/decode-user'
+
+const currentUser = decodeUser()
 
 //Add Button
 
@@ -23,7 +26,8 @@ export const AddQuantityConfirmation = ({ isOpen, onClose, id, orderNo, itemCode
                     orderNo: orderNo,
                     itemCode: itemCode,
                     quantityOrdered: Number(quantityOrdered),
-                    expirationDate: expirationDate
+                    expirationDate: expirationDate,
+                    preparedBy: currentUser.userName
                 }
             )
                 .then(res => {
@@ -205,7 +209,7 @@ export const DeliveryStatusConfirmation = ({ isOpen, onClose, deliveryStatus, or
         const submitArray = orderListData?.map(item => {
             return {
                 id: item.id,
-                deliveryStatus: deliveryStatus
+                deliveryStatus: deliveryStatus,
             }
         })
         setIsLoading(true)

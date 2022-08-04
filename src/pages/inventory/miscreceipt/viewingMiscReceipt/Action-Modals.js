@@ -26,6 +26,7 @@ export const StatusConfirmation = ({ isOpen, onClose, statusBody, fetchReceipts 
             onClose()
         }).catch(err => {
             ToastComponent("Error", err.response.data, "error", toast)
+            setIsLoading(false)
         })
     }
 
@@ -73,6 +74,8 @@ export const ViewModal = ({ isOpen, onClose, statusBody }) => {
     useEffect(() => {
         fetchReceiptDetails()
     }, [id])
+
+    console.log(receiptDetailsData)
 
     return (
         <Modal isOpen={isOpen} onClose={() => { }} size='5xl' isCentered>

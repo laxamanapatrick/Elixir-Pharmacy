@@ -33,8 +33,8 @@ export const ListofPreparedDate = ({ orders, orderNo, setOrderNo }) => {
                             <Tr>
                                 <Th color='white'>Line</Th>
                                 <Th color='white'>Order ID</Th>
-                                <Th color='white'>Farm</Th>
-                                <Th color='white'>Farm Code</Th>
+                                <Th color='white'>Customer Code</Th>
+                                <Th color='white'>Customer Name</Th>
                                 <Th color='white'>Category</Th>
                                 <Th color='white'>Total Quantity Order</Th>
                                 <Th color='white'>Order Date</Th>
@@ -53,8 +53,8 @@ export const ListofPreparedDate = ({ orders, orderNo, setOrderNo }) => {
                                     >
                                         <Td>{i + 1}</Td>
                                         <Td>{item.orderNo}</Td>
-                                        <Td>{item.farm}</Td>
                                         <Td>{item.farmCode}</Td>
+                                        <Td>{item.farm}</Td>
                                         <Td>{item.category}</Td>
                                         <Td>{item.totalOrders}</Td>
                                         <Td>{item.orderDate}</Td>

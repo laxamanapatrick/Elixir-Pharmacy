@@ -336,7 +336,7 @@ export const RejectModal = ({ isOpen, onClose, id, fetchApprovedMO }) => {
     const submitHandler = () => {
         setIsLoading(true)
         try {
-            const res = apiClient.put(`Ordering/RejectListOfMoveOrder`,
+            const res = apiClient.put(`Ordering/RejectApproveListOfMoveOrder`,
                 {
                     orderNo: id,
                     remarks: reasonSubmit,

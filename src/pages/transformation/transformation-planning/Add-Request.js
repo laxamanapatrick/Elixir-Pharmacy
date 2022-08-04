@@ -108,7 +108,7 @@ const AddRequest = ({ fetchNotification }) => {
   return (
     <VStack spacing={3} w='full' h='auto'>
       <RawMaterialsInformation formulas={formulas} setCode={setCode} codeData={codeData} fetchRequests={fetchRequests} fetchNotification={fetchNotification} />
-      <ListofRequest setTransformId={setTransformId} transformId={transformId} requests={requests} fetchRequests={fetchRequests} fetchRequirements={fetchRequirements} />
+      <ListofRequest setTransformId={setTransformId} transformId={transformId} requests={requests} fetchRequests={fetchRequests} fetchRequirements={fetchRequirements} fetchNotification={fetchNotification} />
       <ListofRawMaterialsRequirements transformId={transformId} requirements={requirements} />
     </VStack>
   )

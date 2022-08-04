@@ -147,7 +147,7 @@ export const SaveConfirmation = ({ isOpen,
 
                 {Object.keys(newDisplayData)?.map((key, i) =>
                   <Flex w='full' justifyContent='center' key={i}>
-                    <Flex ml='4%' w='full'>
+                    <Flex ml='10%' w='full'>
                       <Flex>
                         <Text fontWeight='semibold' fontSize='10px'>{key}:</Text>
                       </Flex>

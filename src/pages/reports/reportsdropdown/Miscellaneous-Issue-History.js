@@ -2,9 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { Flex, Table, Tbody, Td, Th, Thead, Tr, useDisclosure, Button } from '@chakra-ui/react'
 import apiClient from '../../../services/apiClient'
 import PageScrollReusable from '../../../components/PageScroll-Reusable'
+import moment from 'moment'
 
 const fetchMiscellaneousIssueHistoryApi = async (dateFrom, dateTo) => {
-  const res = await apiClient.get(`Report/MiscellaneousIssueReport?dateFrom=${dateFrom}&dateTo=${dateTo}`)
+  const dayaDate = new Date()
+  const dateToDaya = dayaDate.setDate(dayaDate.getDate() + 1)
+  const res = await apiClient.get(`Report/MiscellaneousIssueReport?dateFrom=${dateFrom}&dateTo=${moment(dateToDaya).format('yyyy-MM-DD')}`)
   return res.data
 }
 
@@ -27,8 +30,6 @@ export const MiscellaneousIssueHistory = ({ dateFrom, dateTo, sample }) => {
     }
   }, [dateFrom, dateTo, sample])
 
-  const { } = useDisclosure()
-
   return (
     <Flex w='full' flexDirection='column'>
       <Flex border='1px'>
@@ -46,7 +47,7 @@ export const MiscellaneousIssueHistory = ({ dateFrom, dateTo, sample }) => {
                       <Th color='white'>item_code</Th>
                       <Th color='white'>item_description</Th>
                       <Th color='white'>uom</Th>
-                      <Th color='white'>category</Th>
+                      {/* <Th color='white'>category</Th>  */}
                       <Th color='white'>quantity</Th>
                     </>
                     :
@@ -59,29 +60,33 @@ export const MiscellaneousIssueHistory = ({ dateFrom, dateTo, sample }) => {
               </Tr>
             </Thead>
             <Tbody>
-              <Tr>
-                <Td>Body</Td>
-                <Td>Body</Td>
-                <Td>Body</Td>
-                {
-                  buttonChanger
-                    ?
-                    <>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                    </>
-                    :
-                    <>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                      <Td>Body</Td>
-                    </>
-                }
-              </Tr>
+              {
+                miscIssueData?.map((item, i) =>
+                  <Tr key={i}>
+                    <Td>{item.issueId}</Td>
+                    <Td>{item.customerCode}</Td>
+                    <Td>{item.customerName}</Td>
+                    {
+                      buttonChanger
+                        ?
+                        <>
+                          <Td>{item.details}</Td>
+                          <Td>{item.itemCode}</Td>
+                          <Td>{item.itemDescription}</Td>
+                          <Td>{item.uom}</Td>
+                          {/* <Td>Body</Td> */}
+                          <Td>{item.quantity}</Td>
+                        </>
+                        :
+                        <>
+                          <Td>{item.expirationDate}</Td>
+                          <Td>{item.transactBy}</Td>
+                          <Td>{moment(item.transactDate).format('yyyy-MM-DD')}</Td>
+                        </>
+                    }
+                  </Tr>
+                )
+              }
             </Tbody>
           </Table>
         </PageScrollReusable>

@@ -170,7 +170,7 @@ const RMWHReceivingPage = ({ fetchNotification }) => {
                     <Td>{wh.supplier}</Td>
                     <Td>{wh.quantityOrdered.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
                     <Td>{wh.actualGood.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
-                    <Td>{wh.reject.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                    <Td>{wh.reject}</Td>
                     <Td>{wh.expirationDate}</Td>
                     <Td>{wh.qC_ReceivedDate}</Td>
                     <Td>

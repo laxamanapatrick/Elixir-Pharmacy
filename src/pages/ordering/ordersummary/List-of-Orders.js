@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Flex, HStack, Table, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react'
+import { Flex, HStack, Input, Table, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react'
 import PageScrollReusable from '../../../components/PageScroll-Reusable'
 import DatePicker from 'react-datepicker'
 
@@ -27,20 +27,16 @@ export const ListofOrders = ({ setDateFrom, setDateTo, dateFrom, dateTo, orderSu
 
             <HStack spacing={2} w='40%' justifyContent='start'>
                 <Text fontSize='sm'>From:</Text>
-                <DatePicker
-                    onChange={(date) => setDateFrom(date)}
-                    selected={dateFrom}
-                    shouldCloseOnSelect
-                    dateFormat="yyyy-MM-dd"
+                <Input
+                    onChange={(e) => setDateFrom(e.target.value)}
+                    value={dateFrom}
+                    w='full' type='date' bgColor='#fff8dc'
                 />
                 <Text fontSize='sm'>To:</Text>
-                <DatePicker
-                    onChange={(date) => setDateTo(date)}
-                    selected={dateTo}
-                    minDate={new Date()}
-                    // maxDate={new Date()}
-                    shouldCloseOnSelect
-                    dateFormat="yyyy-MM-dd"
+                <Input
+                    onChange={(e) => setDateTo(e.target.value)}
+                    value={dateTo}
+                    w='full' type='date' bgColor='#fff8dc'
                 />
             </HStack>
 
@@ -63,7 +59,10 @@ export const ListofOrders = ({ setDateFrom, setDateTo, dateFrom, dateTo, orderSu
                                     <Tr
                                         onClick={() => orderHandler(order)}
                                         key={i} cursor='pointer'
-                                        bgColor={orderId === order.id ? 'table_accent' : 'none'}
+                                        bgColor={
+                                            orderId === order.id ? 'table_accent' : 'none'
+                                                && order.quantityOrder > order.stockOnHand ? 'pink' : 'none'
+                                        }
                                     >
                                         <Td>{i + 1}</Td>
                                         <Td>{order.orderDate}</Td>

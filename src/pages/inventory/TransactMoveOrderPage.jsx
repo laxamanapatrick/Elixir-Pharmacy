@@ -74,7 +74,8 @@ const TransactMoveOrderPage = () => {
   }, [orderNo])
 
   const newDate = new Date()
-  const minDate = moment(newDate).format('yyyy-MM-DD')
+  const maxDate = moment(newDate).format('yyyy-MM-DD')
+  const minDate = moment(newDate.setDate(newDate.getDate() - 7)).format('yyyy-MM-DD')
 
   return (
     <>
@@ -84,6 +85,7 @@ const TransactMoveOrderPage = () => {
           <Input
             onChange={(e) => setDeliveryDate(e.target.value)}
             min={minDate}
+            max={maxDate}
             disabled={checkedItems <= 0}
             title={checkedItems <= 0 ? 'Please select items to transact first' : ''}
             w='13%' type='date' bgColor='#fff8dc'

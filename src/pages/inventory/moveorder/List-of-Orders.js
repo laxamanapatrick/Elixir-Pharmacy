@@ -11,7 +11,7 @@ export const ListofOrders = ({ orderListData, setItemCode, highlighterId, setHig
     const TableHead = [
         "Line",
         "Order Date", "Date Needed",
-        "Farm", "Farm Code",
+        "Customer Code", "Customer Name",
         "Category", "Item Code", "Item Description",
         "UOM",
         "Quantity Order", "Prepared Qty",
@@ -57,8 +57,8 @@ export const ListofOrders = ({ orderListData, setItemCode, highlighterId, setHig
                                         }
                                         <Td>{moment(list.orderDate).format("yyyy-MM-DD")}</Td>
                                         <Td>{moment(list.dateNeeded).format("yyyy-MM-DD")}</Td>
-                                        <Td>{list.farm}</Td>
                                         <Td>{list.farmCode}</Td>
+                                        <Td>{list.farm}</Td>
                                         <Td>{list.category}</Td>
                                         <Td>{list.itemCode}</Td>
                                         <Td>{list.itemDescription}</Td>

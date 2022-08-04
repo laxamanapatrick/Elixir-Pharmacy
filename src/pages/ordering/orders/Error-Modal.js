@@ -216,8 +216,8 @@ export const ErrorModal = ({ isOpen, onClose, errorData, isLoading }) => {
                                                                 <Th color='white'>Line</Th>
                                                                 <Th color='white'>Order Date</Th>
                                                                 <Th color='white'>Date Needed</Th>
-                                                                <Th color='white'>Farm</Th>
-                                                                <Th color='white'>Farm Code</Th>
+                                                                <Th color='white'>Customer Code</Th>
+                                                                <Th color='white'>Customer Name</Th>
                                                                 <Th color='white'>Category</Th>
                                                                 <Th color='white'>Item Code</Th>
                                                                 <Th color='white'>Item Description</Th>
@@ -232,8 +232,8 @@ export const ErrorModal = ({ isOpen, onClose, errorData, isLoading }) => {
                                                                     <Td>{i + 1}</Td>
                                                                     <Td>{moment(d?.orderDate).format('yyyy-MM-DD')}</Td>
                                                                     <Td>{moment(d?.dateNeeded).format('yyyy-MM-DD')}</Td>
-                                                                    <Td>{d?.farmName}</Td>
                                                                     <Td>{d?.farmCode}</Td>
+                                                                    <Td>{d?.farmName}</Td>
                                                                     <Td>{d?.category}</Td>
                                                                     <Td>{d?.itemCode}</Td>
                                                                     <Td>{d?.itemDescription}</Td>
@@ -282,8 +282,8 @@ export const ErrorModal = ({ isOpen, onClose, errorData, isLoading }) => {
                                                                 <Th color='white'>Line</Th>
                                                                 <Th color='white'>Order Date</Th>
                                                                 <Th color='white'>Date Needed</Th>
-                                                                <Th color='white'>Farm</Th>
-                                                                <Th color='white'>Farm Code</Th>
+                                                                <Th color='white'>Customer Code</Th>
+                                                                <Th color='white'>Customer Name</Th>
                                                                 <Th color='white'>Category</Th>
                                                                 <Th color='white'>Item Code</Th>
                                                                 <Th color='white'>Item Description</Th>
@@ -298,8 +298,8 @@ export const ErrorModal = ({ isOpen, onClose, errorData, isLoading }) => {
                                                                     <Td>{i + 1}</Td>
                                                                     <Td>{moment(d?.orderDate).format('yyyy-MM-DD')}</Td>
                                                                     <Td>{moment(d?.dateNeeded).format('yyyy-MM-DD')}</Td>
-                                                                    <Td>{d?.farmName}</Td>
                                                                     <Td>{d?.farmCode}</Td>
+                                                                    <Td>{d?.farmName}</Td>
                                                                     <Td>{d?.category}</Td>
                                                                     <Td>{d?.itemCode}</Td>
                                                                     <Td>{d?.itemDescription}</Td>
@@ -360,8 +360,8 @@ export const ErrorModal = ({ isOpen, onClose, errorData, isLoading }) => {
                                                                 <Th color='white'>Line</Th>
                                                                 <Th color='white'>Order Date</Th>
                                                                 <Th color='white'>Date Needed</Th>
-                                                                <Th color='white'>Farm</Th>
-                                                                <Th color='white'>Farm Code</Th>
+                                                                <Th color='white'>Customer Code</Th>
+                                                                <Th color='white'>Customer Name</Th>
                                                                 <Th color='white'>Category</Th>
                                                                 <Th color='white'>Item Code</Th>
                                                                 <Th color='white'>Item Description</Th>
@@ -376,8 +376,8 @@ export const ErrorModal = ({ isOpen, onClose, errorData, isLoading }) => {
                                                                     <Td>{i + 1}</Td>
                                                                     <Td>{moment(d?.orderDate).format('yyyy-MM-DD')}</Td>
                                                                     <Td>{moment(d?.dateNeeded).format('yyyy-MM-DD')}</Td>
-                                                                    <Td>{d?.farmName}</Td>
                                                                     <Td>{d?.farmCode}</Td>
+                                                                    <Td>{d?.farmName}</Td>
                                                                     <Td>{d?.category}</Td>
                                                                     <Td>{d?.itemCode}</Td>
                                                                     <Td>{d?.itemDescription}</Td>
@@ -408,7 +408,7 @@ export const ErrorModal = ({ isOpen, onClose, errorData, isLoading }) => {
                                     <Flex>
                                         <AccordionButton color='white' fontWeight='semibold'>
                                             <Box flex='1' textAlign='center' color='secondary' fontWeight='semibold'>
-                                                Farm Code Does Not Exist <Badge color='danger'>{notExistFarmCode?.length}</Badge>
+                                                Customer Code Does Not Exist <Badge color='danger'>{notExistFarmCode?.length}</Badge>
                                             </Box>
                                             <AccordionIcon color='secondary' />
                                         </AccordionButton>
@@ -426,8 +426,8 @@ export const ErrorModal = ({ isOpen, onClose, errorData, isLoading }) => {
                                                                 <Th color='white'>Line</Th>
                                                                 <Th color='white'>Order Date</Th>
                                                                 <Th color='white'>Date Needed</Th>
-                                                                <Th color='white'>Farm</Th>
-                                                                <Th color='white'>Farm Code</Th>
+                                                                <Th color='white'>Customer Code</Th>
+                                                                <Th color='white'>Customer Name</Th>
                                                                 <Th color='white'>Category</Th>
                                                                 <Th color='white'>Item Code</Th>
                                                                 <Th color='white'>Item Description</Th>
@@ -442,8 +442,8 @@ export const ErrorModal = ({ isOpen, onClose, errorData, isLoading }) => {
                                                                     <Td>{i + 1}</Td>
                                                                     <Td>{moment(d?.orderDate).format('yyyy-MM-DD')}</Td>
                                                                     <Td>{moment(d?.dateNeeded).format('yyyy-MM-DD')}</Td>
-                                                                    <Td>{d?.farmName}</Td>
                                                                     <Td>{d?.farmCode}</Td>
+                                                                    <Td>{d?.farmName}</Td>
                                                                     <Td>{d?.category}</Td>
                                                                     <Td>{d?.itemCode}</Td>
                                                                     <Td>{d?.itemDescription}</Td>
@@ -474,7 +474,7 @@ export const ErrorModal = ({ isOpen, onClose, errorData, isLoading }) => {
                                     <Flex>
                                         <AccordionButton color='white' fontWeight='semibold'>
                                             <Box flex='1' textAlign='center' color='secondary' fontWeight='semibold'>
-                                                Farm Name Does Not Exist <Badge color='danger'>{notExistFarmName?.length}</Badge>
+                                                Customer Name Does Not Exist <Badge color='danger'>{notExistFarmName?.length}</Badge>
                                             </Box>
                                             <AccordionIcon color='secondary' />
                                         </AccordionButton>
@@ -492,8 +492,8 @@ export const ErrorModal = ({ isOpen, onClose, errorData, isLoading }) => {
                                                                 <Th color='white'>Line</Th>
                                                                 <Th color='white'>Order Date</Th>
                                                                 <Th color='white'>Date Needed</Th>
-                                                                <Th color='white'>Farm</Th>
-                                                                <Th color='white'>Farm Code</Th>
+                                                                <Th color='white'>Customer Code</Th>
+                                                                <Th color='white'>Customer Name</Th>
                                                                 <Th color='white'>Category</Th>
                                                                 <Th color='white'>Item Code</Th>
                                                                 <Th color='white'>Item Description</Th>
@@ -508,8 +508,8 @@ export const ErrorModal = ({ isOpen, onClose, errorData, isLoading }) => {
                                                                     <Td>{i + 1}</Td>
                                                                     <Td>{moment(d?.orderDate).format('yyyy-MM-DD')}</Td>
                                                                     <Td>{moment(d?.dateNeeded).format('yyyy-MM-DD')}</Td>
-                                                                    <Td>{d?.farmName}</Td>
                                                                     <Td>{d?.farmCode}</Td>
+                                                                    <Td>{d?.farmName}</Td>
                                                                     <Td>{d?.category}</Td>
                                                                     <Td>{d?.itemCode}</Td>
                                                                     <Td>{d?.itemDescription}</Td>
@@ -558,8 +558,8 @@ export const ErrorModal = ({ isOpen, onClose, errorData, isLoading }) => {
                                                                 <Th color='white'>Line</Th>
                                                                 <Th color='white'>Order Date</Th>
                                                                 <Th color='white'>Date Needed</Th>
-                                                                <Th color='white'>Farm</Th>
-                                                                <Th color='white'>Farm Code</Th>
+                                                                <Th color='white'>Customer Code</Th>
+                                                                <Th color='white'>Customer Name</Th>
                                                                 <Th color='white'>Category</Th>
                                                                 <Th color='white'>Item Code</Th>
                                                                 <Th color='white'>Item Description</Th>
@@ -574,8 +574,8 @@ export const ErrorModal = ({ isOpen, onClose, errorData, isLoading }) => {
                                                                     <Td>{i + 1}</Td>
                                                                     <Td>{moment(d?.orderDate).format('yyyy-MM-DD')}</Td>
                                                                     <Td>{moment(d?.dateNeeded).format('yyyy-MM-DD')}</Td>
-                                                                    <Td>{d?.farmName}</Td>
                                                                     <Td>{d?.farmCode}</Td>
+                                                                    <Td>{d?.farmName}</Td>
                                                                     <Td>{d?.category}</Td>
                                                                     <Td>{d?.itemCode}</Td>
                                                                     <Td>{d?.itemDescription}</Td>
@@ -624,8 +624,8 @@ export const ErrorModal = ({ isOpen, onClose, errorData, isLoading }) => {
                                                                 <Th color='white'>Line</Th>
                                                                 <Th color='white'>Order Date</Th>
                                                                 <Th color='white'>Date Needed</Th>
-                                                                <Th color='white'>Farm</Th>
-                                                                <Th color='white'>Farm Code</Th>
+                                                                <Th color='white'>Customer Code</Th>
+                                                                <Th color='white'>Customer Name</Th>
                                                                 <Th color='white'>Category</Th>
                                                                 <Th color='white'>Item Code</Th>
                                                                 <Th color='white'>Item Description</Th>
@@ -640,8 +640,8 @@ export const ErrorModal = ({ isOpen, onClose, errorData, isLoading }) => {
                                                                     <Td>{i + 1}</Td>
                                                                     <Td>{moment(d?.orderDate).format('yyyy-MM-DD')}</Td>
                                                                     <Td>{moment(d?.dateNeeded).format('yyyy-MM-DD')}</Td>
-                                                                    <Td>{d?.farmName}</Td>
                                                                     <Td>{d?.farmCode}</Td>
+                                                                    <Td>{d?.farmName}</Td>
                                                                     <Td>{d?.category}</Td>
                                                                     <Td>{d?.itemCode}</Td>
                                                                     <Td>{d?.itemDescription}</Td>

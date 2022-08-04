@@ -27,7 +27,7 @@ import PageScrollTransformation from '../../../../components/PageScroll-Transfor
 import apiClient from '../../../../services/apiClient'
 import { ToastComponent } from '../../../../components/Toast'
 
-export const ListofRequest = ({ setTransformId, transformId, requests, fetchRequests, fetchRequirements }) => {
+export const ListofRequest = ({ setTransformId, transformId, requests, fetchRequests, fetchRequirements, fetchNotification }) => {
 
     const [cancelId, setCancelId] = useState(null)
 
@@ -102,6 +102,7 @@ export const ListofRequest = ({ setTransformId, transformId, requests, fetchRequ
                 onClose={onClose}
                 fetchRequests={fetchRequests}
                 fetchRequirements={fetchRequirements}
+                fetchNotification={fetchNotification}
             />
 
         </Flex >
@@ -109,7 +110,7 @@ export const ListofRequest = ({ setTransformId, transformId, requests, fetchRequ
 }
 
 
-export const CancelModal = ({ cancelId, isOpen, onClose, fetchRequests, fetchRequirements }) => {
+export const CancelModal = ({ cancelId, isOpen, onClose, fetchRequests, fetchRequirements, fetchNotification }) => {
 
     const [reasons, setReasons] = useState([])
     const [cancelRemarks, setCancelRemarks] = useState([])
@@ -151,6 +152,7 @@ export const CancelModal = ({ cancelId, isOpen, onClose, fetchRequests, fetchReq
                         ToastComponent("Success", `Item with Transformation ID of ${cancelId} has been cancelled.`, "success", toast)
                         fetchRequests()
                         fetchRequirements()
+                        fetchNotification()
                         onClose()
                     })
                     .catch(err => {

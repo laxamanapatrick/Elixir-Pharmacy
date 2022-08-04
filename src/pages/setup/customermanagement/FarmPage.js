@@ -150,8 +150,8 @@ const FarmPage = () => {
               <Thead>
                 <Tr bgColor='secondary'>
                   <Th color='white'>Id</Th>
-                  <Th color='white'>Farm Code</Th>
-                  <Th color='white'>Farm Name</Th>
+                  <Th color='white'>Code</Th>
+                  <Th color='white'>Customer/Farm Type</Th>
                   <Th color='white'>Added By</Th>
                   <Th color='white'>Date Added</Th>
                   <Th color='white'>Actions</Th>

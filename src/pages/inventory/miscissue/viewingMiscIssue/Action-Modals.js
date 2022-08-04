@@ -25,6 +25,7 @@ export const StatusConfirmation = ({ isOpen, onClose, statusBody, fetchIssues })
             setIsLoading(false)
             onClose()
         }).catch(err => {
+            setIsLoading(false)
             console.log(err);
         })
     }
@@ -55,6 +56,8 @@ export const StatusConfirmation = ({ isOpen, onClose, statusBody, fetchIssues })
 }
 
 export const ViewModal = ({ isOpen, onClose, statusBody }) => {
+
+    console.log(statusBody)
 
     const [issuesDetailsData, setIssuesDetailsData] = useState([])
 

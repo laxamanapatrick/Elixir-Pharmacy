@@ -76,7 +76,7 @@ export const Submit = ({ transformId, setTransformId, fetchRequestByStatus, fetc
             const res = apiClient.put(`Planning/RejectTransformationRequest/${transformId}`,
                 {
                     transformId: transformId,
-                    rejectRemakrs: rejectRemarks
+                    rejectRemarks: rejectRemarks
                 })
                 .then(res => {
                     ToastComponent("Success", `Item with Transformation ID of ${transformId} has been rejected.`, "success", toast)

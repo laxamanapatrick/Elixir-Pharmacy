@@ -79,7 +79,7 @@ export const MoveOrderTransactionHistory = ({ dateFrom, dateTo, sample }) => {
                         <>
                           <Td>{item.transactionType}</Td>
                           <Td>{item.moveOrderBy}</Td>
-                          <Td>{item.moveOrderDate}</Td>
+                          <Td>{moment(item.moveOrderDate).format('yyyy-MM-DD')}</Td>
                         </>
                     }
                   </Tr>

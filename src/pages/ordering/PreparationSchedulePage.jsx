@@ -67,6 +67,13 @@ const PreparationSchedulePage = () => {
     }
   }, [farmName])
 
+  //refetch if data length === 0
+  useEffect(() => {
+    if(orders?.length === 0) {
+      fetchOrders()
+    }
+  }, [orders])
+
   return (
     <>
       <VStack w='full' h='auto'>
