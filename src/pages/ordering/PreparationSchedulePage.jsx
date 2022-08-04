@@ -67,13 +67,6 @@ const PreparationSchedulePage = () => {
     }
   }, [farmName])
 
-  //refetch if data length === 0
-  useEffect(() => {
-    if(orders?.length === 0) {
-      fetchOrders()
-    }
-  }, [orders])
-
   return (
     <>
       <VStack w='full' h='auto'>
@@ -81,11 +74,13 @@ const PreparationSchedulePage = () => {
           setCurrentPage={setCurrentPage}
           currentPage={currentPage}
           pagesCount={pagesCount}
+          setFarmName={setFarmName}
           farmName={farmName}
           orders={orders}
           pageTotal={pageTotal}
           setTransactId={setTransactId}
           transactId={transactId}
+          fetchFarmOrders={fetchFarmOrders}
           fetchOrders={fetchOrders}
           lengthIndicator={lengthIndicator}
         />

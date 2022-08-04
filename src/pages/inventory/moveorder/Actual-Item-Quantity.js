@@ -92,7 +92,7 @@ export const ActualItemQuantity = ({ warehouseId, setWarehouseId, barcodeData, o
                         value={quantity}
                         type="number"
                         onWheel={(e) => e.target.blur()}
-                        onKeyDown={(e) => ["E", "e", ".", "+", "-"].includes(e.key) && e.preventDefault()}
+                        onKeyDown={(e) => ["E", "e", "+", "-"].includes(e.key) && e.preventDefault()}
                         onPaste={(e) => e.preventDefault()}
                         placeholder='Please enter quantity'
                         h='15%' w='50%' bgColor='#fff8dc'

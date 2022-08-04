@@ -70,6 +70,12 @@ const RmReceivingPage = () => {
     setCode(displayCode)
   }
 
+  const handleKeyDown = event => {
+    if (event.key === 'Enter') {
+      scanHandler()
+    }
+  }
+
   return (
     <WarehouseContext.Provider value={{ setQuantity, setRemarks, setSumQuantity, setSubmitRejectData, setReceivingId, setButtonChanger, setDisplayCode, setCode }}>
       <Flex p={5} w='full' flexDirection='column'>
@@ -80,6 +86,7 @@ const RmReceivingPage = () => {
               value={displayCode}
               placeholder='Item Code'
               onChange={(e) => itemHandler(e.target.value)}
+              onKeyDown={handleKeyDown}
             />
             <HStack ml={2}>
               <Button

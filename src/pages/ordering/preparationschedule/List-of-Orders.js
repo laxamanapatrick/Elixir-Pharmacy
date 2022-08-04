@@ -15,7 +15,7 @@ import { CancelModalConfirmation, EditModal, ScheduleConfirmation } from './Acti
 import moment from 'moment'
 
 export const ListofOrders = ({ setCurrentPage, currentPage, pagesCount,
-    farmName, orders, pageTotal, setTransactId, transactId, fetchOrders, lengthIndicator }) => {
+    farmName, setFarmName, orders, pageTotal, setTransactId, transactId, fetchOrders, fetchFarmOrders, lengthIndicator }) => {
 
     const [editData, setEditData] = useState({
         transactId: '',
@@ -89,8 +89,13 @@ export const ListofOrders = ({ setCurrentPage, currentPage, pagesCount,
         )
     }, [orders])
 
+    //refetch if data length === 0
     useEffect(() => {
-        if (lengthIndicator === 0) {
+        if (lengthIndicator === 0 && currentPage === 1) {
+            fetchFarmOrders()
+            fetchOrders()
+        }
+        if (lengthIndicator === 0 && currentPage !== 1) {
             setCurrentPage(1)
             fetchOrders()
         }

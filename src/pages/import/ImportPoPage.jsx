@@ -30,6 +30,9 @@ const ImportPoPage = () => {
   const fileClear = useRef()
 
   const fileRenderer = (jsonData) => {
+
+    setExcelData([])
+
     jsonData.forEach((row) => {
       Object.keys(row).forEach((key) => {
         let newKey = key.trim().toLowerCase().replace(/ /g, "_")
@@ -43,6 +46,9 @@ const ImportPoPage = () => {
   }
 
   const fileHandler = async (e) => {
+
+    setWorkbook([])
+    
     const file = e[0]
     const data = await file.arrayBuffer()
     const workbook = XLSX.readFile(data)
@@ -62,6 +68,9 @@ const ImportPoPage = () => {
   }
 
   const sheetNumberHandlder = (data = 0) => {
+
+    // setSheetOptions([])
+
     const worksheet = workbook.Sheets[workbook.SheetNames[data]]
     const jsonData = XLSX.utils.sheet_to_json(worksheet)
 

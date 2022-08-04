@@ -16,7 +16,6 @@ export const RequirementsInformation = ({ information, setWeight, setDisableSave
     }
   }, [weight])
 
-
   const weighHandler = (data) => {
     setWeight(data)
     const minAllowable = Number(information?.quantityNeeded) - (Number(information?.quantityNeeded) * 0.001)
@@ -24,19 +23,27 @@ export const RequirementsInformation = ({ information, setWeight, setDisableSave
 
     if (data < minAllowable || data > maxAllowable) {
       setDisableSave(true)
-      // setWeight('')
     }
     else {
       setDisableSave(false)
     }
-    // if (data) {
-    //   setDisableSave(false)
-    //   setWeight(data)
-    // }
-    // else {
-    //   setDisableSave(true)
-    //   // setWeight('')
-    // }
+  }
+
+  const resetHandler = (e) => {
+    setWeight('')
+    ref?.current?.focus()
+    window.dispatchEvent(new KeyboardEvent('keydown', {
+      "key": "a",
+      "keyCode": 65,
+      "which": 65,
+      "code": "KeyA",
+      "location": 0,
+      "altKey": false,
+      "ctrlKey": false,
+      "metaKey": false,
+      "shiftKey": false,
+      "repeat": false
+    }));
   }
 
   return (
@@ -81,18 +88,19 @@ export const RequirementsInformation = ({ information, setWeight, setDisableSave
       <Flex w='90%' justifyContent='space-between'>
         <Text w='45%' pl={2} bgColor='secondary' color='white'>Weighing Scale:</Text>
         <HStack w='45%'>
-          <FaCloudscale fontSize='25px' />
 
+          <FaCloudscale fontSize='25px' cursor='pointer' onClick={resetHandler} />
 
           <Input
             onChange={(e) => weighHandler(e.target.value)}
-            onWheel={(e) => e.target.blur()}
             ref={ref}
             value={weight}
             w='full' h={7} p={0} bgColor='#fff8dc' border='1px'
-            type='number'
+            type="number"
+            onWheel={(e) => e.target.blur()}
+            onKeyDown={(e) => ["E", "e", ".", "+", "-"].includes(e.key) && e.preventDefault()}
+            onPaste={(e) => e.preventDefault()}
           />
-
 
         </HStack>
       </Flex>

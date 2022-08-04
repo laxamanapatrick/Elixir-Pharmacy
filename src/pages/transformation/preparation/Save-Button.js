@@ -22,7 +22,7 @@ export const SaveButton = ({ transformId, itemCode, weight, fetchRequirements,
     return (
         <>
             <Flex w='full' justifyContent='center'>
-                <Button size='sm' colorScheme='blue' w='90%' mb={3} disabled={disableSave} onClick={() => onOpen()}>SAVE</Button>
+                <Button size='sm' colorScheme='blue' w='90%' mb={3} disabled={disableSave || !weight} onClick={() => onOpen()}>SAVE</Button>
             </Flex>
             {
                 isOpen && (
