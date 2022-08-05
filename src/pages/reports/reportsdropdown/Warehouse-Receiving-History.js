@@ -34,25 +34,26 @@ export const WarehouseReceivingHistory = ({ dateFrom, dateTo, sample }) => {
           <Table size='sm'>
             <Thead bgColor='secondary'>
               <Tr>
-                <Th color='white'>id</Th>
-                <Th color='white'>qc_date</Th>
-                <Th color='white'>po_number</Th>
+                <Th color='white'>ID</Th>
+                <Th color='white'>QC Date</Th>
+                <Th color='white'>PO Number</Th>
                 {
                   buttonChanger ?
                     <>
-                      <Th color='white'>item_code</Th>
-                      <Th color='white'>item_desc</Th>
-                      <Th color='white'>uom</Th>
-                      <Th color='white'>category</Th>
-                      <Th color='white'>quantity</Th>
-                      <Th color='white'>manufacturing_date</Th>
+                      <Th color='white'>Item Code</Th>
+                      <Th color='white'>Item Description</Th>
+                      <Th color='white'>UOM</Th>
+                      <Th color='white'>Category</Th>
+                      <Th color='white'>Quantity</Th>
+                      <Th color='white'>Manufacturing Date</Th>
                     </>
                     :
                     <>
-                      <Th color='white'>expiration_date</Th>
-                      <Th color='white'>total_reject</Th>
-                      <Th color='white'>supplier_name</Th>
-                      <Th color='white'>qc_by</Th>
+                      <Th color='white'>Expiration Date</Th>
+                      <Th color='white'>Total Reject</Th>
+                      <Th color='white'>Supplier</Th>
+                      <Th color='white'>Transaction Type</Th>
+                      <Th color='white'>Received By</Th>
                     </>
                 }
               </Tr>
@@ -80,6 +81,7 @@ export const WarehouseReceivingHistory = ({ dateFrom, dateTo, sample }) => {
                           <Td>{item.expirationDate}</Td>
                           <Td>{item.totalReject}</Td>
                           <Td>{item.supplierName}</Td>
+                          <Td>{item.transactionType}</Td>
                           <Td>{item.receivedBy}</Td>
                         </>
                     }

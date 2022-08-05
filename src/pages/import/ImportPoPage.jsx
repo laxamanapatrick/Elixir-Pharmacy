@@ -117,7 +117,7 @@ const ImportPoPage = () => {
           setisLoading(false)
           ToastComponent("Error", "Import Failed, Please check your fields.", "error", toast)
           setErrorData(err.response.data)
-          if (err.response.data.availableImport) {
+          if (err.response.data) {
             setErrorOpener(true)
             openErrorList()
           }

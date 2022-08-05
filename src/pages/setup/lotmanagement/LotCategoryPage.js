@@ -66,14 +66,31 @@ const schema = yup.object().shape({
   })
 })
 
-const fetchLotCategoryApi = async () => {
-  const res = await apiClient.get(`Lot/GetAllLotCategories`)
+const fetchLotCategoryApi = async (pageNumber, pageSize, status, search) => {
+  const res = await apiClient.get(`Lot/GetAllLotCategoryWithPaginationOrig/${status}?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${search}`)
   return res.data
 }
 
 const LotCategoryPage = () => {
   const [lots, setLots] = useState([])
+
+  const toast = useToast()
   const [isLoading, setIsLoading] = useState(true)
+  const [status, setStatus] = useState(true)
+  const [search, setSearch] = useState("")
+  const [pageTotal, setPageTotal] = useState(undefined)
+
+  const outerLimit = 2;
+  const innerLimit = 2;
+  const { currentPage, setCurrentPage, pagesCount, pages, setPageSize, pageSize } = usePagination({
+    total: pageTotal,
+    limits: {
+      outer: outerLimit,
+      inner: innerLimit,
+    },
+    initialState: { currentPage: 1, pageSize: 5 },
+  })
+
   const { isOpen: isDrawerOpen, onOpen: openDrawer, onClose: closeDrawer } = useDisclosure()
 
   const { register, handleSubmit, formState: { errors, isValid }, setValue, reset } = useForm({
@@ -89,17 +106,49 @@ const LotCategoryPage = () => {
   })
 
   const fetchLot = () => {
-    fetchLotCategoryApi().then(res => {
+    fetchLotCategoryApi(currentPage, pageSize, status, search).then(res => {
       setIsLoading(false)
       setLots(res)
+      setPageTotal(res.totalCount)
     })
   }
 
   useEffect(() => {
     fetchLot()
-  }, [])
+  }, [currentPage, pageSize, status, search])
 
-  //No status parameters for item category
+  const handlePageChange = (nextPage) => {
+    setCurrentPage(nextPage)
+  }
+
+  const handlePageSizeChange = (e) => {
+    const pageSize = Number(e.target.value)
+    setPageSize(pageSize)
+  }
+
+  const statusHandler = (data) => {
+    setStatus(data)
+  }
+
+  const changeStatusHandler = (id, status) => {
+    let routeLabel;
+    if (status) {
+      routeLabel = "InActiveLotCategory"
+    } else {
+      routeLabel = "ActivateLotCategory"
+    }
+
+    apiClient.put(`Lot/${routeLabel}/${id}`, { id: id }).then((res) => {
+      ToastComponent("Success", "Item Category Updated", "success", toast)
+      fetchLot()
+    }).catch(err => {
+      console.log(err);
+    })
+  }
+
+  const searchHandler = (inputValue) => {
+    setSearch(inputValue)
+  }
 
   const editHandler = (lot) => {
     openDrawer();
@@ -118,15 +167,30 @@ const LotCategoryPage = () => {
   return (
     <Flex p={5} w="full" flexDirection="column">
 
-      {/* <Flex mb={2.5} justifyContent='end'>
+      <Flex mb={2} justifyContent='space-between'>
+        <HStack>
+          <InputGroup>
+            <InputLeftElement
+              pointerEvents='none'
+              children={<FaSearch color='gray.300' />}
+            />
+            <Input type='text' placeholder='Search: Lot Name'
+              onChange={(e) => searchHandler(e.target.value)}
+              focusBorderColor='accent'
+            />
+          </InputGroup>
+        </HStack>
+
         <HStack>
           <Text>STATUS: </Text>
-          <Select onChange={(e) => statusHandler(e.target.value)}>
+          <Select
+            onChange={(e) => statusHandler(e.target.value)}
+          >
             <option value={true}>Active</option>
             <option value={false}>Inactive</option>
           </Select>
         </HStack>
-      </Flex> */}
+      </Flex>
 
       <PageScroll>
         {
@@ -151,7 +215,7 @@ const LotCategoryPage = () => {
                 </Tr>
               </Thead>
               <Tbody>
-                {lots?.map(lot =>
+                {lots?.category?.map(lot =>
                   <Tr key={lot.id}>
                     <Td>{lot.id}</Td>
                     <Td>{lot.categoryName}</Td>
@@ -163,7 +227,7 @@ const LotCategoryPage = () => {
                         <RiEditBoxFill />
                       </Button>
 
-                      {/* <Popover>
+                      <Popover>
                         <PopoverTrigger>
                           <Button p={0} background='none'><GiChoice /></Button>
                         </PopoverTrigger>
@@ -173,13 +237,13 @@ const LotCategoryPage = () => {
                             <PopoverCloseButton />
                             <PopoverBody>
                               <VStack>
-                                {cat.isActive === true ? <Text>Are you sure you want to set this category inactive?</Text> : <Text>Are you sure you want to set this category active?</Text>}
-                                <Button bgColor='secondary' color='white' _hover={{ bgColor: 'accent' }} onClick={() => changeStatusHandler(cat.id, cat.isActive)}>Yes</Button>
+                                {lot.isActive === true ? <Text>Are you sure you want to set this category inactive?</Text> : <Text>Are you sure you want to set this lot active?</Text>}
+                                <Button bgColor='secondary' color='white' _hover={{ bgColor: 'accent' }} onClick={() => changeStatusHandler(lot.id, lot.isActive)}>Yes</Button>
                               </VStack>
                             </PopoverBody>
                           </PopoverContent>
                         </Portal>
-                      </Popover> */}
+                      </Popover>
 
                     </Td>
                   </Tr>
@@ -207,6 +271,43 @@ const LotCategoryPage = () => {
             />
           )
         }
+
+        <Stack>
+          <Pagination
+            pagesCount={pagesCount}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          >
+            <PaginationContainer>
+              <PaginationPrevious bg="secondary" color='white' p={1} _hover={{ bg: 'accent', color: 'white' }}>{"<<"}</PaginationPrevious>
+              <PaginationPageGroup ml={1} mr={1}>
+                {pages.map((page) => (
+                  <PaginationPage
+                    _hover={{ bg: 'accent', color: 'white' }}
+                    p={3}
+                    bg="secondary"
+                    color='white'
+                    key={`pagination_page_${page}`}
+                    page={page}
+                  />
+                ))}
+              </PaginationPageGroup>
+              <HStack>
+                <PaginationNext bg="secondary" color='white' p={1} _hover={{ bg: 'accent', color: 'white' }}>{">>"}</PaginationNext>
+                <Select
+                  onChange={handlePageSizeChange}
+                  variant='filled'
+                >
+                  <option value={Number(5)}>5</option>
+                  <option value={Number(10)}>10</option>
+                  <option value={Number(25)}>25</option>
+                  <option value={Number(50)}>50</option>
+                </Select>
+              </HStack>
+            </PaginationContainer>
+          </Pagination>
+        </Stack>
+
       </Flex>
     </Flex>
   )

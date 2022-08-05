@@ -67,15 +67,32 @@ const schema = yup.object().shape({
   })
 })
 
-const fetchFarmApi = async () => {
-  const res = await apiClient.get(`Customer/GetAllActiveFarms`)
+const fetchFarmApi = async (pageNumber, pageSize, status, search) => {
+  const res = await apiClient.get(`Customer/GetAllFarmWithPaginationOrig/${status}?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${search}`)
   return res.data
 }
 
 const FarmPage = () => {
+
   const [farms, setFarms] = useState([])
-  const [isLoading, setIsLoading] = useState(true)
   const [codeDisable, setCodeDisable] = useState(false)
+
+  const toast = useToast()
+  const [isLoading, setIsLoading] = useState(true)
+  const [status, setStatus] = useState(true)
+  const [search, setSearch] = useState("")
+  const [pageTotal, setPageTotal] = useState(undefined)
+
+  const outerLimit = 2;
+  const innerLimit = 2;
+  const { currentPage, setCurrentPage, pagesCount, pages, setPageSize, pageSize } = usePagination({
+    total: pageTotal,
+    limits: {
+      outer: outerLimit,
+      inner: innerLimit,
+    },
+    initialState: { currentPage: 1, pageSize: 5 },
+  })
 
   const { isOpen: isDrawerOpen, onOpen: openDrawer, onClose: closeDrawer } = useDisclosure()
 
@@ -93,17 +110,49 @@ const FarmPage = () => {
   })
 
   const fetchFarm = () => {
-    fetchFarmApi().then(res => {
+    fetchFarmApi(currentPage, pageSize, status, search).then(res => {
       setIsLoading(false)
       setFarms(res)
+      setPageTotal(res.totalCount)
     })
   }
 
   useEffect(() => {
     fetchFarm()
-  }, [])
+  }, [currentPage, pageSize, status, search])
 
-  //No status parameters for item category
+  const handlePageChange = (nextPage) => {
+    setCurrentPage(nextPage)
+  }
+
+  const handlePageSizeChange = (e) => {
+    const pageSize = Number(e.target.value)
+    setPageSize(pageSize)
+  }
+
+  const statusHandler = (data) => {
+    setStatus(data)
+  }
+
+  const changeStatusHandler = (id, status) => {
+    let routeLabel;
+    if (status) {
+      routeLabel = "InActiveFarm"
+    } else {
+      routeLabel = "ActivateFarm"
+    }
+
+    apiClient.put(`Customer/${routeLabel}/${id}`, { id: id }).then((res) => {
+      ToastComponent("Success", "Item Category Updated", "success", toast)
+      fetchFarm()
+    }).catch(err => {
+      console.log(err);
+    })
+  }
+
+  const searchHandler = (inputValue) => {
+    setSearch(inputValue)
+  }
 
   const editHandler = (farm) => {
     openDrawer();
@@ -124,15 +173,30 @@ const FarmPage = () => {
   return (
     <Flex p={5} w="full" flexDirection="column">
 
-      {/* <Flex mb={2.5} justifyContent='end'>
-            <HStack>
-              <Text>STATUS: </Text>
-              <Select onChange={(e) => statusHandler(e.target.value)}>
-                <option value={true}>Active</option>
-                <option value={false}>Inactive</option>
-              </Select>
-            </HStack>
-          </Flex> */}
+      <Flex mb={2} justifyContent='space-between'>
+        <HStack>
+          <InputGroup>
+            <InputLeftElement
+              pointerEvents='none'
+              children={<FaSearch color='gray.300' />}
+            />
+            <Input type='text' placeholder='Search: Farm Code'
+              onChange={(e) => searchHandler(e.target.value)}
+              focusBorderColor='accent'
+            />
+          </InputGroup>
+        </HStack>
+
+        <HStack>
+          <Text>STATUS: </Text>
+          <Select
+            onChange={(e) => statusHandler(e.target.value)}
+          >
+            <option value={true}>Active</option>
+            <option value={false}>Inactive</option>
+          </Select>
+        </HStack>
+      </Flex>
 
       <PageScroll>
         {
@@ -158,7 +222,7 @@ const FarmPage = () => {
                 </Tr>
               </Thead>
               <Tbody>
-                {farms?.map(farm =>
+                {farms?.farms?.map(farm =>
                   <Tr key={farm.id}>
                     <Td>{farm.id}</Td>
                     <Td>{farm.farmCode}</Td>
@@ -171,23 +235,23 @@ const FarmPage = () => {
                         <RiEditBoxFill />
                       </Button>
 
-                      {/* <Popover>
-                            <PopoverTrigger>
-                              <Button p={0} background='none'><GiChoice /></Button>
-                            </PopoverTrigger>
-                            <Portal>
-                              <PopoverContent>
-                                <PopoverArrow />
-                                <PopoverCloseButton />
-                                <PopoverBody>
-                                  <VStack>
-                                    {cat.isActive === true ? <Text>Are you sure you want to set this category inactive?</Text> : <Text>Are you sure you want to set this category active?</Text>}
-                                    <Button bgColor='secondary' color='white' _hover={{ bgColor: 'accent' }} onClick={() => changeStatusHandler(cat.id, cat.isActive)}>Yes</Button>
-                                  </VStack>
-                                </PopoverBody>
-                              </PopoverContent>
-                            </Portal>
-                          </Popover> */}
+                      <Popover>
+                        <PopoverTrigger>
+                          <Button p={0} background='none'><GiChoice /></Button>
+                        </PopoverTrigger>
+                        <Portal>
+                          <PopoverContent>
+                            <PopoverArrow />
+                            <PopoverCloseButton />
+                            <PopoverBody>
+                              <VStack>
+                                {farm.isActive === true ? <Text>Are you sure you want to set this category inactive?</Text> : <Text>Are you sure you want to set this farm type active?</Text>}
+                                <Button bgColor='secondary' color='white' _hover={{ bgColor: 'accent' }} onClick={() => changeStatusHandler(farm.id, farm.isActive)}>Yes</Button>
+                              </VStack>
+                            </PopoverBody>
+                          </PopoverContent>
+                        </Portal>
+                      </Popover>
 
                     </Td>
                   </Tr>
@@ -216,6 +280,43 @@ const FarmPage = () => {
             />
           )
         }
+
+        <Stack>
+          <Pagination
+            pagesCount={pagesCount}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          >
+            <PaginationContainer>
+              <PaginationPrevious bg="secondary" color='white' p={1} _hover={{ bg: 'accent', color: 'white' }}>{"<<"}</PaginationPrevious>
+              <PaginationPageGroup ml={1} mr={1}>
+                {pages.map((page) => (
+                  <PaginationPage
+                    _hover={{ bg: 'accent', color: 'white' }}
+                    p={3}
+                    bg="secondary"
+                    color='white'
+                    key={`pagination_page_${page}`}
+                    page={page}
+                  />
+                ))}
+              </PaginationPageGroup>
+              <HStack>
+                <PaginationNext bg="secondary" color='white' p={1} _hover={{ bg: 'accent', color: 'white' }}>{">>"}</PaginationNext>
+                <Select
+                  onChange={handlePageSizeChange}
+                  variant='filled'
+                >
+                  <option value={Number(5)}>5</option>
+                  <option value={Number(10)}>10</option>
+                  <option value={Number(25)}>25</option>
+                  <option value={Number(50)}>50</option>
+                </Select>
+              </HStack>
+            </PaginationContainer>
+          </Pagination>
+        </Stack>
+
       </Flex>
     </Flex>
   )

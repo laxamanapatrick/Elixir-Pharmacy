@@ -22,7 +22,14 @@ export const SaveButton = ({ transformId, itemCode, weight, fetchRequirements,
     return (
         <>
             <Flex w='full' justifyContent='center'>
-                <Button size='sm' colorScheme='blue' w='90%' mb={3} disabled={disableSave || !weight} onClick={() => onOpen()}>SAVE</Button>
+                <Button
+                    onClick={() => onOpen()}
+                    disabled={disableSave || !weight || requirements.length === 0}
+                    title={disableSave ? 'Weight must meet the required quantity variance' : 'Prepare this quantity'}
+                    size='sm' colorScheme='blue' w='90%' mb={3}
+                >
+                    SAVE
+                </Button>
             </Flex>
             {
                 isOpen && (

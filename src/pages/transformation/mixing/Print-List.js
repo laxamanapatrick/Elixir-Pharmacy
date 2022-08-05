@@ -23,6 +23,9 @@ import { useReactToPrint } from 'react-to-print'
 import Barcode from 'react-barcode';
 import { ToastComponent } from '../../../components/Toast'
 import apiClient from '../../../services/apiClient';
+import { decodeUser } from '../../../services/decode-user'
+
+const currentUser = decodeUser()
 
 export const SaveConfirmation = ({ isOpen,
   onClose,
@@ -78,7 +81,8 @@ export const SaveConfirmation = ({ isOpen,
       const res = apiClient.put(`Preparation/FinishedMixedMaterialsForWarehouse/${transformId}`, {
         transformId: transformId,
         expiration: expirationDate,
-        lotCategory: lotCategory
+        lotCategory: lotCategory,
+        receivedBy: currentUser.userName,
       })
         .then(res => {
           ToastComponent('Success', 'Mixing has started', 'success', toast)

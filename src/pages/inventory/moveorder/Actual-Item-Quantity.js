@@ -107,7 +107,7 @@ export const ActualItemQuantity = ({ warehouseId, setWarehouseId, barcodeData, o
 
                 <Button
                     onClick={() => openQuantity()}
-                    disabled={!warehouseId || !quantity || inputValidate || !barcodeData}
+                    disabled={!warehouseId || !quantity || inputValidate || !barcodeData || quantity > barcodeData?.orders?.remaining}
                     size='sm' colorScheme='blue' px={7}
                 >
                     Add

@@ -182,8 +182,8 @@ const RawMaterialsPage = () => {
   return (
     // <RawMaterialsContext.Provider value={{raws}}>
     <Flex p={5} w='full' flexDirection='column'>
+      
       <Flex mb={2} justifyContent='space-between'>
-
         <HStack>
           <InputGroup>
             <InputLeftElement

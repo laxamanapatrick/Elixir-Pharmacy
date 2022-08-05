@@ -32,6 +32,9 @@ export const RequirementsInformation = ({ information, setWeight, setDisableSave
   const resetHandler = (e) => {
     setWeight('')
     ref?.current?.focus()
+  }
+
+  const keyPressHandler = () => {
     window.dispatchEvent(new KeyboardEvent('keydown', {
       "key": "a",
       "keyCode": 65,
@@ -39,7 +42,7 @@ export const RequirementsInformation = ({ information, setWeight, setDisableSave
       "code": "KeyA",
       "location": 0,
       "altKey": false,
-      "ctrlKey": false,
+      "ctrlKey": true,
       "metaKey": false,
       "shiftKey": false,
       "repeat": false
@@ -89,7 +92,7 @@ export const RequirementsInformation = ({ information, setWeight, setDisableSave
         <Text w='45%' pl={2} bgColor='secondary' color='white'>Weighing Scale:</Text>
         <HStack w='45%'>
 
-          <FaCloudscale fontSize='25px' cursor='pointer' onClick={resetHandler} />
+          <FaCloudscale fontSize='25px' cursor='pointer' onClick={resetHandler} onKeyPress={keyPressHandler} />
 
           <Input
             onChange={(e) => weighHandler(e.target.value)}

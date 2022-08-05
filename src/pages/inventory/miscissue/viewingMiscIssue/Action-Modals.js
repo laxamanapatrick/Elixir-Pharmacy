@@ -15,9 +15,10 @@ export const StatusConfirmation = ({ isOpen, onClose, statusBody, fetchIssues })
         let routeLabel;
         if (statusBody.status) {
             routeLabel = "InActiveIssue"
-        } else {
-            routeLabel = "ActivateIssue"
         }
+        // else {
+        //     routeLabel = "ActivateIssue"
+        // }
         setIsLoading(true)
         apiClient.put(`Miscellaneous/${routeLabel}`, { id: statusBody.id }).then((res) => {
             ToastComponent("Success", "Status updated", "success", toast)

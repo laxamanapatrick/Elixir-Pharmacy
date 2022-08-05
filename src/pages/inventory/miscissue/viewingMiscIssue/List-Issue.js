@@ -144,7 +144,10 @@ export const ListofIssues = () => {
                                 <Th color='white'>Transaction Date</Th>
                                 <Th color='white'>Transacted By</Th>
                                 <Th color='white'>View</Th>
-                                <Th color='white'>Change status</Th>
+                                {
+                                    status == 'true' &&
+                                    <Th color='white'>Change status</Th>
+                                }
                             </Tr>
                         </Thead>
                         <Tbody>
@@ -165,14 +168,18 @@ export const ListofIssues = () => {
                                                 View
                                             </Button>
                                         </Td>
-                                        <Td>
-                                            <Button
-                                                onClick={() => changeStatusHandler(issue.issuePKey, issue.isActive)}
-                                                colorScheme='red' size='xs'
-                                            >
-                                                {issue.isActive ? 'Inactivate' : 'Activate'}
-                                            </Button>
-                                        </Td>
+                                        {
+                                            issue.isActive &&
+                                            <Td>
+                                                <Button
+                                                    onClick={() => changeStatusHandler(issue.issuePKey, issue.isActive)}
+                                                    colorScheme='red' size='xs'
+                                                >
+                                                    {/* {issue.isActive ? 'Inactivate' : 'Activate'} */}
+                                                    Inactivate
+                                                </Button>
+                                            </Td>
+                                        }
                                     </Tr>
                                 )
                             }

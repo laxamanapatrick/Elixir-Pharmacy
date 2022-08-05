@@ -34,25 +34,25 @@ export const QCReceivingHistory = ({ dateFrom, dateTo, sample }) => {
           <Table size='sm'>
             <Thead bgColor='secondary'>
               <Tr>
-                <Th color='white'>id</Th>
-                <Th color='white'>qc_date</Th>
-                <Th color='white'>po_number</Th>
+                <Th color='white'>ID</Th>
+                <Th color='white'>QC Date</Th>
+                <Th color='white'>PO Number</Th>
                 {
                   buttonChanger === 1 ?
                     <>
-                      <Th color='white'>item_code</Th>
-                      <Th color='white'>item_desc</Th>
-                      <Th color='white'>uom</Th>
-                      <Th color='white'>category</Th>
-                      <Th color='white'>quantity</Th>
-                      <Th color='white'>manufacturing_date</Th>
+                      <Th color='white'>Item Code</Th>
+                      <Th color='white'>Item Description</Th>
+                      <Th color='white'>UOM</Th>
+                      <Th color='white'>Category</Th>
+                      <Th color='white'>Quantity</Th>
+                      <Th color='white'>Manufacturing Date</Th>
                     </>
                     : buttonChanger === 2 ?
                       <>
-                        <Th color='white'>expiration_date</Th>
-                        <Th color='white'>total_reject</Th>
-                        <Th color='white'>supplier_name</Th>
-                        <Th color='white'>price</Th>
+                        <Th color='white'>Expiration</Th>
+                        <Th color='white'>Total Reject</Th>
+                        <Th color='white'>Supplier Name</Th>
+                        <Th color='white'>Price</Th>
                         {/* <Th color='white'>checklist_result</Th> */}
                         <Th color='white'>qc_by</Th>
                       </>

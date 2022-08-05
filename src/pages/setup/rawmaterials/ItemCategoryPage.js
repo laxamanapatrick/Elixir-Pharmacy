@@ -66,16 +66,34 @@ const schema = yup.object().shape({
   })
 })
 
-const fetchCategoryApi = async () => {
-  const res = await apiClient.get(`RawMaterial/GetAllItemCategory`)
+const fetchCategoryApi = async (pageNumber, pageSize, status, search) => {
+  const res = await apiClient.get(`RawMaterial/GetAllItemCategoryWithPaginationOrig/${status}?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${search}`)
   return res.data
 }
 
 
 const ItemCategoryPage = () => {
+
   const [categories, setCategories] = useState([])
-  const [isLoading, setIsLoading] = useState(true)
+  
   const toast = useToast()
+
+  const [isLoading, setIsLoading] = useState(true)
+  const [status, setStatus] = useState(true)
+  const [search, setSearch] = useState("")
+  const [pageTotal, setPageTotal] = useState(undefined)
+
+  const outerLimit = 2;
+  const innerLimit = 2;
+  const { currentPage, setCurrentPage, pagesCount, pages, setPageSize, pageSize } = usePagination({
+    total: pageTotal,
+    limits: {
+      outer: outerLimit,
+      inner: innerLimit,
+    },
+    initialState: { currentPage: 1, pageSize: 5 },
+  })
+
   const { isOpen: isDrawerOpen, onOpen: openDrawer, onClose: closeDrawer } = useDisclosure()
 
   const { register, handleSubmit, formState: { errors, isValid }, setValue, reset } = useForm({
@@ -91,17 +109,49 @@ const ItemCategoryPage = () => {
   })
 
   const fetchCategory = () => {
-    fetchCategoryApi().then(res => {
+    fetchCategoryApi(currentPage, pageSize, status, search).then(res => {
       setIsLoading(false)
       setCategories(res)
+      setPageTotal(res.totalCount)
     })
   }
 
   useEffect(() => {
     fetchCategory()
-  }, [])
+  }, [currentPage, pageSize, status, search])
 
-  //No status parameters for item category
+  const handlePageChange = (nextPage) => {
+    setCurrentPage(nextPage)
+  }
+
+  const handlePageSizeChange = (e) => {
+    const pageSize = Number(e.target.value)
+    setPageSize(pageSize)
+  }
+
+  const statusHandler = (data) => {
+    setStatus(data)
+  }
+
+  const changeStatusHandler = (id, status) => {
+    let routeLabel;
+    if (status) {
+      routeLabel = "InActiveItemCategory"
+    } else {
+      routeLabel = "ActivateItemCategory"
+    }
+
+    apiClient.put(`RawMaterial/${routeLabel}/${id}`, { id: id }).then((res) => {
+      ToastComponent("Success", "Item Category Updated", "success", toast)
+      fetchCategory()
+    }).catch(err => {
+      console.log(err);
+    })
+  }
+
+  const searchHandler = (inputValue) => {
+    setSearch(inputValue)
+  }
 
   const editHandler = (cat) => {
     openDrawer();
@@ -121,15 +171,30 @@ const ItemCategoryPage = () => {
   return (
     <Flex p={5} w="full" flexDirection="column">
 
-      {/* <Flex mb={2.5} justifyContent='end'>
+      <Flex mb={2} justifyContent='space-between'>
+        <HStack>
+          <InputGroup>
+            <InputLeftElement
+              pointerEvents='none'
+              children={<FaSearch color='gray.300' />}
+            />
+            <Input type='text' placeholder='Search: Category Name'
+              onChange={(e) => searchHandler(e.target.value)}
+              focusBorderColor='accent'
+            />
+          </InputGroup>
+        </HStack>
+
         <HStack>
           <Text>STATUS: </Text>
-          <Select onChange={(e) => statusHandler(e.target.value)}>
+          <Select
+            onChange={(e) => statusHandler(e.target.value)}
+          >
             <option value={true}>Active</option>
             <option value={false}>Inactive</option>
           </Select>
         </HStack>
-      </Flex> */}
+      </Flex>
 
       <PageScroll>
         {
@@ -154,7 +219,7 @@ const ItemCategoryPage = () => {
                 </Tr>
               </Thead>
               <Tbody>
-                {categories?.map(cat =>
+                {categories?.category?.map(cat =>
                   <Tr key={cat.id}>
                     <Td>{cat.id}</Td>
                     <Td>{cat.itemCategoryName}</Td>
@@ -166,7 +231,7 @@ const ItemCategoryPage = () => {
                         <RiEditBoxFill />
                       </Button>
 
-                      {/* <Popover>
+                      <Popover>
                         <PopoverTrigger>
                           <Button p={0} background='none'><GiChoice /></Button>
                         </PopoverTrigger>
@@ -176,13 +241,13 @@ const ItemCategoryPage = () => {
                             <PopoverCloseButton />
                             <PopoverBody>
                               <VStack>
-                                {cat.isActive === true ? <Text>Are you sure you want to set this category inactive?</Text> : <Text>Are you sure you want to set this category active?</Text>}
+                                {cat.isActive === true ? <Text>Are you sure you want to set this category inactive?</Text> : <Text>Are you sure you want to set this item category active?</Text>}
                                 <Button bgColor='secondary' color='white' _hover={{ bgColor: 'accent' }} onClick={() => changeStatusHandler(cat.id, cat.isActive)}>Yes</Button>
                               </VStack>
                             </PopoverBody>
                           </PopoverContent>
                         </Portal>
-                      </Popover> */}
+                      </Popover>
 
                     </Td>
                   </Tr>
@@ -197,6 +262,7 @@ const ItemCategoryPage = () => {
         <Button leftIcon={<FcAddDatabase color='white' />} bgColor='secondary' onClick={newCategoryHandler} _hover={{ bgColor: 'accent' }}>
           <Text color='white'>New Category</Text>
         </Button>
+
         {
           isDrawerOpen && (
             <DrawerComponent
@@ -210,6 +276,43 @@ const ItemCategoryPage = () => {
             />
           )
         }
+
+        <Stack>
+          <Pagination
+            pagesCount={pagesCount}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          >
+            <PaginationContainer>
+              <PaginationPrevious bg="secondary" color='white' p={1} _hover={{ bg: 'accent', color: 'white' }}>{"<<"}</PaginationPrevious>
+              <PaginationPageGroup ml={1} mr={1}>
+                {pages.map((page) => (
+                  <PaginationPage
+                    _hover={{ bg: 'accent', color: 'white' }}
+                    p={3}
+                    bg="secondary"
+                    color='white'
+                    key={`pagination_page_${page}`}
+                    page={page}
+                  />
+                ))}
+              </PaginationPageGroup>
+              <HStack>
+                <PaginationNext bg="secondary" color='white' p={1} _hover={{ bg: 'accent', color: 'white' }}>{">>"}</PaginationNext>
+                <Select
+                  onChange={handlePageSizeChange}
+                  variant='filled'
+                >
+                  <option value={Number(5)}>5</option>
+                  <option value={Number(10)}>10</option>
+                  <option value={Number(25)}>25</option>
+                  <option value={Number(50)}>50</option>
+                </Select>
+              </HStack>
+            </PaginationContainer>
+          </Pagination>
+        </Stack>
+
       </Flex>
     </Flex>
   )
