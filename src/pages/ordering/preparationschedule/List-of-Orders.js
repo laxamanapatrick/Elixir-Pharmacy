@@ -74,12 +74,12 @@ export const ListofOrders = ({ setCurrentPage, currentPage, pagesCount,
         }
     }
 
-    //Buton disabler for ous and backdate needed
+    //Buton disable for out of stock and backdated date needed
     useEffect(() => {
-        orders.every((item) => {
-            const days = item.days
+        orders.map((item) => {
+            console.log(item)
             setTransactId(item.id)
-            if (item.stockOnHand < item.quantityOrder || days < 0) {
+            if (item.stockOnHand < item.quantityOrder || item.days < 0) {
                 setDisableIfStock(true)
             }
             else {

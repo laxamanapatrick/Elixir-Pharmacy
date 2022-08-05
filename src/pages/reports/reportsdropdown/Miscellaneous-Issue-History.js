@@ -37,24 +37,24 @@ export const MiscellaneousIssueHistory = ({ dateFrom, dateTo, sample }) => {
           <Table size='sm'>
             <Thead bgColor='secondary'>
               <Tr>
-                <Th color='white'>issue_id</Th>
-                <Th color='white'>customer_code</Th>
-                <Th color='white'>customer_name</Th>
+                <Th color='white'>Issue ID</Th>
+                <Th color='white'>Customer Code</Th>
+                <Th color='white'>Customer Name</Th>
                 {
                   buttonChanger ?
                     <>
-                      <Th color='white'>details</Th>
-                      <Th color='white'>item_code</Th>
-                      <Th color='white'>item_description</Th>
-                      <Th color='white'>uom</Th>
+                      <Th color='white'>Details</Th>
+                      <Th color='white'>Item Code</Th>
+                      <Th color='white'>Item Description</Th>
+                      <Th color='white'>UOM</Th>
                       {/* <Th color='white'>category</Th>  */}
-                      <Th color='white'>quantity</Th>
+                      <Th color='white'>Quantity</Th>
                     </>
                     :
                     <>
-                      <Th color='white'>expiration_date</Th>
-                      <Th color='white'>transact_by</Th>
-                      <Th color='white'>transaction_date</Th>
+                      <Th color='white'>Expiration Date</Th>
+                      <Th color='white'>Transact By</Th>
+                      <Th color='white'>Transaction Date</Th>
                     </>
                 }
               </Tr>

@@ -409,7 +409,7 @@ const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSub
 
   const fetchCategory = async () => {
     try {
-      const res = await apiClient.get('RawMaterial/GetAllItemCategory')
+      const res = await apiClient.get('RawMaterial/GetAllActiveItemCategories')
       setCategory(res.data)
     } catch (error) {
 

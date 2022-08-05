@@ -35,24 +35,24 @@ export const MoveOrderTransactionHistory = ({ dateFrom, dateTo, sample }) => {
           <Table size='sm'>
             <Thead bgColor='secondary'>
               <Tr>
-                <Th color='white'>move_order_id</Th>
-                <Th color='white'>customer_code</Th>
-                <Th color='white'>customer_name</Th>
+                <Th color='white'>Move Order ID</Th>
+                <Th color='white'>Customer Code</Th>
+                <Th color='white'>Customer Name</Th>
                 {
                   buttonChanger ?
                     <>
-                      <Th color='white'>item_code</Th>
-                      <Th color='white'>item_description</Th>
-                      <Th color='white'>uom</Th>
-                      <Th color='white'>category</Th>
-                      <Th color='white'>quantity</Th>
-                      <Th color='white'>expiration_date</Th>
+                      <Th color='white'>Item Code</Th>
+                      <Th color='white'>Item Description</Th>
+                      <Th color='white'>UOM</Th>
+                      <Th color='white'>Category</Th>
+                      <Th color='white'>Quantity</Th>
+                      <Th color='white'>Expiration Date</Th>
                     </>
                     :
                     <>
-                      <Th color='white'>transaction_type</Th>
-                      <Th color='white'>move_order_by</Th>
-                      <Th color='white'>move_order_date</Th>
+                      <Th color='white'>Transaction Type</Th>
+                      <Th color='white'>Move Order By</Th>
+                      <Th color='white'>Move Order Date</Th>
                     </>
                 }
               </Tr>

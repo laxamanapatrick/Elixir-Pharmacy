@@ -4,6 +4,9 @@ import {
   Flex,
   HStack,
   Input,
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
 } from '@chakra-ui/react';
 import ScannedModal from './rm-receiving-page/Scanned-Modal';
 import apiClient from '../../services/apiClient';
@@ -13,6 +16,7 @@ import ItemNotFound from './rm-receiving-page/Item-Not-Found';
 import ProvideItemCode from './rm-receiving-page/Provide-Item-Code';
 import { WarehouseContext } from '../../context/WarehouseContext'
 import { FcSearch } from 'react-icons/fc'
+import { MdOutlineClose } from 'react-icons/md'
 
 const fetchItemCodeDataApi = async (code) => {
   const res = await apiClient.get(`Warehouse/ScanBarcode/${code}`)
@@ -76,25 +80,41 @@ const RmReceivingPage = () => {
     }
   }
 
+  const clearHandler = () => {
+    setDisplayCode('')
+    setCode('')
+    fetchItemCodeData()
+  }
+
   return (
     <WarehouseContext.Provider value={{ setQuantity, setRemarks, setSumQuantity, setSubmitRejectData, setReceivingId, setButtonChanger, setDisplayCode, setCode }}>
       <Flex p={5} w='full' flexDirection='column'>
 
         <Flex mb={2} justifyContent='start'>
           <Flex>
-            <Input
-              value={displayCode}
-              placeholder='Item Code'
-              onChange={(e) => itemHandler(e.target.value)}
-              onKeyDown={handleKeyDown}
-            />
-            <HStack ml={2}>
+            <InputGroup>
+              <InputRightElement
+                pointerEvents='none'
+                children={<FcSearch color='gray.300' />}
+              />
+              <Input
+                value={displayCode}
+                placeholder='Item Code'
+                onChange={(e) => itemHandler(e.target.value)}
+                onKeyDown={handleKeyDown}
+              />
+            </InputGroup>
+            <HStack ml={2} spacing={1}>
               <Button
                 onClick={() => scanHandler()}
                 bgColor='secondary' color='white' _hover={{ bgColor: 'accent' }}>
                 Search
               </Button>
-              <FcSearch fontSize='40px' />
+              <Button
+                onClick={() => clearHandler()}
+                bgColor='secondary' color='white' _hover={{ bgColor: 'accent' }}>
+                Clear
+              </Button>
             </HStack>
           </Flex>
         </Flex>

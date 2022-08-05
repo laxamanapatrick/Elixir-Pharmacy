@@ -27,7 +27,13 @@ const EditQuantityModal = ({ isOpen, onClose, id, quantity, fetchRecipe, current
             return
         }
         try {
-            const res = apiClient.put(`Transformation/UpdateQuantity/${id}`, { id: id, quantity: newQuantity })
+            console.log(id, Number(newQuantity))
+            const res = apiClient.put(`Transformation/UpdateQuantity/${id}`,
+                {
+                    id: id, 
+                    quantity: Number(newQuantity)
+                }
+            )
                 .then(res => {
                     ToastComponent("Success!", "Quantity Updated", "success", toast)
                     fetchRecipe()

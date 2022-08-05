@@ -21,7 +21,7 @@ const SidebarHeader = () => {
 const SidebarFooter = () => {
     return <Flex justifyContent='center' alignItems='center' flexDirection='column' pb='3'>
         <Image src='/images/logo.png'></Image>
-        <Text color='white' fontSize='xs'>© 2022, Elixir Powered by MIS</Text>
+        <Text color='white' fontSize='xs' textAlign='center'>© 2022, Elixir Powered by Process Automation (MIS)</Text>
     </Flex>
 }
 
