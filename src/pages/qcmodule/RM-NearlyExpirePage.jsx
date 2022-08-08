@@ -110,6 +110,8 @@ const RMNearlyExpirePage = ({ fetchNotification }) => {
     setReceivingId(data)
   }
 
+  console.log(nearlyExpireData)
+
   return (
     <Flex p={5} w="full" flexDirection='column'>
       <Flex justifyContent='center'>

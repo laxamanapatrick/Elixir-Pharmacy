@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Box,
   Button,
@@ -33,7 +33,13 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
-  FormLabel
+  FormLabel,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  ButtonGroup
 } from '@chakra-ui/react';
 import apiClient from '../../services/apiClient';
 import { FcAddDatabase } from 'react-icons/fc'
@@ -56,7 +62,9 @@ import {
   PaginationPageGroup,
 } from '@ajna/pagination'
 import { FaSearch } from 'react-icons/fa';
-// import { RawMaterialsContext } from '../../context/RawMaterials-Context';
+import { AiFillPrinter } from 'react-icons/ai'
+import { useReactToPrint } from 'react-to-print';
+import Barcode from 'react-barcode';
 
 const currentUser = decodeUser()
 
@@ -83,9 +91,15 @@ const RawMaterialsPage = () => {
   const [search, setSearch] = useState("")
   const [codeDisable, setCodeDisable] = useState(false)
 
+  const [printData, setPrintData] = useState({
+    itemCode: '',
+    itemDescription: ''
+  })
+
   const toast = useToast()
   const [pageTotal, setPageTotal] = useState(undefined);
   const { isOpen: isDrawerOpen, onOpen: openDrawer, onClose: closeDrawer } = useDisclosure()
+  const { isOpen: isPrint, onOpen: openPrint, onClose: closePrint } = useDisclosure()
 
   const { register, handleSubmit, formState: { errors, isValid }, setValue, reset } = useForm({
     resolver: yupResolver(schema),
@@ -179,10 +193,25 @@ const RawMaterialsPage = () => {
     reset()
   }
 
+  const printHandler = ({ itemCode, itemDescription }) => {
+    if (itemCode && itemDescription) {
+      setPrintData({
+        itemCode: itemCode,
+        itemDescription: itemDescription
+      })
+      openPrint()
+    } else {
+      setPrintData({
+        itemCode: '',
+        itemDescription: ''
+      })
+    }
+  }
+
   return (
     // <RawMaterialsContext.Provider value={{raws}}>
     <Flex p={5} w='full' flexDirection='column'>
-      
+
       <Flex mb={2} justifyContent='space-between'>
         <HStack>
           <InputGroup>
@@ -231,6 +260,7 @@ const RawMaterialsPage = () => {
                   <Th color='white'>Buffer Level</Th>
                   <Th color='white'>Date Added</Th>
                   <Th color='white'>Added By</Th>
+                  <Th color='white'>Print</Th>
                   <Th color='white'>Actions</Th>
                 </Tr>
               </Thead>
@@ -247,6 +277,14 @@ const RawMaterialsPage = () => {
                     <Td>{raw.bufferLevel}</Td>
                     <Td>{raw.dateAdded}</Td>
                     <Td>{raw.addedBy}</Td>
+                    <Td>
+                      <Button
+                        onClick={() => printHandler(raw)}
+                        p={0} background='none' color='secondary'
+                      >
+                        <AiFillPrinter />
+                      </Button>
+                    </Td>
                     <Td>
                       <Flex>
                         <HStack>
@@ -307,6 +345,16 @@ const RawMaterialsPage = () => {
               handleSubmit={handleSubmit}
               fetchRaw={fetchRaw}
               codeDisable={codeDisable}
+            />
+          )
+        }
+
+        {
+          isPrint && (
+            <PrinterModal
+              isOpen={isPrint}
+              onClose={closePrint}
+              printData={printData}
             />
           )
         }
@@ -534,4 +582,39 @@ const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSub
     </Flex>
   )
 
+}
+
+const PrinterModal = ({ isOpen, onClose, printData }) => {
+
+  const componentRef = useRef()
+
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  })
+
+  return (
+    <Modal isOpen={isOpen} onClose={() => { }} isCentered size='xl'>
+      <ModalContent>
+        <ModalHeader>
+          <Flex justifyContent='center'>
+            <AiFillPrinter fontSize='50px' />
+          </Flex>
+        </ModalHeader>
+        <ModalBody mt={5}>
+          <VStack spacing={0} justifyContent='center' ref={componentRef}>
+            <Text>{printData?.itemDescription}</Text>
+            <VStack spacing={0} w='90%' ml={4} justifyContent='center'>
+              <Barcode width={2} height={75} value={printData?.itemCode} />
+            </VStack>
+          </VStack>
+        </ModalBody>
+        <ModalFooter mt={10}>
+          <ButtonGroup size='xs'>
+            <Button colorScheme='blue' onClick={handlePrint}>Print</Button>
+            <Button variant='ghost' onClick={onClose}>Close</Button>
+          </ButtonGroup>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  )
 }

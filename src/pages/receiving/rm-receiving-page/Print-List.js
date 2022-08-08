@@ -27,8 +27,8 @@ import {
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import moment from 'moment'
-import { useReactToPrint } from 'react-to-print';
 import PageScrollImport from '../../../components/PageScrollImport'
+import { useReactToPrint } from 'react-to-print';
 import Barcode from 'react-barcode';
 import { WarehouseContext } from '../../../context/WarehouseContext'
 
@@ -48,7 +48,7 @@ const PrintList = ({
 
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
-    });
+    })
 
     const displayData = {
         "Date": moment().format("MM/DD/YYYY, h:mm:ss a"),

@@ -27,7 +27,6 @@ const EditQuantityModal = ({ isOpen, onClose, id, quantity, fetchRecipe, current
             return
         }
         try {
-            console.log(id, Number(newQuantity))
             const res = apiClient.put(`Transformation/UpdateQuantity/${id}`,
                 {
                     id: id, 
