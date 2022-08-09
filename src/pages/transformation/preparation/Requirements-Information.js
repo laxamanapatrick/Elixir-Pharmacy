@@ -101,7 +101,7 @@ export const RequirementsInformation = ({ information, setWeight, setDisableSave
             w='full' h={7} p={0} bgColor='#fff8dc' border='1px'
             type="number"
             onWheel={(e) => e.target.blur()}
-            onKeyDown={(e) => ["E", "e", ".", "+", "-"].includes(e.key) && e.preventDefault()}
+            onKeyDown={(e) => ["E", "e", "+", "-"].includes(e.key) && e.preventDefault()}
             onPaste={(e) => e.preventDefault()}
           />
 

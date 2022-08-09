@@ -39,6 +39,7 @@ import PageScroll from '../../components/PageScroll';
 import ApproveModal from './rm-nearly-expire-page/Approve-Modal';
 import RejectModal from './rm-nearly-expire-page/Reject-Modal';
 import { NotificationContext } from '../../context/NotificationContext';
+import { ViewModal } from './rm-nearly-expire-page/View-Modal';
 
 const currentUser = decodeUser()
 
@@ -54,6 +55,8 @@ const RMNearlyExpirePage = ({ fetchNotification }) => {
   const [search, setSearch] = useState("")
   const [pageTotal, setPageTotal] = useState(undefined);
   const [isLoading, setIsLoading] = useState(true)
+
+  const { isOpen: isView, onOpen: openView, onClose: closeView } = useDisclosure()
   const { isOpen: isApproveModalOpen, onOpen: openApproveModal, onClose: closeApproveModal } = useDisclosure()
   const { isOpen: isRejectModalOpen, onOpen: openRejectModal, onClose: closeRejectModal } = useDisclosure()
 
@@ -110,7 +113,14 @@ const RMNearlyExpirePage = ({ fetchNotification }) => {
     setReceivingId(data)
   }
 
-  console.log(nearlyExpireData)
+  const viewHandler = (id) => {
+    if (id) {
+      setReceivingId(id)
+      openView()
+    } else {
+      setReceivingId('')
+    }
+  }
 
   return (
     <Flex p={5} w="full" flexDirection='column'>
@@ -169,6 +179,7 @@ const RMNearlyExpirePage = ({ fetchNotification }) => {
                   <Th color="white">Actual Good</Th>
                   <Th color="white">Actual Remaining</Th>
                   <Th color="white">Expiry Date</Th>
+                  {/* <Th color="white">View</Th> */}
                   <Th color="white">Approve</Th>
                   <Th color="white">Reject</Th>
                 </Tr>
@@ -185,6 +196,16 @@ const RMNearlyExpirePage = ({ fetchNotification }) => {
                     <Td>{ne.actualGood.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
                     <Td>{ne.actualRemaining.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
                     <Td>{ne.expiryDate}</Td>
+
+                    {/* <Td>
+                      <Button
+                        onClick={() => viewHandler(ne.receivingId)}
+                        color='white' colorScheme='green' _hover={{ bgColor: 'secondary', color: 'white' }} size='xs'
+                      >
+                        View
+                      </Button>
+                    </Td> */}
+
                     <Td>
                       <Button
                         onClick={() => approveHandler(ne.receivingId)}
@@ -248,6 +269,16 @@ const RMNearlyExpirePage = ({ fetchNotification }) => {
           </Pagination>
         </Stack>
       </Flex>
+
+      {
+        isView && (
+          <ViewModal
+            isOpen={isView}
+            onClose={closeView}
+            receivingId={receivingId}
+          />
+        )
+      }
 
       {
         isApproveModalOpen && (
