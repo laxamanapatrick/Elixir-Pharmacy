@@ -48,6 +48,8 @@ export const EditModalSubmit = ({ isSubmitDisabled, receivingId, sumQuantity, su
     // console.log(firstSubmit)
 
     const submitEditedHandlder = () => {
+
+        console.log(firstSubmit)
         try {
             setIsLoading(true)
             const res = apiClient.put(`Receiving/ReceiveRawMaterialsById/${submitDataOne.pO_Summary_Id}`, firstSubmit
@@ -72,9 +74,7 @@ export const EditModalSubmit = ({ isSubmitDisabled, receivingId, sumQuantity, su
                 })
 
                 if (sumQuantity > 0) {
-                    // console.log(firstSubmit.sumQuantity)
-                    // console.log(firstSubmit)
-                    // console.log(secondSubmit)
+                    console.log(secondSubmit)
                     try {
                         const res = apiClient.put(`Receiving/RejectRawMaterialsByReceivingId`, secondSubmit)
                     } catch (err) {

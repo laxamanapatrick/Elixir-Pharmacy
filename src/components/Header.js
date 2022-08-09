@@ -8,7 +8,7 @@ import {
     MenuList,
     Text
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FiMenu } from 'react-icons/fi'
 import { FaUserCircle } from 'react-icons/fa'
 import moment from 'moment';
@@ -23,7 +23,14 @@ export const Header = (props) => {
         navigate('/login')
         window.location.reload(false);
     }
-    
+
+    //Logout when user not present
+    useEffect(() => {
+        if (!user?.userName) {
+            navigate('/login')
+        }
+    }, [user])
+
     const { sideBarHandler } = props
     return <Flex bgColor='primary' h='54px' justifyContent='space-between' pl={2} pr={2} alignItems='center'>
         <HStack>
