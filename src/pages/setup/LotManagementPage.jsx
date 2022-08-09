@@ -81,6 +81,8 @@ const LotManagementPage = () => {
   const [pageTotal, setPageTotal] = useState(undefined)
   const { isOpen: isDrawerOpen, onOpen: openDrawer, onClose: closeDrawer } = useDisclosure()
 
+  const [disableEdit, setdisableEdit] = useState(false)
+
   const { register, handleSubmit, formState: { errors, isValid }, setValue, reset } = useForm({
     resolver: yupResolver(schema),
     mode: "onChange",
@@ -119,7 +121,7 @@ const LotManagementPage = () => {
     return () => {
       setLots([])
     }
-  }, [status, pageSize, currentPage, search])  
+  }, [status, pageSize, currentPage, search])
 
   const handlePageChange = (nextPage) => {
     setCurrentPage(nextPage)
@@ -154,6 +156,7 @@ const LotManagementPage = () => {
   }
 
   const editHandler = (lot) => {
+    setdisableEdit(true)
     openDrawer()
     setValue("formData", {
       id: lot.id,
@@ -164,6 +167,7 @@ const LotManagementPage = () => {
   }
 
   const newLotHandler = () => {
+    setdisableEdit(false)
     openDrawer()
     reset()
   }
@@ -288,6 +292,7 @@ const LotManagementPage = () => {
               isValid={isValid}
               handleSubmit={handleSubmit}
               fetchLot={fetchLot}
+              disableEdit={disableEdit}
             />
           )
         }
@@ -335,7 +340,7 @@ const LotManagementPage = () => {
 
 export default LotManagementPage;
 
-const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSubmit, fetchLot }) => {
+const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSubmit, fetchLot, disableEdit }) => {
   const [lotC, setlotC] = useState([])
   const [isLoading, setisLoading] = useState(false)
   const toast = useToast()
@@ -419,12 +424,16 @@ const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSub
                     <Text color="danger" fontSize="xs">{errors.formData?.lotCategoryId?.message}</Text>
                   </Stack>
                 </Box>
-                
+
                 <Box>
                   <FormLabel>Section Name:</FormLabel>
                   <Input
                     placeholder='Please enter Item Description'
                     {...register("formData.sectionName")}
+                    bgColor={disableEdit ? 'gray.200' : 'none'}
+                    disabled={disableEdit}
+                    readOnly={disableEdit}
+                    title={disableEdit ? 'Lot Name is not editable' : ''}
                   />
                   <Text color="danger" fontSize="xs">{errors.formData?.sectionName?.message}</Text>
                 </Box>

@@ -268,6 +268,9 @@ export const PrintList = ({ isOpen, onClose, closeSave, newDisplayData, valueRef
               <Text fontSize='xs' ml={2}>Purok 6, Brgy. Lara, City of San Fernando, Pampanga, Philippines</Text>
             </VStack>
 
+            <Flex justifyContent='center'>
+              <Text fontSize='xs' fontWeight='semibold'>(reprinted copy)</Text>
+            </Flex>
 
             <Flex mt={2} w='90%' justifyContent='center'>
               <Text fontSize='25px' fontWeight='semibold' ml={4}>Raw Materials</Text>

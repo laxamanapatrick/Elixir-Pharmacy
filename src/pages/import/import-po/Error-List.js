@@ -15,8 +15,9 @@ import {
     ModalFooter,
     ModalHeader,
     ModalOverlay,
-    Text, Table, Tbody, Td, Th, Thead, Tr, Badge, VStack,
+    Text, Table, Tbody, Td, Th, Thead, Tr, Badge, VStack, HStack,
 } from '@chakra-ui/react'
+import { TiWarning } from 'react-icons/ti'
 import moment from 'moment'
 import PageScrollModalErrorList from '../../../components/PageScrollErrorList'
 import PageScrollImportModal from '../../../components/PageScrollImport-Modal'
@@ -445,88 +446,12 @@ const ErrorList = ({ isOpen, onClose, errorData }) => {
                                 </AccordionItem>
                                 : ''}
 
-                            {available.length > 0 ?
-                                <>
-                                    <Flex justifyContent='center' mt='100px' mb={2}>
-                                        <Badge>Items available for import</Badge>
-                                    </Flex>
-
-                                    <AccordionItem bgColor='success'>
-                                        <Flex>
-                                            <AccordionButton color='white' fontWeight='semibold'>
-                                                <Box flex='1' textAlign='center' color='white' fontWeight='semibold'>
-                                                    Available for Import <Badge color='green'>{available?.length}</Badge>
-                                                </Box>
-                                                <AccordionIcon />
-                                            </AccordionButton>
-                                        </Flex>
-
-                                        <AccordionPanel pb={4}>
-                                            <PageScrollModalErrorList>
-
-                                                {
-                                                    available ? (
-
-                                                        <Table variant='striped' size="sm">
-
-                                                            <Thead bgColor='secondary'>
-                                                                <Tr>
-                                                                    {/* <Th color='white'>ID</Th> */}
-                                                                    <Th color='white'>PR Number</Th>
-                                                                    <Th color='white'>PR Date</Th>
-                                                                    <Th color='white'>PO Number</Th>
-                                                                    <Th color='white'>PO Date</Th>
-                                                                    <Th color='white'>Item Code</Th>
-                                                                    <Th color='white'>Item Description</Th>
-                                                                    <Th color='white'>Ordered</Th>
-                                                                    <Th color='white'>Delivered</Th>
-                                                                    <Th color='white'>Billed</Th>
-                                                                    <Th color='white'>UOM</Th>
-                                                                    <Th color='white'>Unit Price</Th>
-                                                                    <Th color='white'>Vendor Name</Th>
-                                                                </Tr>
-                                                            </Thead>
-
-                                                            <Tbody>
-                                                                {available?.map((a, i) =>
-                                                                    <Tr>
-                                                                        {/* <Td>{ }</Td> */}
-                                                                        <Td>{a?.pR_Number}</Td>
-                                                                        <Td>{a?.pR_Date}</Td>
-                                                                        <Td>{a?.pO_Number}</Td>
-                                                                        <Td>{a?.pO_Date}</Td>
-                                                                        <Td>{a?.item_Code}</Td>
-                                                                        <Td>{a?.item_Description}</Td>
-                                                                        <Td>{a?.ordered}</Td>
-                                                                        <Td>{a?.delivered}</Td>
-                                                                        <Td>{a?.billed}</Td>
-                                                                        <Td>{a?.uom}</Td>
-                                                                        <Td>{a?.unit_Price}</Td>
-                                                                        <Td>{a?.vendor_Name}</Td>
-                                                                    </Tr>
-                                                                )}
-                                                            </Tbody>
-
-                                                        </Table>
-
-                                                    )
-                                                        :
-                                                        <Flex justifyContent='center' mt='30px'>
-                                                            <VStack>
-                                                                <RiFileList3Fill fontSize='200px' />
-                                                                <Text color='white'>There are no lists that can be imported with this file</Text>
-                                                            </VStack>
-                                                        </Flex>
-                                                }
-
-                                            </PageScrollModalErrorList>
-
-                                        </AccordionPanel>
-                                    </AccordionItem>
-                                </>
-                                : ''}
-
                         </Accordion>
+
+                        <HStack mt={20} textAlign='center' color='secondary' fontWeight='semibold'>
+                            <TiWarning color='red' /><Text>Disclaimer: There were no PO imported.</Text>
+                        </HStack>
+
                     </ModalBody>
 
                 </PageScrollImportModal>
@@ -542,3 +467,86 @@ const ErrorList = ({ isOpen, onClose, errorData }) => {
 }
 
 export default ErrorList
+
+
+
+// {available.length > 0 ?
+//     <>
+//         <Flex justifyContent='center' mt='100px' mb={2}>
+//             <Badge>Items available for import</Badge>
+//         </Flex>
+
+//         <AccordionItem bgColor='success'>
+//             <Flex>
+//                 <AccordionButton color='white' fontWeight='semibold'>
+//                     <Box flex='1' textAlign='center' color='white' fontWeight='semibold'>
+//                         Available for Import <Badge color='green'>{available?.length}</Badge>
+//                     </Box>
+//                     <AccordionIcon />
+//                 </AccordionButton>
+//             </Flex>
+
+//             <AccordionPanel pb={4}>
+//                 <PageScrollModalErrorList>
+
+//                     {
+//                         available ? (
+
+//                             <Table variant='striped' size="sm">
+
+//                                 <Thead bgColor='secondary'>
+//                                     <Tr>
+//                                         {/* <Th color='white'>ID</Th> */}
+//                                         <Th color='white'>PR Number</Th>
+//                                         <Th color='white'>PR Date</Th>
+//                                         <Th color='white'>PO Number</Th>
+//                                         <Th color='white'>PO Date</Th>
+//                                         <Th color='white'>Item Code</Th>
+//                                         <Th color='white'>Item Description</Th>
+//                                         <Th color='white'>Ordered</Th>
+//                                         <Th color='white'>Delivered</Th>
+//                                         <Th color='white'>Billed</Th>
+//                                         <Th color='white'>UOM</Th>
+//                                         <Th color='white'>Unit Price</Th>
+//                                         <Th color='white'>Vendor Name</Th>
+//                                     </Tr>
+//                                 </Thead>
+
+//                                 <Tbody>
+//                                     {available?.map((a, i) =>
+//                                         <Tr>
+//                                             {/* <Td>{ }</Td> */}
+//                                             <Td>{a?.pR_Number}</Td>
+//                                             <Td>{a?.pR_Date}</Td>
+//                                             <Td>{a?.pO_Number}</Td>
+//                                             <Td>{a?.pO_Date}</Td>
+//                                             <Td>{a?.item_Code}</Td>
+//                                             <Td>{a?.item_Description}</Td>
+//                                             <Td>{a?.ordered}</Td>
+//                                             <Td>{a?.delivered}</Td>
+//                                             <Td>{a?.billed}</Td>
+//                                             <Td>{a?.uom}</Td>
+//                                             <Td>{a?.unit_Price}</Td>
+//                                             <Td>{a?.vendor_Name}</Td>
+//                                         </Tr>
+//                                     )}
+//                                 </Tbody>
+
+//                             </Table>
+
+//                         )
+//                             :
+//                             <Flex justifyContent='center' mt='30px'>
+//                                 <VStack>
+//                                     <RiFileList3Fill fontSize='200px' />
+//                                     <Text color='white'>There are no lists that can be imported with this file</Text>
+//                                 </VStack>
+//                             </Flex>
+//                     }
+
+//                 </PageScrollModalErrorList>
+
+//             </AccordionPanel>
+//         </AccordionItem>
+//     </>
+//     : ''}

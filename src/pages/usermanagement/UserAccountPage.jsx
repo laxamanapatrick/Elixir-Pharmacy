@@ -77,7 +77,8 @@ const UserAccountPage = () => {
   const toast = useToast()
   const [pageTotal, setPageTotal] = useState(undefined);
   const { isOpen: isDrawerOpen, onOpen: openDrawer, onClose: closeDrawer } = useDisclosure()
-  
+
+  const [disableEdit, setDisableEdit] = useState(false)
 
   const { register, handleSubmit, formState: { errors, isValid }, setValue, reset } = useForm({
     resolver: yupResolver(schema),
@@ -155,6 +156,7 @@ const UserAccountPage = () => {
   }
 
   const editHandler = (user) => {
+    setDisableEdit(true)
     openDrawer();
     setValue("formData", {
       id: user.id,
@@ -168,11 +170,10 @@ const UserAccountPage = () => {
   }
 
   const newUserHandler = () => {
+    setDisableEdit(false)
     openDrawer()
     reset()
   }
-
-  console.log(users)
 
   return (
     <Flex p={5} w="full" flexDirection='column'>
@@ -285,6 +286,7 @@ const UserAccountPage = () => {
               isValid={isValid}
               handleSubmit={handleSubmit}
               fetchUsers={fetchUsers}
+              disableEdit={disableEdit}
             />
           )
         }

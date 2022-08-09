@@ -157,6 +157,10 @@ export const PrintModal = ({ isOpen, onClose, printData, closeApprove, fetchAppr
                             <Text fontSize='lg' fontWeight='semibold'>Move Order Slip</Text>
                         </Flex>
 
+                        <Flex justifyContent='center'>
+                            <Text fontSize='xs' fontWeight='semibold'>(reprinted copy)</Text>
+                        </Flex>
+
                         <Flex justifyContent='space-between' mb={3}>
                             <Flex flexDirection='column'>
                                 <Text>Order ID: {orderId && orderId}</Text>
@@ -199,7 +203,7 @@ export const PrintModal = ({ isOpen, onClose, printData, closeApprove, fetchAppr
                             </Table>
                         </PageScrollReusable>
 
-                        <Flex justifyContent='space-between' mb={5}>
+                        <Flex justifyContent='space-between' mb={5} mt={2}>
                             <HStack>
                                 <Text>Delivery Status:</Text>
                                 <Text textDecoration='underline'>
@@ -276,12 +280,16 @@ export const PrintModal = ({ isOpen, onClose, printData, closeApprove, fetchAppr
                             </VStack>
                         </Flex>
 
+                        <Flex mt={10}>
+                            <Text fontWeight='semibold' fontSize='xs'>MO Slip: MO00001</Text>
+                        </Flex>
+
                     </Flex>
 
                 </ModalBody>
 
-                <ModalFooter>
-                    <ButtonGroup size='sm' mt={7}>
+                <ModalFooter mt={2}>
+                    <ButtonGroup size='sm'>
                         <Button
                             isLoading={isLoading}
                             disabled={isLoading}

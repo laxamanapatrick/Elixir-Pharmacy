@@ -77,9 +77,9 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo, fetchNo
         itemDescription: editData.itemDescription,
         supplier: editData.supplier,
         uom: editData.uom,
-        quantityOrdered: editData.quantityOrdered,
-        actualGood: editData.actualGood,
-        actualRemaining: editData.actualRemaining,
+        quantityOrdered: editData.quantityOrdered.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 }),
+        actualGood: editData.actualGood.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 }),
+        actualRemaining: editData.actualRemaining.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 }),
         checkingDate: moment().format("MM/DD/YYYY"),
       }
     }

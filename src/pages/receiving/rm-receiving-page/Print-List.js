@@ -102,43 +102,46 @@ const PrintList = ({
 
                     <PageScrollImport>
 
-                            <VStack spacing={0} justifyContent='center' ref={componentRef}>
+                        <VStack spacing={0} justifyContent='center' ref={componentRef}>
 
-                                <VStack spacing={0} justifyContent='start'>
-                                    <Image
-                                        src='/images/RDF Logo.png'
-                                        w='20%' ml={3}
-                                    />
-                                    <Text fontSize='xs' ml={2}>Purok 6, Brgy. Lara, City of San Fernando, Pampanga, Philippines</Text>
-                                </VStack>
+                            <VStack spacing={0} justifyContent='start'>
+                                <Image
+                                    src='/images/RDF Logo.png'
+                                    w='20%' ml={3}
+                                />
+                                <Text fontSize='xs' ml={2}>Purok 6, Brgy. Lara, City of San Fernando, Pampanga, Philippines</Text>
+                            </VStack>
 
+                            <Flex justifyContent='center'>
+                                <Text fontSize='xs' fontWeight='semibold'>(reprinted copy)</Text>
+                            </Flex>
 
-                                <Flex mt={2} w='90%' justifyContent='center'>
-                                    <Text fontSize='25px' fontWeight='semibold' ml={4}>Raw Materials</Text>
-                                </Flex>
+                            <Flex mt={2} w='90%' justifyContent='center'>
+                                <Text fontSize='25px' fontWeight='semibold' ml={4}>Raw Materials</Text>
+                            </Flex>
 
-                                {Object.keys(displayData)?.map((key, i) =>
-                                    <Flex w='full' justifyContent='center' key={i}>
-                                        <Flex ml='10%' w='full'>
-                                            <Flex>
-                                                <Text fontWeight='semibold' fontSize='10px'>{key}:</Text>
-                                            </Flex>
-                                        </Flex>
-                                        <Flex w='full'>
-                                            <Flex>
-                                                <Text fontWeight='semibold' fontSize='10px'>{displayData[key]}</Text>
-                                            </Flex>
+                            {Object.keys(displayData)?.map((key, i) =>
+                                <Flex w='full' justifyContent='center' key={i}>
+                                    <Flex ml='10%' w='full'>
+                                        <Flex>
+                                            <Text fontWeight='semibold' fontSize='10px'>{key}:</Text>
                                         </Flex>
                                     </Flex>
-                                )}
+                                    <Flex w='full'>
+                                        <Flex>
+                                            <Text fontWeight='semibold' fontSize='10px'>{displayData[key]}</Text>
+                                        </Flex>
+                                    </Flex>
+                                </Flex>
+                            )}
 
-                                <VStack spacing={0} w='90%' ml={4} justifyContent='center'>
-                                    <Barcode width={3} height={75} value={receivingId} />
-                                </VStack>
-
-                                <Flex w='full'></Flex>
-
+                            <VStack spacing={0} w='90%' ml={4} justifyContent='center'>
+                                <Barcode width={3} height={75} value={receivingId} />
                             </VStack>
+
+                            <Flex w='full'></Flex>
+
+                        </VStack>
 
                     </PageScrollImport>
 

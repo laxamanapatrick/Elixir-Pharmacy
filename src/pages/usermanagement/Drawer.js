@@ -40,8 +40,11 @@ import {
     PopoverContent,
     PopoverArrow,
     PopoverCloseButton,
-    PopoverBody
+    PopoverBody,
+    InputGroup,
+    InputRightElement
 } from '@chakra-ui/react';
+import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai'
 import React, { useEffect, useState } from 'react';
 import apiClient from '../../services/apiClient';
 import { ToastComponent } from '../../components/Toast';
@@ -55,7 +58,7 @@ import { ToastComponent } from '../../components/Toast';
 // import { FcAddDatabase } from 'react-icons/fc';
 
 
-const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSubmit, fetchUsers }) => {
+const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSubmit, fetchUsers, disableEdit }) => {
     const [isLoading, setisLoading] = useState(false)
     const [departments, setDepartments] = useState([])
     const [roles, setRoles] = useState([])
@@ -128,6 +131,8 @@ const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSub
     //     // onClose()
     // }
 
+    const [showPassword, setShowPassword] = useState(false)
+
     return (
         <Flex>
 
@@ -163,17 +168,28 @@ const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSub
                                         placeholder='Please enter Username'
                                         {...register("formData.userName")}
                                         autoComplete='off'
+                                        bgColor={disableEdit ? 'gray.200' : 'none'}
+                                        disabled={disableEdit}
+                                        readOnly={disableEdit}
+                                        title={disableEdit ? 'Username is not editable' : ''}
                                     />
                                     <Text color="danger" fontSize="xs">{errors.formData?.userName?.message}</Text>
                                 </Box>
 
                                 <Box>
                                     <FormLabel>Password:</FormLabel>
-                                    <Input
-                                        type='password'
-                                        placeholder='Please enter Password'
-                                        {...register("formData.password")}
-                                    />
+                                    <InputGroup>
+                                        <Input
+                                            type={showPassword ? 'text' : 'password'}
+                                            placeholder='Please enter Password'
+                                            {...register("formData.password")}
+                                        />
+                                        <InputRightElement width='4.5rem'>
+                                            <Button background='none' h='1.75rem' size='sm' onClick={() => setShowPassword(!showPassword)}>
+                                                {showPassword ? <AiFillEye /> : <AiFillEyeInvisible />}
+                                            </Button>
+                                        </InputRightElement>
+                                    </InputGroup>
                                     <Text color="danger" fontSize="xs">{errors.formData?.password?.message}</Text>
                                 </Box>
 
