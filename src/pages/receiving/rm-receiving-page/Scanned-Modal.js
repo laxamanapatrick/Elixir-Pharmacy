@@ -58,14 +58,14 @@ const ScannedModal = ({ receivingId, itemCodeData, setReceivingDate,
                 itemDescription: itemCodeData.itemDescription,
                 supplier: itemCodeData.supplier,
                 uom: itemCodeData.uom,
-                actualDelivered: itemCodeData.actualDelivered,
+                actualDelivered: itemCodeData.actualDelivered.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 }),
                 expiration: moment(itemCodeData.expiration).format("MM/DD/YYYY"),
                 expirationDays: itemCodeData.expirationDays,
                 manufacturingDate: moment(itemCodeData.manufacturingDate).format("MM/DD/YYYY"),
-                totalStock: itemCodeData.totalStock,
-                expectedDelivery: itemCodeData.expectedDelivery,
-                updatedStock: parseInt(itemCodeData.totalStock) + parseInt(itemCodeData.actualDelivered),
-                actualReject: sumQuantity
+                totalStock: itemCodeData.totalStock.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 }),
+                expectedDelivery: itemCodeData.expectedDelivery.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 }),
+                updatedStock: (parseInt(itemCodeData.totalStock) + parseInt(itemCodeData.actualDelivered)).toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 }),
+                actualReject: sumQuantity.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })
             }
         }
     })
@@ -317,7 +317,7 @@ const ScannedModal = ({ receivingId, itemCodeData, setReceivingDate,
                         <FormLabel w='40%'>
                             Actual Good
                             <Input
-                                value={actualGood}
+                                value={actualGood.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}
                                 readOnly={true}
                                 _disabled={{ color: 'black' }}
                                 disabled={true}

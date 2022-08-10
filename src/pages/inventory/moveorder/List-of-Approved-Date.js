@@ -37,9 +37,10 @@ export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage
     }
 
     const TableHead = [
-        "Line", "Order ID", "Customer Code", "Customer Name", "Category", "Total Quantity Order", "Order Date", 
+        "Line", "Order ID", "Customer Code", "Customer Name", "Category", "Total Quantity Order", "Order Date",
         // "Date Needed", 
-        "Prepared Date", "Status"
+        "Prepared Date", 
+        // "Status"
     ]
 
     // Return to Page 1 once length === 0
@@ -53,9 +54,9 @@ export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage
 
     //Auto select index 0
     useEffect(() => {
-      setOrderId(moveData[0]?.id)
+        setOrderId(moveData[0]?.id)
     }, [moveData])
-    
+
     return (
         <Flex w='full' flexDirection='column'>
             <Flex w='full' justifyContent='space-between'>
@@ -135,9 +136,11 @@ export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage
                                         <Td>{order.orderDate}</Td>
                                         {/* <Td>{order.dateNeeded}</Td> */}
                                         <Td>{moment(order.preparedDate).format("MM/DD/yyyy")}</Td>
-                                        <Td>{order.isReject ?
-                                            <VscCircleLargeFilled color='red' /> : <VscCircleLargeFilled color='green' />
-                                        }</Td>
+                                        {/* <Td>
+                                            {order.isReject ?
+                                                <VscCircleLargeFilled color='red' /> : <VscCircleLargeFilled color='green' />
+                                            }
+                                        </Td> */}
                                     </Tr>
                                 )
                             }

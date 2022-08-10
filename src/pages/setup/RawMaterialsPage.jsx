@@ -274,7 +274,7 @@ const RawMaterialsPage = () => {
                     <Td>{raw.itemDescription}</Td>
                     <Td>{raw.itemCategory}</Td>
                     <Td>{raw.uom}</Td>
-                    <Td>{raw.bufferLevel}</Td>
+                    <Td>{raw.bufferLevel.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
                     <Td>{raw.dateAdded}</Td>
                     <Td>{raw.addedBy}</Td>
                     <Td>
