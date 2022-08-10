@@ -179,7 +179,7 @@ const RMNearlyExpirePage = ({ fetchNotification }) => {
                   <Th color="white">Actual Good</Th>
                   <Th color="white">Actual Remaining</Th>
                   <Th color="white">Expiry Date</Th>
-                  {/* <Th color="white">View</Th> */}
+                  <Th color="white">View</Th>
                   <Th color="white">Approve</Th>
                   <Th color="white">Reject</Th>
                 </Tr>
@@ -197,14 +197,14 @@ const RMNearlyExpirePage = ({ fetchNotification }) => {
                     <Td>{ne.actualRemaining.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
                     <Td>{ne.expiryDate}</Td>
 
-                    {/* <Td>
+                    <Td>
                       <Button
                         onClick={() => viewHandler(ne.receivingId)}
                         color='white' colorScheme='green' _hover={{ bgColor: 'secondary', color: 'white' }} size='xs'
                       >
                         View
                       </Button>
-                    </Td> */}
+                    </Td>
 
                     <Td>
                       <Button
