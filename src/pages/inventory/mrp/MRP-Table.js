@@ -26,6 +26,7 @@ export const MRPTable = ({ mrpData, setSelectorId, selectorId, setRawMatsInfo, p
     }
 
     const searchHandler = (inputValue) => {
+        setCurrentPage(1)
         setSearch(inputValue)
     }
 

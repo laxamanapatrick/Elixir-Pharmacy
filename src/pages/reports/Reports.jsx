@@ -9,12 +9,14 @@ import { TransformationReportHistory } from './reportsdropdown/Transformation-Re
 import { WarehouseReceivingHistory } from './reportsdropdown/Warehouse-Receiving-History'
 import moment from 'moment'
 import { NearlyExpiryReports } from './reportsdropdown/Nearly-Expiry-Reports'
+import { TransactedMoveOrders } from './reportsdropdown/Transacted-Move-Orders'
 
 const Reports = () => {
 
     const [dateFrom, setDateFrom] = useState(moment(new Date()).format('yyyy-MM-DD'))
     const [dateTo, setDateTo] = useState(moment(new Date()).format('yyyy-MM-DD'))
     const [expiryDays, setExpiryDays] = useState(30)
+    const [transactDate, setTransactDate] = useState(moment(new Date()).format('yyyy-MM-DD'))
 
     const [sample, setSample] = useState('')
 
@@ -24,7 +26,7 @@ const Reports = () => {
                 <Flex w='full' justifyContent='start' flexDirection='column'>
 
                     <Flex w='full' justifyContent='space-between'>
-
+                        {/* Dropdown value  */}
                         <Flex justifyContent='start' flexDirection='column'>
                             <Flex>
                                 <Badge>Report Name</Badge>
@@ -40,12 +42,14 @@ const Reports = () => {
                                 <option value={5}>Miscellaneous Issue History</option>
                                 <option value={6}>Miscellaneous Receipt History</option>
                                 <option value={7}>Nearly Expiry Report</option>
+                                <option value={8}>Transacted Move Orders</option>
                             </Select>
                         </Flex>
 
+                        {/* Viewing Condition  */}
                         <Flex justifyContent='start'>
                             {
-                                sample != 7 ?
+                                sample < 7 ?
                                     <Flex justifyContent='start' flexDirection='row'>
                                         <Flex flexDirection='column'>
                                             <Flex>
@@ -61,24 +65,34 @@ const Reports = () => {
                                         </Flex>
                                     </Flex>
                                     :
-                                    <Flex justifyContent='start' flexDirection='column'>
-                                        <Flex>
-                                            <Badge>Expiry Days</Badge>
+                                    sample == 7 ?
+                                        <Flex justifyContent='start' flexDirection='column'>
+                                            <Flex>
+                                                <Badge>Expiry Days</Badge>
+                                            </Flex>
+                                            <Select
+                                                onChange={(e) => setExpiryDays(e.target.value)}
+                                                bgColor='#fff8dc' w='full'
+                                            >
+                                                <option value={30}>30</option>
+                                                <option value={60}>60</option>
+                                                <option value={90}>90</option>
+                                            </Select>
                                         </Flex>
-                                        <Select
-                                            onChange={(e) => setExpiryDays(e.target.value)}
-                                            bgColor='#fff8dc' w='full'
-                                        >
-                                            <option value={30}>30</option>
-                                            <option value={60}>60</option>
-                                            <option value={90}>90</option>
-                                        </Select>
-                                    </Flex>
+                                        : sample == 8 &&
+                                        <Flex justifyContent='start' flexDirection='column'>
+                                            <Flex flexDirection='column'>
+                                                <Flex>
+                                                    <Badge>Transaction Date</Badge>
+                                                </Flex>
+                                                <Input bgColor='#fff8dc' type='date' value={dateFrom} onChange={(e) => setTransactDate(e.target.value)} />
+                                            </Flex>
+                                        </Flex>
                             }
                         </Flex>
-
                     </Flex>
 
+                    {/* Rendering Reports Components  */}
                     <Flex w='full' mt={5} justifyContent='center'>
                         {
                             sample == 1 ?
@@ -100,7 +114,9 @@ const Reports = () => {
                                                     <MiscellaneousReceiptHistory dateFrom={dateFrom} dateTo={dateTo} sample={sample} />
                                                     : sample == 7 ?
                                                         <NearlyExpiryReports sample={sample} expiryDays={expiryDays} />
-                                                        : ''
+                                                        : sample == 8 ?
+                                                            <TransactedMoveOrders sample={sample} transactDate={transactDate} />
+                                                            : ''
                         }
                     </Flex>
 
