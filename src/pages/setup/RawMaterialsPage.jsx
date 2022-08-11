@@ -43,6 +43,7 @@ import {
 } from '@chakra-ui/react';
 import apiClient from '../../services/apiClient';
 import { FcAddDatabase } from 'react-icons/fc'
+import { IoMdBarcode } from 'react-icons/io'
 import { RiEditBoxFill } from 'react-icons/ri'
 import { GiChoice } from 'react-icons/gi'
 import { useDisclosure } from '@chakra-ui/react';
@@ -52,6 +53,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { decodeUser } from '../../services/decode-user';
 import PageScroll from '../../components/PageScroll';
+import PageScrollReusable from '../../components/PageScroll-Reusable';
 import {
   Pagination,
   usePagination,
@@ -208,6 +210,13 @@ const RawMaterialsPage = () => {
     }
   }
 
+  const { isOpen: isPrintAll, onClose: closePrintAll, onOpen: openPrintAll } = useDisclosure()
+  const printBarcodeHandler = () => {
+    if (raws) {
+      openPrintAll()
+    }
+  }
+
   return (
     // <RawMaterialsContext.Provider value={{raws}}>
     <Flex p={5} w='full' flexDirection='column'>
@@ -327,12 +336,20 @@ const RawMaterialsPage = () => {
       </PageScroll>
 
       <Flex justifyContent='space-between' mt={5}>
-        <Button leftIcon={<FcAddDatabase color='white' />} bgColor='secondary'
-          onClick={newRawsHandler}
-          _hover={{ bgColor: 'accent' }}
-        >
-          <Text color='white'>New Raw Material</Text>
-        </Button>
+        <HStack>
+          <Button leftIcon={<FcAddDatabase color='white' />} bgColor='secondary'
+            onClick={newRawsHandler}
+            _hover={{ bgColor: 'accent' }}
+          >
+            <Text color='white'>New Raw Material</Text>
+          </Button>
+          <Button leftIcon={<IoMdBarcode color='white' />} bgColor='secondary'
+            onClick={printBarcodeHandler}
+            _hover={{ bgColor: 'accent' }}
+          >
+            <Text color='white'>Print all active barcode</Text>
+          </Button>
+        </HStack>
 
         {
           isDrawerOpen && (
@@ -355,6 +372,15 @@ const RawMaterialsPage = () => {
               isOpen={isPrint}
               onClose={closePrint}
               printData={printData}
+            />
+          )
+        }
+
+        {
+          isPrintAll && (
+            <PrintAllBarcodeModal
+              isOpen={isPrintAll}
+              onClose={closePrintAll}
             />
           )
         }
@@ -604,7 +630,7 @@ const PrinterModal = ({ isOpen, onClose, printData }) => {
           <VStack spacing={0} justifyContent='center' ref={componentRef}>
             <Text>{printData?.itemDescription}</Text>
             <VStack spacing={0} w='90%' ml={4} justifyContent='center'>
-              <Barcode width={2} height={75} value={printData?.itemCode} />
+              <Barcode width={2} height={30} value={printData?.itemCode} />
             </VStack>
           </VStack>
         </ModalBody>
@@ -617,4 +643,83 @@ const PrinterModal = ({ isOpen, onClose, printData }) => {
       </ModalContent>
     </Modal>
   )
+}
+
+const PrintAllBarcodeModal = ({ isOpen, onClose }) => {
+
+  const [raws, setRaws] = useState([])
+
+  const componentRef = useRef()
+
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  })
+
+  const fetchAllActiveRawMatsApi = async () => {
+    const res = await apiClient.get(`RawMaterial/GetAllActiveRawMaterials`)
+    return res.data
+  }
+
+  const fetchAllActiveRawMats = () => {
+    fetchAllActiveRawMatsApi().then(res => {
+      setRaws(res)
+    })
+  }
+
+  useEffect(() => {
+    fetchAllActiveRawMats()
+
+    return () => {
+      setRaws([])
+    }
+  }, [])
+
+  console.log(raws)
+
+  return (
+    <Modal isOpen={isOpen} onClose={() => { }} isCentered size='5xl'>
+      <ModalContent>
+        <ModalHeader>
+          <Flex justifyContent='center'>
+            <AiFillPrinter fontSize='50px' />
+          </Flex>
+        </ModalHeader>
+        <ModalBody mt={5}>
+          <VStack spacing={0} justifyContent='center'>
+            <PageScrollReusable minHeight='400px' maxHeight='500px'>
+              <Table size='sm' ref={componentRef}>
+                <Thead bgColor='secondary'>
+                  <Tr>
+                    <Th color='white'>Barcode</Th>
+                    <Th color='white'>Item Code</Th>
+                    <Th color='white'>Item Description</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {
+                    raws?.map((item, i) =>
+                      <Tr key={i}>
+                        <Td>
+                          <Barcode width={2} height={30} value={item.itemCode} />
+                        </Td>
+                        <Td>{item.itemCode}</Td>
+                        <Td>{item.itemDescription}</Td>
+                      </Tr>
+                    )
+                  }
+                </Tbody>
+              </Table>
+            </PageScrollReusable>
+          </VStack>
+        </ModalBody>
+        <ModalFooter mt={10}>
+          <ButtonGroup size='xs'>
+            <Button colorScheme='blue' onClick={handlePrint}>Print</Button>
+            <Button variant='ghost' onClick={onClose}>Close</Button>
+          </ButtonGroup>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  )
+
 }
