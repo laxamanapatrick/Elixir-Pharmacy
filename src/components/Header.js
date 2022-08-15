@@ -19,17 +19,17 @@ export const Header = (props) => {
     const user = decodeUser()
     const navigate = useNavigate()
     const logout = () => {
+        console.log("negate")
         localStorage.removeItem('userData')
-        navigate('/login')
-        window.location.reload(false);
+        navigate('/')
     }
 
     //Logout when user not present
-    useEffect(() => {
-        if (!user?.userName) {
-            navigate('/login')
-        }
-    }, [user])
+    // useEffect(() => {
+    //     if (!user?.userName) {
+    //         navigate('/')
+    //     }
+    // }, [user])
 
     const { sideBarHandler } = props
     return <Flex bgColor='primary' h='54px' justifyContent='space-between' pl={2} pr={2} alignItems='center'>

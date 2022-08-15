@@ -161,9 +161,9 @@ function App() {
 
     <Context.Provider value={{ selectedMenu, setSelectedMenu }}>
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
+       
         <Route path="*" element={<NotFoundPage />} />
-        <Route path="/" element={<Layout sideBarHandler={SideBarHandler} isSidebarVisible={isSidebarVisible} />} >
+        <Route path="/" element={user ? <Layout sideBarHandler={SideBarHandler} isSidebarVisible={isSidebarVisible} /> : <Navigate to="/login" />} >
 
           <Route path="inventory" element={user ? <InventoryPage /> : <Navigate to="/login" />}>
             <Route path="mrp" element={user ? <MrpPage /> : <Navigate to="/login" />} />
@@ -245,6 +245,7 @@ function App() {
             <Route path="reports" element={user ? <Reports /> : <Navigate to="/login" />} />
           </Route>
         </Route>
+         <Route path="/login" element={<LoginPage />} />
       </Routes >
 
       {

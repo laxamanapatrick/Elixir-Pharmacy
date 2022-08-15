@@ -9,7 +9,7 @@ import { HiOutlineArrowCircleRight } from 'react-icons/hi'
 const currentUser = decodeUser()
 
 const fetchTagModuleApi = async () => {
-    const currentSelectedRole = currentUser.role
+    const currentSelectedRole = currentUser?.role
     const res = await apiClient.get(`Role/GetRoleModuleWithId/${currentSelectedRole}`)
     return res.data
 }
@@ -80,6 +80,7 @@ const Sidebar = () => {
                         <Box
                             onClick={() => selectedMenuHandler(modName)}
                             bgColor={pathname.includes(modName.path) ? 'accent' : 'secondary'} p={2} borderBottom='1px' borderColor='primary' cursor='pointer' _hover={{ bgColor: 'accent' }}
+                            bgGradient={pathname.includes(modName.path) ? "linear(to-l, accent, #003366)" : 'secondary'}
                         >
                             <HStack justifyContent='space-between'>
                                 <Text

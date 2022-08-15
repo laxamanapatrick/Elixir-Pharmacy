@@ -144,10 +144,7 @@ export const ListofIssues = () => {
                                 <Th color='white'>Transaction Date</Th>
                                 <Th color='white'>Transacted By</Th>
                                 <Th color='white'>View</Th>
-                                {
-                                    status == 'true' &&
-                                    <Th color='white'>Change status</Th>
-                                }
+                                <Th color='white'>Change status</Th>
                             </Tr>
                         </Thead>
                         <Tbody>
@@ -169,16 +166,25 @@ export const ListofIssues = () => {
                                             </Button>
                                         </Td>
                                         {
-                                            issue.isActive &&
-                                            <Td>
-                                                <Button
-                                                    onClick={() => changeStatusHandler(issue.issuePKey, issue.isActive)}
-                                                    colorScheme='red' size='xs'
-                                                >
-                                                    {/* {issue.isActive ? 'Inactivate' : 'Activate'} */}
-                                                    Inactivate
-                                                </Button>
-                                            </Td>
+                                            issue.isActive ?
+                                                <Td>
+                                                    <Button
+                                                        onClick={() => changeStatusHandler(issue.issuePKey, issue.isActive)}
+                                                        colorScheme='red' size='xs'
+                                                    >
+                                                        Inactivate
+                                                    </Button>
+                                                </Td>
+                                                : <Td>
+                                                    <Button
+                                                        // onClick={() => changeStatusHandler(issue.issuePKey, issue.isActive)}
+                                                        colorScheme='red' size='xs'
+                                                        title='Inactive Issues are not to be activated again'
+                                                        disabled
+                                                    >
+                                                        Activate
+                                                    </Button>
+                                                </Td>
                                         }
                                     </Tr>
                                 )

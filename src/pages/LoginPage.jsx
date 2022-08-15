@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Heading, Image, Input, Text, useToast, VStack } from '@chakra-ui/react';
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
@@ -7,7 +7,6 @@ import apiClient from '../services/apiClient';
 import { useNavigate } from 'react-router-dom';
 import CryptoJS from 'crypto-js';
 import { saltkey } from '../saltkey';
-import { useState } from 'react/cjs/react.development';
 import { ToastComponent } from '../components/Toast';
 
 const loginSchema = yup.object({
@@ -48,7 +47,7 @@ const LoginPage = () => {
 
     return (
 
-        <Flex bgColor='secondary' h='100vh' justifyContent='center' alignItems='center'>
+        <Flex bgGradient="linear(to-l, secondary, primary)" h='100vh' justifyContent='center' alignItems='center'>
             <form onSubmit={handleSubmit(submitHandler)}>
                 <VStack spacing={4} bgColor='gray.600' pl={10} pr={10} pt={4} pb={3} rounded={6}>
                     <VStack>
@@ -70,7 +69,7 @@ const LoginPage = () => {
                 </VStack>
             </form>
         </Flex>
-        
+
     )
 }
 

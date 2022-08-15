@@ -26,7 +26,14 @@ export default axios.create({
 })
 
 
+//Live
 
-
+// export default axios.create({
+//     baseURL: "http://10.10.2.31:82/api/",
+//     headers: {
+//         "Content-type": "application/json",
+//         "Authorization": 'Bearer '+user?.token
+//     }
+// })
 
 

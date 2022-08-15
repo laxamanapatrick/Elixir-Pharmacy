@@ -53,6 +53,7 @@ const Navbar = ({ menus, notification }) => {
                     <Box
                         p={2} borderRight='1px' borderBottom='1px' borderColor='primary' cursor='pointer'
                         bgColor={pathname.includes(sub.path) ? 'accent' : 'secondary'}
+                        bgGradient={pathname.includes(sub.path) ? "linear(to-l, #003366, accent)" : 'secondary'}
                         boxShadow={pathname.includes(sub.path) ? '0 6px 6px' : ''}
                         _hover={{ bgColor: 'accent' }}
                     >

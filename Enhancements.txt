@@ -1,2 +1,0 @@
-Crud of Dropwdowns
-(Farm type, Lot Name)
