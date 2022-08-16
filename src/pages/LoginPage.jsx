@@ -31,7 +31,7 @@ const LoginPage = () => {
             const res = apiClient.post("/Login/Authenticate", data).then((res) => {
 
                 var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(res.data), saltkey).toString()
-                localStorage.setItem('userData', ciphertext)
+                sessionStorage.setItem('userData', ciphertext)
                 setisLoading(false)
                 navigate("/")
                 window.location.reload(false);
