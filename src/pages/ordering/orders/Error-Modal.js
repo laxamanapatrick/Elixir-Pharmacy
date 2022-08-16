@@ -152,6 +152,21 @@ export const ErrorModal = ({ isOpen, onClose, errorData, isLoading }) => {
         }
     })
 
+    const previousdateNeeded = errorData?.previousdateNeeded?.map(list => {
+        return {
+            orderDate: list.orderDate,
+            dateNeeded: list.dateNeeded,
+            farmName: list.farmName,
+            farmType: list.farmType,
+            farmCode: list.farmCode,
+            category: list.category,
+            itemCode: list.itemCode,
+            itemDescription: list.itemDescription,
+            uom: list.uom,
+            quantity: list.quantityOrdered,
+        }
+    })
+
     const resultArray = filteredOrders?.map(list => {
         return {
             transactId: list?.transactId,
@@ -636,6 +651,72 @@ export const ErrorModal = ({ isOpen, onClose, errorData, isLoading }) => {
 
                                                         <Tbody>
                                                             {notExistUom?.map((d, i) =>
+                                                                <Tr key={i}>
+                                                                    <Td>{i + 1}</Td>
+                                                                    <Td>{moment(d?.orderDate).format('yyyy-MM-DD')}</Td>
+                                                                    <Td>{moment(d?.dateNeeded).format('yyyy-MM-DD')}</Td>
+                                                                    <Td>{d?.farmCode}</Td>
+                                                                    <Td>{d?.farmName}</Td>
+                                                                    <Td>{d?.category}</Td>
+                                                                    <Td>{d?.itemCode}</Td>
+                                                                    <Td>{d?.itemDescription}</Td>
+                                                                    <Td>{d?.uom}</Td>
+                                                                    <Td>{d?.quantity}</Td>
+                                                                </Tr>
+                                                            )}
+                                                        </Tbody>
+                                                    </Table>
+
+                                                )
+                                                    :
+                                                    <Flex justifyContent='center' mt='30px'>
+                                                        <VStack>
+                                                            <RiFileList3Fill fontSize='200px' />
+                                                            <Text color='white'>There are no duplicated lists on this file</Text>
+                                                        </VStack>
+                                                    </Flex>
+                                            }
+
+                                        </PageScrollModalErrorList>
+                                    </AccordionPanel>
+                                </AccordionItem>
+                                : ''
+                            }
+                            {previousdateNeeded?.length > 0 ?
+                                <AccordionItem bgColor='gray.200'>
+                                    <Flex>
+                                        <AccordionButton color='white' fontWeight='semibold'>
+                                            <Box flex='1' textAlign='center' color='secondary' fontWeight='semibold'>
+                                                Invalid Date Needed <Badge color='danger'>{previousdateNeeded?.length}</Badge>
+                                            </Box>
+                                            <AccordionIcon color='secondary' />
+                                        </AccordionButton>
+                                    </Flex>
+
+                                    <AccordionPanel pb={4}>
+                                        <PageScrollModalErrorList>
+
+                                            {
+                                                previousdateNeeded ? (
+
+                                                    <Table variant='striped' size="sm">
+                                                        <Thead bgColor='secondary'>
+                                                            <Tr>
+                                                                <Th color='white'>Line</Th>
+                                                                <Th color='white'>Order Date</Th>
+                                                                <Th color='white'>Date Needed</Th>
+                                                                <Th color='white'>Customer Code</Th>
+                                                                <Th color='white'>Customer Name</Th>
+                                                                <Th color='white'>Category</Th>
+                                                                <Th color='white'>Item Code</Th>
+                                                                <Th color='white'>Item Description</Th>
+                                                                <Th color='white'>UOM</Th>
+                                                                <Th color='white'>Quantity Order</Th>
+                                                            </Tr>
+                                                        </Thead>
+
+                                                        <Tbody>
+                                                            {previousdateNeeded?.map((d, i) =>
                                                                 <Tr key={i}>
                                                                     <Td>{i + 1}</Td>
                                                                     <Td>{moment(d?.orderDate).format('yyyy-MM-DD')}</Td>

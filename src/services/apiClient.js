@@ -17,23 +17,22 @@ const user = decodeUser()
 
 // Jaypee Backend
 
-export default axios.create({
-    baseURL: "http://10.10.13.16:45456/api/",
-    headers: {
-        "Content-type": "application/json",
-        "Authorization": 'Bearer '+user?.token
-    }
-})
-
-
-//Live
-
 // export default axios.create({
-//     baseURL: "http://10.10.2.31:82/api/",
+//     baseURL: "http://10.10.13.16:45455/api/",
 //     headers: {
 //         "Content-type": "application/json",
 //         "Authorization": 'Bearer '+user?.token
 //     }
 // })
+
+//Live
+
+export default axios.create({
+    baseURL: "http://10.10.2.31:82/api/",
+    headers: {
+        "Content-type": "application/json",
+        "Authorization": 'Bearer '+user?.token
+    }
+})
 
 

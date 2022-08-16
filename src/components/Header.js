@@ -19,8 +19,7 @@ export const Header = (props) => {
     const user = decodeUser()
     const navigate = useNavigate()
     const logout = () => {
-        console.log("negate")
-        localStorage.removeItem('userData')
+        sessionStorage.removeItem('userData')
         navigate('/')
     }
 

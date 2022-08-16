@@ -55,7 +55,7 @@ const Navbar = ({ menus, notification }) => {
                         bgColor={pathname.includes(sub.path) ? 'accent' : 'secondary'}
                         bgGradient={pathname.includes(sub.path) ? "linear(to-l, #003366, accent)" : 'secondary'}
                         boxShadow={pathname.includes(sub.path) ? '0 6px 6px' : ''}
-                        _hover={{ bgColor: 'accent' }}
+                        _hover={{ bgGradient: "linear(to-l, #003366, accent)" }}
                     >
                         <HStack>
                             <Text color='white'>{sub.title}</Text>

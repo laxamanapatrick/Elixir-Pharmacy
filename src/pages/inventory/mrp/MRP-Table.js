@@ -11,6 +11,7 @@ import {
 import PageScrollReusable from '../../../components/PageScroll-Reusable'
 import { BiRightArrow } from 'react-icons/bi'
 import { FaSearch } from 'react-icons/fa'
+import { CgDanger } from 'react-icons/cg'
 
 export const MRPTable = ({ mrpData, setSelectorId, selectorId, setRawMatsInfo, pagesCount, pages, currentPage, setCurrentPage, setPageSize, setSearch }) => {
 
@@ -80,7 +81,8 @@ export const MRPTable = ({ mrpData, setSelectorId, selectorId, setRawMatsInfo, p
                     <Thead bgColor='secondary'>
                         <Tr>
                             <Th p={0} color='white'></Th>
-                            <Th color='white'>ID</Th>
+                            <Th p={0} color='white'></Th>
+                            <Th color='white'>Line</Th>
                             <Th color='white'>Item Code</Th>
                             <Th color='white'>Item Description</Th>
                             {
@@ -91,6 +93,7 @@ export const MRPTable = ({ mrpData, setSelectorId, selectorId, setRawMatsInfo, p
                                         <Th color='white'>Price</Th>
                                         <Th color='white'>SOH</Th>
                                         <Th color='white'>Reserve</Th>
+                                        <Th color='white'>Reserve Usage</Th>
                                         <Th color='white'>Buffer Level</Th>
                                         <Th color='white'>{`Receive (IN)`}</Th>
                                         <Th color='white'>{`Receipt (IN)`}</Th>
@@ -100,9 +103,9 @@ export const MRPTable = ({ mrpData, setSelectorId, selectorId, setRawMatsInfo, p
                                     <>
                                         <Th color='white'>{`Issue (OUT)`}</Th>
                                         <Th color='white'>QA Receiving</Th>
-                                        <Th color='white'>Last Used</Th>
+                                        {/* <Th color='white'>Last Used</Th>
                                         <Th color='white'>Movement Status</Th>
-                                        <Th color='white'>Classification ABC</Th>
+                                        <Th color='white'>Classification ABC</Th> */}
                                         <Th color='white'>Suggested PO</Th>
                                         <Th color='white'>Average Issuance</Th>
                                         <Th color='white'>Days Level</Th>
@@ -118,7 +121,7 @@ export const MRPTable = ({ mrpData, setSelectorId, selectorId, setRawMatsInfo, p
                                     bgColor={
                                         selectorId === i + 1 ? 'table_accent' : 'none'
                                             &&
-                                            item.bufferLevel > item.reserve ? 'pink' : 'none'
+                                            item.bufferLevel > item.reserve ? 'gray.300' : 'none'
                                     }
                                     cursor='pointer'
                                 >
@@ -128,6 +131,7 @@ export const MRPTable = ({ mrpData, setSelectorId, selectorId, setRawMatsInfo, p
                                             :
                                             <Td p={0}></Td>
                                     }
+                                    <Td>{item.bufferLevel > item.reserve ? <CgDanger color='red' /> : ''}</Td>
                                     <Td>{i + 1}</Td>
                                     <Td>{item.itemCode}</Td>
                                     <Td>{item.itemDescription}</Td>
@@ -139,6 +143,7 @@ export const MRPTable = ({ mrpData, setSelectorId, selectorId, setRawMatsInfo, p
                                                 <Td>{item.price.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
                                                 <Td>{item.soh.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
                                                 <Td>{item.reserve.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                                                <Td>{item.reserveUsage.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
                                                 <Td>{item.bufferLevel.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
                                                 <Td>{item.receiveIn.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
                                                 <Td>{item.receiptIn.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
@@ -148,9 +153,9 @@ export const MRPTable = ({ mrpData, setSelectorId, selectorId, setRawMatsInfo, p
                                             <>
                                                 <Td>{item.issueOut.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
                                                 <Td>{item.qcReceiving.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
-                                                <Td>{`Last Used`}</Td>
+                                                {/* <Td>{`Last Used`}</Td>
                                                 <Td>{`Movement Status`}</Td>
-                                                <Td>{`Classification ABC`}</Td>
+                                                <Td>{`Classification ABC`}</Td> */}
                                                 <Td>{item.suggestedPo.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
                                                 <Td>{item.averageIssuance.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
                                                 <Td>{item.daysLevel}</Td>

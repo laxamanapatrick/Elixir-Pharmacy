@@ -79,7 +79,8 @@ const Sidebar = () => {
                     <Link to={modName.path} key={modName.mainMenuId}>
                         <Box
                             onClick={() => selectedMenuHandler(modName)}
-                            bgColor={pathname.includes(modName.path) ? 'accent' : 'secondary'} p={2} borderBottom='1px' borderColor='primary' cursor='pointer' _hover={{ bgColor: 'accent' }}
+                            bgColor={pathname.includes(modName.path) ? 'accent' : 'secondary'} p={2} borderBottom='1px' borderColor='primary' cursor='pointer'
+                            _hover={{ bgGradient: "linear(to-l, #003366, accent)" }}
                             bgGradient={pathname.includes(modName.path) ? "linear(to-l, accent, #003366)" : 'secondary'}
                         >
                             <HStack justifyContent='space-between'>
