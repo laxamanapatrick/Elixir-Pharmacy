@@ -15,7 +15,7 @@ import { CancelModalConfirmation, EditModal, ScheduleConfirmation } from './Acti
 import moment from 'moment'
 
 export const ListofOrders = ({ setCurrentPage, currentPage, pagesCount,
-    farmName, setFarmName, orders, pageTotal, setTransactId, transactId, fetchOrders, fetchFarmOrders, lengthIndicator }) => {
+    farmName, setFarmName, orders, pageTotal, setTransactId, transactId, fetchOrders, fetchFarmOrders, lengthIndicator, fetchNotification }) => {
 
     const [editData, setEditData] = useState({
         transactId: '',
@@ -295,6 +295,7 @@ export const ListofOrders = ({ setCurrentPage, currentPage, pagesCount,
                         setCurrentPage={setCurrentPage}
                         currentPage={currentPage}
                         fetchOrders={fetchOrders}
+                        fetchNotification={fetchNotification}
                     />
                 )
             }
@@ -310,6 +311,7 @@ export const ListofOrders = ({ setCurrentPage, currentPage, pagesCount,
                         fetchOrders={fetchOrders}
                         setCurrentPage={setCurrentPage}
                         currentPage={currentPage}
+                        fetchNotification={fetchNotification}
                     />
                 )
             }

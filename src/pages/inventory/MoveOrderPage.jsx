@@ -44,7 +44,7 @@ const fetchPreparedItemsApi = async (orderId) => {
   return res.data
 }
 
-const MoveOrderPage = () => {
+const MoveOrderPage = ({ notification, fetchNotification }) => {
 
   const [farmName, setFarmName] = useState('')
 
@@ -230,6 +230,7 @@ const MoveOrderPage = () => {
               setButtonChanger={setButtonChanger}
               setCurrentPage={setCurrentPage}
               currentPage={currentPage}
+              fetchNotification={fetchNotification}
             />
             :
             itemCode && highlighterId &&

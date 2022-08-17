@@ -165,7 +165,7 @@ export const CancelConfirmation = ({ isOpen, onClose, id, fetchPreparedItems, fe
 //Save Button
 
 export const SaveButton = ({ deliveryStatus, orderListData, fetchApprovedMoveOrders, fetchOrderList,
-    setOrderId, setHighlighterId, setItemCode, setDeliveryStatus, setButtonChanger, setCurrentPage, currentPage }) => {
+    setOrderId, setHighlighterId, setItemCode, setDeliveryStatus, setButtonChanger, setCurrentPage, currentPage, fetchNotification }) => {
 
     const { isOpen: isPlateNumber, onClose: closePlateNumber, onOpen: openPlateNumber } = useDisclosure()
 
@@ -194,13 +194,14 @@ export const SaveButton = ({ deliveryStatus, orderListData, fetchApprovedMoveOrd
                     setButtonChanger={setButtonChanger}
                     setCurrentPage={setCurrentPage}
                     currentPage={currentPage}
+                    fetchNotification={fetchNotification}
                 />
             }
         </Flex>
     )
 }
 export const DeliveryStatusConfirmation = ({ isOpen, onClose, deliveryStatus, orderListData, fetchApprovedMoveOrders, fetchOrderList,
-    setOrderId, setHighlighterId, setItemCode, setDeliveryStatus, setButtonChanger, setCurrentPage, currentPage }) => {
+    setOrderId, setHighlighterId, setItemCode, setDeliveryStatus, setButtonChanger, setCurrentPage, currentPage, fetchNotification }) => {
 
     const toast = useToast()
     const [isLoading, setIsLoading] = useState(false)
@@ -217,6 +218,7 @@ export const DeliveryStatusConfirmation = ({ isOpen, onClose, deliveryStatus, or
             const res = apiClient.put(`Ordering/AddDeliveryStatus`, submitArray)
                 .then(res => {
                     ToastComponent("Success", "Items prepared successfully.", "success", toast)
+                    fetchNotification()
                     setOrderId('')
                     setHighlighterId('')
                     setItemCode('')

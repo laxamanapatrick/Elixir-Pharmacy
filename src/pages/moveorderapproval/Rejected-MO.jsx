@@ -8,7 +8,7 @@ const fetchRejectedMOApi = async (pageNumber, pageSize, search) => {
   return res.data
 }
 
-const RejectedMO = () => {
+const RejectedMO = ({ notification, fetchNotification }) => {
 
   const [rejectedData, setRejectedData] = useState([])
 
@@ -51,6 +51,7 @@ const RejectedMO = () => {
       pageSize={pageSize}
       rejectedData={rejectedData}
       fetchRejectedMO={fetchRejectedMO}
+      fetchNotification={fetchNotification}
     />
   )
 }

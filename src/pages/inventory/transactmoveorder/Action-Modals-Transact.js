@@ -122,7 +122,7 @@ export const ViewModal = ({ isOpen, onClose, moveOrderInformation, moveOrderList
     )
 }
 
-export const TransactConfirmation = ({ isOpen, onClose, deliveryDate, checkedItems, setCheckedItems, fetchMoveOrderList, setDeliveryDate }) => {
+export const TransactConfirmation = ({ isOpen, onClose, deliveryDate, checkedItems, setCheckedItems, fetchMoveOrderList, setDeliveryDate, fetchNotification }) => {
 
     const toast = useToast()
     const [isLoading, setIsLoading] = useState(false)
@@ -206,6 +206,7 @@ export const TransactConfirmation = ({ isOpen, onClose, deliveryDate, checkedIte
             const res = apiClient.post(`Ordering/TransactListOfMoveOrders`, arraySubmit)
                 .then(res => {
                     ToastComponent("Success", "Move order transacted", "success", toast)
+                    fetchNotification()
                     setDeliveryDate('')
                     setCheckedItems([])
                     fetchMoveOrderList()

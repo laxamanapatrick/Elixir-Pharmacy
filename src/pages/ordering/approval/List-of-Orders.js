@@ -9,7 +9,7 @@ import PageScrollReusable from '../../../components/PageScroll-Reusable'
 import { ApproveModal, RejectModal } from './Action-Modals'
 import { TiInfo } from 'react-icons/ti'
 
-export const ListofOrders = ({ farmOrders, orderNo, setOrderNo, fetchOrderList, fetchOrdersByOrderNo }) => {
+export const ListofOrders = ({ farmOrders, orderNo, setOrderNo, fetchOrderList, fetchOrdersByOrderNo, fetchNotification }) => {
 
   const [stockIdentifier, setStockIdentifier] = useState("false")
 
@@ -43,6 +43,7 @@ export const ListofOrders = ({ farmOrders, orderNo, setOrderNo, fetchOrderList, 
                 <Th color='white'>Item Description</Th>
                 <Th color='white'>UOM</Th>
                 <Th color='white'>Quantity Order</Th>
+                <Th color='white'>Order Date</Th>
               </Tr>
             </Thead>
             {
@@ -70,6 +71,7 @@ export const ListofOrders = ({ farmOrders, orderNo, setOrderNo, fetchOrderList, 
                         <Td>{item.itemDescription}</Td>
                         <Td>{item.uom}</Td>
                         <Td>{item.quantityOrder}</Td>
+                        <Td>{item.orderDate}</Td>
                       </Tr>
                     )
                   }
@@ -96,6 +98,7 @@ export const ListofOrders = ({ farmOrders, orderNo, setOrderNo, fetchOrderList, 
             setOrderNo={setOrderNo}
             fetchOrderList={fetchOrderList}
             fetchOrdersByOrderNo={fetchOrdersByOrderNo}
+            fetchNotification={fetchNotification}
           />
         )
       }
@@ -109,6 +112,7 @@ export const ListofOrders = ({ farmOrders, orderNo, setOrderNo, fetchOrderList, 
             setOrderNo={setOrderNo}
             fetchOrderList={fetchOrderList}
             fetchOrdersByOrderNo={fetchOrdersByOrderNo}
+            fetchNotification={fetchNotification}
           />
         )
       }

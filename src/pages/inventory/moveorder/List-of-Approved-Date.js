@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react'
-import { Badge, Flex, HStack, Select, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from '@chakra-ui/react'
+import React, { useEffect, useState } from 'react'
+import { Badge, Button, Flex, HStack, Select, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from '@chakra-ui/react'
 import {
     Pagination,
     usePagination,
@@ -12,6 +12,7 @@ import {
 import PageScrollReusable from '../../../components/PageScroll-Reusable'
 import { VscCircleLargeFilled } from 'react-icons/vsc'
 import { GoArrowSmallRight } from 'react-icons/go'
+import { FaSort } from 'react-icons/fa'
 import moment from 'moment'
 
 export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage, fetchApprovedMoveOrders, lengthIndicator,
@@ -21,7 +22,7 @@ export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage
         setCurrentPage(nextPage)
         setItemCode('')
         setWarehouseId('')
-        setHighlighterId('')
+        // setHighlighterId('')
         setOrderId('')
     }
 
@@ -36,12 +37,12 @@ export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage
         }
     }
 
-    const TableHead = [
-        "Line", "Order ID", "Customer Code", "Customer Name", "Category", "Total Quantity Order", "Order Date",
-        // "Date Needed", 
-        "Prepared Date", 
-        // "Status"
-    ]
+    // const TableHead = [
+    //     "Line", "Order ID", "Customer Code", "Customer Name", "Category", "Total Quantity Order", "Order Date",
+    //     "Date Needed", 
+    //     "Prepared Date",
+    //     "Status"
+    // ]
 
     // Return to Page 1 once length === 0
     useEffect(() => {
@@ -56,6 +57,25 @@ export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage
     useEffect(() => {
         setOrderId(moveData[0]?.id)
     }, [moveData])
+
+
+    //Sort by date start line
+    const [order, setOrder] = useState('asc')
+    function descendingComparator(a, b) {
+        if (moment(b?.preparedDate).format('yyyy-MM-DD') < moment(a?.preparedDate).format('yyyy-MM-DD')) {
+            return -1;
+        }
+        if (moment(b?.preparedDate).format('yyyy-MM-DD') > moment(a?.preparedDate).format('yyyy-MM-DD')) {
+            return 1;
+        }
+        return 0;
+    }
+    function getComparator(order) {
+        return order === 'desc'
+            ? (a, b) => descendingComparator(a, b)
+            : (a, b) => -descendingComparator(a, b)
+    }
+    //Sort by date end line
 
     return (
         <Flex w='full' flexDirection='column'>
@@ -110,39 +130,59 @@ export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage
                 <PageScrollReusable minHeight='200px' maxHeight='210px'>
                     <Table size='sm' variant='simple'>
                         <Thead bgColor='secondary'>
-                            <Tr>{TableHead?.map((head, i) => <Th key={i} color='white'>{head}</Th>)}</Tr>
+                            <Tr>
+                                <Th color='white'>Line</Th>
+                                <Th color='white'>Order ID</Th>
+                                <Th color='white'>Customer Code</Th>
+                                <Th color='white'>Customer Name</Th>
+                                <Th color='white'>Category</Th>
+                                <Th color='white'>Total Quantity Order</Th>
+                                {/* <Th color='white'>Order Date</Th> */}
+                                <Th color='white'>
+                                    <HStack>
+                                        <Text>Prepared Date</Text>
+                                        <Button
+                                            cursor='pointer' onClick={() => { setOrder(order === 'asc' ? 'desc' : 'asc') }}
+                                            p={0} m={0} background='none' _hover={{ background: 'none' }}
+                                        >
+                                            <FaSort />
+                                        </Button>
+                                    </HStack>
+                                </Th>
+                            </Tr>
                         </Thead>
                         <Tbody>
                             {
-                                moveData?.map((order, i) =>
-                                    <Tr key={i}
-                                        title={order.isReject ? order.remarks : ''}
-                                        onClick={() => handleId(order.id)}
-                                        bgColor={orderId === order.id ? 'table_accent' : 'none'}
-                                        _hover={order.isReject ? { bgColor: 'gray.200' } : { bgColor: 'none' }}
-                                        cursor='pointer'
-                                    >
-                                        {orderId === order.id
-                                            ?
-                                            <Td><GoArrowSmallRight fontSize='27px' /></Td>
-                                            :
-                                            <Td>{i + 1}</Td>
-                                        }
-                                        <Td>{order.id}</Td>
-                                        <Td>{order.farmCode}</Td>
-                                        <Td>{order.farm}</Td>
-                                        <Td>{order.category}</Td>
-                                        <Td>{order.totalOrders}</Td>
-                                        <Td>{order.orderDate}</Td>
-                                        {/* <Td>{order.dateNeeded}</Td> */}
-                                        <Td>{moment(order.preparedDate).format("MM/DD/yyyy")}</Td>
-                                        {/* <Td>
+                                moveData?.sort(getComparator(order))
+                                    .map((order, i) =>
+                                        <Tr key={i}
+                                            title={order.isReject ? order.remarks : ''}
+                                            onClick={() => handleId(order.id)}
+                                            bgColor={orderId === order.id ? 'table_accent' : 'none'}
+                                            _hover={order.isReject ? { bgColor: 'gray.200' } : { bgColor: 'none' }}
+                                            cursor='pointer'
+                                        >
+                                            {orderId === order.id
+                                                ?
+                                                <Td><GoArrowSmallRight fontSize='27px' /></Td>
+                                                :
+                                                <Td>{i + 1}</Td>
+                                            }
+                                            <Td>{order.id}</Td>
+                                            <Td>{order.farmCode}</Td>
+                                            <Td>{order.farm}</Td>
+                                            <Td>{order.category}</Td>
+                                            <Td>{order.totalOrders}</Td>
+                                            {/* <Td>{order.orderDate}</Td> */}
+                                            {/* <Td>{order.dateNeeded}</Td> */}
+                                            <Td>{moment(order.preparedDate).format("MM/DD/yyyy")}</Td>
+                                            {/* <Td>
                                             {order.isReject ?
                                                 <VscCircleLargeFilled color='red' /> : <VscCircleLargeFilled color='green' />
                                             }
                                         </Td> */}
-                                    </Tr>
-                                )
+                                        </Tr>
+                                    )
                             }
                         </Tbody>
                     </Table>

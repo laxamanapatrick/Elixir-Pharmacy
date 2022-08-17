@@ -8,32 +8,9 @@ import { decodeUser } from '../../../services/decode-user'
 
 const currentUser = decodeUser()
 
-export const ListofMoveOrder = ({ moveOrderList, setMoveOrderInformation, moveOrderInformation, moveOrderListThirdTable, checkedItems, setCheckedItems }) => {
+export const ListofMoveOrder = ({ moveOrderList, setMoveOrderInformation, moveOrderInformation, moveOrderListThirdTable, checkedItems, setCheckedItems, status }) => {
 
   const { isOpen: isView, onClose: closeView, onOpen: openView } = useDisclosure()
-
-  // const TableHead = [
-  //   "Line", "Order Id", "Farm", "Farm Code", "Category", "Total Quantity Order", "Order Date", "Date Needed", "Prepared Date", "View"
-  // ]
-
-  // const setterHandler = ({ orderNo, deliveryStatus, farm, farmCode }) => {
-  //   // Add delivery status for condition
-  //   if (orderNo && farm && farmCode) {
-  //     setMoveOrderInformation({
-  //       orderNo: orderNo,
-  //       deliveryStatus: deliveryStatus,
-  //       farmName: farm,
-  //       farmCode: farmCode
-  //     })
-  //   } else {
-  //     setMoveOrderInformation({
-  //       orderNo: '',
-  //       deliveryStatus: '',
-  //       farmName: '',
-  //       farmCode: ''
-  //     })
-  //   }
-  // }
 
   const viewHandler = ({ orderNo, deliveryStatus, farm, farmCode }) => {
     // Add delivery status for condition
@@ -93,12 +70,6 @@ export const ListofMoveOrder = ({ moveOrderList, setMoveOrderInformation, moveOr
       const filterData = checkedItems?.filter(item => item.orderNo !== valueSubmit.orderNo)
       setCheckedItems(filterData)
     }
-    // if (orderNo && farmType && farm && farmCode && orderNoPKey && isApproved) {
-    //   setCheckedItems([...checkedItems, valueSubmit])
-    // } else {
-    //   const data = checkedItems?.filter(item => item !== valueSubmit)
-    //   setCheckedItems(data)
-    // }
   }
 
   return (
@@ -116,6 +87,8 @@ export const ListofMoveOrder = ({ moveOrderList, setMoveOrderInformation, moveOr
                       isChecked={
                         submitData?.length === checkedItems?.length
                       }
+                      isDisabled={status}
+                      title={status ? 'Order already transacted' : ''}
                       color='white'
                     >
                       Line
@@ -136,16 +109,8 @@ export const ListofMoveOrder = ({ moveOrderList, setMoveOrderInformation, moveOr
                 {
                   moveOrderList?.map((list, i) =>
                     <Tr key={i}
-                      // onClick={() => setterHandler(list)}
-                      // bgColor={moveOrderInformation.orderNo === list.orderNo ? 'table_accent' : 'none'}
                       cursor='pointer'
                     >
-                      {/* {
-                        moveOrderInformation.orderNo === list.orderNo ?
-                          <Td><GrRadialSelected /></Td>
-                          :
-                          ''
-                      } */}
                       <Td>
                         <Checkbox
                           // onChange={() => childCheckHandler(list)}
@@ -153,6 +118,8 @@ export const ListofMoveOrder = ({ moveOrderList, setMoveOrderInformation, moveOr
                           isChecked={checkedItems.some(item => item.orderNo === list.orderNo)}
                           value={JSON.stringify(list)}
                           color='black'
+                          isDisabled={status}
+                          title={status ? 'Order already transacted' : ''}
                         >
                           {i + 1}
                         </Checkbox>

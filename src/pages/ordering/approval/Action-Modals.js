@@ -7,7 +7,7 @@ import { decodeUser } from '../../../services/decode-user'
 
 const currentUser = decodeUser()
 
-export const ApproveModal = ({ isOpen, onClose, orderNo, setOrderNo, fetchOrderList, fetchOrdersByOrderNo }) => {
+export const ApproveModal = ({ isOpen, onClose, orderNo, setOrderNo, fetchOrderList, fetchOrdersByOrderNo, fetchNotification }) => {
 
     const toast = useToast()
     const [isLoading, setIsLoading] = useState(false)
@@ -23,6 +23,7 @@ export const ApproveModal = ({ isOpen, onClose, orderNo, setOrderNo, fetchOrderL
                 .then(res => {
                     ToastComponent("Success", "Order has been approved.", "success", toast)
                     setOrderNo('')
+                    fetchNotification()
                     fetchOrderList()
                     fetchOrdersByOrderNo()
                     setIsLoading(false)
@@ -61,7 +62,7 @@ export const ApproveModal = ({ isOpen, onClose, orderNo, setOrderNo, fetchOrderL
     )
 }
 
-export const RejectModal = ({ isOpen, onClose, orderNo, setOrderNo, fetchOrderList, fetchOrdersByOrderNo }) => {
+export const RejectModal = ({ isOpen, onClose, orderNo, setOrderNo, fetchOrderList, fetchOrdersByOrderNo, fetchNotification }) => {
 
     const [reason, setReason] = useState('')
     const [reasonData, setReasonData] = useState([])
@@ -101,6 +102,7 @@ export const RejectModal = ({ isOpen, onClose, orderNo, setOrderNo, fetchOrderLi
                 .then(res => {
                     ToastComponent("Succes", "Order has been rejected", "success", toast)
                     setOrderNo('')
+                    fetchNotification()
                     fetchOrderList()
                     fetchOrdersByOrderNo()
                     setIsLoading(false)

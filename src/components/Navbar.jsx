@@ -42,9 +42,32 @@ const Navbar = ({ menus, notification }) => {
         {
             title: 'Mixing',
             notifcation: notification?.mixing?.mixingcount,
+        },
+        {
+            title: 'Preparation Schedule',
+            notifcation: notification?.orderingFarm?.orderingfarmcount,
+        },
+        {
+            title: 'Approval',
+            notifcation: notification?.orderingApproval?.orderingapprovalcount,
+        },
+        {
+            title: 'Move Order',
+            notifcation: notification?.moveOrderList?.moveordercount,
+        },
+        {
+            title: 'Transact Move Order',
+            notifcation: notification?.transactMoveOrderList?.transactmoveordercount,
+        },
+        {
+            title: 'For Approval MO',
+            notifcation: notification?.forApprovalMoveOrder?.forapprovallistcount,
+        },
+        {
+            title: 'Rejected MO',
+            notifcation: notification?.rejectMoveOrder?.rejectlistcount,
         }
     ]
-
 
     return (
         <Flex>

@@ -14,7 +14,7 @@ const fetchOrdersByOrderNoApi = async (orderNo) => {
   return res.data
 }
 
-const ApprovalPage = () => {
+const ApprovalPage = ({ fetchNotification }) => {
 
   const [orderNo, setOrderNo] = useState('')
   const [orders, setOrders] = useState([])
@@ -56,7 +56,7 @@ const ApprovalPage = () => {
         <ListofPreparedDate orders={orders} orderNo={orderNo} setOrderNo={setOrderNo}
         />
         <ListofOrders farmOrders={farmOrders} orderNo={orderNo} setOrderNo={setOrderNo} fetchOrderList={fetchOrderList}
-          fetchOrdersByOrderNo={fetchOrdersByOrderNo} />
+          fetchOrdersByOrderNo={fetchOrdersByOrderNo} fetchNotification={fetchNotification} />
       </VStack>
     </>
   )

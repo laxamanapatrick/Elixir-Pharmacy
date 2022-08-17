@@ -15,7 +15,7 @@ import moment from 'moment'
 
 export const ForApprovalMoveOrder = ({ setCurrentPage, setPageSize, setSearch, pagesCount, 
     currentPage, pageSize, 
-    forApprovalData, fetchForApprovalMO, orderId, setOrderId, viewData
+    forApprovalData, fetchForApprovalMO, orderId, setOrderId, viewData, fetchNotification
 }) => {
 
     const TableHead = [
@@ -167,6 +167,7 @@ export const ForApprovalMoveOrder = ({ setCurrentPage, setPageSize, setSearch, p
                         orderNo={orderId}
                         fetchForApprovalMO={fetchForApprovalMO}
                         printData={viewData}
+                        fetchNotification={fetchNotification}
                     />
                 )
             }
@@ -177,6 +178,7 @@ export const ForApprovalMoveOrder = ({ setCurrentPage, setPageSize, setSearch, p
                         onClose={closeReject}
                         id={orderId}
                         fetchForApprovalMO={fetchForApprovalMO}
+                        fetchNotification={fetchNotification}
                     />
                 )
             }

@@ -47,9 +47,6 @@ export const EditModal = ({ isOpen, onClose, editData, setCurrentPage, currentPa
         }
     }
 
-    console.log(editData.transactId)
-    console.log(quantitySubmit)
-
     const titles = ['Farm', 'Item Code', 'Item Description', 'UOM', 'Quantity Order']
     const autofilled = [editData?.farm, editData?.itemCode, editData?.itemDescription, editData?.uom]
 
@@ -116,7 +113,7 @@ export const EditModal = ({ isOpen, onClose, editData, setCurrentPage, currentPa
     )
 }
 
-export const CancelModalConfirmation = ({ isOpen, onClose, cancelId, setCurrentPage, currentPage, fetchOrders, orders }) => {
+export const CancelModalConfirmation = ({ isOpen, onClose, cancelId, setCurrentPage, currentPage, fetchOrders, orders, fetchNotification }) => {
 
     const [cancelRemarks, setCancelRemarks] = useState('')
     const [reasons, setReasons] = useState([])
@@ -164,6 +161,7 @@ export const CancelModalConfirmation = ({ isOpen, onClose, cancelId, setCurrentP
                 .then(res => {
                     setCurrentPage(currentPage)
                     ToastComponent("Success", "Order has been cancelled!", "success", toast)
+                    fetchNotification()
                     setIsLoading(false)
                     onClose()
                     fetchOrders()
@@ -226,7 +224,7 @@ export const CancelModalConfirmation = ({ isOpen, onClose, cancelId, setCurrentP
 }
 
 export const ScheduleConfirmation = ({ isOpen, onClose, checkedItems, setCheckedItems,
-    farmName, fetchOrders, setCurrentPage, currentPage }) => {
+    farmName, fetchOrders, setCurrentPage, currentPage, fetchNotification }) => {
 
     const [preparationDate, setPreparationDate] = useState('')
     const date = new Date()
@@ -293,6 +291,7 @@ export const ScheduleConfirmation = ({ isOpen, onClose, checkedItems, setChecked
                         fetchOrders={fetchOrders}
                         setCurrentPage={setCurrentPage}
                         currentPage={currentPage}
+                        fetchNotification={fetchNotification}
                     />
                 )
             }
@@ -300,7 +299,7 @@ export const ScheduleConfirmation = ({ isOpen, onClose, checkedItems, setChecked
     )
 }
 
-const ScheduleValidation = ({ isOpen, onClose, closeSchedule, preparationDate, checkedItems, setCheckedItems, fetchOrders, setCurrentPage, currentPage }) => {
+const ScheduleValidation = ({ isOpen, onClose, closeSchedule, preparationDate, checkedItems, setCheckedItems, fetchOrders, setCurrentPage, currentPage, fetchNotification }) => {
 
     const toast = useToast()
     const [isLoading, setIsLoading] = useState(false)
@@ -318,6 +317,7 @@ const ScheduleValidation = ({ isOpen, onClose, closeSchedule, preparationDate, c
             const res = apiClient.put(`Ordering/SchedulePreparedOrderedDate`, submitArray)
                 .then(res => {
                     ToastComponent("Success", "Orders were successfully scheduled", "success", toast)
+                    fetchNotification()
                     onClose()
                     closeSchedule()
                     setCurrentPage(currentPage)

@@ -16,7 +16,6 @@ const Reports = () => {
     const [dateFrom, setDateFrom] = useState(moment(new Date()).format('yyyy-MM-DD'))
     const [dateTo, setDateTo] = useState(moment(new Date()).format('yyyy-MM-DD'))
     const [expiryDays, setExpiryDays] = useState(30)
-    const [transactDate, setTransactDate] = useState(moment(new Date()).format('yyyy-MM-DD'))
 
     const [sample, setSample] = useState('')
 
@@ -41,15 +40,15 @@ const Reports = () => {
                                 <option value={4}>Move Order Transaction History</option>
                                 <option value={5}>Miscellaneous Issue History</option>
                                 <option value={6}>Miscellaneous Receipt History</option>
-                                <option value={7}>Nearly Expiry Report</option>
-                                <option value={8}>Transacted Move Orders</option>
+                                <option value={7}>Transacted Move Orders</option>
+                                <option value={8}>Nearly Expiry Report</option>
                             </Select>
                         </Flex>
 
                         {/* Viewing Condition  */}
                         <Flex justifyContent='start'>
                             {
-                                sample < 7 ?
+                                sample < 8 ?
                                     <Flex justifyContent='start' flexDirection='row'>
                                         <Flex flexDirection='column'>
                                             <Flex>
@@ -65,29 +64,20 @@ const Reports = () => {
                                         </Flex>
                                     </Flex>
                                     :
-                                    sample == 7 ?
-                                        <Flex justifyContent='start' flexDirection='column'>
-                                            <Flex>
-                                                <Badge>Expiry Days</Badge>
-                                            </Flex>
-                                            <Select
-                                                onChange={(e) => setExpiryDays(e.target.value)}
-                                                bgColor='#fff8dc' w='full'
-                                            >
-                                                <option value={30}>30</option>
-                                                <option value={60}>60</option>
-                                                <option value={90}>90</option>
-                                            </Select>
+                                    sample == 8 &&
+                                    <Flex justifyContent='start' flexDirection='column'>
+                                        <Flex>
+                                            <Badge>Expiry Days</Badge>
                                         </Flex>
-                                        : sample == 8 &&
-                                        <Flex justifyContent='start' flexDirection='column'>
-                                            <Flex flexDirection='column'>
-                                                <Flex>
-                                                    <Badge>Transaction Date</Badge>
-                                                </Flex>
-                                                <Input bgColor='#fff8dc' type='date' value={dateFrom} onChange={(e) => setTransactDate(e.target.value)} />
-                                            </Flex>
-                                        </Flex>
+                                        <Select
+                                            onChange={(e) => setExpiryDays(e.target.value)}
+                                            bgColor='#fff8dc' w='full'
+                                        >
+                                            <option value={30}>30</option>
+                                            <option value={60}>60</option>
+                                            <option value={90}>90</option>
+                                        </Select>
+                                    </Flex>
                             }
                         </Flex>
                     </Flex>
@@ -113,9 +103,9 @@ const Reports = () => {
                                                 sample == 6 ?
                                                     <MiscellaneousReceiptHistory dateFrom={dateFrom} dateTo={dateTo} sample={sample} />
                                                     : sample == 7 ?
-                                                        <NearlyExpiryReports sample={sample} expiryDays={expiryDays} />
+                                                        <TransactedMoveOrders dateFrom={dateFrom} dateTo={dateTo} sample={sample} />
                                                         : sample == 8 ?
-                                                            <TransactedMoveOrders sample={sample} transactDate={transactDate} />
+                                                            <NearlyExpiryReports sample={sample} expiryDays={expiryDays} />
                                                             : ''
                         }
                     </Flex>

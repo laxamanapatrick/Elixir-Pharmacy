@@ -6,13 +6,13 @@ const user = decodeUser()
 
 // Local Backend
 
-// export default axios.create({
-//     baseURL: "https://localhost:44342/api/",
-//     headers: {
-//         "Content-type": "application/json",
-//         "Authorization": 'Bearer '+user?.token
-//     }
-// })
+export default axios.create({
+    baseURL: "https://localhost:44342/api/",
+    headers: {
+        "Content-type": "application/json",
+        "Authorization": 'Bearer '+user?.token
+    }
+})
 
 
 // Jaypee Backend
@@ -27,12 +27,12 @@ const user = decodeUser()
 
 //Live
 
-export default axios.create({
-    baseURL: "http://10.10.2.31:82/api/",
-    headers: {
-        "Content-type": "application/json",
-        "Authorization": 'Bearer '+user?.token
-    }
-})
+// export default axios.create({
+//     baseURL: "http://10.10.2.31:82/api/",
+//     headers: {
+//         "Content-type": "application/json",
+//         "Authorization": 'Bearer '+user?.token
+//     }
+// })
 
 

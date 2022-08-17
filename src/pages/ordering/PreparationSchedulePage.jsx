@@ -9,7 +9,7 @@ const fetchFarmOrdersApi = async (pageNumber) => {
   return res.data
 }
 
-const PreparationSchedulePage = () => {
+const PreparationSchedulePage = ({ fetchNotification }) => {
 
   const [farmName, setFarmName] = useState("")
   const [orders, setOrders] = useState([])
@@ -83,6 +83,7 @@ const PreparationSchedulePage = () => {
           fetchFarmOrders={fetchFarmOrders}
           fetchOrders={fetchOrders}
           lengthIndicator={lengthIndicator}
+          fetchNotification={fetchNotification}
         />
       </VStack>
     </>

@@ -165,10 +165,10 @@ function App() {
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/" element={user ? <Layout sideBarHandler={SideBarHandler} isSidebarVisible={isSidebarVisible} /> : <Navigate to="/login" />} >
 
-          <Route path="inventory" element={user ? <InventoryPage /> : <Navigate to="/login" />}>
+          <Route path="inventory" element={user ? <InventoryPage notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />}>
             <Route path="mrp" element={user ? <MrpPage /> : <Navigate to="/login" />} />
-            <Route path="move-order" element={user ? <MoveOrderPage /> : <Navigate to="/login" />} />
-            <Route path="transact-move-order" element={user ? <TransactMoveOrderPage /> : <Navigate to="/login" />} />
+            <Route path="move-order" element={user ? <MoveOrderPage notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />} />
+            <Route path="transact-move-order" element={user ? <TransactMoveOrderPage notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />} />
             <Route path="miscellaneous-receipt" element={user ? <MiscellaneousReceiptPage /> : <Navigate to="/login" />} />
             <Route path="miscellaneous-issue" element={user ?
               <MiscellaneousIssuePage miscData={miscData} fetchActiveMiscIssues={fetchActiveMiscIssues} navigation={navigation} setNavigation={setNavigation} />
@@ -189,10 +189,10 @@ function App() {
             <Route path="receiving-list" element={user ? <ReceivingList /> : <Navigate to="/login" />} />
           </Route>
 
-          <Route path="ordering" element={user ? <OrderingPage /> : <Navigate to="/login" />}>
+          <Route path="ordering" element={user ? <OrderingPage notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />}>
             <Route path="orders" element={user ? <OrdersPage /> : <Navigate to="/login" />} />
-            <Route path="preparation-schedule" element={user ? <PreparationSchedulePage /> : <Navigate to="/login" />} />
-            <Route path="approval" element={user ? <ApprovalPage /> : <Navigate to="/login" />} />
+            <Route path="preparation-schedule" element={user ? <PreparationSchedulePage notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />} />
+            <Route path="approval" element={user ? <ApprovalPage notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />} />
             <Route path="order-summary" element={user ? <OrderSummaryPage /> : <Navigate to="/login" />} />
           </Route>
 

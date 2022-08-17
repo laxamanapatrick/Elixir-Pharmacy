@@ -64,7 +64,7 @@ export const ViewModal = ({ isOpen, onClose, viewData }) => {
   )
 }
 
-export const ApproveModal = ({ isOpen, onClose, orderNo, fetchForApprovalMO, printData }) => {
+export const ApproveModal = ({ isOpen, onClose, orderNo, fetchForApprovalMO, printData, fetchNotification }) => {
 
   const [isLoading, setIsLoading] = useState(false)
 
@@ -85,6 +85,7 @@ export const ApproveModal = ({ isOpen, onClose, orderNo, fetchForApprovalMO, pri
       const res = apiClient.put(`Ordering/ApproveListOfMoveOrder`, { orderNo: orderNo })
         .then(res => {
           ToastComponent("Success", "Move order has been approved", "success", toast)
+          fetchNotification()
           fetchForApprovalMO()
           try {
             const res = apiClient.put(`Ordering/UpdatePrintStatus`, { orderNo: orderNo })
@@ -296,7 +297,7 @@ export const ApproveModal = ({ isOpen, onClose, orderNo, fetchForApprovalMO, pri
   )
 }
 
-export const RejectModal = ({ isOpen, onClose, id, fetchForApprovalMO }) => {
+export const RejectModal = ({ isOpen, onClose, id, fetchForApprovalMO, fetchNotification }) => {
 
   const [reasonSubmit, setReasonSubmit] = useState('')
 
@@ -336,6 +337,7 @@ export const RejectModal = ({ isOpen, onClose, id, fetchForApprovalMO }) => {
       )
         .then(res => {
           ToastComponent("Success", "Move order has been rejected", "success", toast)
+          fetchNotification()
           fetchForApprovalMO()
           setIsLoading(false)
           onClose()

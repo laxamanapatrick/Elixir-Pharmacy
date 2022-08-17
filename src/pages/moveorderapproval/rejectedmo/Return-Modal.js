@@ -7,7 +7,7 @@ import { decodeUser } from '../../../services/decode-user'
 
 const currentUser = decodeUser()
 
-export const ReturnModal = ({ isOpen, onClose, orderNo, fetchRejectedMO }) => {
+export const ReturnModal = ({ isOpen, onClose, orderNo, fetchRejectedMO, fetchNotification }) => {
 
     const [reasonSubmit, setReasonSubmit] = useState('')
 
@@ -46,6 +46,7 @@ export const ReturnModal = ({ isOpen, onClose, orderNo, fetchRejectedMO }) => {
             )
                 .then(res => {
                     ToastComponent("Success", "Move order has been returned", "success", toast)
+                    fetchNotification()
                     fetchRejectedMO()
                     setIsLoading(false)
                     onClose()

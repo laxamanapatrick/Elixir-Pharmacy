@@ -13,7 +13,7 @@ import {
 } from '@ajna/pagination'
 import moment from 'moment'
 
-export const RejectedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, pagesCount, currentPage, pageSize, rejectedData, fetchRejectedMO }) => {
+export const RejectedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, pagesCount, currentPage, pageSize, rejectedData, fetchRejectedMO, fetchNotification }) => {
 
     const [orderNo, setOrderNo] = useState('')
 
@@ -137,6 +137,7 @@ export const RejectedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, page
                         onClose={closeReturn}
                         orderNo={orderNo}
                         fetchRejectedMO={fetchRejectedMO}
+                        fetchNotification={fetchNotification}
                     />
                 )
             }
