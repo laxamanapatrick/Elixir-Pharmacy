@@ -16,7 +16,7 @@ import { MdLocationPin } from 'react-icons/md'
 
 
 export const ApprovedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, pagesCount, currentPage, approvedData, fetchApprovedMO,
-    setOrderId, orderId, printData }) => {
+    setOrderId, orderId, printData, fetchNotification }) => {
 
     const TableHead = [
         "Line", "Order ID", "Customer Code", "Category", "Total Quantity Order", "Prepared Date",
@@ -225,6 +225,7 @@ export const ApprovedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, page
                         onClose={closeReject}
                         id={orderId}
                         fetchApprovedMO={fetchApprovedMO}
+                        fetchNotification={fetchNotification}
                     />
                 )
             }

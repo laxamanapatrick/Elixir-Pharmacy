@@ -158,7 +158,7 @@ export const MRPTable = ({ mrpData, setSelectorId, selectorId, setRawMatsInfo, p
                                                 <Td>{`Classification ABC`}</Td> */}
                                                 <Td>{item.suggestedPo.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
                                                 <Td>{item.averageIssuance.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
-                                                <Td>{item.daysLevel}</Td>
+                                                <Td>{item.daysLevel.toLocaleString()}</Td>
                                             </>
                                     }
                                 </Tr>

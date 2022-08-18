@@ -291,6 +291,11 @@ export const ApproveModal = ({ isOpen, onClose, orderNo, fetchForApprovalMO, pri
             </VStack>
           </Flex>
 
+
+          <Flex mt={10}>
+            <Text fontWeight='semibold' fontSize='xs'>FM-FRM-22-001</Text>
+          </Flex>
+
         </Flex>
       </Box>
     </>

@@ -13,7 +13,7 @@ const fetchViewApi = async (orderId) => {
   return res.data
 }
 
-const ApprovedMO = () => {
+const ApprovedMO = ({ fetchNotification }) => {
 
   const [approvedData, setApprovedData] = useState([])
 
@@ -78,6 +78,7 @@ const ApprovedMO = () => {
       orderId={orderId}
       setOrderId={setOrderId}
       printData={printData}
+      fetchNotification={fetchNotification}
     />
   )
 }

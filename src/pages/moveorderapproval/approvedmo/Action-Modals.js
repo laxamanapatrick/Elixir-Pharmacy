@@ -281,7 +281,7 @@ export const PrintModal = ({ isOpen, onClose, printData, closeApprove, fetchAppr
                         </Flex>
 
                         <Flex mt={10}>
-                            <Text fontWeight='semibold' fontSize='xs'>MO Slip: MO00001</Text>
+                            <Text fontWeight='semibold' fontSize='xs'>FM-FRM-22-001</Text>
                         </Flex>
 
                     </Flex>
@@ -312,7 +312,7 @@ export const PrintModal = ({ isOpen, onClose, printData, closeApprove, fetchAppr
 }
 
 
-export const RejectModal = ({ isOpen, onClose, id, fetchApprovedMO }) => {
+export const RejectModal = ({ isOpen, onClose, id, fetchApprovedMO, fetchNotification }) => {
 
     const [reasonSubmit, setReasonSubmit] = useState('')
 
@@ -353,6 +353,7 @@ export const RejectModal = ({ isOpen, onClose, id, fetchApprovedMO }) => {
             )
                 .then(res => {
                     ToastComponent("Success", "Move order has been rejected", "success", toast)
+                    fetchNotification()
                     fetchApprovedMO()
                     setIsLoading(false)
                     onClose()
