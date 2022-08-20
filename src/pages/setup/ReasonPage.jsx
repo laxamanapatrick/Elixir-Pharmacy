@@ -371,7 +371,7 @@ const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSub
 
   const fetchMenus = async () => {
     try {
-      const res = await apiClient.get('Module/GetAllMainMenu')
+      const res = await apiClient.get('Module/GetAllActiveMenu')
       setMenus(res.data)
     } catch (error) {
 

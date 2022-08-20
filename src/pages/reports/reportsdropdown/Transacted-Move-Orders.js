@@ -28,8 +28,6 @@ export const TransactedMoveOrders = ({ dateFrom, dateTo, sample }) => {
     }
   }, [dateFrom, dateTo])
 
-  console.log(tmoData)
-
   return (
     <Flex w='full' flexDirection='column'>
       <Flex border='1px'>
@@ -40,7 +38,8 @@ export const TransactedMoveOrders = ({ dateFrom, dateTo, sample }) => {
                 <Th color='white'>Order ID</Th>
                 <Th color='white'>Customer Code</Th>
                 <Th color='white'>Customer Name</Th>
-                {/* <Th color='white'>Category</Th> */}
+                <Th color='white'>Item Code</Th>
+                <Th color='white'>Item Description</Th>
                 <Th color='white'>Total Quantity</Th>
                 <Th color='white'>Transaction Date</Th>
                 <Th color='white'>Transaction Type</Th>
@@ -54,7 +53,8 @@ export const TransactedMoveOrders = ({ dateFrom, dateTo, sample }) => {
                     <Td>{item.orderNo}</Td>
                     <Td>{item.customerCode}</Td>
                     <Td>{item.customerName}</Td>
-                    {/* <Td>{item.category}</Td> */}
+                    <Td>{item.itemCode}</Td>
+                    <Td>{item.itemDescription}</Td>
                     <Td>{item.quantity}</Td>
                     <Td>{moment(item.transactedDate).format('yyyy-MM-DD')}</Td>
                     <Td>{item.transactionType}</Td>

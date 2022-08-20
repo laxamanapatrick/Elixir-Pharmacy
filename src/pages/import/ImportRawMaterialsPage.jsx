@@ -112,33 +112,31 @@ const ImportRawMaterialsPage = () => {
 
   })
 
-  const uomIdProvider = uomData?.find(two => {
 
-    return resultArray.some(one => {
-      return one.uom === two.uoM_Code
-    })
-  })
+  const functionUOM = (UOM) => {
+    const uomId = uomData?.find(item => item.uoM_Code === UOM)
+    return uomId?.id
+  }
 
-  const itemCategoryIdProvider = itemCategoryData?.find(two => {
-
-    return resultArray.some(one => {
-      return one.itemCategory === two.itemCategoryName
-    })
-  })
+  const functionItemCategory = (itemCategory) => {
+    const itemCategoryId = itemCategoryData?.find(item => item.itemCategoryName === itemCategory)
+    return itemCategoryId?.id
+  }
 
   const submitFile = () => {
     if (resultArray.length > 0) {
+      setisLoading(true)
+      const submitData = resultArray.map(item => ({
+        itemCode: item.itemCode,
+        itemDescription: item.itemDescription,
+        uomId: functionUOM(item.uom),
+        itemCategoryId: functionItemCategory(item.itemCategory),
+        bufferLevel: item.bufferLevel,
+        addedBy: currentUser.userName
+      }))
       try {
-        setisLoading(true)
         const res = apiClient.post('Import/AddNewRawMaterialManual',
-          resultArray.map(item => ({
-            itemCode: item.itemCode,
-            itemDescription: item.itemDescription,
-            uomId: uomIdProvider?.id,
-            itemCategoryId: itemCategoryIdProvider?.id,
-            bufferLevel: item.bufferLevel,
-            addedBy: currentUser.userName
-          }))
+          submitData
         ).then((res) => {
           ToastComponent("Success!", "Raw Materials Imported", "success", toast)
           setisLoading(false)
@@ -155,6 +153,7 @@ const ImportRawMaterialsPage = () => {
       ToastComponent("Error!", "No data provided, please check your import", "error", toast)
     }
   }
+
 
   return (
     <Flex w='full'>
@@ -212,9 +211,9 @@ const ImportRawMaterialsPage = () => {
 
             <Flex w='50%' justifyContent='start'>
 
-              <Input 
-              ref={fileClear}
-              ml={1} w='47%' type='file' p={1} mr={.2} bgColor='white' onChange={(e) => fileHandler(e.target.files)} />
+              <Input
+                ref={fileClear}
+                ml={1} w='47%' type='file' p={1} mr={.2} bgColor='white' onChange={(e) => fileHandler(e.target.files)} />
 
               <Select
                 onChange={(e) => sheetNumberHandlder(e.target.selectedIndex)}

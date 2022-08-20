@@ -11,6 +11,7 @@ import AppScroll from './components/AppScroll';
 import apiClient from './services/apiClient';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ToastComponent } from './components/Toast';
+import { RiFileWarningFill } from 'react-icons/ri';
 
 import LoginPage from './pages/LoginPage';
 import NotFoundPage from './pages/NotFoundPage'
@@ -33,6 +34,7 @@ import CancelledRMPage from './pages/qcmodule/Cancelled-RMPage'
 import ReceivingPage from './pages/ReceivingPage';
 import RmReceivingPage from './pages/receiving/RmReceivingPage';
 import ReceivingList from './pages/receiving/ReceivingList';
+import ReceivedRM from './pages/receiving/Received-RM';
 
 import OrderingPage from './pages/OrderingPage';
 import OrdersPage from './pages/ordering/OrdersPage'
@@ -84,7 +86,7 @@ import RejectedMO from './pages/moveorderapproval/Rejected-MO';
 
 import ReportsPage from './pages/ReportsPage';
 import Reports from './pages/reports/Reports';
-import { RiFileWarningFill } from 'react-icons/ri';
+
 
 const fetchNotificationApi = async () => {
   const res = await apiClient.get(`Receiving/GetNotification`)
@@ -187,6 +189,7 @@ function App() {
           <Route path="receiving" element={user ? <ReceivingPage /> : <Navigate to="/login" />}>
             <Route path="rm-receiving" element={user ? <RmReceivingPage /> : <Navigate to="/login" />} />
             <Route path="receiving-list" element={user ? <ReceivingList /> : <Navigate to="/login" />} />
+            <Route path="received-rm" element={user ? <ReceivedRM /> : <Navigate to="/login" />} />
           </Route>
 
           <Route path="ordering" element={user ? <OrderingPage notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />}>
