@@ -97,7 +97,7 @@ const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSub
 
     const fetchDepartments = async () => {
         try {
-            const res = await apiClient.get('User/GetAllDepartments')
+            const res = await apiClient.get('User/GetDepartmentByStatus/true')
             setDepartments(res.data)
         } catch (error) {
         }

@@ -5,7 +5,7 @@ import apiClient from '../../../services/apiClient'
 import { ToastComponent } from '../../../components/Toast'
 import moment from 'moment'
 
-export const ConfirmModal = ({ isOpen, onClose, resultArray, setIsLoading, setErrorData, openError, isLoading }) => {
+export const ConfirmModal = ({ isOpen, onClose, resultArray, setIsLoading, setErrorData, openError, isLoading, fetchNotification }) => {
 
     const toast = useToast()
 
@@ -35,6 +35,7 @@ export const ConfirmModal = ({ isOpen, onClose, resultArray, setIsLoading, setEr
             )
                 .then(res => {
                     ToastComponent("Success", "Orders Synced!", "success", toast)
+                    fetchNotification()
                     onClose()
                     setIsLoading(false)
                 })

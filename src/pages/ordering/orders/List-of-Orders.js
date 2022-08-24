@@ -7,7 +7,7 @@ import { ConfirmModal } from './Confirm-Modal'
 import DatePicker from 'react-datepicker'
 
 
-export const ListofOrders = ({ genusOrders, fetchingData, setFromDate, setToDate, fromDate, toDate }) => {
+export const ListofOrders = ({ genusOrders, fetchingData, setFromDate, setToDate, fromDate, toDate, fetchNotification }) => {
 
     const [isLoading, setIsLoading] = useState(false)
 
@@ -164,6 +164,7 @@ export const ListofOrders = ({ genusOrders, fetchingData, setFromDate, setToDate
                         errorData={errorData}
                         openConfirm={openConfirm}
                         isLoading={isLoading}
+                        fetchNotification={fetchNotification}
                     />
                 )
             }
@@ -177,6 +178,7 @@ export const ListofOrders = ({ genusOrders, fetchingData, setFromDate, setToDate
                         setErrorData={setErrorData}
                         openError={openError}
                         isLoading={isLoading}
+                        fetchNotification={fetchNotification}
                     />
                 )
             }

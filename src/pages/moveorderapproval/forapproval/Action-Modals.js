@@ -157,147 +157,237 @@ export const ApproveModal = ({ isOpen, onClose, orderNo, fetchForApprovalMO, pri
           />
         )
       }
+
+      {/* Printed  */}
       <Box display='none'>
-        <Flex w='full' mt={8} p={5} flexDirection='column' ref={componentRef}>
+        <VStack spacing={20} mt={20} ref={componentRef}>
+          {/* MO Slip */}
+          <Flex w='full' mt={8} mb={10} p={5} flexDirection='column' ref={componentRef}>
 
-          <Flex spacing={0} justifyContent='start' flexDirection='column'>
-            <Image
-              src='/images/RDF Logo.png'
-              w='13%' ml={3}
-            />
-            <Text fontSize='8px' ml={2}>Purok 6, Brgy. Lara, City of San Fernando, Pampanga, Philippines</Text>
-          </Flex>
-
-          <Flex justifyContent='center' my={4}>
-            <Text fontSize='lg' fontWeight='semibold'>Move Order Slip</Text>
-          </Flex>
-
-          <Flex justifyContent='space-between' mb={3}>
-            <Flex flexDirection='column'>
-              <Text>Order ID: {orderNo && orderNo}</Text>
-              <Text>Warehouse: {`Pharmacy`}</Text>
-              <Text>Customer: {printData[0]?.farmName}</Text>
-              <Text>Address: {printData[0]?.farmName}</Text>
+            <Flex spacing={0} justifyContent='start' flexDirection='column'>
+              <Image
+                src='/images/RDF Logo.png'
+                w='13%' ml={3}
+              />
+              <Text fontSize='8px' ml={2}>Purok 6, Brgy. Lara, City of San Fernando, Pampanga, Philippines</Text>
             </Flex>
-            <Flex flexDirection='column'>
-              <Barcode width={3} height={50} value={Number(orderNo)} />
-              <Text>Date: {moment(dateToday).format("MM/DD/yyyy")}</Text>
+
+            <Flex justifyContent='center' my={4}>
+              <Text fontSize='lg' fontWeight='semibold'>Move Order Slip</Text>
             </Flex>
-          </Flex>
 
-          <PageScrollReusable minHeight='150px' maxHeight='300px'>
-            <Table size='sm'>
-              <Thead bgColor='secondary'>
-                <Tr>
-                  <Th color='white'>ITEM CODE</Th>
-                  <Th color='white'>ITEM DESCRIPTION</Th>
-                  <Th color='white'>UOM</Th>
-                  <Th color='white'>QUANTITY</Th>
-                  <Th color='white'>ACTUAL QTY RECEIVED</Th>
-                  <Th color='white'>EXPIRATION DATE</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {
-                  printData?.map((item, i) =>
-                    <Tr key={i}>
-                      <Td>{item.itemCode}</Td>
-                      <Td>{item.itemDescription}</Td>
-                      <Td>{item.uom}</Td>
-                      <Td>{item.quantity}</Td>
-                      <Td></Td>
-                      <Td>{moment(item.expiration).format("MM/DD/yyyy")}</Td>
-                    </Tr>
-                  )
-                }
-              </Tbody>
-            </Table>
-          </PageScrollReusable>
+            <Flex justifyContent='space-between' mb={3}>
+              <Flex flexDirection='column'>
+                <Text>Order ID: {orderNo && orderNo}</Text>
+                <Text>Warehouse: {`Pharmacy`}</Text>
+                <Text>Customer: {printData[0]?.farmName}</Text>
+                <Text>Address: {printData[0]?.farmName}</Text>
+              </Flex>
+              <Flex flexDirection='column'>
+                <Barcode width={3} height={50} value={Number(orderNo)} />
+                <Text>Date: {moment(dateToday).format("MM/DD/yyyy")}</Text>
+              </Flex>
+            </Flex>
 
-          <Flex justifyContent='space-between' mb={5}>
-            <HStack>
-              <Text>Delivery Status:</Text>
-              <Text textDecoration='underline'>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                {printData[0]?.deliveryStatus}
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              </Text>
-            </HStack>
-            <VStack spacing={0}>
+            <PageScrollReusable minHeight='150px' maxHeight='300px'>
+              <Table size='sm'>
+                <Thead bgColor='secondary'>
+                  <Tr>
+                    <Th color='white'>ITEM CODE</Th>
+                    <Th color='white'>ITEM DESCRIPTION</Th>
+                    <Th color='white'>UOM</Th>
+                    <Th color='white'>QUANTITY</Th>
+                    <Th color='white'>ACTUAL QTY RECEIVED</Th>
+                    <Th color='white'>EXPIRATION DATE</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {
+                    printData?.map((item, i) =>
+                      <Tr key={i}>
+                        <Td>{item.itemCode}</Td>
+                        <Td>{item.itemDescription}</Td>
+                        <Td>{item.uom}</Td>
+                        <Td>{item.quantity}</Td>
+                        <Td></Td>
+                        <Td>{moment(item.expiration).format("MM/DD/yyyy")}</Td>
+                      </Tr>
+                    )
+                  }
+                </Tbody>
+              </Table>
+            </PageScrollReusable>
+
+            <Flex justifyContent='space-between' mb={5}>
               <HStack>
-                <Text>Checked By:</Text>
+                <Text>Delivery Status:</Text>
                 <Text textDecoration='underline'>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  {printData[0]?.deliveryStatus}
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 </Text>
               </HStack>
-              {/* <Text>
+              <VStack spacing={0}>
+                <HStack>
+                  <Text>Checked By:</Text>
+                  <Text textDecoration='underline'>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  </Text>
+                </HStack>
+                {/* <Text>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 Patrick Laxamana
               </Text> */}
-            </VStack>
-          </Flex>
+              </VStack>
+            </Flex>
 
-          <Flex justifyContent='space-between'>
-            <VStack spacing={0}>
-              <HStack>
-                <Text>Prepared By:</Text>
-                <Text textDecoration='underline'>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                </Text>
-              </HStack>
-              {/* <Text>
+            <Flex justifyContent='space-between'>
+              <VStack spacing={0}>
+                <HStack>
+                  <Text>Prepared By:</Text>
+                  <Text textDecoration='underline'>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  </Text>
+                </HStack>
+                {/* <Text>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 Patrick Laxamana
               </Text> */}
-            </VStack>
-            <VStack spacing={0}>
-              <HStack>
-                <Text>Received By:</Text>
-                <Text textDecoration='underline'>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                </Text>
-              </HStack>
-              {/* <Text>
+              </VStack>
+              <VStack spacing={0}>
+                <HStack>
+                  <Text>Received By:</Text>
+                  <Text textDecoration='underline'>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  </Text>
+                </HStack>
+                {/* <Text>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 Jaypee Obidos
               </Text> */}
-            </VStack>
+              </VStack>
+            </Flex>
+
+
+            <Flex mt={10}>
+              <Text fontWeight='semibold' fontSize='xs'>FM-FRM-22-001</Text>
+            </Flex>
+
           </Flex>
+          {/* Survey Form */}
+          <Flex w='full' mt={20} p={5} flexDirection='column'>
 
+            <HStack w='full' border='1px'>
+              <Image
+                src='/images/RDF Logo.png'
+                w='18%' ml={3}
+              />
 
-          <Flex mt={10}>
-            <Text fontWeight='semibold' fontSize='xs'>FM-FRM-22-001</Text>
+              <VStack mt={10} spacing={0} w='full'>
+                <Text fontWeight='semibold' fontSize='md' textAlign='center' w='full' borderLeft='1px' borderBottom='1px'>Form</Text>
+                <Text fontWeight='semibold' fontSize='lg' textAlign='center' w='full' borderLeft='1px' borderBottom='1px'>Customer Survey</Text>
+                <Flex w='full' justifyContent='space-between'>
+                  <VStack w='full' spacing={0}>
+                    <Text fontWeight='semibold' fontSize='xs' textAlign='center' w='full' borderLeft='1px' borderBottom='1px'>Control No.</Text>
+                    <Text fontWeight='semibold' fontSize='xs' textAlign='center' w='full' borderLeft='1px' borderBottom='1px'>Owner</Text>
+                    <Text fontWeight='semibold' fontSize='xs' textAlign='center' w='full' borderLeft='1px'>Effectivity</Text>
+                  </VStack>
+                  <VStack w='full' spacing={0}>
+                    <Text fontWeight='semibold' fontSize='xs' textAlign='center' w='full' borderLeft='1px' borderBottom='1px'>FM-FRM-22-001</Text>
+                    <Text fontWeight='semibold' fontSize='xs' textAlign='center' w='full' borderLeft='1px' borderBottom='1px'>PC</Text>
+                    <Text fontWeight='semibold' fontSize='xs' textAlign='center' w='full' borderLeft='1px'>&nbsp;</Text>
+                  </VStack>
+                  <VStack w='full' spacing={0}>
+                    <Text fontWeight='semibold' fontSize='xs' textAlign='center' w='full' borderLeft='1px' borderBottom='1px'>Supersedes</Text>
+                    <Text fontWeight='semibold' fontSize='xs' textAlign='center' w='full' borderLeft='1px' borderBottom='1px'>Revision No.</Text>
+                    <Text fontWeight='semibold' fontSize='xs' textAlign='center' w='full' borderLeft='1px'>Page</Text>
+                  </VStack>
+                  <VStack w='full' spacing={0}>
+                    <Text fontWeight='semibold' fontSize='xs' textAlign='center' w='full' borderLeft='1px' borderBottom='1px'>None</Text>
+                    <Text fontWeight='semibold' fontSize='xs' textAlign='center' w='full' borderLeft='1px' borderBottom='1px'>0</Text>
+                    <Text fontWeight='semibold' fontSize='xs' textAlign='center' w='full' borderLeft='1px'>1</Text>
+                  </VStack>
+                </Flex>
+              </VStack>
+            </HStack>
+
+            <HStack mt={3} spacing={20}>
+              <Text fontWeight='semibold' fontSize='xs'>Evaluated Unit: _____________________ Pharmacy</Text>
+              <Text fontWeight='semibold' fontSize='xs'>Date: _______________________________</Text>
+            </HStack>
+
+            <Table mt={4} variant='unstyled'>
+              <Thead border='1px'>
+                <Tr>
+                  <Th textAlign='center' borderRight='1px'>Service Level</Th>
+                  <Th></Th>
+                  <Th textAlign='center' borderX='1px'>{`Score (Bilugan ang Score)`}</Th>
+                  <Th textAlign='center'>Remarks/comments/suggestion</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                <Tr border='1px'>
+                  <Td fontSize='xs' textAlign='center' borderRight='1px'>Quantity Issue</Td>
+                  <Td fontSize='xs' textAlign='center' borderRight='1px'>{`(nauubusan ba ng stock ang customer?)`}</Td>
+                  <Td fontSize='sm' textAlign='center' borderRight='1px'>1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3</Td>
+                  <Td></Td>
+                </Tr>
+                <Tr border='1px'>
+                  <Td fontSize='xs' textAlign='center' borderRight='1px'>Quality Issue</Td>
+                  <Td fontSize='xs' textAlign='center' borderRight='1px'>{`(kalidad ng trabaho/gawa)`}</Td>
+                  <Td fontSize='sm' textAlign='center' borderRight='1px'>1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3</Td>
+                  <Td></Td>
+                </Tr>
+                <Tr border='1px'>
+                  <Td fontSize='xs' textAlign='center' borderRight='1px'>Customer Service</Td>
+                  <Td fontSize='xs' textAlign='center' borderRight='1px'>{`(pakikitungo sa customer)`}</Td>
+                  <Td fontSize='sm' textAlign='center' borderRight='1px'>1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3</Td>
+                  <Td></Td>
+                </Tr>
+                <Tr border='1px'>
+                  <Td fontSize='xs' textAlign='center' borderRight='1px'>Other Issue <br />{`(ano pa ang problema na hindi nabanggit sa itaas?)`}</Td>
+                  <Td fontSize='xs' textAlign='center' borderRight='1px'>{`(nauubusan ba ng stock ang customer?)`}</Td>
+                  <Td fontSize='sm' textAlign='center' borderRight='1px'>1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3</Td>
+                  <Td></Td>
+                </Tr>
+              </Tbody>
+            </Table>
+
+            <Flex w='full' justifyContent='end' mt={5}>
+              <Text fontWeight='semibold' fontSize='xs'>Evaluated By: __________________________________________</Text>
+            </Flex>
+
           </Flex>
-
-        </Flex>
+        </VStack>
       </Box>
+
     </>
   )
 }

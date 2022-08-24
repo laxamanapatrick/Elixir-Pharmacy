@@ -401,6 +401,9 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo, fetchNo
                 fetchPo={fetchPo}
                 fetchNotification={fetchNotification}
                 closeModal={onClose}
+                manufacturingDate={manufacturingDate} expiryDate={expiryDate} 
+                expectedDelivery={expectedDelivery} actualDelivered={actualDelivered}
+                batchNo={batchNo}
               />
 
             </ModalFooter>

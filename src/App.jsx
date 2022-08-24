@@ -193,7 +193,7 @@ function App() {
           </Route>
 
           <Route path="ordering" element={user ? <OrderingPage notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />}>
-            <Route path="orders" element={user ? <OrdersPage /> : <Navigate to="/login" />} />
+            <Route path="orders" element={user ? <OrdersPage notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />} />
             <Route path="preparation-schedule" element={user ? <PreparationSchedulePage notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />} />
             <Route path="approval" element={user ? <ApprovalPage notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />} />
             <Route path="order-summary" element={user ? <OrderSummaryPage /> : <Navigate to="/login" />} />

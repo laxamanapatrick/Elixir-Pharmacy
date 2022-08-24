@@ -10,7 +10,7 @@ const fetchGenusOrdersApi = async (fromDate, toDate) => {
   return res.data
 }
 
-const OrdersPage = () => {
+const OrdersPage = ({ fetchNotification }) => {
 
   const dateVar = new Date()
   const startDate = dateVar.setDate(dateVar.getDate() - 3)
@@ -47,6 +47,7 @@ const OrdersPage = () => {
         genusOrders={genusOrders} setGenusOrders={setGenusOrders} search={search} setSearch={setSearch} fetchingData={isLoading}
         setFromDate={setFromDate} setToDate={setToDate}
         fromDate={fromDate} toDate={toDate}
+        fetchNotification={fetchNotification}
       />
     </>
   )

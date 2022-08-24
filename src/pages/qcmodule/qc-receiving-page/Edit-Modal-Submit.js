@@ -20,7 +20,10 @@ import { ToastComponent } from '../../../components/Toast'
 import { BsFillQuestionOctagonFill } from 'react-icons/bs'
 
 export const EditModalSubmit = ({ isSubmitDisabled, receivingId, sumQuantity, submitDataOne,
-    submitDataTwo, submitDataThree, fetchPo, closeModal, fetchNotification }) => {
+    submitDataTwo, submitDataThree, fetchPo, closeModal, fetchNotification,
+    manufacturingDate, expiryDate,
+    expectedDelivery, actualDelivered,
+    batchNo, }) => {
 
     const { setReceivingId } = useContext(ReceivingContext)
 
@@ -100,7 +103,12 @@ export const EditModalSubmit = ({ isSubmitDisabled, receivingId, sumQuantity, su
 
             <Button
                 onClick={onOpen}
-                disabled={isSubmitDisabled}
+                disabled={
+                    isSubmitDisabled || !manufacturingDate || !expiryDate ||
+                    !expectedDelivery || !actualDelivered || !batchNo
+                }
+                title={isSubmitDisabled || !manufacturingDate || !expiryDate ||
+                    !expectedDelivery || !actualDelivered || !batchNo ? "Please provide required fields" : ''}
                 _hover={{ bgColor: 'accent', color: 'white' }}
                 variant='outline'
             >

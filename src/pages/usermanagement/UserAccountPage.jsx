@@ -228,7 +228,8 @@ const UserAccountPage = () => {
               </Thead>
               <Tbody>
                 {users.user?.map(user =>
-                  <Tr key={user.id}>
+                  <Tr key={user.id}
+                  >
                     <Td>{user.id}</Td>
                     <Td>{user.fullName}</Td>
                     <Td>{user.userName}</Td>

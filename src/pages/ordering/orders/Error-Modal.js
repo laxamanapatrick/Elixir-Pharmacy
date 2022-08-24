@@ -25,7 +25,7 @@ import PageScrollModalErrorList from '../../../components/PageScrollErrorList'
 import moment from 'moment'
 import { ConfirmFiltteredModal } from './Confirm-Filttered-Modal'
 
-export const ErrorModal = ({ isOpen, onClose, errorData, isLoading }) => {
+export const ErrorModal = ({ isOpen, onClose, errorData, isLoading, fetchNotification }) => {
 
     const { isOpen: isConfirm, onClose: closeConfirm, onOpen: openConfirm } = useDisclosure()
 
@@ -766,6 +766,7 @@ export const ErrorModal = ({ isOpen, onClose, errorData, isLoading }) => {
                         openErrorModal={isOpen}
                         closeErrorModal={onClose}
                         isLoading={isLoading}
+                        fetchNotification={fetchNotification}
                     />
                 )
             }
