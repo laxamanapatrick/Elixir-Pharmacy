@@ -1,8 +1,7 @@
 import React, { useEffect, useRef } from 'react'
-import { Box, Flex, HStack, Input, Text, VStack } from '@chakra-ui/react'
+import { Flex, HStack, Input, Text, VStack } from '@chakra-ui/react'
 import { FaCloudscale } from 'react-icons/fa'
 import moment from 'moment'
-import { ToastComponent } from '../../../components/Toast'
 
 export const RequirementsInformation = ({ information, setWeight, setDisableSave, batch, weight }) => {
 

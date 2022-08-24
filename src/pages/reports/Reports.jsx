@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
-import { Badge, Flex, HStack, Input, Select, VStack } from '@chakra-ui/react'
+import { Badge, Flex, Input, Select } from '@chakra-ui/react'
 import { MiscellaneousIssueHistory } from './reportsdropdown/Miscellaneous-Issue-History'
 import { MiscellaneousReceiptHistory } from './reportsdropdown/Miscellaneous-Receipt-History'
 import { MoveOrderTransactionHistory } from './reportsdropdown/Move-Order-Transaction-History'
 import { QCReceivingHistory } from './reportsdropdown/QC-Receiving-History'
-import { SummaryofOrders } from './reportsdropdown/Summary-of-Orders'
 import { TransformationReportHistory } from './reportsdropdown/Transformation-Report-History'
 import { WarehouseReceivingHistory } from './reportsdropdown/Warehouse-Receiving-History'
 import moment from 'moment'
@@ -31,7 +30,7 @@ const Reports = () => {
                                 <Badge>Report Name</Badge>
                             </Flex>
                             <Select
-                                onChange={(e) => setSample(e.target.value)}
+                                onChange={(e) => setSample(Number(e.target.value))}
                                 placeholder=' ' bgColor='#fff8dc' w='full'
                             >
                                 <option value={1}>QC Receiving History</option>
@@ -64,7 +63,7 @@ const Reports = () => {
                                         </Flex>
                                     </Flex>
                                     :
-                                    sample == 8 &&
+                                    sample === 8 &&
                                     <Flex justifyContent='start' flexDirection='column'>
                                         <Flex>
                                             <Badge>Expiry Days</Badge>
@@ -85,26 +84,26 @@ const Reports = () => {
                     {/* Rendering Reports Components  */}
                     <Flex w='full' mt={5} justifyContent='center'>
                         {
-                            sample == 1 ?
+                            sample === 1 ?
                                 <QCReceivingHistory dateFrom={dateFrom} dateTo={dateTo} sample={sample} />
                                 :
-                                sample == 2 ?
+                                sample === 2 ?
                                     <WarehouseReceivingHistory dateFrom={dateFrom} dateTo={dateTo} sample={sample} />
                                     :
-                                    sample == 3 ?
+                                    sample === 3 ?
                                         <TransformationReportHistory dateFrom={dateFrom} dateTo={dateTo} sample={sample} />
                                         :
-                                        sample == 4 ?
+                                        sample === 4 ?
                                             <MoveOrderTransactionHistory dateFrom={dateFrom} dateTo={dateTo} sample={sample} />
                                             :
-                                            sample == 5 ?
+                                            sample === 5 ?
                                                 <MiscellaneousIssueHistory dateFrom={dateFrom} dateTo={dateTo} sample={sample} />
                                                 :
-                                                sample == 6 ?
+                                                sample === 6 ?
                                                     <MiscellaneousReceiptHistory dateFrom={dateFrom} dateTo={dateTo} sample={sample} />
-                                                    : sample == 7 ?
+                                                    : sample === 7 ?
                                                         <TransactedMoveOrders dateFrom={dateFrom} dateTo={dateTo} sample={sample} />
-                                                        : sample == 8 ?
+                                                        : sample === 8 ?
                                                             <NearlyExpiryReports sample={sample} expiryDays={expiryDays} />
                                                             : ''
                         }

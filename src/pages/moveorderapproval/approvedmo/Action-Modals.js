@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Box, Button, ButtonGroup, Flex, Heading, HStack, Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Select, Table, Tbody, Td, Text, Th, Thead, Tr, useToast, VStack } from '@chakra-ui/react'
-import { BsQuestionOctagonFill } from 'react-icons/bs'
+import { Box, Button, ButtonGroup, Flex, HStack, Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Select, Table, Tbody, Td, Text, Th, Thead, Tr, useToast, VStack } from '@chakra-ui/react'
 import apiClient from '../../../services/apiClient'
 import { ToastComponent } from '../../../components/Toast'
 import { decodeUser } from '../../../services/decode-user'
@@ -102,7 +101,6 @@ export const PrintModal = ({ isOpen, onClose, printData, closeApprove, fetchAppr
     const [isLoading, setIsLoading] = useState(false)
 
     const componentRef = useRef()
-    const componentRef2 = useRef()
 
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
@@ -291,9 +289,9 @@ export const PrintModal = ({ isOpen, onClose, printData, closeApprove, fetchAppr
 
                     {/* Printed  */}
                     <Box display='none'>
-                        <VStack spacing={20} mt={20} ref={componentRef}>
+                        <VStack spacing={20} w='93%' ml={3} ref={componentRef}>
                             {/* MO SLIP Print*/}
-                            <Flex w='full' mt={8} mb={10} p={5} flexDirection='column'>
+                            <Flex w='full' mt={2} mb='400px' p={5} flexDirection='column'>
 
                                 <Flex spacing={0} justifyContent='start' flexDirection='column'>
                                     <Image
@@ -339,7 +337,7 @@ export const PrintModal = ({ isOpen, onClose, printData, closeApprove, fetchAppr
                                         <Tbody>
                                             {
                                                 printData?.map((item, i) =>
-                                                    <Tr key={i}>
+                                                    <Tr borderX='1px' borderBottom='1px' key={i}>
                                                         <Td>{item.itemCode}</Td>
                                                         <Td>{item.itemDescription}</Td>
                                                         <Td>{item.uom}</Td>

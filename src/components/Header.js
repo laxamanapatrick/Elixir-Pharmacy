@@ -8,7 +8,7 @@ import {
     MenuList,
     Text
 } from '@chakra-ui/react';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { FiMenu } from 'react-icons/fi'
 import { FaUserCircle } from 'react-icons/fa'
 import moment from 'moment';

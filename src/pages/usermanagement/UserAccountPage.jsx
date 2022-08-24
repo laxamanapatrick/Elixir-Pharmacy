@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Flex,
   HStack,
@@ -26,7 +25,7 @@ import {
   useToast,
   VStack
 } from '@chakra-ui/react';
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import apiClient from '../../services/apiClient';
 import { FcAddDatabase } from 'react-icons/fc'
 import { RiEditBoxFill } from 'react-icons/ri'

@@ -1,4 +1,4 @@
-import { Flex, Box, Image, Text, Button, useMediaQuery, HStack } from '@chakra-ui/react';
+import { Flex, Box, Image, Text, HStack } from '@chakra-ui/react';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Context } from '../context/Context';

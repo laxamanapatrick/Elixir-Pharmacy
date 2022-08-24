@@ -157,8 +157,6 @@ function App() {
     }
   }, [path.pathname !== pathMiscIssue])
 
-
-
   return (
 
     <Context.Provider value={{ selectedMenu, setSelectedMenu }}>

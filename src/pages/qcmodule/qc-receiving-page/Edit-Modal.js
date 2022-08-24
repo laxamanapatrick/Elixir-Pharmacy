@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import {
   Flex,
-  HStack,
   Input,
   Text,
-  Button,
   Stack,
   Modal,
   ModalOverlay,
@@ -13,17 +11,13 @@ import {
   ModalCloseButton,
   ModalBody,
   ModalFooter,
-  Box,
   FormLabel,
   useToast,
   VStack,
 } from '@chakra-ui/react'
-import apiClient from '../../../services/apiClient'
 import { decodeUser } from '../../../services/decode-user'
 import PageScrollQCModal from '../../../components/PageScrollQCModal'
-import DateConverter from '../../../components/DateConverter'
 import moment from 'moment'
-import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import { ToastComponent } from '../../../components/Toast'
@@ -48,13 +42,12 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo, fetchNo
   const [sumQuantity, setSumQuantity] = useState(0)
   const [receivingId, setReceivingId] = useState(null)
 
-  const [isLoading, setIsLoading] = useState(true)
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true)
   const [submitDataTwo, setSubmitDataTwo] = useState([])
   const [submitDataThree, setSubmitDataThree] = useState([])
   const toast = useToast()
 
-  const { register, formState: { errors } } = useForm({
+  const { register } = useForm({
     resolver: yupResolver(),
     mode: "onChange",
     defaultValues: {

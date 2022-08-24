@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { HStack, Image, Button, ButtonGroup, Flex, Heading, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Select, Table, Tbody, Td, Text, Th, Thead, toast, Tr, useDisclosure, useToast, VStack, Box } from '@chakra-ui/react'
-import { BsQuestionOctagonFill } from 'react-icons/bs'
+import { HStack, Image, Button, ButtonGroup, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Select, Table, Tbody, Td, Text, Th, Thead, Tr, useDisclosure, useToast, VStack, Box } from '@chakra-ui/react'
 import apiClient from '../../../services/apiClient'
 import { ToastComponent } from '../../../components/Toast'
 import { decodeUser } from '../../../services/decode-user'
@@ -160,9 +159,9 @@ export const ApproveModal = ({ isOpen, onClose, orderNo, fetchForApprovalMO, pri
 
       {/* Printed  */}
       <Box display='none'>
-        <VStack spacing={20} mt={20} ref={componentRef}>
+        <VStack spacing={20} w='93%' ml={3} ref={componentRef}>
           {/* MO Slip */}
-          <Flex w='full' mt={8} mb={10} p={5} flexDirection='column' ref={componentRef}>
+          <Flex w='full' mt={2} mb='440px' p={5} flexDirection='column' ref={componentRef}>
 
             <Flex spacing={0} justifyContent='start' flexDirection='column'>
               <Image
@@ -204,7 +203,7 @@ export const ApproveModal = ({ isOpen, onClose, orderNo, fetchForApprovalMO, pri
                 <Tbody>
                   {
                     printData?.map((item, i) =>
-                      <Tr key={i}>
+                      <Tr borderX='1px' borderBottom='1px' key={i}>
                         <Td>{item.itemCode}</Td>
                         <Td>{item.itemDescription}</Td>
                         <Td>{item.uom}</Td>

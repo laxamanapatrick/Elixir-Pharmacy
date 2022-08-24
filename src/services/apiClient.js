@@ -25,7 +25,7 @@ const user = decodeUser()
 //     }
 // })
 
-//Live
+// Live
 
 export default axios.create({
     baseURL: "http://10.10.2.31:82/api/",
