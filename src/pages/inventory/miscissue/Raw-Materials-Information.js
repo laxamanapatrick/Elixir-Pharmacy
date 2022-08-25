@@ -87,9 +87,8 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, details, 
                                 ref={remarksRef}
                                 w='full' placeholder=' ' bgColor='#fff8dc'
                             >
-                                <option value='Finance Adjustments'>Finance Adjustments</option>
-                                <option value='Pharmacy Accounting'>Pharmacy Accounting</option>
-                                <option value='Pharmacy Supervisor'>Pharmacy Supervisor</option>
+                                <option value='Finance Adjustments'>Adjustment</option>
+                                <option value='Pharmacy Accounting'>Transfer</option>
                             </Select>
                         </HStack>
 

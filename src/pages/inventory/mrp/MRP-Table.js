@@ -95,12 +95,14 @@ export const MRPTable = ({ mrpData, setSelectorId, selectorId, setRawMatsInfo, p
                                         <Th color='white'>Reserve</Th>
                                         <Th color='white'>Reserve Usage</Th>
                                         <Th color='white'>Buffer Level</Th>
+                                        <Th color='white'>Transform From</Th>
+                                        <Th color='white'>Transform To</Th>
                                         <Th color='white'>{`Receive (IN)`}</Th>
-                                        <Th color='white'>{`Receipt (IN)`}</Th>
-                                        <Th color='white'>{`Move Order (OUT)`}</Th>
                                     </>
                                     :
                                     <>
+                                        <Th color='white'>{`Receipt (IN)`}</Th>
+                                        <Th color='white'>{`Move Order (OUT)`}</Th>
                                         <Th color='white'>{`Issue (OUT)`}</Th>
                                         <Th color='white'>QA Receiving</Th>
                                         {/* <Th color='white'>Last Used</Th>
@@ -140,25 +142,27 @@ export const MRPTable = ({ mrpData, setSelectorId, selectorId, setRawMatsInfo, p
                                             <>
                                                 <Td>{item.itemCategory}</Td>
                                                 <Td>{item.uom}</Td>
-                                                <Td>{item.price.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
-                                                <Td>{item.soh.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
-                                                <Td>{item.reserve.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
-                                                <Td>{item.reserveUsage.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
-                                                <Td>{item.bufferLevel.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
-                                                <Td>{item.receiveIn.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
-                                                <Td>{item.receiptIn.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
-                                                <Td>{item.moveOrderOut.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                                                <Td>{item.price?.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                                                <Td>{item.soh?.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                                                <Td>{item.reserve?.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                                                <Td>{item.reserveUsage?.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                                                <Td>{item.bufferLevel?.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                                                <Td>{item.transformFrom?.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                                                <Td>{item.transformTo?.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                                                <Td>{item.receiveIn?.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
                                             </>
                                             :
                                             <>
-                                                <Td>{item.issueOut.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
-                                                <Td>{item.qcReceiving.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                                                <Td>{item.receiptIn?.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                                                <Td>{item.moveOrderOut?.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                                                <Td>{item.issueOut?.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                                                <Td>{item.qcReceiving?.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
                                                 {/* <Td>{`Last Used`}</Td>
                                                 <Td>{`Movement Status`}</Td>
                                                 <Td>{`Classification ABC`}</Td> */}
-                                                <Td>{item.suggestedPo.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
-                                                <Td>{item.averageIssuance.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
-                                                <Td>{item.daysLevel.toLocaleString()}</Td>
+                                                <Td>{item.suggestedPo?.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                                                <Td>{item.averageIssuance?.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                                                <Td>{item.daysLevel?.toLocaleString()}</Td>
                                             </>
                                     }
                                 </Tr>

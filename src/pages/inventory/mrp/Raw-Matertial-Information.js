@@ -41,10 +41,10 @@ export const RawMatertialInformation = ({ rawMatsInfo, mrpDataLength }) => {
                 <Text w='full' bgColor='secondary' color='white' pl={2} py={2.5} fontSize='xs'>Suggested PO: </Text>
                 <Input w='95%' readOnly bgColor='white' value={rawMatsInfo.suggestedPo.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })} />
               </HStack>
-              <HStack w='full'>
+              {/* <HStack w='full'>
                 <Text w='full' bgColor='secondary' color='white' pl={2} pr={7} py={2.5} fontSize='xs'>Last Used: </Text>
                 <Input w='full' readOnly bgColor='white' value={rawMatsInfo.lastUsed} />
-              </HStack>
+              </HStack> */}
             </VStack>
           </Flex>
         </VStack>
