@@ -29,6 +29,7 @@ const fetchReceiptsApi = async (pageNumber, pageSize, search, status) => {
 const MiscellaneousReceiptPage = () => {
 
   const supplierRef = useRef()
+  const remarksRef = useRef()
 
   const [suppliers, setSuppliers] = useState([])
   const [rawMats, setRawMats] = useState([])
@@ -51,6 +52,8 @@ const MiscellaneousReceiptPage = () => {
     quantity: ''
   })
   const [details, setDetails] = useState('')
+  const [remarks, setRemarks] = useState('')
+
   const [listDataTempo, setListDataTempo] = useState([])
   const [selectorId, setSelectorId] = useState('')
   const [rowIndex, setRowIndex] = useState('')
@@ -180,6 +183,7 @@ const MiscellaneousReceiptPage = () => {
                 setSelectorId={setSelectorId}
                 setSupplierData={setSupplierData}
                 supplierRef={supplierRef}
+                remarks={remarks} setRemarks={setRemarks} remarksRef={remarksRef}
               />
               {
                 listDataTempo.length > 0 ?
@@ -190,6 +194,7 @@ const MiscellaneousReceiptPage = () => {
                       setEditableData={setEditableData}
                       setRowIndex={setRowIndex}
                       setTotalQuantity={setTotalQuantity}
+                      remarks={remarks}
                     />
                     <ActionButtons
                       listDataTempo={listDataTempo}
@@ -203,6 +208,7 @@ const MiscellaneousReceiptPage = () => {
                       setRawMatsInfo={setRawMatsInfo}
                       //cancel key
                       rowIndex={rowIndex}
+                      remarks={remarks} setRemarks={setRemarks} remarksRef={remarksRef}
                     />
                   </>
                   : ''

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { Flex, HStack, Input, Text, VStack } from '@chakra-ui/react'
 import { FaCloudscale } from 'react-icons/fa'
+import { BiReset } from 'react-icons/bi'
 import moment from 'moment'
 
 export const RequirementsInformation = ({ information, setWeight, setDisableSave, batch, weight }) => {
@@ -28,24 +29,27 @@ export const RequirementsInformation = ({ information, setWeight, setDisableSave
     }
   }
 
-  const resetHandler = (e) => {
+  const resetHandler = () => {
     setWeight('')
     ref?.current?.focus()
   }
 
   const keyPressHandler = () => {
-    window.dispatchEvent(new KeyboardEvent('keydown', {
-      "key": "a",
-      "keyCode": 65,
-      "which": 65,
-      "code": "KeyA",
-      "location": 0,
-      "altKey": false,
-      "ctrlKey": true,
-      "metaKey": false,
-      "shiftKey": false,
-      "repeat": false
-    }));
+    ref?.current.focus()
+    setTimeout(() => {
+      dispatchEvent(new KeyboardEvent('keypress', {
+        "key": "a",
+        "keyCode": 65,
+        "which": 65,
+        "code": "KeyA",
+        "location": 0,
+        "altKey": false,
+        "ctrlKey": false,
+        "metaKey": false,
+        "shiftKey": false,
+        "repeat": false
+      }))
+    }, 1000)
   }
 
   return (
@@ -91,17 +95,22 @@ export const RequirementsInformation = ({ information, setWeight, setDisableSave
         <Text w='45%' pl={2} bgColor='secondary' color='white'>Weighing Scale:</Text>
         <HStack w='45%'>
 
-          <FaCloudscale fontSize='25px' cursor='pointer' onClick={resetHandler} onKeyPress={keyPressHandler} />
+          {
+            weight ?
+              <BiReset fontSize='25px' cursor='pointer' onClick={resetHandler} />
+              :
+              <FaCloudscale fontSize='25px' cursor='pointer' onClick={keyPressHandler} />
+          }
 
           <Input
             onChange={(e) => weighHandler(e.target.value)}
             ref={ref}
             value={weight}
             w='full' h={7} p={0} bgColor='#fff8dc' border='1px'
-            type="number"
-            onWheel={(e) => e.target.blur()}
-            onKeyDown={(e) => ["E", "e", "+", "-"].includes(e.key) && e.preventDefault()}
-            onPaste={(e) => e.preventDefault()}
+          // type="number"
+          // onWheel={(e) => e.target.blur()}
+          // onKeyDown={(e) => ["E", "e", "+", "-"].includes(e.key) && e.preventDefault()}
+          // onPaste={(e) => e.preventDefault()}
           />
 
         </HStack>

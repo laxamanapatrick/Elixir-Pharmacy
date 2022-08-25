@@ -4,7 +4,7 @@ import { AddConfirmation } from './Action-Modal'
 import moment from 'moment'
 
 export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, details, setDetails, customerRef,
-    customers, rawMats, uoms, expiryDates, setSelectorId, setCustomerData, setWarehouseId, warehouseId, fetchActiveMiscIssues, customerData
+    customers, rawMats, uoms, expiryDates, setSelectorId, setCustomerData, setWarehouseId, warehouseId, fetchActiveMiscIssues, customerData, remarks, setRemarks, remarksRef
 }) => {
 
     const { isOpen: isModal, onClose: closeModal, onOpen: openModal } = useDisclosure()
@@ -77,6 +77,20 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, details, 
                                     </Select>
                                     : <Spinner />
                             }
+                        </HStack>
+
+                        {/* Remarks */}
+                        <HStack w='full'>
+                            <Text minW='50%' w='auto' bgColor='secondary' color='white' pl={2} py={2.5} fontSize='xs'>Type: </Text>
+                            <Select
+                                onChange={(e) => setRemarks(e.target.value)}
+                                ref={remarksRef}
+                                w='full' placeholder=' ' bgColor='#fff8dc'
+                            >
+                                <option value='Finance Adjustments'>Finance Adjustments</option>
+                                <option value='Pharmacy Accounting'>Pharmacy Accounting</option>
+                                <option value='Pharmacy Supervisor'>Pharmacy Supervisor</option>
+                            </Select>
                         </HStack>
 
                     </VStack>

@@ -24,7 +24,9 @@ const fetchExpiryDatesApi = async (itemCode) => {
 const MiscellaneousIssuePage = ({ miscData, fetchActiveMiscIssues, navigation, setNavigation }) => {
 
   const [isLoading, setIsLoading] = useState(false)
+
   const customerRef = useRef()
+  const remarksRef = useRef()
 
   const [customers, setCustomers] = useState([])
   const [rawMats, setRawMats] = useState([])
@@ -47,6 +49,7 @@ const MiscellaneousIssuePage = ({ miscData, fetchActiveMiscIssues, navigation, s
     quantity: ''
   })
   const [details, setDetails] = useState('')
+  const [remarks, setRemarks] = useState('')
 
   const itemCode = rawMatsInfo.itemCode
 
@@ -148,6 +151,7 @@ const MiscellaneousIssuePage = ({ miscData, fetchActiveMiscIssues, navigation, s
                 fetchActiveMiscIssues={fetchActiveMiscIssues}
                 customerData={customerData}
                 customerRef={customerRef}
+                remarks={remarks} setRemarks={setRemarks} remarksRef={remarksRef}
               />
               {
                 miscData?.length > 0
@@ -159,6 +163,7 @@ const MiscellaneousIssuePage = ({ miscData, fetchActiveMiscIssues, navigation, s
                       miscData={miscData}
                       fetchActiveMiscIssues={fetchActiveMiscIssues}
                       fetchExpiryDates={fetchExpiryDates}
+                      remarks={remarks}
                     />
                     <ActionButton
                       setIsLoading={setIsLoading}
@@ -175,6 +180,7 @@ const MiscellaneousIssuePage = ({ miscData, fetchActiveMiscIssues, navigation, s
                       //warehouse Id
                       warehouseId={warehouseId}
                       fetchExpiryDates={fetchExpiryDates}
+                      remarks={remarks} setRemarks={setRemarks} remarksRef={remarksRef}
                     />
                   </>
                   : ''

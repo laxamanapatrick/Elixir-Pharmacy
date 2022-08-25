@@ -8,7 +8,7 @@ import { decodeUser } from '../../../services/decode-user'
 const currentUser = decodeUser()
 
 export const AddConfirmation = ({ isOpen, onClose, closeAddModal, details, setDetails, rawMatsInfo, setRawMatsInfo,
-  listDataTempo, setListDataTempo, supplierRef, setSelectorId }) => {
+  listDataTempo, setListDataTempo, supplierRef, setSelectorId, remarks }) => {
 
   const [isLoading, setIsLoading] = useState(false)
 
@@ -21,7 +21,8 @@ export const AddConfirmation = ({ isOpen, onClose, closeAddModal, details, setDe
       "uom": rawMatsInfo.uom,
       "expirationDate": rawMatsInfo.expirationDate,
       "quantity": rawMatsInfo.quantity,
-      "description": details
+      "description": details,
+      "remarks": remarks
     }
     setListDataTempo(current => [...current, addToArray])
     setRawMatsInfo({
@@ -71,7 +72,8 @@ export const AddConfirmation = ({ isOpen, onClose, closeAddModal, details, setDe
   )
 }
 
-export const SaveConfirmation = ({ isOpen, onClose, listDataTempo, setListDataTempo, supplierData, totalQuantity, supplierRef, setDetails, setRawMatsInfo }) => {
+export const SaveConfirmation = ({ isOpen, onClose, listDataTempo, setListDataTempo, supplierData, totalQuantity, supplierRef, setDetails, setRawMatsInfo,
+  remarks, setRemarks, remarksRef }) => {
 
   const [isLoading, setIsLoading] = useState(false)
   const toast = useToast()
@@ -82,7 +84,8 @@ export const SaveConfirmation = ({ isOpen, onClose, listDataTempo, setListDataTe
       supplierCode: supplierData.supplierCode,
       supplier: supplierData.supplierName,
       totalQuantity: totalQuantity,
-      remarks: listDataTempo[0]?.description,
+      details: listDataTempo[0]?.description,
+      remarks: listDataTempo[0]?.remarks,
       preparedBy: currentUser?.userName
     }
 
@@ -104,7 +107,8 @@ export const SaveConfirmation = ({ isOpen, onClose, listDataTempo, setListDataTe
                   supplier: item.supplier,
                   expiration: item.expirationDate,
                   actualGood: item.quantity,
-                  remarks: item.description,
+                  details: item.description,
+                  remarks: item.remarks,
                   receivedBy: currentUser.userName
                 }
               })
@@ -113,6 +117,7 @@ export const SaveConfirmation = ({ isOpen, onClose, listDataTempo, setListDataTe
                 ToastComponent("Success", "Information saved", "success", toast)
                 setListDataTempo([])
                 supplierRef.current.value = ''
+                remarksRef.current.value = ''
                 setDetails('')
                 setRawMatsInfo({
                   itemCode: '',

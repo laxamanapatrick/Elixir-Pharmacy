@@ -5,7 +5,7 @@ import { AddConfirmation } from './Action-Modals'
 import moment from 'moment'
 
 export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, listDataTempo, setListDataTempo, details, setDetails,
-    suppliers, rawMats, uoms, setSelectorId, setSupplierData, supplierRef
+    suppliers, rawMats, uoms, setSelectorId, setSupplierData, supplierRef, remarks, setRemarks, remarksRef
 }) => {
 
     const { isOpen: isModal, onClose: closeModal, onOpen: openModal } = useDisclosure()
@@ -79,6 +79,20 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, listDataT
                             }
                         </HStack>
 
+                        {/* Remarks */}
+                        <HStack w='full'>
+                            <Text minW='50%' w='auto' bgColor='secondary' color='white' pl={2} py={2.5} fontSize='xs'>Type: </Text>
+                            <Select
+                                onChange={(e) => setRemarks(e.target.value)}
+                                ref={remarksRef}
+                                w='full' placeholder=' ' bgColor='#fff8dc'
+                            >
+                                <option value='Finance Adjustments'>Finance Adjustments</option>
+                                <option value='Pharmacy Accounting'>Pharmacy Accounting</option>
+                                <option value='Pharmacy Supervisor'>Pharmacy Supervisor</option>
+                            </Select>
+                        </HStack>
+
                     </VStack>
 
                     <VStack alignItems='start' w='40%' mx={5}>
@@ -106,7 +120,7 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, listDataT
                 <Flex w='full' justifyContent='end' mt={4}>
                     <Button
                         onClick={() => openModal()}
-                        disabled={!rawMatsInfo.supplier || !details}
+                        disabled={!rawMatsInfo.supplier || !details || !remarks}
                         size='xs' colorScheme='blue'
                     >
                         New
@@ -129,6 +143,7 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, listDataT
                         setSelectorId={setSelectorId}
                         isOpen={isModal}
                         onClose={closeModal}
+                        remarks={remarks}
                     />
                 )
             }
@@ -139,7 +154,7 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, listDataT
 
 
 export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMatsInfo, setRawMatsInfo,
-    listDataTempo, setListDataTempo, supplierRef, rawMats, uoms, setSelectorId
+    listDataTempo, setListDataTempo, supplierRef, rawMats, uoms, setSelectorId, remarks
 }) => {
 
     const { isOpen: isAdd, onClose: closeAdd, onOpen: openAdd } = useDisclosure()
@@ -290,6 +305,7 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
                         listDataTempo={listDataTempo} setListDataTempo={setListDataTempo}
                         supplierRef={supplierRef}
                         setSelectorId={setSelectorId}
+                        remarks={remarks}
                     />
                 )
             }

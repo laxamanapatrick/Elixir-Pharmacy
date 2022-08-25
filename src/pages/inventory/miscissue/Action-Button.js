@@ -4,7 +4,7 @@ import { AllCancelConfirmation, SaveConfirmation } from './Action-Modal'
 
 export const ActionButton = ({ selectorId, setSelectorId, totalQuantity, customerData, details,
     warehouseId, miscData, setTotalQuantity, fetchActiveMiscIssues, isLoading, setIsLoading, customerRef, 
-    setDetails, setRawMatsInfo, fetchExpiryDates
+    setDetails, setRawMatsInfo, fetchExpiryDates, remarks, setRemarks, remarksRef
 }) => {
 
     const [hideButton, setHideButton] = useState(false)
@@ -53,6 +53,7 @@ export const ActionButton = ({ selectorId, setSelectorId, totalQuantity, custome
                         setDetails={setDetails}
                         setRawMatsInfo={setRawMatsInfo}
                         setHideButton={setHideButton}
+                        remarks={remarks} setRemarks={setRemarks} remarksRef={remarksRef}
                     />
                 )
             }

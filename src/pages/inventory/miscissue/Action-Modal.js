@@ -8,7 +8,7 @@ import { decodeUser } from '../../../services/decode-user'
 const currentUser = decodeUser()
 
 export const AddConfirmation = ({ isOpen, onClose, closeAddModal, details, setDetails, rawMatsInfo, setRawMatsInfo,
-    customerRef, warehouseId, setSelectorId, setWarehouseId, fetchActiveMiscIssues, customerData }) => {
+    customerRef, warehouseId, setSelectorId, setWarehouseId, fetchActiveMiscIssues, customerData, remarks, setRemarks, remarksRef }) => {
 
     const [isLoading, setIsLoading] = useState(false)
 
@@ -26,7 +26,8 @@ export const AddConfirmation = ({ isOpen, onClose, closeAddModal, details, setDe
                 customerCode: customerData.customerCode,
                 expirationDate: rawMatsInfo.expirationDate,
                 quantity: rawMatsInfo.quantity,
-                remarks: details,
+                remarks: remarks,
+                details: details,
                 preparedBy: currentUser.userName
             }
             const res = apiClient.post(`Miscellaneous/AddNewMiscellaneousIssueDetails`, addSubmit)
@@ -94,7 +95,7 @@ export const AddConfirmation = ({ isOpen, onClose, closeAddModal, details, setDe
 }
 
 export const SaveConfirmation = ({ isOpen, onClose, totalQuantity, details, customerData, setTotalQuantity,
-    miscData, fetchActiveMiscIssues, isLoading, setIsLoading, customerRef, setDetails, setRawMatsInfo, setHideButton
+    miscData, fetchActiveMiscIssues, isLoading, setIsLoading, customerRef, setDetails, setRawMatsInfo, setHideButton, remarks, setRemarks, remarksRef
 }) => {
 
     const toast = useToast()
@@ -109,7 +110,8 @@ export const SaveConfirmation = ({ isOpen, onClose, totalQuantity, details, cust
                     customer: customerData.customer,
                     totalQuantity: totalQuantity,
                     preparedBy: currentUser.userName,
-                    remarks: details
+                    remarks: remarks,
+                    details: details
                 }
                 )
                     .then(res => {
@@ -131,6 +133,7 @@ export const SaveConfirmation = ({ isOpen, onClose, totalQuantity, details, cust
                                         onClose()
                                         setTotalQuantity('')
                                         customerRef.current.value = ''
+                                        remarksRef.current.value = ''
                                         setDetails('')
                                         setRawMatsInfo({
                                             itemCode: '',

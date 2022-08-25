@@ -3,7 +3,7 @@ import { Button, Flex, Table, Tbody, Td, Text, Th, Thead, Tr, useDisclosure, VSt
 import PageScrollReusable from '../../../components/PageScroll-Reusable'
 import { CancelConfirmation } from './Action-Modal'
 
-export const ListofIssue = ({ miscData, selectorId, setSelectorId, setTotalQuantity, fetchActiveMiscIssues, fetchExpiryDates }) => {
+export const ListofIssue = ({ miscData, selectorId, setSelectorId, setTotalQuantity, fetchActiveMiscIssues, fetchExpiryDates, remarks }) => {
 
     const TableHead = [
         "Line", "ID", "Item Code", "Item Description",
@@ -43,7 +43,7 @@ export const ListofIssue = ({ miscData, selectorId, setSelectorId, setTotalQuant
             <VStack justifyContent='center' w='full' spacing={-1}>
                 <Text bgColor='secondary' w='full' color='white' textAlign='center' fontWeight='semibold' py={1}>List of Receipt</Text>
                 <Flex justifyContent='center' w='full'>
-                    <PageScrollReusable minHeight='550px' maxHeight='570px'>
+                    <PageScrollReusable minHeight='450px' maxHeight='470px'>
                         <Table size='sm'>
                             <Thead bgColor='secondary'>
                                 <Tr>

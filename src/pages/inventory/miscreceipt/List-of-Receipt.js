@@ -33,7 +33,7 @@ export const ListofReceipt = ({ listDataTempo, selectorId, setSelectorId, setEdi
             <VStack justifyContent='center' w='full' spacing={-1}>
                 <Text bgColor='secondary' w='full' color='white' textAlign='center' fontWeight='semibold' py={1}>List of Receipt</Text>
                 <Flex justifyContent='center' w='full'>
-                    <PageScrollReusable minHeight='550px' maxHeight='551px'>
+                    <PageScrollReusable minHeight='450px' maxHeight='451px'>
                         <Table size='sm'>
                             <Thead bgColor='secondary'>
                                 <Tr>
