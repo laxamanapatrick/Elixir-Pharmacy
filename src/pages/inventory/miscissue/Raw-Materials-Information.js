@@ -81,7 +81,7 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, details, 
 
                         {/* Remarks */}
                         <HStack w='full'>
-                            <Text minW='50%' w='auto' bgColor='secondary' color='white' pl={2} py={2.5} fontSize='xs'>Type: </Text>
+                            <Text minW='50%' w='auto' bgColor='secondary' color='white' pl={2} py={2.5} fontSize='xs'>Transaction Type: </Text>
                             <Select
                                 onChange={(e) => setRemarks(e.target.value)}
                                 ref={remarksRef}
@@ -121,7 +121,7 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, details, 
                 <Flex w='full' justifyContent='end' mt={4}>
                     <Button
                         onClick={() => openModal()}
-                        disabled={!rawMatsInfo.customer || !details}
+                        disabled={!rawMatsInfo.customer || !details || !remarks}
                         size='xs' colorScheme='blue'
                     >
                         New
@@ -148,6 +148,7 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, details, 
                         customerData={customerData}
                         isOpen={isModal}
                         onClose={closeModal}
+                        remarks={remarks} setRemarks={setRemarks}
                     />
                 )
             }
@@ -158,7 +159,8 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, details, 
 
 
 export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMatsInfo, setRawMatsInfo,
-    customerRef, rawMats, expiryDates, setSelectorId, setCustomerData, setWarehouseId, warehouseId, fetchActiveMiscIssues, customerData
+    customerRef, rawMats, expiryDates, setSelectorId, setCustomerData, setWarehouseId, warehouseId,
+    fetchActiveMiscIssues, customerData, remarks, setRemarks
 }) => {
 
     const [availableStock, setAvailableStock] = useState('')
@@ -382,6 +384,7 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
                         warehouseId={warehouseId} setWarehouseId={setWarehouseId}
                         fetchActiveMiscIssues={fetchActiveMiscIssues}
                         customerData={customerData}
+                        remarks={remarks} setRemarks={setRemarks}
                     />
                 )
             }

@@ -81,7 +81,7 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, listDataT
 
                         {/* Remarks */}
                         <HStack w='full'>
-                            <Text minW='50%' w='auto' bgColor='secondary' color='white' pl={2} py={2.5} fontSize='xs'>Type: </Text>
+                            <Text minW='50%' w='auto' bgColor='secondary' color='white' pl={2} py={2.5} fontSize='xs'>Transaction Type: </Text>
                             <Select
                                 onChange={(e) => setRemarks(e.target.value)}
                                 ref={remarksRef}
