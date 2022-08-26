@@ -4,6 +4,7 @@ import { FaCloudscale } from 'react-icons/fa'
 import apiClient from '../../../services/apiClient'
 import { SaveConfirmation } from './Print-List'
 import DatePicker from "react-datepicker";
+import { BiReset } from 'react-icons/bi'
 
 export const WeighingScaleInformation = ({ transformId, batchRemaining, fetchMixingRequest, fetchRequirements,
     fetchBatchRemaining, setMixingCue, quantity, requests, batch, setCurrentPage, fetchNotification, quantityBasis,
@@ -50,6 +51,27 @@ export const WeighingScaleInformation = ({ transformId, batchRemaining, fetchMix
         }
     }
 
+    const resetHandler = () => {
+        setTotalWeight('')
+        valueRef?.current?.focus()
+    }
+
+    const keyPressHandler = () => {
+        valueRef?.current.focus()
+        dispatchEvent(new KeyboardEvent('keypress', {
+            "key": "a",
+            "keyCode": 65,
+            "which": 65,
+            "code": "KeyA",
+            "location": 0,
+            "altKey": false,
+            "ctrlKey": false,
+            "metaKey": false,
+            "shiftKey": false,
+            "repeat": false
+        }))
+    }
+
     return (
         <Flex w='full' flexDirection='column'>
 
@@ -75,20 +97,28 @@ export const WeighingScaleInformation = ({ transformId, batchRemaining, fetchMix
                         }
                     </Text>
                 </HStack>
+
                 <HStack spacing={1}>
                     <Text bgColor='secondary' color='white' px={10} textAlign='start' fontSize='sm'>Weighing Scale:</Text>
-                    <FaCloudscale fontSize='25px' />
-                    {/* <Text bgColor='gray.200' border='1px' px={12} fontSize='sm'>200</Text> */}
+                    {
+                        totalWeight ?
+                            <BiReset fontSize='25px' cursor='pointer' onClick={resetHandler} />
+                            :
+                            <FaCloudscale fontSize='25px' cursor='pointer' onClick={keyPressHandler} />
+                    }
                     <Input
                         onChange={(e) => weightHandler(e.target.value)}
-                        onWheel={(e) => e.target.blur()}
                         value={totalWeight}
                         ref={valueRef}
                         type='number'
                         placeholder='Weight is required'
                         h='15%' w='50%' bgColor='#fff8dc'
+                        onWheel={(e) => e.target.blur()}
+                        onKeyDown={(e) => ["E", "e", "+", "-"].includes(e.key) && e.preventDefault()}
+                        onPaste={(e) => e.preventDefault()}
                     />
                 </HStack>
+
             </HStack>
 
             <Text

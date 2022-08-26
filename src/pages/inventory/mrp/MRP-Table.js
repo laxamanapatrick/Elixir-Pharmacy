@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Flex, HStack, Input, InputGroup, InputLeftElement, Select, Stack, Table, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react'
+import { Button, Flex, HStack, Input, InputGroup, InputLeftElement, Select, Stack, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
 import {
     Pagination,
     PaginationNext,

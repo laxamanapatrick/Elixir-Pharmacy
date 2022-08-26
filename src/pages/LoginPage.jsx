@@ -55,11 +55,11 @@ const LoginPage = () => {
                         <Heading color='#18b58f' size='md' fontFamily="">Elixir</Heading>
                     </VStack>
                     <Box>
-                        <Input variant='filled' size='sm' placeholder='Username' {...register("userName")} />
+                        <Input variant='filled' size='sm' autoComplete='off' placeholder='Username' {...register("userName")} />
                         <Text color="danger" fontSize='xs' mt={1}>{errors.userName?.message}</Text>
                     </Box>
                     <Box>
-                        <Input variant='filled' size='sm' placeholder='Password' type='password' {...register("password")} />
+                        <Input variant='filled' size='sm' autoComplete='off' placeholder='Password' type='password' {...register("password")} />
                         <Text color="danger" fontSize='xs' mt={1}>{errors.password?.message}</Text>
                     </Box>
                     <Button width='full' bgColor='#18b58f' size='sm' type='sumbit' disabled={!isValid} isLoading={isLoading}>

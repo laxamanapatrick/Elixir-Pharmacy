@@ -36,20 +36,18 @@ export const RequirementsInformation = ({ information, setWeight, setDisableSave
 
   const keyPressHandler = () => {
     ref?.current.focus()
-    setTimeout(() => {
-      dispatchEvent(new KeyboardEvent('keypress', {
-        "key": "a",
-        "keyCode": 65,
-        "which": 65,
-        "code": "KeyA",
-        "location": 0,
-        "altKey": false,
-        "ctrlKey": false,
-        "metaKey": false,
-        "shiftKey": false,
-        "repeat": false
-      }))
-    }, 1000)
+    dispatchEvent(new KeyboardEvent('keypress', {
+      "key": "a",
+      "keyCode": 65,
+      "which": 65,
+      "code": "KeyA",
+      "location": 0,
+      "altKey": false,
+      "ctrlKey": false,
+      "metaKey": false,
+      "shiftKey": false,
+      "repeat": false
+    }))
   }
 
   return (
@@ -107,10 +105,10 @@ export const RequirementsInformation = ({ information, setWeight, setDisableSave
             ref={ref}
             value={weight}
             w='full' h={7} p={0} bgColor='#fff8dc' border='1px'
-          // type="number"
-          // onWheel={(e) => e.target.blur()}
-          // onKeyDown={(e) => ["E", "e", "+", "-"].includes(e.key) && e.preventDefault()}
-          // onPaste={(e) => e.preventDefault()}
+            type="number"
+            onWheel={(e) => e.target.blur()}
+            onKeyDown={(e) => ["E", "e", "+", "-"].includes(e.key) && e.preventDefault()}
+            onPaste={(e) => e.preventDefault()}
           />
 
         </HStack>
