@@ -71,7 +71,7 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, details, 
                                     >
                                         {
                                             customers?.map((item, i) =>
-                                                <option key={i} value={JSON.stringify(item)}>{item.customerCode}</option>
+                                                <option key={i} value={JSON.stringify(item)}>{`${item.customerCode} - ${item.customerName}`}</option>
                                             )
                                         }
                                     </Select>
