@@ -157,13 +157,22 @@ function App() {
     }
   }, [path.pathname !== pathMiscIssue])
 
+  //Fetch Notif every 40s
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchNotification()
+    }, 41000);
+
+    return () => clearInterval(interval);
+  }, [])
+
   return (
 
     <Context.Provider value={{ selectedMenu, setSelectedMenu }}>
       <Routes>
-       
+
         <Route path="*" element={<NotFoundPage />} />
-        <Route path="/" element={user ? <Layout sideBarHandler={SideBarHandler} isSidebarVisible={isSidebarVisible} /> : <Navigate to="/login" />} >
+        <Route path="/" element={user ? <Layout sideBarHandler={SideBarHandler} isSidebarVisible={isSidebarVisible} notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />} >
 
           <Route path="inventory" element={user ? <InventoryPage notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />}>
             <Route path="mrp" element={user ? <MrpPage /> : <Navigate to="/login" />} />
@@ -246,7 +255,7 @@ function App() {
             <Route path="reports" element={user ? <Reports /> : <Navigate to="/login" />} />
           </Route>
         </Route>
-         <Route path="/login" element={<LoginPage />} />
+        <Route path="/login" element={<LoginPage />} />
       </Routes >
 
       {
@@ -264,16 +273,17 @@ function App() {
     </Context.Provider>
 
   )
+
 }
 
-function Layout({ isSidebarVisible, sideBarHandler }) {
+function Layout({ isSidebarVisible, sideBarHandler, notification, fetchNotification }) {
 
   return (
     <Flex bgColor='white' h='100vh'>
 
       {!isSidebarVisible && (
 
-        <Sidebar />
+        <Sidebar notification={notification} fetchNotification={fetchNotification} />
       )}
       <AppScroll>
         <Flex w='full' bgColor='gray.300' flexDirection='column'>

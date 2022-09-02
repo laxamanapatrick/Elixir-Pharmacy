@@ -1,10 +1,11 @@
-import { Flex, Box, Image, Text, HStack } from '@chakra-ui/react';
+import { Flex, Box, Image, Text, HStack, Badge } from '@chakra-ui/react';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Context } from '../context/Context';
 import apiClient from '../services/apiClient';
 import { decodeUser } from '../services/decode-user';
 import { HiOutlineArrowCircleRight } from 'react-icons/hi'
+import { MdOutlineNotificationsActive } from 'react-icons/md'
 
 const currentUser = decodeUser()
 
@@ -25,7 +26,7 @@ const SidebarFooter = () => {
     </Flex>
 }
 
-const Sidebar = () => {
+const Sidebar = ({ notification, fetchNotification }) => {
     const { pathname } = useLocation()
     const [tagModules, setTagModules] = useState([])
     const { setSelectedMenu } = useContext(Context)
@@ -68,6 +69,21 @@ const Sidebar = () => {
         setSelectedMenu(data)
     }
 
+    const sideBars = [
+        {
+            title: 'MO Approval',
+            notifcation: notification?.forApprovalMoveOrder?.forapprovallistcount,
+        },
+        {
+            title: 'Ordering',
+            notifcation: notification?.orderingFarm?.orderingfarmcount,
+        },
+        {
+            title: 'Inventory',
+            notifcation: notification?.moveOrderList?.moveordercount,
+        }
+    ]
+
     return (
         <Flex
             h='100vh'
@@ -89,6 +105,20 @@ const Sidebar = () => {
                                 >
                                     {modName.mainMenu}
                                 </Text>
+                                {sideBars.map((side, i) => (
+                                    !pathname.includes(modName.path) ?
+                                        modName.mainMenu === side.title &&
+                                        <Badge key={i} background='none'>
+                                            {side.notifcation === 0 ? '' : <MdOutlineNotificationsActive
+                                                fontSize='18px'
+                                                // color='#87CEAA' 
+                                                color='#f56565'
+                                            />}
+                                        </Badge>
+                                        :
+                                        ''
+                                )
+                                )}
                                 <HiOutlineArrowCircleRight hidden={!pathname.includes(modName.path) ? '6px 3px 3px' : ''} color='white' />
                             </HStack>
                         </Box>
