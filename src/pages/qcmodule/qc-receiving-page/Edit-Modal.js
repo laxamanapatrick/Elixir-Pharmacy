@@ -84,7 +84,7 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo, fetchNo
 
   const expiryDateProvider = (data) => {
     const day1 = new Date()
-    const day2 = data
+    const day2 = new Date(data)
     const daysDifference = (day2.getTime() - day1.getTime()) / (1000 * 3600 * 24)
     if (daysDifference <= 30) {
       ToastComponent("Warning", "Item is about to expire", "warning", toast)
@@ -114,14 +114,18 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo, fetchNo
   let submitDataOne = {
     pO_Summary_Id: editData.id,
     itemCode: editData.itemCode,
-    manufacturing_Date: moment(manufacturingDate).format("YYYY-MM-DD"),
+    manufacturing_Date: moment(manufacturingDate).format("yyyy-MM-DD"),
     expected_Delivery: Number(expectedDelivery),
-    expiry_Date: moment(expiryDate).format("YYYY-MM-DD"),
+    expiry_Date: moment(expiryDate).format("yyyy-MM-DD"),
     actual_Delivered: Number(actualDelivered),
     batch_No: Number(batchNo),
     totalReject: sumQuantity,
     qcBy: currentUser.userName
   }
+
+  const newDate = new Date()
+  const maxDateManufacturing = moment(newDate).format('yyyy-MM-DD')
+  const minDateExpiry = moment(newDate).format('yyyy-MM-DD')
 
   return (
     <ReceivingContext.Provider value={{ setSubmitDataTwo, setSubmitDataThree, setSumQuantity, setReceivingId }}>
@@ -282,12 +286,10 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo, fetchNo
                       <FormLabel w='96%'>
                         Manufacturing Date
                       </FormLabel>
-                      <DatePicker
-                        onChange={(date) => manufacturingDateProvider(date)}
-                        maxDate={new Date()}
-                        shouldCloseOnSelect={true}
-                        selected={manufacturingDate}
-                        // className='chakra-input css-7s3glp'
+                      <Input
+                        onChange={(date) => manufacturingDateProvider(date.target.value)}
+                        max={maxDateManufacturing}
+                        type='date' bgColor='#fff8dc'
                       />
                     </VStack>
 
@@ -295,13 +297,10 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo, fetchNo
                       <FormLabel w='96%'>
                         Expiry Date
                       </FormLabel>
-                      <DatePicker
-                        onChange={(date) => expiryDateProvider(date)}
-                        minDate={new Date()}
-                        disabled={!Boolean(manufacturingDate)}
-                        selected={expiryDate}
-                        shouldCloseOnSelect={true}
-                        // className='chakra-input css-7s3glp'
+                      <Input
+                        onChange={(date) => expiryDateProvider(date.target.value)}
+                        min={minDateExpiry}
+                        type='date' bgColor='#fff8dc'
                       />
                     </VStack>
                   </Flex>
@@ -394,7 +393,7 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo, fetchNo
                 fetchPo={fetchPo}
                 fetchNotification={fetchNotification}
                 closeModal={onClose}
-                manufacturingDate={manufacturingDate} expiryDate={expiryDate} 
+                manufacturingDate={manufacturingDate} expiryDate={expiryDate}
                 expectedDelivery={expectedDelivery} actualDelivered={actualDelivered}
                 batchNo={batchNo}
               />
