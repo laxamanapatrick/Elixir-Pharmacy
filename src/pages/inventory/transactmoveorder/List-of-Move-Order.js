@@ -99,7 +99,7 @@ export const ListofMoveOrder = ({ moveOrderList, setMoveOrderInformation, moveOr
                   <Th color='white'>Customer Name</Th>
                   <Th color='white'>Category</Th>
                   <Th color='white'>Total Quantity Order</Th>
-                  <Th color='white'>Order Date</Th>
+                  {/* <Th color='white'>Order Date</Th> */}
                   <Th color='white'>Date Needed</Th>
                   <Th color='white'>Prepared Date</Th>
                   <Th color='white'>View</Th>
@@ -129,7 +129,7 @@ export const ListofMoveOrder = ({ moveOrderList, setMoveOrderInformation, moveOr
                       <Td>{list.farm}</Td>
                       <Td>{list.category}</Td>
                       <Td>{list.totalOrders}</Td>
-                      <Td>{list.orderDate}</Td>
+                      {/* <Td>{list.orderDate}</Td> */}
                       <Td>{list.dateNeeded}</Td>
                       <Td>{moment(list.preparedDate).format('MM/DD/yyyy')}</Td>
                       <Td>
