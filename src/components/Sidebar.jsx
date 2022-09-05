@@ -76,7 +76,7 @@ const Sidebar = ({ notification, fetchNotification }) => {
         },
         {
             title: 'Ordering',
-            notifcation: notification?.orderingFarm?.orderingfarmcount,
+            notifcation: notification?.orderingApproval?.orderingapprovalcount,
         },
         {
             title: 'Inventory',

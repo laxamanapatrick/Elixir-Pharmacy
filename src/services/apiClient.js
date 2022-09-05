@@ -34,5 +34,3 @@ export default axios.create({
 //         "Authorization": 'Bearer '+user?.token
 //     }
 // })
-
-
