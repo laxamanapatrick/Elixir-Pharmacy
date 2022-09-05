@@ -136,7 +136,7 @@ const MiscellaneousIssuePage = ({ miscData, fetchActiveMiscIssues, navigation, s
         </HStack>
       </Flex>
 
-      <VStack w='full' p={5} spacing={10} border='1px' height={miscData?.length === 0 ? '85vh' : 'auto'}>
+      <VStack w='full' p={5} spacing={10} border='1px' height={miscData?.length === 0 ? '87vh' : 'auto'}>
         {
           navigation === 1 ?
 

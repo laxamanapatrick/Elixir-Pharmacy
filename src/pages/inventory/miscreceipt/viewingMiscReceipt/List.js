@@ -35,28 +35,28 @@ export const ListofReceipts = ({ receiptData, setCurrentPage, setPageSize, setSt
         setPageSize(pageSize)
     }
 
-    const statusHandler = (data) => {
-        setStatus(data)
-    }
+    // const statusHandler = (data) => {
+    //     setStatus(data)
+    // }
 
     const searchHandler = (inputValue) => {
         setSearch(inputValue)
     }
 
-    const changeStatusHandler = (id, status) => {
-        if (id) {
-            setStatusBody({
-                id: id,
-                status: status
-            })
-            openStatus()
-        } else {
-            setStatusBody({
-                id: '',
-                status: ''
-            })
-        }
-    }
+    // const changeStatusHandler = (id, status) => {
+    //     if (id) {
+    //         setStatusBody({
+    //             id: id,
+    //             status: status
+    //         })
+    //         openStatus()
+    //     } else {
+    //         setStatusBody({
+    //             id: '',
+    //             status: ''
+    //         })
+    //     }
+    // }
 
     const viewHandler = (id, status) => {
         if (id) {
@@ -88,14 +88,14 @@ export const ListofReceipts = ({ receiptData, setCurrentPage, setPageSize, setSt
                     />
                 </InputGroup>
 
-                <HStack w='15%'>
+                {/* <HStack w='15%'>
                     <Text>STATUS: </Text>
 
                     <Select onChange={(e) => statusHandler(e.target.value)}>
                         <option value={true}>Active</option>
                         <option value={false}>Inactive</option>
                     </Select>
-                </HStack>
+                </HStack> */}
             </Flex>
 
             <Flex mt={5}>
@@ -110,7 +110,7 @@ export const ListofReceipts = ({ receiptData, setCurrentPage, setPageSize, setSt
                                 <Th color='white'>Transaction Date</Th>
                                 <Th color='white'>Transacted By</Th>
                                 <Th color='white'>View</Th>
-                                <Th color='white'>Change status</Th>
+                                {/* <Th color='white'>Change status</Th> */}
                             </Tr>
                         </Thead>
                         <Tbody>
@@ -131,14 +131,14 @@ export const ListofReceipts = ({ receiptData, setCurrentPage, setPageSize, setSt
                                                 View
                                             </Button>
                                         </Td>
-                                        <Td>
+                                        {/* <Td>
                                             <Button
                                                 onClick={() => changeStatusHandler(receipt.id, receipt.isActive)}
                                                 colorScheme='red' size='xs'
                                             >
                                                 {receipt.isActive ? 'Inactivate' : 'Activate'}
                                             </Button>
-                                        </Td>
+                                        </Td> */}
                                     </Tr>
                                 )
                             }
@@ -182,7 +182,7 @@ export const ListofReceipts = ({ receiptData, setCurrentPage, setPageSize, setSt
                 </Stack>
             </Flex>
 
-            {
+            {/* {
                 isStatus && (
                     <StatusConfirmation
                         isOpen={isStatus}
@@ -191,7 +191,7 @@ export const ListofReceipts = ({ receiptData, setCurrentPage, setPageSize, setSt
                         fetchReceipts={fetchReceipts}
                     />
                 )
-            }
+            } */}
 
             {
                 isView && (

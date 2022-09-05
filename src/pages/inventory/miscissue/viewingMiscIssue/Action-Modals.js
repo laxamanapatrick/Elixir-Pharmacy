@@ -6,55 +6,55 @@ import { ToastComponent } from '../../../../components/Toast'
 import PageScrollReusable from '../../../../components/PageScroll-Reusable'
 import moment from 'moment'
 
-export const StatusConfirmation = ({ isOpen, onClose, statusBody, fetchIssues }) => {
+// export const StatusConfirmation = ({ isOpen, onClose, statusBody, fetchIssues }) => {
 
-    const toast = useToast()
-    const [isLoading, setIsLoading] = useState(false)
+//     const toast = useToast()
+//     const [isLoading, setIsLoading] = useState(false)
 
-    const submitHandler = () => {
-        let routeLabel;
-        if (statusBody.status) {
-            routeLabel = "InActiveIssue"
-        }
-        // else {
-        //     routeLabel = "ActivateIssue"
-        // }
-        setIsLoading(true)
-        apiClient.put(`Miscellaneous/${routeLabel}`, { id: statusBody.id }).then((res) => {
-            ToastComponent("Success", "Status updated", "success", toast)
-            fetchIssues()
-            setIsLoading(false)
-            onClose()
-        }).catch(err => {
-            setIsLoading(false)
-            console.log(err);
-        })
-    }
+//     const submitHandler = () => {
+//         let routeLabel;
+//         if (statusBody.status) {
+//             routeLabel = "InActiveIssue"
+//         }
+//         // else {
+//         //     routeLabel = "ActivateIssue"
+//         // }
+//         setIsLoading(true)
+//         apiClient.put(`Miscellaneous/${routeLabel}`, { id: statusBody.id }).then((res) => {
+//             ToastComponent("Success", "Status updated", "success", toast)
+//             fetchIssues()
+//             setIsLoading(false)
+//             onClose()
+//         }).catch(err => {
+//             setIsLoading(false)
+//             console.log(err);
+//         })
+//     }
 
-    return (
-        <Modal isOpen={isOpen} onClose={() => { }} size='xl' isCentered>
-            <ModalContent>
-                <ModalHeader>
-                    <Flex justifyContent='center'>
-                        <BsQuestionOctagonFill fontSize='50px' />
-                    </Flex>
-                </ModalHeader>
-                <ModalCloseButton onClick={onClose} />
-                <ModalBody mb={5}>
-                    <Flex justifyContent='center'>
-                        <Text>{`Are you sure you want to set this issue ${statusBody?.status ? 'inactive' : 'active'}?`}</Text>
-                    </Flex>
-                </ModalBody>
-                <ModalFooter>
-                    <ButtonGroup size='sm'>
-                        <Button colorScheme='blue' onClick={submitHandler} isLoading={isLoading} disabled={isLoading}>Yes</Button>
-                        <Button colorScheme='red' onClick={onClose} isLoading={isLoading} disabled={isLoading}>No</Button>
-                    </ButtonGroup>
-                </ModalFooter>
-            </ModalContent>
-        </Modal>
-    )
-}
+//     return (
+//         <Modal isOpen={isOpen} onClose={() => { }} size='xl' isCentered>
+//             <ModalContent>
+//                 <ModalHeader>
+//                     <Flex justifyContent='center'>
+//                         <BsQuestionOctagonFill fontSize='50px' />
+//                     </Flex>
+//                 </ModalHeader>
+//                 <ModalCloseButton onClick={onClose} />
+//                 <ModalBody mb={5}>
+//                     <Flex justifyContent='center'>
+//                         <Text>{`Are you sure you want to set this issue ${statusBody?.status ? 'inactive' : 'active'}?`}</Text>
+//                     </Flex>
+//                 </ModalBody>
+//                 <ModalFooter>
+//                     <ButtonGroup size='sm'>
+//                         <Button colorScheme='blue' onClick={submitHandler} isLoading={isLoading} disabled={isLoading}>Yes</Button>
+//                         <Button colorScheme='red' onClick={onClose} isLoading={isLoading} disabled={isLoading}>No</Button>
+//                     </ButtonGroup>
+//                 </ModalFooter>
+//             </ModalContent>
+//         </Modal>
+//     )
+// }
 
 export const ViewModal = ({ isOpen, onClose, statusBody }) => {
 

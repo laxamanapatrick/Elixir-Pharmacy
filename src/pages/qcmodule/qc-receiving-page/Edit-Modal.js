@@ -118,7 +118,7 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo, fetchNo
     expected_Delivery: Number(expectedDelivery),
     expiry_Date: moment(expiryDate).format("yyyy-MM-DD"),
     actual_Delivered: Number(actualDelivered),
-    batch_No: Number(batchNo),
+    batch_No: batchNo,
     totalReject: sumQuantity,
     qcBy: currentUser.userName
   }
@@ -350,9 +350,9 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo, fetchNo
                         {...register("submitData.batch_no")}
                         onChange={(e) => batchNoProvider(e.target.value)}
                         placeholder='Please provide batch number (Required)'
-                        bgColor='#ffffe0'
+                        bgColor='#ffffe0' 
                         onWheel={(e) => e.target.blur()}
-                        type='number'
+                        // type='number'
                       />
                     </FormLabel>
                   </Flex>

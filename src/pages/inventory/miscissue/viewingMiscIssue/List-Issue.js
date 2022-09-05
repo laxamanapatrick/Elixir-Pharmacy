@@ -68,29 +68,29 @@ export const ListofIssues = () => {
         setPageSize(pageSize)
     }
 
-    const statusHandler = (data) => {
-        setStatus(data)
-    }
+    // const statusHandler = (data) => {
+    //     setStatus(data)
+    // }
 
     const searchHandler = (inputValue) => {
         setSearch(inputValue)
     }
 
-    const changeStatusHandler = (id, status) => {
-        console.log(id, status)
-        if (id) {
-            setStatusBody({
-                id: id,
-                status: status
-            })
-            openStatus()
-        } else {
-            setStatusBody({
-                id: '',
-                status: ''
-            })
-        }
-    }
+    // const changeStatusHandler = (id, status) => {
+    //     console.log(id, status)
+    //     if (id) {
+    //         setStatusBody({
+    //             id: id,
+    //             status: status
+    //         })
+    //         openStatus()
+    //     } else {
+    //         setStatusBody({
+    //             id: '',
+    //             status: ''
+    //         })
+    //     }
+    // }
 
     const viewHandler = (id, status) => {
         if (id) {
@@ -122,14 +122,14 @@ export const ListofIssues = () => {
                     />
                 </InputGroup>
 
-                <HStack w='15%'>
+                {/* <HStack w='15%'>
                     <Text>STATUS: </Text>
 
                     <Select onChange={(e) => statusHandler(e.target.value)}>
                         <option value={true}>Active</option>
                         <option value={false}>Inactive</option>
                     </Select>
-                </HStack>
+                </HStack> */}
             </Flex>
 
             <Flex mt={5}>
@@ -144,7 +144,7 @@ export const ListofIssues = () => {
                                 <Th color='white'>Transaction Date</Th>
                                 <Th color='white'>Transacted By</Th>
                                 <Th color='white'>View</Th>
-                                <Th color='white'>Change status</Th>
+                                {/* <Th color='white'>Change status</Th> */}
                             </Tr>
                         </Thead>
                         <Tbody>
@@ -165,7 +165,7 @@ export const ListofIssues = () => {
                                                 View
                                             </Button>
                                         </Td>
-                                        {
+                                        {/* {
                                             issue.isActive ?
                                                 <Td>
                                                     <Button
@@ -185,7 +185,7 @@ export const ListofIssues = () => {
                                                         Activate
                                                     </Button>
                                                 </Td>
-                                        }
+                                        } */}
                                     </Tr>
                                 )
                             }
@@ -229,7 +229,7 @@ export const ListofIssues = () => {
                 </Stack>
             </Flex>
 
-            {
+            {/* {
                 isStatus && (
                     <StatusConfirmation
                         isOpen={isStatus}
@@ -238,7 +238,7 @@ export const ListofIssues = () => {
                         fetchIssues={fetchIssues}
                     />
                 )
-            }
+            } */}
 
             {
                 isView && (

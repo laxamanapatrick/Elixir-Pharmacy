@@ -78,7 +78,8 @@ export const ListofOrders = ({ setCurrentPage, currentPage, pagesCount,
     useEffect(() => {
         orders.map((item) => {
             setTransactId(item.id)
-            if (item.stockOnHand < item.quantityOrder || item.days < 0) {
+            // || item.days < 0
+            if (item.stockOnHand < item.quantityOrder) {
                 setDisableIfStock(true)
             }
             else {
