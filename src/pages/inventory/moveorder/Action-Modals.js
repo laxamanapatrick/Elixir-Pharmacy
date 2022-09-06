@@ -280,3 +280,73 @@ export const DeliveryStatusConfirmation = ({ isOpen, onClose, deliveryStatus, or
         </>
     )
 }
+
+
+//Cancel Approved Date
+export const CancelApprovedDate = ({ isOpen, onClose, id, fetchApprovedMoveOrders }) => {
+
+    const toast = useToast()
+    const [isLoading, setIsLoading] = useState(false)
+
+    const submitHandler = () => {
+        setIsLoading(true)
+        console.log(id)
+        // try {
+        //     const res = apiClient.put(`Ordering/CancelPreparedItems`, { id: id })
+        //         .then(res => {
+        //             ToastComponent("Success", "Successfully cancelled approved date", "success", toast)
+        //             setOrderId('')
+        //             fetchApprovedMoveOrders()
+        //             setIsLoading(false)
+        //             onClose()
+        //         })
+        //         .catch(err => {
+        //             ToastComponent("Error", "Cancel failed", "error", toast)
+        //             setIsLoading(false)
+        //         })
+        // } catch (error) {
+        // }
+    }
+
+    return (
+        <>
+            <Modal isOpen={isOpen} onClose={() => { }} size='xl' isCentered>
+                <ModalContent>
+                    <ModalHeader>
+                        <Flex justifyContent='center'>
+                            <RiQuestionnaireLine fontSize='35px' />
+                        </Flex>
+                    </ModalHeader>
+                    <ModalCloseButton onClick={onClose} />
+
+                    <ModalBody>
+                        <VStack justifyContent='center'>
+                            <Text>Are you sure you want to cancel this approved date for re-scheduling?</Text>
+                        </VStack>
+                    </ModalBody>
+
+                    <ModalFooter mt={10}>
+                        <ButtonGroup size='sm' mt={3}>
+                            <Button
+                                onClick={submitHandler}
+                                isLoading={isLoading}
+                                disabled={isLoading}
+                                colorScheme='blue' px={4}
+                            >
+                                Yes
+                            </Button>
+                            <Button
+                                onClick={onClose}
+                                isLoading={isLoading}
+                                disabled={isLoading}
+                                colorScheme='red' px={4}
+                            >
+                                No
+                            </Button>
+                        </ButtonGroup>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+        </>
+    )
+}

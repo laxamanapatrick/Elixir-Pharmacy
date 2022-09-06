@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Badge, Button, Flex, HStack, Select, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from '@chakra-ui/react'
+import { Badge, Button, Flex, HStack, Select, Table, Tbody, Td, Text, Th, Thead, Tr, useDisclosure, VStack } from '@chakra-ui/react'
 import {
     Pagination,
     usePagination,
@@ -14,6 +14,7 @@ import { VscCircleLargeFilled } from 'react-icons/vsc'
 import { GoArrowSmallRight } from 'react-icons/go'
 import { FaSort } from 'react-icons/fa'
 import moment from 'moment'
+import { CancelApprovedDate } from './Action-Modals'
 
 export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage, fetchApprovedMoveOrders, lengthIndicator,
     setCurrentPage, setItemCode, setWarehouseId, setHighlighterId, setOrderId, orderId, setDeliveryStatus, buttonChanger }) => {
@@ -77,6 +78,14 @@ export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage
     }
     //Sort by date end line
 
+    const { isOpen: isCancel, onOpen: openCancel, onClose: closeCancel } = useDisclosure()
+    const cancelHandler = (id) => {
+        if (id) {
+            setOrderId(id)
+            openCancel()
+        }
+    }
+
     return (
         <Flex w='full' flexDirection='column'>
             <Flex w='full' justifyContent='space-between'>
@@ -137,7 +146,6 @@ export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage
                                 <Th color='white'>Customer Name</Th>
                                 <Th color='white'>Category</Th>
                                 <Th color='white'>Total Quantity Order</Th>
-                                {/* <Th color='white'>Order Date</Th> */}
                                 <Th color='white'>
                                     <HStack>
                                         <Text>Prepared Date</Text>
@@ -149,6 +157,7 @@ export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage
                                         </Button>
                                     </HStack>
                                 </Th>
+                                {/* <Th color='white'>Cancel</Th> */}
                             </Tr>
                         </Thead>
                         <Tbody>
@@ -173,14 +182,14 @@ export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage
                                             <Td>{order.farm}</Td>
                                             <Td>{order.category}</Td>
                                             <Td>{order.totalOrders}</Td>
-                                            {/* <Td>{order.orderDate}</Td> */}
-                                            {/* <Td>{order.dateNeeded}</Td> */}
                                             <Td>{moment(order.preparedDate).format("MM/DD/yyyy")}</Td>
                                             {/* <Td>
-                                            {order.isReject ?
-                                                <VscCircleLargeFilled color='red' /> : <VscCircleLargeFilled color='green' />
-                                            }
-                                        </Td> */}
+                                                <Button size='xs' colorScheme='red'
+                                                    onClick={() => cancelHandler(order.id)}
+                                                >
+                                                    Cancel
+                                                </Button>
+                                            </Td> */}
                                         </Tr>
                                     )
                             }
@@ -188,6 +197,17 @@ export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage
                     </Table>
                 </PageScrollReusable>
             </VStack>
+
+            {
+                isCancel && (
+                    <CancelApprovedDate
+                        isOpen={isCancel}
+                        onClose={closeCancel}
+                        id={orderId} setOrderId={setOrderId}
+                        fetchApprovedMoveOrders={fetchApprovedMoveOrders}
+                    />
+                )
+            }
 
         </Flex>
     )
