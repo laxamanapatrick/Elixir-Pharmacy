@@ -162,7 +162,7 @@ export const ApproveModal = ({ isOpen, onClose, orderNo, fetchForApprovalMO, pri
         <PageScrollReusable minHeight='150px' maxHeight='300px'>
           <VStack spacing={20} w='93%' ml={3} ref={componentRef}>
             {/* Survey Form */}
-            <Flex w='full' mb='295px' p={5} flexDirection='column'>
+            <Flex w='full' mb='510px' p={5} flexDirection='column'>
 
               <HStack w='full' border='1px'>
                 <Image
@@ -170,7 +170,7 @@ export const ApproveModal = ({ isOpen, onClose, orderNo, fetchForApprovalMO, pri
                   w='18%' ml={3}
                 />
 
-                <VStack mt={10} spacing={0} w='full'>
+                <VStack mt={5} spacing={0} w='full'>
                   <Text fontWeight='semibold' fontSize='md' textAlign='center' w='full' borderLeft='1px' borderBottom='1px'>Form</Text>
                   <Text fontWeight='semibold' fontSize='lg' textAlign='center' w='full' borderLeft='1px' borderBottom='1px'>Customer Survey</Text>
                   <Flex w='full' justifyContent='space-between'>
@@ -198,14 +198,14 @@ export const ApproveModal = ({ isOpen, onClose, orderNo, fetchForApprovalMO, pri
                 </VStack>
               </HStack>
 
-              <HStack mt={3} spacing={20}>
+              <HStack spacing={20}>
                 <Text fontWeight='semibold' fontSize='xs'>Evaluated Unit: _____________________ Pharmacy</Text>
                 <Text fontWeight='semibold' fontSize='xs'>Date: _______________________________</Text>
                 <Text fontSize='xs' fontWeight='semibold'>Order ID: {orderNo && orderNo}</Text>
 
               </HStack>
 
-              <Table mt={4} variant='unstyled'>
+              <Table variant='unstyled' size='sm'>
                 <Thead border='1px'>
                   <Tr>
                     <Th textAlign='center' borderRight='1px'>Service Level</Th>
@@ -242,13 +242,13 @@ export const ApproveModal = ({ isOpen, onClose, orderNo, fetchForApprovalMO, pri
                 </Tbody>
               </Table>
 
-              <Flex w='full' justifyContent='end' mt={5}>
+              <Flex w='full' justifyContent='end' mt={2}>
                 <Text fontWeight='semibold' fontSize='xs'>Evaluated By: __________________________________________</Text>
               </Flex>
 
             </Flex>
             {/* MO Slip */}
-            <Flex w='full' p={5} flexDirection='column' ref={componentRef}>
+            <Flex w='full' mt={2} p={5} flexDirection='column' ref={componentRef}>
 
               <Flex spacing={0} justifyContent='start' flexDirection='column'>
                 <Image
@@ -275,36 +275,34 @@ export const ApproveModal = ({ isOpen, onClose, orderNo, fetchForApprovalMO, pri
                 </Flex>
               </Flex>
 
-              <Flex>
-                <Table size='sm'>
-                  <Thead bgColor='secondary'>
-                    <Tr>
-                      <Th color='white'>ITEM CODE</Th>
-                      <Th color='white'>ITEM DESCRIPTION</Th>
-                      <Th color='white'>UOM</Th>
-                      <Th color='white'>QUANTITY</Th>
-                      <Th color='white'>ACTUAL QTY RECEIVED</Th>
-                      <Th color='white'>EXPIRATION DATE</Th>
-                    </Tr>
-                  </Thead>
-                  <Tbody>
-                    {
-                      printData?.map((item, i) =>
-                        <Tr borderX='1px' borderBottom='1px' key={i}>
-                          <Td>{item.itemCode}</Td>
-                          <Td>{item.itemDescription}</Td>
-                          <Td>{item.uom}</Td>
-                          <Td>{item.quantity}</Td>
-                          <Td></Td>
-                          <Td>{moment(item.expiration).format("MM/DD/yyyy")}</Td>
-                        </Tr>
-                      )
-                    }
-                  </Tbody>
-                </Table>
-              </Flex>
+              <Table size='sm'>
+                <Thead bgColor='secondary'>
+                  <Tr>
+                    <Th color='white'>ITEM CODE</Th>
+                    <Th color='white'>ITEM DESCRIPTION</Th>
+                    <Th color='white'>UOM</Th>
+                    <Th color='white'>QUANTITY</Th>
+                    <Th color='white'>ACTUAL QTY RECEIVED</Th>
+                    <Th color='white'>EXPIRATION DATE</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {
+                    printData?.map((item, i) =>
+                      <Tr borderX='1px' borderBottom='1px' key={i}>
+                        <Td>{item.itemCode}</Td>
+                        <Td>{item.itemDescription}</Td>
+                        <Td>{item.uom}</Td>
+                        <Td>{item.quantity}</Td>
+                        <Td></Td>
+                        <Td>{moment(item.expiration).format("MM/DD/yyyy")}</Td>
+                      </Tr>
+                    )
+                  }
+                </Tbody>
+              </Table>
 
-              <Flex justifyContent='space-between' mb={5}>
+              <Flex justifyContent='space-between' mb={5} mt={2}>
                 <HStack>
                   <Text>Delivery Status:</Text>
                   <Text textDecoration='underline'>

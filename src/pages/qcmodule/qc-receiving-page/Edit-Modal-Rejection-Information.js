@@ -137,18 +137,20 @@ export const EditModalComponentRejectionInfo = ({ receivingId, sumQuantity }) =>
     return (
         <Box>
 
-            <Accordion allowToggle>
+            <Accordion allowToggle defaultIndex={[0]}>
                 <AccordionItem>
 
                     <Flex justifyContent='space-between' mb={2} p={0.5} color='white' bgColor='secondary'>
 
-                        <AccordionButton justifyContent='center' p={0} onClick={() => setShowAddRow(true)}>
+                        <AccordionButton justifyContent='center' p={0} 
+                        // onClick={() => setShowAddRow(true)}
+                        >
                             <Text>REJECTION INFORMATION <AccordionIcon /></Text>
                             <Flex p={0} m={0}></Flex>
                         </AccordionButton>
 
-                        {
-                            !showAddRow ? "" :
+                        {/* {
+                            !showAddRow ? "" : */}
                                 <Button
                                     onClick={addNewRowHandler}
                                     bgColor='#3C8DBC'
@@ -160,7 +162,7 @@ export const EditModalComponentRejectionInfo = ({ receivingId, sumQuantity }) =>
                                 >
                                     Add Rejection
                                 </Button>
-                        }
+                        {/* // } */}
 
                     </Flex>
 

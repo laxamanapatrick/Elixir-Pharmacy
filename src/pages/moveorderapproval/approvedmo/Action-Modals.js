@@ -292,7 +292,7 @@ export const PrintModal = ({ isOpen, onClose, printData, closeApprove, fetchAppr
                         <PageScrollReusable minHeight='150px' maxHeight='300px'>
                             <VStack spacing={20} w='93%' ml={3} ref={componentRef}>
                                 {/* Survey Form */}
-                                <Flex w='full' mb='305px' p={5} flexDirection='column'>
+                                <Flex w='full' mb='500px' p={5} flexDirection='column'>
 
                                     <HStack w='full' border='1px'>
                                         <Image
@@ -300,7 +300,7 @@ export const PrintModal = ({ isOpen, onClose, printData, closeApprove, fetchAppr
                                             w='18%' ml={3}
                                         />
 
-                                        <VStack mt={10} spacing={0} w='full'>
+                                        <VStack mt={5} spacing={0} w='full'>
                                             <Text fontWeight='semibold' fontSize='md' textAlign='center' w='full' borderLeft='1px' borderBottom='1px'>Form</Text>
                                             <Text fontWeight='semibold' fontSize='lg' textAlign='center' w='full' borderLeft='1px' borderBottom='1px'>Customer Survey</Text>
                                             <Flex w='full' justifyContent='space-between'>
@@ -328,13 +328,13 @@ export const PrintModal = ({ isOpen, onClose, printData, closeApprove, fetchAppr
                                         </VStack>
                                     </HStack>
 
-                                    <HStack mt={3} spacing={20}>
+                                    <HStack spacing={20}>
                                         <Text fontWeight='semibold' fontSize='xs'>Evaluated Unit: _____________________ Pharmacy</Text>
                                         <Text fontWeight='semibold' fontSize='xs'>Date: _______________________________</Text>
                                         <Text fontSize='xs' fontWeight='semibold'>Order ID: {orderId && orderId}</Text>
                                     </HStack>
 
-                                    <Table mt={4} variant='unstyled'>
+                                    <Table variant='unstyled' size='sm'>
                                         <Thead border='1px'>
                                             <Tr>
                                                 <Th textAlign='center' borderRight='1px'>Service Level</Th>
@@ -371,7 +371,7 @@ export const PrintModal = ({ isOpen, onClose, printData, closeApprove, fetchAppr
                                         </Tbody>
                                     </Table>
 
-                                    <Flex w='full' justifyContent='end' mt={5}>
+                                    <Flex w='full' justifyContent='end' mt={2}>
                                         <Text fontWeight='semibold' fontSize='xs'>Evaluated By: __________________________________________</Text>
                                     </Flex>
 

@@ -129,13 +129,13 @@ const ScannedModalRejection = ({ quantity, remarks, sumQuantity, receivingId, ac
         ))
     }
 
-    const addRowVisibility = (data) => {
-        if (data === true) {
-            setShowAddRow(true)
-        } else {
-            setShowAddRow(false)
-        }
-    }
+    // const addRowVisibility = (data) => {
+    //     if (data === true) {
+    //         setShowAddRow(true)
+    //     } else {
+    //         setShowAddRow(false)
+    //     }
+    // }
 
     const quantityHandler = (data) => {
         if (data) {
@@ -153,18 +153,20 @@ const ScannedModalRejection = ({ quantity, remarks, sumQuantity, receivingId, ac
     return (
         <Box>
 
-            <Accordion allowToggle>
+            <Accordion allowToggle defaultIndex={[0]}>
                 <AccordionItem>
 
                     <Flex justifyContent='center' mb={2} p={0.5} color='white' bgColor='secondary'>
 
-                        <AccordionButton justifyContent='center' p={0} onClick={() => addRowVisibility(true)}>
+                        <AccordionButton justifyContent='center' p={0}
+                        // onClick={() => addRowVisibility(true)}
+                        >
                             <Text>REJECTION INFORMATION <AccordionIcon /></Text>
                             <Flex p={0} m={0}></Flex>
                         </AccordionButton>
 
-                        {
-                            !showAddRow ? "" :
+                        {/* {
+                            !showAddRow ? "" : */}
                                 <Button
                                     onClick={addNewRowHandler}
                                     bgColor='#3C8DBC'
@@ -176,7 +178,7 @@ const ScannedModalRejection = ({ quantity, remarks, sumQuantity, receivingId, ac
                                 >
                                     Add Rejection
                                 </Button>
-                        }
+                        {/* // } */}
 
                     </Flex>
 

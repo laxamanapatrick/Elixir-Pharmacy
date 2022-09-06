@@ -65,7 +65,7 @@ export const MRPTable = ({ mrpData, setSelectorId, selectorId, setRawMatsInfo, p
                     />
                     <Input
                         onChange={(e) => searchHandler(e.target.value)}
-                        type='text' placeholder='Search: Item Code'
+                        type='text' placeholder='Search: Item Description'
                         focusBorderColor='accent'
                     />
                 </InputGroup>
