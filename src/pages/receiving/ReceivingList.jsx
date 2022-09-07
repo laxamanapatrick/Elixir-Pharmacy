@@ -29,9 +29,10 @@ import { Pagination, PaginationContainer, PaginationNext, PaginationPage, Pagina
 const currentUser = decodeUser()
 
 const fetchReceivingListApi = async (pageNumber, pageSize, search) => {
-  const res = await apiClient.get(`Warehouse/GetAllListForWarehouseWithPaginationOrig?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${search}`)
+  const res = await apiClient.get(`Receiving/GetAllAvailableForWarehouseReceivingWithPaginationOrig?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${search}`)
   return res.data
 }
+// Warehouse/GetAllListForWarehouseWithPaginationOrig
 
 const ReceivingList = () => {
 
@@ -93,7 +94,7 @@ const ReceivingList = () => {
               pointerEvents='none'
               children={<FaSearch color='gray.300' />}
             />
-            <Input type='text' placeholder='Search: Item Code'
+            <Input type='text' placeholder='Search: PO Number'
               onChange={(e) => searchHandler(e.target.value)}
               focusBorderColor='accent'
             />

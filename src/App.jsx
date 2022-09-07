@@ -78,6 +78,7 @@ import FarmPage from './pages/setup/customermanagement/FarmPage';
 import SupplierPage from './pages/setup/SupplierPage'
 import TransformationManagementPage from './pages/setup/TransformationManagementPage'
 import ReasonPage from './pages/setup/ReasonPage'
+import TransactionTypePage from './pages/setup/TransactionTypePage';
 
 import MoveOrderApproval from './pages/MoveOrderApproval';
 import ForApprovalMO from './pages/moveorderapproval/For-ApprovalMO';
@@ -243,6 +244,7 @@ function App() {
             <Route path="supplier" element={user ? <SupplierPage /> : <Navigate to="/login" />} />
             <Route path="t-management" element={user ? <TransformationManagementPage /> : <Navigate to="/login" />} />
             <Route path="reason" element={user ? <ReasonPage /> : <Navigate to="/login" />} />
+            <Route path="transaction-type" element={user ? <TransactionTypePage /> : <Navigate to="/login" />} />
           </Route>
 
           <Route path="move-order-approval" element={user ? <MoveOrderApproval notification={notification} fetchNotification={fetchNotification} /> : <Navigate to='/login' />}>

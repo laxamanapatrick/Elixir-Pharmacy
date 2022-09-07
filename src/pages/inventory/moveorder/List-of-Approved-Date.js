@@ -157,7 +157,7 @@ export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage
                                         </Button>
                                     </HStack>
                                 </Th>
-                                {/* <Th color='white'>Cancel</Th> */}
+                                <Th color='white'>Cancel</Th>
                             </Tr>
                         </Thead>
                         <Tbody>
@@ -183,13 +183,13 @@ export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage
                                             <Td>{order.category}</Td>
                                             <Td>{order.totalOrders}</Td>
                                             <Td>{moment(order.preparedDate).format("MM/DD/yyyy")}</Td>
-                                            {/* <Td>
+                                            <Td>
                                                 <Button size='xs' colorScheme='red'
                                                     onClick={() => cancelHandler(order.id)}
                                                 >
                                                     Cancel
                                                 </Button>
-                                            </Td> */}
+                                            </Td>
                                         </Tr>
                                     )
                             }

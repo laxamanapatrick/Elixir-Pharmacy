@@ -2,12 +2,27 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Button, ButtonGroup, Flex, HStack, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Select, Spinner, Text, useDisclosure, VStack } from '@chakra-ui/react'
 import { AddConfirmation } from './Action-Modal'
 import moment from 'moment'
+import apiClient from '../../../services/apiClient'
 
 export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, details, setDetails, customerRef,
     customers, rawMats, uoms, expiryDates, setSelectorId, setCustomerData, setWarehouseId, warehouseId, fetchActiveMiscIssues, customerData, remarks, setRemarks, remarksRef
 }) => {
 
     const { isOpen: isModal, onClose: closeModal, onOpen: openModal } = useDisclosure()
+
+    const [transactions, setTransactions] = useState([])
+    const fetchTransactionTypeApi = async () => {
+        const res = await apiClient.get(`Transaction/GetAllActiveTransactionName`)
+        return res.data
+    }
+    const fetchTransactionType = () => {
+        fetchTransactionTypeApi().then(res => {
+            setTransactions(res)
+        })
+    }
+    useEffect(() => {
+        fetchTransactionType()
+    }, [])
 
     const detailHandler = (data) => {
         if (data) {
@@ -82,14 +97,18 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, details, 
                         {/* Remarks */}
                         <HStack w='full'>
                             <Text minW='50%' w='auto' bgColor='secondary' color='white' pl={2} py={2.5} fontSize='xs'>Transaction Type: </Text>
-                            <Select
-                                onChange={(e) => setRemarks(e.target.value)}
-                                ref={remarksRef}
-                                w='full' placeholder=' ' bgColor='#fff8dc'
-                            >
-                                <option value='Finance Adjustments'>Adjustment</option>
-                                <option value='Pharmacy Accounting'>Transfer</option>
-                            </Select>
+
+                            {
+                                transactions.length > 0 ? (<Select
+                                    onChange={(e) => setRemarks(e.target.value)}
+                                    placeholder=' ' bgColor='#fff8dc'>
+                                    {transactions?.map(tt => (
+                                        <option key={tt.id} value={tt.transactionName}>{tt.transactionName}</option>
+                                    ))}
+
+                                </Select>) : "loading"
+                            }
+
                         </HStack>
 
                     </VStack>

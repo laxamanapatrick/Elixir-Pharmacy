@@ -283,7 +283,7 @@ export const DeliveryStatusConfirmation = ({ isOpen, onClose, deliveryStatus, or
 
 
 //Cancel Approved Date
-export const CancelApprovedDate = ({ isOpen, onClose, id, fetchApprovedMoveOrders }) => {
+export const CancelApprovedDate = ({ isOpen, onClose, id, setOrderId, fetchApprovedMoveOrders }) => {
 
     const toast = useToast()
     const [isLoading, setIsLoading] = useState(false)
@@ -291,21 +291,21 @@ export const CancelApprovedDate = ({ isOpen, onClose, id, fetchApprovedMoveOrder
     const submitHandler = () => {
         setIsLoading(true)
         console.log(id)
-        // try {
-        //     const res = apiClient.put(`Ordering/CancelPreparedItems`, { id: id })
-        //         .then(res => {
-        //             ToastComponent("Success", "Successfully cancelled approved date", "success", toast)
-        //             setOrderId('')
-        //             fetchApprovedMoveOrders()
-        //             setIsLoading(false)
-        //             onClose()
-        //         })
-        //         .catch(err => {
-        //             ToastComponent("Error", "Cancel failed", "error", toast)
-        //             setIsLoading(false)
-        //         })
-        // } catch (error) {
-        // }
+        try {
+            const res = apiClient.put(`Ordering/CancelOrdersInMoveOrder`, { orderNoPkey: id })
+                .then(res => {
+                    ToastComponent("Success", "Successfully cancelled approved date", "success", toast)
+                    setOrderId('')
+                    fetchApprovedMoveOrders()
+                    setIsLoading(false)
+                    onClose()
+                })
+                .catch(err => {
+                    ToastComponent("Error", "Cancel failed", "error", toast)
+                    setIsLoading(false)
+                })
+        } catch (error) {
+        }
     }
 
     return (
