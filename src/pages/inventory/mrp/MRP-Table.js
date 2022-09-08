@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Button, Flex, HStack, Input, InputGroup, InputLeftElement, Select, Stack, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
+import React, { useRef, useState } from 'react'
+import { Button, ButtonGroup, Flex, HStack, Input, InputGroup, InputLeftElement, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Select, Stack, Table, Tbody, Td, Text, Th, Thead, Tr, useDisclosure } from '@chakra-ui/react'
 import {
     Pagination,
     PaginationNext,
@@ -12,6 +12,8 @@ import PageScrollReusable from '../../../components/PageScroll-Reusable'
 import { BiRightArrow } from 'react-icons/bi'
 import { FaSearch } from 'react-icons/fa'
 import { CgDanger } from 'react-icons/cg'
+import { AiOutlinePrinter } from 'react-icons/ai'
+import { useReactToPrint } from 'react-to-print';
 
 export const MRPTable = ({ mrpData, setSelectorId, selectorId, setRawMatsInfo, pagesCount, pages, currentPage, setCurrentPage, setPageSize, setSearch }) => {
 
@@ -55,6 +57,11 @@ export const MRPTable = ({ mrpData, setSelectorId, selectorId, setRawMatsInfo, p
         }
     }
 
+    const { isOpen: isPrint, onOpen: openPrint, onClose: closePrint } = useDisclosure()
+    const printMRPHandler = () => {
+        openPrint()
+    }
+
     return (
         <Flex w='full' justifyContent='center' flexDirection='column'>
             <Flex justifyContent='space-between' mb={1}>
@@ -68,7 +75,14 @@ export const MRPTable = ({ mrpData, setSelectorId, selectorId, setRawMatsInfo, p
                         type='text' placeholder='Search: Item Description'
                         focusBorderColor='accent'
                     />
+                    <Button ml={3} bgColor='secondary'
+                        _hover={{ bgColor: 'accent' }}
+                        onClick={printMRPHandler}
+                    >
+                        <AiOutlinePrinter color='white' fontSize='25px' />
+                    </Button>
                 </InputGroup>
+
                 <Button
                     onClick={() => setButtonChanger(!buttonChanger)}
                     size='xs' px={5} colorScheme='blue'
@@ -76,6 +90,8 @@ export const MRPTable = ({ mrpData, setSelectorId, selectorId, setRawMatsInfo, p
                     {buttonChanger ? '<< Previous' : 'Next >>'}
                 </Button>
             </Flex>
+
+
             <PageScrollReusable minHeight='617px' maxHeight='618px'>
                 <Table size='sm'>
                     <Thead bgColor='secondary'>
@@ -209,6 +225,116 @@ export const MRPTable = ({ mrpData, setSelectorId, selectorId, setRawMatsInfo, p
                 </Stack>
             </Flex>
 
+            {
+                isPrint && (
+                    <PrintModal
+                        isOpen={isPrint}
+                        onClose={closePrint}
+                        mrpData={mrpData}
+                    />
+                )
+            }
+
         </Flex>
+    )
+}
+
+const PrintModal = ({ isOpen, onClose, mrpData }) => {
+
+    const componentRef = useRef()
+
+    const handlePrint = useReactToPrint({
+        content: () => componentRef.current,
+    })
+
+    return (
+        <>
+            <Modal isOpen={isOpen} onClose={() => { }} isCentered size='6xl'>
+                <ModalContent>
+                    <ModalHeader>
+                        <Flex justifyContent='center'>Print MRP Data</Flex>
+                    </ModalHeader>
+                    <ModalCloseButton onClick={onClose} />
+
+                    <ModalBody mt={5}>
+                        <PageScrollReusable minHeight='617px' maxHeight='618px'>
+                            <Table size='sm' variant='simple' ref={componentRef}>
+                                <Thead bgColor='secondary'>
+                                    <Tr>
+                                        {/* <Th p={0} color='white'></Th> */}
+                                        <Th p={0} color='white'></Th>
+                                        {/* <Th color='white'>Line</Th> */}
+                                        <Th color='white'>Item Code</Th>
+                                        <Th color='white'>Item Description</Th>
+                                        <Th color='white'>Item Category</Th>
+                                        <Th color='white'>UOM</Th>
+                                        {/* <Th color='white'>Price</Th> */}
+                                        {/* <Th color='white'>Total Price</Th> */}
+                                        <Th color='white'>SOH</Th>
+                                        <Th color='white'>Reserve</Th>
+                                        <Th color='white'>Reserve Usage</Th>
+                                        <Th color='white'>Buffer Level</Th>
+                                        {/* <Th color='white'>Transform From</Th> */}
+                                        {/* <Th color='white'>Transform To</Th> */}
+                                        {/* <Th color='white'>{`Receive (IN)`}</Th> */}
+                                        {/* <Th color='white'>{`Receipt (IN)`}</Th> */}
+                                        {/* <Th color='white'>{`Move Order (OUT)`}</Th> */}
+                                        {/* <Th color='white'>{`Issue (OUT)`}</Th> */}
+                                        {/* <Th color='white'>QA Receiving</Th> */}
+                                        {/* <Th color='white'>Last Used</Th>
+                                        <Th color='white'>Movement Status</Th>
+                                        <Th color='white'>Classification ABC</Th> */}
+                                        {/* <Th color='white'>Suggested PO</Th> */}
+                                        {/* <Th color='white'>Average Issuance</Th> */}
+                                        {/* <Th color='white'>Days Level</Th> */}
+                                    </Tr>
+                                </Thead>
+                                <Tbody>
+                                    {
+                                        mrpData?.inventory?.map((item, i) =>
+                                            <Tr key={i}>
+                                                {/* <Td p={0}></Td> */}
+                                                <Td>{item.bufferLevel > item.reserve ? <CgDanger color='red' /> : ''}</Td>
+                                                {/* <Td>{i + 1}</Td> */}
+                                                <Td>{item.itemCode}</Td>
+                                                <Td>{item.itemDescription}</Td>
+                                                <Td>{item.itemCategory}</Td>
+                                                <Td>{item.uom}</Td>
+                                                {/* <Td>{item.price?.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td> */}
+                                                {/* <Td>{item.totalPrice?.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td> */}
+                                                <Td>{item.soh?.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                                                <Td>{item.reserve?.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                                                <Td>{item.reserveUsage?.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                                                <Td>{item.bufferLevel?.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                                                {/* <Td>{item.transformFrom?.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td> */}
+                                                {/* <Td>{item.transformTo?.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td> */}
+                                                {/* <Td>{item.receiveIn?.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td> */}
+                                                {/* <Td>{item.receiptIn?.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td> */}
+                                                {/* <Td>{item.moveOrderOut?.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td> */}
+                                                {/* <Td>{item.issueOut?.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td> */}
+                                                {/* <Td>{item.qcReceiving?.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td> */}
+                                                {/* <Td>{`Last Used`}</Td>
+                                                <Td>{`Movement Status`}</Td>
+                                                <Td>{`Classification ABC`}</Td> */}
+                                                {/* <Td>{item.suggestedPo?.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td> */}
+                                                {/* <Td>{item.averageIssuance?.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td> */}
+                                                {/* <Td>{item.daysLevel?.toLocaleString()}</Td> */}
+                                            </Tr>
+                                        )
+                                    }
+                                </Tbody>
+                            </Table>
+                        </PageScrollReusable>
+                    </ModalBody>
+
+                    <ModalFooter mt={7}>
+                        <ButtonGroup size='sm'>
+                            <Button colorScheme='blue' onClick={handlePrint}>Print</Button>
+                            <Button variant='ghost' onClick={onClose}>Close</Button>
+                        </ButtonGroup>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+        </>
     )
 }

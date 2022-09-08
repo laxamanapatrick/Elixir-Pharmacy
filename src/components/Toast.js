@@ -11,5 +11,3 @@ export const ToastComponent = (title, message, type, toast) => {
         isClosable: true,
     });
 };
-
-
