@@ -44,9 +44,9 @@ export const CancelledOrders = ({ dateFrom, dateTo, sample }) => {
                                 <Th color='white'>Item Code</Th>
                                 <Th color='white'>Item Description</Th>
                                 <Th color='white'>Quantity Ordered</Th>
+                                <Th color='white'>Reason</Th>
                                 <Th color='white'>Cancelled Date</Th>
                                 <Th color='white'>Cancelled By</Th>
-                                <Th color='white'>Reason</Th>
                             </Tr>
                         </Thead>
                         <Tbody>
@@ -61,9 +61,9 @@ export const CancelledOrders = ({ dateFrom, dateTo, sample }) => {
                                         <Td>{item.itemCode}</Td>
                                         <Td>{item.itemDescription}</Td>
                                         <Td>{item.quantityOrdered}</Td>
+                                        <Td>{item.reason}</Td>
                                         <Td>{moment(item.cancelledDate).format('yyyy-MM-DD')}</Td>
                                         <Td>{item.cancelledBy}</Td>
-                                        <Td>{item.reason}</Td>
                                     </Tr>
                                 )
                             }

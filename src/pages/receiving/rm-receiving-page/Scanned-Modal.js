@@ -216,7 +216,7 @@ const ScannedModal = ({ receivingId, itemCodeData, setReceivingDate,
 
                     <Flex justifyContent='space-between'>
                         <FormLabel w='40%'>
-                            Actual Delivered
+                            Actual Delivery
                             <Input
                                 {...register("displayData.expectedDelivery")}
                                 readOnly={true}
