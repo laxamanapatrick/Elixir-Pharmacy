@@ -75,19 +75,19 @@ export const ListofOrders = ({ setCurrentPage, currentPage, pagesCount,
     }
 
     //Buton disable for out of stock and backdated date needed
-    useEffect(() => {
-        orders.map((item) => {
-            setTransactId(item.id)
-            // || item.days < 0
-            if (item.stockOnHand < item.quantityOrder) {
-                setDisableIfStock(true)
-            }
-            else {
-                setDisableIfStock(false)
-            }
-        }
-        )
-    }, [orders])
+    // useEffect(() => {
+    //     orders.map((item) => {
+    //         setTransactId(item.id)
+    //         // || item.days < 0
+    //         if (item.stockOnHand < item.quantityOrder) {
+    //             setDisableIfStock(true)
+    //         }
+    //         else {
+    //             setDisableIfStock(false)
+    //         }
+    //     }
+    //     )
+    // }, [orders])
 
     //refetch if data length === 0
     useEffect(() => {
@@ -264,9 +264,14 @@ export const ListofOrders = ({ setCurrentPage, currentPage, pagesCount,
                         title={
                             !checkedItems?.length > 0 ?
                                 disableIfStock ? "Stocks must be available" : "Please select an order to schedule"
-                                : !checkedItems?.length > 0 || disableIfStock ? "Stocks must be available" : "Schedule order(s)"
+                                :
+                                !checkedItems?.length > 0 || disableIfStock ? "Stocks must be available" : "Schedule order(s)"
                         }
-                        disabled={!checkedItems?.length > 0 || disableIfStock}
+                        disabled={
+                            !checkedItems?.length > 0
+                            ||
+                            disableIfStock
+                        }
                         size='sm' px={3} colorScheme='blue'
                     >
                         Schedule

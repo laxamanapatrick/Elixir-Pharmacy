@@ -205,6 +205,7 @@ const MoveOrderPage = ({ notification, fetchNotification }) => {
           buttonChanger={buttonChanger}
           fetchApprovedMoveOrders={fetchApprovedMoveOrders}
           lengthIndicator={lengthIndicator}
+          preparedLength={preparedData?.length}
         />
         {
           orderId ?

@@ -17,7 +17,7 @@ import moment from 'moment'
 import { CancelApprovedDate } from './Action-Modals'
 
 export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage, fetchApprovedMoveOrders, lengthIndicator,
-    setCurrentPage, setItemCode, setWarehouseId, setHighlighterId, setOrderId, orderId, setDeliveryStatus, buttonChanger }) => {
+    setCurrentPage, setItemCode, setWarehouseId, setHighlighterId, setOrderId, orderId, setDeliveryStatus, buttonChanger, preparedLength }) => {
 
     const handlePageChange = (nextPage) => {
         setCurrentPage(nextPage)
@@ -186,6 +186,8 @@ export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage
                                             <Td>
                                                 <Button size='xs' colorScheme='red'
                                                     onClick={() => cancelHandler(order.id)}
+                                                    disabled={preparedLength > 0}
+                                                    title={preparedLength > 0 ? 'Please cancel all prepared items first' : ''}
                                                 >
                                                     Cancel
                                                 </Button>

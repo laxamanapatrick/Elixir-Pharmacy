@@ -40,7 +40,7 @@ export const ListofOrders = ({ genusOrders, fetchingData, setFromDate, setToDate
     })
 
     const dateVar = new Date()
-    const startDate = dateVar.setDate(dateVar.getDate() - 3)
+    const startDate = dateVar.setDate(dateVar.getDate() - 5)
 
     return (
         <Flex w='full' p={5} flexDirection='column'>
