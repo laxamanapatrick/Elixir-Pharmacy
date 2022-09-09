@@ -11,7 +11,7 @@ const fetchMiscellaneousIssueHistoryApi = async (dateFrom, dateTo) => {
   return res.data
 }
 
-export const MiscellaneousIssueHistory = ({ dateFrom, dateTo, sample }) => {
+export const MiscellaneousIssueHistory = ({ dateFrom, dateTo, sample, setSheetData }) => {
 
   const [miscIssueData, setMiscIssueData] = useState([])
   const [buttonChanger, setButtonChanger] = useState(true)
@@ -19,6 +19,7 @@ export const MiscellaneousIssueHistory = ({ dateFrom, dateTo, sample }) => {
   const fetchMiscellaneousIssueHistory = () => {
     fetchMiscellaneousIssueHistoryApi(dateFrom, dateTo, sample).then(res => {
       setMiscIssueData(res)
+      setSheetData(res)
     })
   }
 

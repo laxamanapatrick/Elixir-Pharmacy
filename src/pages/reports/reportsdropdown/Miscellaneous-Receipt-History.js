@@ -9,7 +9,7 @@ const fetchMiscellaenouseReceiptApi = async (dateFrom, dateTo) => {
   return res.data
 }
 
-export const MiscellaneousReceiptHistory = ({ dateFrom, dateTo, sample }) => {
+export const MiscellaneousReceiptHistory = ({ dateFrom, dateTo, sample, setSheetData }) => {
 
   const [miscReceiptData, setMiscReceiptData] = useState([])
   const [buttonChanger, setButtonChanger] = useState(true)
@@ -17,6 +17,7 @@ export const MiscellaneousReceiptHistory = ({ dateFrom, dateTo, sample }) => {
   const fetchMiscellaenouseReceipt = () => {
     fetchMiscellaenouseReceiptApi(dateFrom, dateTo, sample).then(res => {
       setMiscReceiptData(res)
+      setSheetData(res)
     })
   }
 

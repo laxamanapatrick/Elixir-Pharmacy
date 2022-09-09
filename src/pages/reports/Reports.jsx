@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import moment from 'moment'
-import { Badge, Flex, Input, Select } from '@chakra-ui/react'
+import * as XLSX from 'xlsx'
+import { Badge, Button, Flex, HStack, Input, Select } from '@chakra-ui/react'
 import { MiscellaneousIssueHistory } from './reportsdropdown/Miscellaneous-Issue-History'
 import { MiscellaneousReceiptHistory } from './reportsdropdown/Miscellaneous-Receipt-History'
 import { MoveOrderTransactionHistory } from './reportsdropdown/Move-Order-Transaction-History'
@@ -18,6 +19,25 @@ const Reports = () => {
     const [expiryDays, setExpiryDays] = useState(30)
 
     const [sample, setSample] = useState('')
+    const [sheetData, setSheetData] = useState([])
+
+    const navigationHandler = (data) => {
+        if (data) {
+            setSample(data)
+        } else {
+            setSample('')
+            setSheetData([])
+        }
+    }
+
+    const handleExport = () => {
+        var workbook = XLSX.utils.book_new(),
+            worksheet = XLSX.utils.json_to_sheet(sheetData)
+
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1")
+
+        XLSX.writeFile(workbook, "Elixir_Reports_ExportFile.xlsx")
+    }
 
     return (
         <>
@@ -30,20 +50,29 @@ const Reports = () => {
                             <Flex>
                                 <Badge>Report Name</Badge>
                             </Flex>
-                            <Select
-                                onChange={(e) => setSample(Number(e.target.value))}
-                                placeholder=' ' bgColor='#fff8dc' w='full'
-                            >
-                                <option value={1}>QC Receiving History</option>
-                                <option value={2}>Warehouse Receiving History</option>
-                                <option value={3}>Transformation Report History</option>
-                                <option value={4}>Move Order Transaction History</option>
-                                <option value={5}>Miscellaneous Issue History</option>
-                                <option value={6}>Miscellaneous Receipt History</option>
-                                <option value={7}>Transacted Move Orders</option>
-                                <option value={8}>Cancelled Orders</option>
-                                <option value={9}>Nearly Expiry Report</option>
-                            </Select>
+                            <HStack>
+                                <Select
+                                    onChange={(e) => navigationHandler(Number(e.target.value))}
+                                    placeholder=' ' bgColor='#fff8dc' w='full'
+                                >
+                                    <option value={1}>QC Receiving History</option>
+                                    <option value={2}>Warehouse Receiving History</option>
+                                    <option value={3}>Transformation Report History</option>
+                                    <option value={4}>Move Order Transaction History</option>
+                                    <option value={5}>Miscellaneous Issue History</option>
+                                    <option value={6}>Miscellaneous Receipt History</option>
+                                    <option value={7}>Transacted Move Orders</option>
+                                    <option value={8}>Cancelled Orders</option>
+                                    <option value={9}>Nearly Expiry Report</option>
+                                </Select>
+                                <Button
+                                    onClick={handleExport}
+                                    disabled={sheetData?.length === 0 || !sample}
+                                    size='xs'
+                                >
+                                    Export
+                                </Button>
+                            </HStack>
                         </Flex>
 
                         {/* Viewing Condition  */}
@@ -87,28 +116,28 @@ const Reports = () => {
                     <Flex w='full' mt={5} justifyContent='center'>
                         {
                             sample === 1 ?
-                                <QCReceivingHistory dateFrom={dateFrom} dateTo={dateTo} sample={sample} />
+                                <QCReceivingHistory dateFrom={dateFrom} dateTo={dateTo} sample={sample} setSheetData={setSheetData} />
                                 :
                                 sample === 2 ?
-                                    <WarehouseReceivingHistory dateFrom={dateFrom} dateTo={dateTo} sample={sample} />
+                                    <WarehouseReceivingHistory dateFrom={dateFrom} dateTo={dateTo} sample={sample} setSheetData={setSheetData} />
                                     :
                                     sample === 3 ?
-                                        <TransformationReportHistory dateFrom={dateFrom} dateTo={dateTo} sample={sample} />
+                                        <TransformationReportHistory dateFrom={dateFrom} dateTo={dateTo} sample={sample} setSheetData={setSheetData} />
                                         :
                                         sample === 4 ?
-                                            <MoveOrderTransactionHistory dateFrom={dateFrom} dateTo={dateTo} sample={sample} />
+                                            <MoveOrderTransactionHistory dateFrom={dateFrom} dateTo={dateTo} sample={sample} setSheetData={setSheetData} />
                                             :
                                             sample === 5 ?
-                                                <MiscellaneousIssueHistory dateFrom={dateFrom} dateTo={dateTo} sample={sample} />
+                                                <MiscellaneousIssueHistory dateFrom={dateFrom} dateTo={dateTo} sample={sample} setSheetData={setSheetData} />
                                                 :
                                                 sample === 6 ?
-                                                    <MiscellaneousReceiptHistory dateFrom={dateFrom} dateTo={dateTo} sample={sample} />
+                                                    <MiscellaneousReceiptHistory dateFrom={dateFrom} dateTo={dateTo} sample={sample} setSheetData={setSheetData} />
                                                     : sample === 7 ?
-                                                        <TransactedMoveOrders dateFrom={dateFrom} dateTo={dateTo} sample={sample} />
+                                                        <TransactedMoveOrders dateFrom={dateFrom} dateTo={dateTo} sample={sample} setSheetData={setSheetData} />
                                                         : sample === 8 ?
-                                                            <CancelledOrders sample={sample} dateFrom={dateFrom} dateTo={dateTo} />
+                                                            <CancelledOrders sample={sample} dateFrom={dateFrom} dateTo={dateTo} setSheetData={setSheetData} />
                                                             : sample === 9 ?
-                                                                <NearlyExpiryReports sample={sample} expiryDays={expiryDays} />
+                                                                <NearlyExpiryReports sample={sample} expiryDays={expiryDays} setSheetData={setSheetData} />
                                                                 : ''
                         }
                     </Flex>

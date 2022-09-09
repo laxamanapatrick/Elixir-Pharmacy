@@ -26,6 +26,8 @@ const MrpPage = () => {
 
   })
 
+  const [sheetData, setSheetData] = useState([])
+
   const [mrpData, setMrpData] = useState([])
   const [selectorId, setSelectorId] = useState('')
   const [rawMatsInfo, setRawMatsInfo] = useState({
@@ -40,6 +42,7 @@ const MrpPage = () => {
   const fetchMRP = () => {
     fetchMRPApi(currentPage, pageSize, search).then(res => {
       setMrpData(res)
+      setSheetData(res?.inventory)
       setPageTotal(res.totalCount)
     })
   }
@@ -66,6 +69,7 @@ const MrpPage = () => {
           setCurrentPage={setCurrentPage}
           setPageSize={setPageSize}
           setSearch={setSearch}
+          sheetData={sheetData}
         />
         {
           selectorId ?

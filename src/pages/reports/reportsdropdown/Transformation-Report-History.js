@@ -9,7 +9,7 @@ const fetchTransformationHistoryApi = async (dateFrom, dateTo) => {
   return res.data
 }
 
-export const TransformationReportHistory = ({ dateFrom, dateTo, sample }) => {
+export const TransformationReportHistory = ({ dateFrom, dateTo, sample, setSheetData }) => {
 
   const [transformationData, setTransformationData] = useState([])
   const [buttonChanger, setButtonChanger] = useState(true)
@@ -17,6 +17,7 @@ export const TransformationReportHistory = ({ dateFrom, dateTo, sample }) => {
   const fetchTransformationHistory = () => {
     fetchTransformationHistoryApi(dateFrom, dateTo, sample).then(res => {
       setTransformationData(res)
+      setSheetData(res)
     })
   }
 

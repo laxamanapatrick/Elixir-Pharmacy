@@ -8,7 +8,7 @@ const fetchNearlyExpireReportsApi = async (expiryDays) => {
     return res.data
 }
 
-export const NearlyExpiryReports = ({ expiryDays }) => {
+export const NearlyExpiryReports = ({ expiryDays, setSheetData }) => {
 
     const [nearlyExpireData, setNearlyExpireData] = useState([])
     // const [buttonChanger, setButtonChanger] = useState(true)
@@ -16,6 +16,7 @@ export const NearlyExpiryReports = ({ expiryDays }) => {
     const fetchNearlyExpireReports = () => {
         fetchNearlyExpireReportsApi(expiryDays).then(res => {
             setNearlyExpireData(res)
+            setSheetData(res)
         })
     }
 

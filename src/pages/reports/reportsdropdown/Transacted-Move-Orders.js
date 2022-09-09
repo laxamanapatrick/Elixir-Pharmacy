@@ -9,7 +9,7 @@ const fetchTransactedMoveOrdersApi = async (dateFrom, dateTo) => {
   return res.data
 }
 
-export const TransactedMoveOrders = ({ dateFrom, dateTo, sample }) => {
+export const TransactedMoveOrders = ({ dateFrom, dateTo, sample, setSheetData }) => {
 
   const [tmoData, setTMOData] = useState([])
   const [buttonChanger, setButtonChanger] = useState(true)
@@ -17,6 +17,7 @@ export const TransactedMoveOrders = ({ dateFrom, dateTo, sample }) => {
   const fetchTransactedMoveOrders = () => {
     fetchTransactedMoveOrdersApi(dateFrom, dateTo).then(res => {
       setTMOData(res)
+      setSheetData(res)
     })
   }
 

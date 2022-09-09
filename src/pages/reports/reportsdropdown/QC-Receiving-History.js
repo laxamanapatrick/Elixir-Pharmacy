@@ -8,7 +8,7 @@ const fetchQCReceivingHistoryApi = async (dateFrom, dateTo) => {
   return res.data
 }
 
-export const QCReceivingHistory = ({ dateFrom, dateTo, sample }) => {
+export const QCReceivingHistory = ({ dateFrom, dateTo, sample, setSheetData }) => {
 
   const [qcData, setQcData] = useState([])
   const [buttonChanger, setButtonChanger] = useState(1)
@@ -16,6 +16,7 @@ export const QCReceivingHistory = ({ dateFrom, dateTo, sample }) => {
   const fetchQCReceivingHistory = () => {
     fetchQCReceivingHistoryApi(dateFrom, dateTo, sample).then(res => {
       setQcData(res)
+      setSheetData(res)
     })
   }
 

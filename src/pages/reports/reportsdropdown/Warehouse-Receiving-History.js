@@ -8,7 +8,7 @@ const fetchWarehouseReceivingHistoryApi = async (dateFrom, dateTo) => {
   return res.data
 }
 
-export const WarehouseReceivingHistory = ({ dateFrom, dateTo, sample }) => {
+export const WarehouseReceivingHistory = ({ dateFrom, dateTo, sample, setSheetData }) => {
 
   const [warehouseData, setWarehouseData] = useState([])
   const [buttonChanger, setButtonChanger] = useState(true)
@@ -16,6 +16,7 @@ export const WarehouseReceivingHistory = ({ dateFrom, dateTo, sample }) => {
   const fetchWarehouseReceivingHistory = () => {
     fetchWarehouseReceivingHistoryApi(dateFrom, dateTo, sample).then(res => {
       setWarehouseData(res)
+      setSheetData(res)
     })
   }
 

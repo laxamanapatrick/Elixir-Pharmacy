@@ -9,7 +9,7 @@ const fetchCancelledOrdersApi = async (dateFrom, dateTo) => {
     return res.data
 }
 
-export const CancelledOrders = ({ dateFrom, dateTo, sample }) => {
+export const CancelledOrders = ({ dateFrom, dateTo, sample, setSheetData }) => {
 
     const [buttonChanger, setButtonChanger] = useState(true)
 
@@ -18,6 +18,7 @@ export const CancelledOrders = ({ dateFrom, dateTo, sample }) => {
     const fetchCancelledOrders = () => {
         fetchCancelledOrdersApi(dateFrom, dateTo).then(res => {
             setCancelledData(res)
+            setSheetData(res)
         })
     }
 

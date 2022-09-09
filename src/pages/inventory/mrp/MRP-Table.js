@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react'
+import * as XLSX from 'xlsx'
 import { Button, ButtonGroup, Flex, HStack, Input, InputGroup, InputLeftElement, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Select, Stack, Table, Tbody, Td, Text, Th, Thead, Tr, useDisclosure } from '@chakra-ui/react'
 import {
     Pagination,
@@ -15,9 +16,18 @@ import { CgDanger } from 'react-icons/cg'
 import { AiOutlinePrinter } from 'react-icons/ai'
 import { useReactToPrint } from 'react-to-print';
 
-export const MRPTable = ({ mrpData, setSelectorId, selectorId, setRawMatsInfo, pagesCount, pages, currentPage, setCurrentPage, setPageSize, setSearch }) => {
+export const MRPTable = ({ mrpData, setSelectorId, selectorId, setRawMatsInfo, pagesCount, pages, currentPage, setCurrentPage, setPageSize, setSearch, sheetData }) => {
 
     const [buttonChanger, setButtonChanger] = useState(false)
+
+    const handleExport = () => {
+        var workbook = XLSX.utils.book_new(),
+            worksheet = XLSX.utils.json_to_sheet(sheetData)
+
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1")
+
+        XLSX.writeFile(workbook, "Elixir_MRP_ExportFile.xlsx")
+    }
 
     const handlePageChange = (nextPage) => {
         setCurrentPage(nextPage)
@@ -65,7 +75,7 @@ export const MRPTable = ({ mrpData, setSelectorId, selectorId, setRawMatsInfo, p
     return (
         <Flex w='full' justifyContent='center' flexDirection='column'>
             <Flex justifyContent='space-between' mb={1}>
-                <InputGroup w='15%'>
+                <InputGroup w='28%'>
                     <InputLeftElement
                         pointerEvents='none'
                         children={<FaSearch color='gray.300' />}
@@ -75,11 +85,19 @@ export const MRPTable = ({ mrpData, setSelectorId, selectorId, setRawMatsInfo, p
                         type='text' placeholder='Search: Item Description'
                         focusBorderColor='accent'
                     />
-                    <Button ml={3} bgColor='secondary'
-                        _hover={{ bgColor: 'accent' }}
+                    <Button
                         onClick={printMRPHandler}
+                        ml={3} bgColor='secondary'
+                        _hover={{ bgColor: 'accent' }}
                     >
                         <AiOutlinePrinter color='white' fontSize='25px' />
+                    </Button>
+                    <Button
+                        onClick={handleExport}
+                        ml={2} px={5}
+                        _hover={{ bgColor: 'accent' }}
+                    >
+                        Export
                     </Button>
                 </InputGroup>
 

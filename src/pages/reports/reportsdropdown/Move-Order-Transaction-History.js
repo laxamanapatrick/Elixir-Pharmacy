@@ -9,7 +9,7 @@ const fetchMoveOrderHistoryApi = async (dateFrom, dateTo) => {
   return res.data
 }
 
-export const MoveOrderTransactionHistory = ({ dateFrom, dateTo, sample }) => {
+export const MoveOrderTransactionHistory = ({ dateFrom, dateTo, sample, setSheetData }) => {
 
   const [moData, setMoData] = useState([])
   const [buttonChanger, setButtonChanger] = useState(true)
@@ -17,6 +17,7 @@ export const MoveOrderTransactionHistory = ({ dateFrom, dateTo, sample }) => {
   const fetchMoveOrderHistory = () => {
     fetchMoveOrderHistoryApi(dateFrom, dateTo, sample).then(res => {
       setMoData(res)
+      setSheetData(res)
     })
   }
 
