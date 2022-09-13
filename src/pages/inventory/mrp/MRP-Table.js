@@ -15,12 +15,29 @@ import { FaSearch } from 'react-icons/fa'
 import { CgDanger } from 'react-icons/cg'
 import { AiOutlinePrinter } from 'react-icons/ai'
 import { useReactToPrint } from 'react-to-print';
+import apiClient from '../../../services/apiClient'
 
-export const MRPTable = ({ mrpData, setSelectorId, selectorId, setRawMatsInfo, pagesCount, pages, currentPage, setCurrentPage, setPageSize, setSearch, sheetData }) => {
+export const MRPTable = ({ mrpData, setSelectorId, selectorId, setRawMatsInfo, pagesCount, pages, currentPage, setCurrentPage, setPageSize, setSearch }) => {
 
     const [buttonChanger, setButtonChanger] = useState(false)
 
+    const [sheetData, setSheetData] = useState([])
+
     const handleExport = () => {
+
+        const fetchMRPApi = async () => {
+            const res = await apiClient.get(`Inventory/GetAllItemForInventoryPaginationOrig?pageNumber=1&pageSize=1000&search=`)
+            return res.data
+        }
+
+        const fetchMRP = () => {
+            fetchMRPApi().then(res => {
+                setSheetData(res?.inventory)
+            })
+        }
+
+        fetchMRP()
+
         var workbook = XLSX.utils.book_new(),
             worksheet = XLSX.utils.json_to_sheet(sheetData)
 
@@ -232,6 +249,7 @@ export const MRPTable = ({ mrpData, setSelectorId, selectorId, setRawMatsInfo, p
                             <HStack>
                                 <PaginationNext bg="secondary" color='white' p={1} _hover={{ bg: 'accent', color: 'white' }}>{">>"}</PaginationNext>
                                 <Select onChange={handlePageSizeChange} variant='filled'>
+                                    {/* <option value={Number(1000)}>ALL</option> */}
                                     <option value={Number(50)}>50</option>
                                     <option value={Number(5)}>5</option>
                                     <option value={Number(10)}>10</option>

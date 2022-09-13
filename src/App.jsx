@@ -1,7 +1,7 @@
-import { Button, ButtonGroup, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Text, useDisclosure, useMediaQuery, useToast, VStack } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
 import './App.css';
+import { Button, ButtonGroup, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Text, useDisclosure, useMediaQuery, useToast, VStack } from '@chakra-ui/react';
+import { Navigate, Outlet } from 'react-router-dom';
 import { Header } from './components/Header';
 import Sidebar from './components/Sidebar';
 import { Route, Routes } from 'react-router-dom';
@@ -41,6 +41,7 @@ import OrdersPage from './pages/ordering/OrdersPage'
 import PreparationSchedulePage from './pages/ordering/PreparationSchedulePage'
 import ApprovalPage from './pages/ordering/ApprovalPage'
 import OrderSummaryPage from './pages/ordering/OrderSummaryPage'
+import Calendar from './pages/ordering/Calendar';
 
 import TransformationPage from './pages/TransformationPage';
 
@@ -205,6 +206,7 @@ function App() {
             <Route path="preparation-schedule" element={user ? <PreparationSchedulePage notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />} />
             <Route path="approval" element={user ? <ApprovalPage notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />} />
             <Route path="order-summary" element={user ? <OrderSummaryPage /> : <Navigate to="/login" />} />
+            <Route path="calendar" element={user ? <Calendar /> : <Navigate to="/login" />} />
           </Route>
 
           <Route path="transformation" element={user ? <TransformationPage notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />}>
