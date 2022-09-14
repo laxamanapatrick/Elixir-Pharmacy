@@ -17,32 +17,9 @@ import { AiOutlinePrinter } from 'react-icons/ai'
 import { useReactToPrint } from 'react-to-print';
 import apiClient from '../../../services/apiClient'
 
-export const MRPTable = ({ mrpData, setSelectorId, selectorId, setRawMatsInfo, pagesCount, pages, currentPage, setCurrentPage, setPageSize, setSearch, pageTotal }) => {
+export const MRPTable = ({ mrpData, setSelectorId, selectorId, setRawMatsInfo, pagesCount, pages, currentPage, setCurrentPage, setPageSize, setSearch, pageTotal, sheetData }) => {
 
     const [buttonChanger, setButtonChanger] = useState(false)
-
-    const [sheetData, setSheetData] = useState([])
-
-    const fetchMRPApi = async () => {
-        const res = await apiClient.get(`Inventory/GetAllItemForInventoryPaginationOrig?pageNumber=1&pageSize=${pageTotal}&search=`)
-        return res.data
-    }
-
-    const fetchMRP = () => {
-        fetchMRPApi(pageTotal).then(res => {
-            setSheetData(res.inventory)
-        })
-    }
-
-    useEffect(() => {
-        if (pageTotal) {
-            fetchMRP()
-        }
-
-        return () => {
-            setSheetData([])
-        }
-    }, [pageTotal])
 
     const handleExport = () => {
 

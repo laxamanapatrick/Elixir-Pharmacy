@@ -10,6 +10,11 @@ const fetchMRPApi = async (pageNumber, pageSize, search) => {
   return res.data
 }
 
+const fetchMRPForSheetApi = async (pageTotal) => {
+  const res = await apiClient.get(`Inventory/GetAllItemForInventoryPaginationOrig?pageNumber=1&pageSize=${pageTotal}&search=`)
+  return res.data
+}
+
 const MrpPage = () => {
 
   const [pageTotal, setPageTotal] = useState(undefined)
@@ -37,6 +42,8 @@ const MrpPage = () => {
     lastUsed: ''
   })
 
+  const [sheetData, setSheetData] = useState([])
+
   const fetchMRP = () => {
     fetchMRPApi(currentPage, pageSize, search).then(res => {
       setMrpData(res)
@@ -51,6 +58,22 @@ const MrpPage = () => {
       setMrpData([])
     }
   }, [currentPage, pageSize, search])
+
+  const fetchMRPForSheet = () => {
+    fetchMRPForSheetApi(pageTotal).then(res => {
+      setSheetData(res.inventory)
+    })
+  }
+
+  useEffect(() => {
+    if (pageTotal) {
+      fetchMRPForSheet()
+    }
+
+    return () => {
+      setSheetData([])
+    }
+  }, [pageTotal])
 
   return (
     <Flex flexDirection='column' w='full'>
@@ -67,6 +90,7 @@ const MrpPage = () => {
           setPageSize={setPageSize}
           setSearch={setSearch}
           pageTotal={pageTotal}
+          sheetData={sheetData}
         />
         {
           selectorId ?

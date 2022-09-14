@@ -104,7 +104,13 @@ export const ActualItemQuantity = ({ warehouseId, setWarehouseId, barcodeData, o
                         placeholder='Barcode number'
                         h='15%' w='50%' bgColor='#fff8dc'
                     />
-                    <Button size='xs' background='none' onClick={openAvailableBarcodes}><MdOutlineManageSearch fontSize='20px' /></Button>
+                    <Button
+                        onClick={openAvailableBarcodes}
+                        size='xs' background='none'
+                        title={`Check all available warehouse barcodes for ${itemCode}`}
+                    >
+                        <MdOutlineManageSearch fontSize='20px' />
+                    </Button>
                 </HStack>
                 <HStack spacing={5}>
                     <Text bgColor='secondary' color='white' px={10} textAlign='start' fontSize='sm'>Remaining Quantity:</Text>
@@ -166,6 +172,7 @@ export const ActualItemQuantity = ({ warehouseId, setWarehouseId, barcodeData, o
                         onClose={closeBarcode}
                         availableBarcode={availableBarcode}
                         setWarehouseId={setWarehouseId}
+                        itemCode={itemCode}
                     />
                 )
             }
@@ -175,7 +182,7 @@ export const ActualItemQuantity = ({ warehouseId, setWarehouseId, barcodeData, o
 }
 
 
-const AvailableBarcodeModal = ({ isOpen, onClose, availableBarcode, setWarehouseId }) => {
+const AvailableBarcodeModal = ({ isOpen, onClose, availableBarcode, setWarehouseId, itemCode }) => {
 
     const selectId = (data) => {
         if (data) {
@@ -188,7 +195,11 @@ const AvailableBarcodeModal = ({ isOpen, onClose, availableBarcode, setWarehouse
         <>
             <Modal isOpen={isOpen} onClose={() => { }} isCentered size='4xl'>
                 <ModalContent>
-                    <ModalHeader></ModalHeader>
+                    <ModalHeader>
+                        <Flex justifyContent='center'>
+                            {`Available stocks for ${itemCode}`}
+                        </Flex>
+                    </ModalHeader>
                     <ModalCloseButton onClick={onClose} />
                     <ModalBody>
 
@@ -248,3 +259,4 @@ const AvailableBarcodeModal = ({ isOpen, onClose, availableBarcode, setWarehouse
         </>
     )
 }
+
