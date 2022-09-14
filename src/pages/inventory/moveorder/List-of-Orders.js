@@ -6,7 +6,7 @@ import { BsCheck2Circle } from 'react-icons/bs'
 import PageScrollReusable from '../../../components/PageScroll-Reusable'
 import moment from 'moment'
 
-export const ListofOrders = ({ orderListData, setItemCode, highlighterId, setHighlighterId, setQtyOrdered, setPreparedQty, orderId }) => {
+export const ListofOrders = ({ orderListData, setItemCode, highlighterId, setHighlighterId, setQtyOrdered, setPreparedQty, orderId, setWarehouseId }) => {
 
     const TableHead = [
         "Line",
@@ -19,6 +19,7 @@ export const ListofOrders = ({ orderListData, setItemCode, highlighterId, setHig
     ]
 
     const rowHandler = ({ id, itemCode, quantityOrder, preparedQuantity }) => {
+        setWarehouseId('')
         if (id && itemCode) {
             setItemCode(itemCode)
             setHighlighterId(id)

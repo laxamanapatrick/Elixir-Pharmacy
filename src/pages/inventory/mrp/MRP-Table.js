@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import * as XLSX from 'xlsx'
 import { Button, ButtonGroup, Flex, HStack, Input, InputGroup, InputLeftElement, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Select, Stack, Table, Tbody, Td, Text, Th, Thead, Tr, useDisclosure } from '@chakra-ui/react'
 import {
@@ -17,26 +17,34 @@ import { AiOutlinePrinter } from 'react-icons/ai'
 import { useReactToPrint } from 'react-to-print';
 import apiClient from '../../../services/apiClient'
 
-export const MRPTable = ({ mrpData, setSelectorId, selectorId, setRawMatsInfo, pagesCount, pages, currentPage, setCurrentPage, setPageSize, setSearch }) => {
+export const MRPTable = ({ mrpData, setSelectorId, selectorId, setRawMatsInfo, pagesCount, pages, currentPage, setCurrentPage, setPageSize, setSearch, pageTotal }) => {
 
     const [buttonChanger, setButtonChanger] = useState(false)
 
     const [sheetData, setSheetData] = useState([])
 
+    const fetchMRPApi = async () => {
+        const res = await apiClient.get(`Inventory/GetAllItemForInventoryPaginationOrig?pageNumber=1&pageSize=${pageTotal}&search=`)
+        return res.data
+    }
+
+    const fetchMRP = () => {
+        fetchMRPApi(pageTotal).then(res => {
+            setSheetData(res.inventory)
+        })
+    }
+
+    useEffect(() => {
+        if (pageTotal) {
+            fetchMRP()
+        }
+
+        return () => {
+            setSheetData([])
+        }
+    }, [pageTotal])
+
     const handleExport = () => {
-
-        const fetchMRPApi = async () => {
-            const res = await apiClient.get(`Inventory/GetAllItemForInventoryPaginationOrig?pageNumber=1&pageSize=1000&search=`)
-            return res.data
-        }
-
-        const fetchMRP = () => {
-            fetchMRPApi().then(res => {
-                setSheetData(res?.inventory)
-            })
-        }
-
-        fetchMRP()
 
         var workbook = XLSX.utils.book_new(),
             worksheet = XLSX.utils.json_to_sheet(sheetData)

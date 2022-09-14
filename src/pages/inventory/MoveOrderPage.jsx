@@ -214,6 +214,7 @@ const MoveOrderPage = ({ notification, fetchNotification }) => {
               setItemCode={setItemCode}
               highlighterId={highlighterId} setHighlighterId={setHighlighterId}
               setQtyOrdered={setQtyOrdered} setPreparedQty={setPreparedQty}
+              setWarehouseId={setWarehouseId}
             />
             : ''
         }
@@ -241,7 +242,7 @@ const MoveOrderPage = ({ notification, fetchNotification }) => {
               barcodeData={barcodeData}
               orderId={orderId}
               highlighterId={highlighterId}
-              itemCode={itemCode}
+              itemCode={itemCode} 
               fetchOrderList={fetchOrderList} fetchPreparedItems={fetchPreparedItems}
               qtyOrdered={qtyOrdered} preparedQty={preparedQty}
               setHighlighterId={setHighlighterId} setItemCode={setItemCode}

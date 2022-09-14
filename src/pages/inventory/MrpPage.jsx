@@ -66,6 +66,7 @@ const MrpPage = () => {
           setCurrentPage={setCurrentPage}
           setPageSize={setPageSize}
           setSearch={setSearch}
+          pageTotal={pageTotal}
         />
         {
           selectorId ?

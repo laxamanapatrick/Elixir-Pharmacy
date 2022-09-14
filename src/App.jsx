@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import { Button, ButtonGroup, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Text, useDisclosure, useMediaQuery, useToast, VStack } from '@chakra-ui/react';
-import { Navigate, Outlet } from 'react-router-dom';
 import { Header } from './components/Header';
 import Sidebar from './components/Sidebar';
+import { Navigate, Outlet } from 'react-router-dom';
 import { Route, Routes } from 'react-router-dom';
 import { decodeUser } from './services/decode-user';
 import { Context } from './context/Context';

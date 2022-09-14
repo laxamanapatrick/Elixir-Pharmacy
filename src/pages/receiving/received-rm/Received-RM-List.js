@@ -70,8 +70,8 @@ import Barcode from 'react-barcode';
 
 const currentUser = decodeUser()
 
-const fetchWarehouseIdApi = async () => {
-    const res = await apiClient.get(`Warehouse/GetAllListOfWarehouseReceivingId`)
+const fetchWarehouseIdApi = async (search) => {
+    const res = await apiClient.get(`Warehouse/GetAllListOfWarehouseReceivingId?search=${search}`)
     return res.data
 }
 
@@ -79,6 +79,8 @@ export const ReceivedRMList = () => {
 
     const [warehouseIdData, setWarehouseIdData] = useState([])
     const [isLoading, setIsLoading] = useState(true)
+
+    const [search, setSearch] = useState('')
 
     const [printData, setPrintData] = useState({
         warehouseId: '',
@@ -89,7 +91,7 @@ export const ReceivedRMList = () => {
     })
 
     const fetchWarehouseId = () => {
-        fetchWarehouseIdApi().then(res => {
+        fetchWarehouseIdApi(search).then(res => {
             setIsLoading(false)
             setWarehouseIdData(res)
         })
@@ -101,7 +103,7 @@ export const ReceivedRMList = () => {
         return () => {
             setWarehouseIdData([])
         }
-    }, [])
+    }, [search])
 
     const { isOpen: isPrint, onClose: closePrint, onOpen: openPrint } = useDisclosure()
     const printHandler = ({ id, itemCode, itemDescription, expirationDay, expirationDate }) => {
@@ -132,8 +134,25 @@ export const ReceivedRMList = () => {
         }
     }
 
+    const searchHandler = (data) => {
+        setSearch(data)
+    } 
+
     return (
         <Flex p={5} w='full' flexDirection='column'>
+
+            <Flex justifyContent='start'>
+                <HStack>
+                    <InputGroup>
+                        <InputLeftElement
+                            pointerEvents='none'
+                            children={<FaSearch color='gray.300' />}
+                        />
+                        <Input type='text' placeholder='Search: Item Code' onChange={(e) => searchHandler(e.target.value)} focusBorderColor='accent' />
+                    </InputGroup>
+
+                </HStack>
+            </Flex>
 
             <PageScroll>
                 {
@@ -161,24 +180,34 @@ export const ReceivedRMList = () => {
                             </Thead>
                             <Tbody>
                                 {warehouseIdData?.map(items =>
-                                    <Tr
-                                        key={items.id}
-                                    >
-                                        <Td>{items.id}</Td>
-                                        <Td>{items.itemCode}</Td>
-                                        <Td>{items.itemDescription}</Td>
-                                        <Td>{items.actualGood}</Td>
-                                        <Td>{items.expirationDay}</Td>
-                                        <Td>{items.expirationDate}</Td>
-                                        <Td>
-                                            <Button
-                                                onClick={() => printHandler(items)}
-                                                p={0} background='none' color='secondary'
+
+                                    items.actualGood <= 0 ? '' :
+
+                                        <Tr
+                                            key={items.id}
+                                        >
+                                            <Td>{items.id}</Td>
+                                            <Td>{items.itemCode}</Td>
+                                            <Td>{items.itemDescription}</Td>
+                                            <Td>{items.actualGood}</Td>
+                                            <Td>{items.expirationDay}</Td>
+                                            <Td
+                                                color={items.expirationDay <= 0 ? 'red' : ''}
+                                                title={items.expirationDay <= 0 ? 'Expired' : `${items.expirationDay} days before expiration`}
+                                                cursor='help'
                                             >
-                                                <AiFillPrinter />
-                                            </Button>
-                                        </Td>
-                                    </Tr>
+                                                {items.expirationDate}
+                                            </Td>
+                                            <Td>
+                                                <Button
+                                                    onClick={() => printHandler(items)}
+                                                    p={0} background='none' color='secondary'
+                                                    title={`Print warehouse barcode for ${items.itemCode}`}
+                                                >
+                                                    <AiFillPrinter />
+                                                </Button>
+                                            </Td>
+                                        </Tr>
                                 )
                                 }
                             </Tbody>
