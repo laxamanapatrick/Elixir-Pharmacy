@@ -96,6 +96,7 @@ export const MRPTable = ({ mrpData, setSelectorId, selectorId, setRawMatsInfo, p
                     </Button>
                     <Button
                         onClick={handleExport}
+                        disabled={!sheetData}
                         ml={2} px={5}
                         _hover={{ bgColor: 'accent' }}
                     >
