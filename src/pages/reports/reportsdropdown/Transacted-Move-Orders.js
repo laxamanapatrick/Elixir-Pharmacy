@@ -42,6 +42,7 @@ export const TransactedMoveOrders = ({ dateFrom, dateTo, sample, setSheetData })
                 <Th color='white'>Item Code</Th>
                 <Th color='white'>Item Description</Th>
                 <Th color='white'>Total Quantity</Th>
+                <Th color='white'>Move Order Date</Th>
                 <Th color='white'>Transaction Date</Th>
                 <Th color='white'>Transaction Type</Th>
                 <Th color='white'>Transacted By</Th>
@@ -57,6 +58,7 @@ export const TransactedMoveOrders = ({ dateFrom, dateTo, sample, setSheetData })
                     <Td>{item.itemCode}</Td>
                     <Td>{item.itemDescription}</Td>
                     <Td>{item.quantity}</Td>
+                    <Td>{moment(item.moveOrderDate).format('yyyy-MM-DD')}</Td>
                     <Td>{moment(item.transactedDate).format('yyyy-MM-DD')}</Td>
                     <Td>{item.transactionType}</Td>
                     <Td>{item.transactedBy}</Td>

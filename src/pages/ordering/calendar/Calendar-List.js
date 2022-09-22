@@ -33,14 +33,14 @@ export const CalendarList = ({ forMOData }) => {
                     plugins={[dayGridPlugin, interactionPlugin, listPlugin]}
                     initialView="dayGridMonth"
                     headerToolbar={{
-                        left: 'prev,next today',
+                        right: 'prev,next',
                         center: 'title',
-                        right: 'dayGridMonth,dayGridWeek,dayGridDay,listWeek'
+                        left: 'today,dayGridMonth,dayGridWeek,dayGridDay,listWeek'
                     }}
                     events={
                         forMOData?.map(item => {
                             return {
-                                title: `(${item.farmCode}) ${item.farm} -- Total Quantity of Orders: ${item.totalOrders}`,
+                                title: `(${item.farmCode}) ${item.farm}`,
                                 start: `${moment(item.preparedDate).format('yyyy-MM-DD')}`
                             }
                         })

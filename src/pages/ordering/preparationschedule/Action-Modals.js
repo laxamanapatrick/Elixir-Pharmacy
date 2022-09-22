@@ -226,7 +226,7 @@ export const CancelModalConfirmation = ({ isOpen, onClose, cancelId, setCurrentP
 export const ScheduleConfirmation = ({ isOpen, onClose, checkedItems, setCheckedItems,
     farmName, fetchOrders, setCurrentPage, currentPage, fetchNotification }) => {
 
-    const [preparationDate, setPreparationDate] = useState('')
+    const [preparationDate, setPreparationDate] = useState(new Date())
     const date = new Date()
     const maxDate = new Date(date.setMonth(date.getMonth() + 6))
 
