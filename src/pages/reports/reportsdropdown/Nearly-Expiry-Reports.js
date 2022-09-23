@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Button, Flex, HStack, Table, Tbody, Td, Th, Thead, Tr, useDisclosure, VStack } from '@chakra-ui/react'
 import apiClient from '../../../services/apiClient'
 import PageScrollReusable from '../../../components/PageScroll-Reusable'
+import moment from 'moment/moment'
 
 const fetchNearlyExpireReportsApi = async (expiryDays) => {
     const res = await apiClient.get(`Report/NearlyExpireItemsReport?expirydays=${expiryDays}`)
@@ -16,7 +17,24 @@ export const NearlyExpiryReports = ({ expiryDays, setSheetData }) => {
     const fetchNearlyExpireReports = () => {
         fetchNearlyExpireReportsApi(expiryDays).then(res => {
             setNearlyExpireData(res)
-            setSheetData(res)
+            setSheetData(
+                res?.map((item, i) => {
+                    return {
+                        'Line Number': i + 1,
+                        'Warehouse Id': item.warehouseId,
+                        'Item Code': item.itemCode,
+                        'Item Description': item.itemDescription,
+                        'UOM': item.uom,
+                        'Quantity': item.quantity,
+                        'Supplier': item.supplierName,
+                        'Received Date': moment(item.receiveDate).format('yyyy-MM-DD'),
+                        'Manufacturing Date': moment(item.manufacturingDate).format('yyyy-MM-DD'),
+                        'Expiration Date': moment(item.expirationDate).format('yyyy-MM-DD'),
+                        'Expiration Days': item.expirationDays,
+                        'Received By': item.receivedBy
+                    }
+                })
+            )
         })
     }
 

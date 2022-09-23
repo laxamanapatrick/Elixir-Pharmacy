@@ -17,7 +17,25 @@ export const MoveOrderTransactionHistory = ({ dateFrom, dateTo, sample, setSheet
   const fetchMoveOrderHistory = () => {
     fetchMoveOrderHistoryApi(dateFrom, dateTo, sample).then(res => {
       setMoData(res)
-      setSheetData(res)
+      setSheetData(
+        res?.map((item, i) => {
+          return {
+            'Line Number': i + 1,
+            'Move Order Id': item.moveOrderId ,
+            'Customer Code': item.customerCode,
+            'Customer Name': item.customerName,
+            'Item Code': item.itemCode,
+            'Item Description': item.itemDescription,
+            'UOM': item.uom,
+            'Category': item.category,
+            'Quantity': item.quantity,
+            'Expiration Date': moment(item.expirationDate).format('yyyy-MM-DD'),
+            'Transaction Type': item.transactionType,
+            'Move Order By': item.moveOrderBy,
+            'Move Order Date': moment(item.moveOrderDate).format('yyyy-MM-DD'),
+          }
+        })
+      )
     })
   }
 

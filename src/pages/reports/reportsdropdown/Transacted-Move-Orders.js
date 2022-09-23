@@ -17,7 +17,23 @@ export const TransactedMoveOrders = ({ dateFrom, dateTo, sample, setSheetData })
   const fetchTransactedMoveOrders = () => {
     fetchTransactedMoveOrdersApi(dateFrom, dateTo).then(res => {
       setTMOData(res)
-      setSheetData(res)
+      setSheetData(
+        res?.map((item, i) => {
+          return {
+            'Line Number': i + 1,
+            'Move Order Id': item.orderNo,
+            'Customer Code': item.customerCode,
+            'Customer Name': item.customerName,
+            'Item Code': item.itemCode,
+            'Item Description': item.itemDescription,
+            'Total Quantity': item.quantity,
+            'Transaction Type': item.transactionType,
+            'Move Order Date': moment(item.moveOrderDate).format('yyyy-MM-DD'),
+            'Transaction Date': moment(item.transactedDate).format('yyyy-MM-DD'),
+            'Transacted By': item.transactedBy
+          }
+        })
+      )
     })
   }
 
@@ -42,9 +58,9 @@ export const TransactedMoveOrders = ({ dateFrom, dateTo, sample, setSheetData })
                 <Th color='white'>Item Code</Th>
                 <Th color='white'>Item Description</Th>
                 <Th color='white'>Total Quantity</Th>
+                <Th color='white'>Transaction Type</Th>
                 <Th color='white'>Move Order Date</Th>
                 <Th color='white'>Transaction Date</Th>
-                <Th color='white'>Transaction Type</Th>
                 <Th color='white'>Transacted By</Th>
               </Tr>
             </Thead>
@@ -58,9 +74,9 @@ export const TransactedMoveOrders = ({ dateFrom, dateTo, sample, setSheetData })
                     <Td>{item.itemCode}</Td>
                     <Td>{item.itemDescription}</Td>
                     <Td>{item.quantity}</Td>
+                    <Td>{item.transactionType}</Td>
                     <Td>{moment(item.moveOrderDate).format('yyyy-MM-DD')}</Td>
                     <Td>{moment(item.transactedDate).format('yyyy-MM-DD')}</Td>
-                    <Td>{item.transactionType}</Td>
                     <Td>{item.transactedBy}</Td>
                   </Tr>
                 )

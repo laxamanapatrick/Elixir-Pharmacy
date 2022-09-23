@@ -17,7 +17,24 @@ export const MiscellaneousReceiptHistory = ({ dateFrom, dateTo, sample, setSheet
   const fetchMiscellaenouseReceipt = () => {
     fetchMiscellaenouseReceiptApi(dateFrom, dateTo, sample).then(res => {
       setMiscReceiptData(res)
-      setSheetData(res)
+      setSheetData(
+        res?.map((item, i) => {
+          return {
+            'Line Number': i + 1,
+            'Receipt Id': item.receiptId,
+            'Supplier Code': item.supplierCode,
+            'Supplier Name': item.supplierName,
+            'Details': item.details,
+            'Item Code': item.itemCode,
+            'Item Description': item.itemDescription,
+            'UOM': item.uom,
+            'Quantity': item.quantity,
+            'Expiration Date': item.expirationDate,
+            'Transacted By': item.trantedBy,
+            'Transaction Date': moment(item.transactDate).format('yyyy-MM-DD')
+          }
+        })
+      )
     })
   }
 

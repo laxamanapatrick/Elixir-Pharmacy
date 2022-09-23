@@ -18,7 +18,24 @@ export const CancelledOrders = ({ dateFrom, dateTo, sample, setSheetData }) => {
     const fetchCancelledOrders = () => {
         fetchCancelledOrdersApi(dateFrom, dateTo).then(res => {
             setCancelledData(res)
-            setSheetData(res)
+            setSheetData(
+                res?.map((item, i) => {
+                    return {
+                        'Line Number': i + 1,
+                        'Order ID': item.orderId,
+                        'Date Ordered': item.dateOrdered,
+                        'Date Needed': item.dateNeeded,
+                        'Customer Code': item.customerCode,
+                        'Customer Name': item.customerName,
+                        'Item Code': item.itemCode,
+                        'Item Description': item.itemDescription,
+                        'Quantity Ordered': item.quantityOrdered,
+                        'Reason': item.reason,
+                        'Cancelled Date': moment(item.cancelledDate).format('yyyy-MM-DD'),
+                        'Cancelled By': item.cancelledBy
+                    }
+                })
+            )
         })
     }
 

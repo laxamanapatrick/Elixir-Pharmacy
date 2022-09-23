@@ -16,7 +16,27 @@ export const WarehouseReceivingHistory = ({ dateFrom, dateTo, sample, setSheetDa
   const fetchWarehouseReceivingHistory = () => {
     fetchWarehouseReceivingHistoryApi(dateFrom, dateTo, sample).then(res => {
       setWarehouseData(res)
-      setSheetData(res)
+      setSheetData(
+        res?.map((item, i) => {
+          return {
+            'Line Number': i + 1,
+            'ID': item.warehouseId,
+            'QC Date': item.receiveDate,
+            'PO Number': item.poNumber,
+            'Item Code': item.itemCode,
+            'Item Description': item.itemDescription,
+            'UOM': item.uom,
+            'Category': item.category ? item.category : 'Miscellaneous',
+            'Quantity': item.quantity,
+            'Manufacturing Date': item.manufacturingDate,
+            'Expiration Date': item.expirationDate,
+            'Total Reject': item.totalReject,
+            'Supplier': item.supplierName,
+            'Transaction Type': item.transactionType,
+            'Received By': item.receivedBy,
+          }
+        })
+      )
     })
   }
 

@@ -17,7 +17,24 @@ export const TransformationReportHistory = ({ dateFrom, dateTo, sample, setSheet
   const fetchTransformationHistory = () => {
     fetchTransformationHistoryApi(dateFrom, dateTo, sample).then(res => {
       setTransformationData(res)
-      setSheetData(res)
+      setSheetData(
+        res?.map((item, i) => {
+          return {
+            'Line Number': i + 1,
+            'Transformation ID': item.transformationId,
+            'Planning Date': moment(item.planningDate).format('yyyy-MM-DD'),
+            'Item Code (Formula)': item.itemCode_Formula,
+            'Description': item.itemDescription_Formula,
+            'Version': item.version,
+            'Batch': item.batch,
+            'Total Quantity': item.formula_Quantity,
+            'Item Code (Recipe)': item.itemCode_Recipe,
+            'Description': item.itemDescription_Recipe,
+            'Quantity': item.recipe_Quantity,
+            'Date Transformed': moment(item.dateTransformed).format('yyyy-MM-DD'),
+          }
+        })
+      )
     })
   }
 

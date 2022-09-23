@@ -19,7 +19,24 @@ export const MiscellaneousIssueHistory = ({ dateFrom, dateTo, sample, setSheetDa
   const fetchMiscellaneousIssueHistory = () => {
     fetchMiscellaneousIssueHistoryApi(dateFrom, dateTo, sample).then(res => {
       setMiscIssueData(res)
-      setSheetData(res)
+      setSheetData(
+        res?.map((item, i) => {
+            return {
+                'Line Number': i + 1,
+                'Issue ID': item.orderId,
+                'Customer Code': item.customerCode,
+                'Customer Name': item.customerName,
+                'Details': item.details,
+                'Item Code': item.itemCode,
+                'Item Description': item.itemDescription,
+                'UOM': item.uom,
+                'Quantity': item.quantity,
+                'Expiration Date': item.expirationDate,
+                'Transacted By': item.transactBy,
+                'Transaction Date': moment(item.transactDate).format('yyyy-MM-DD')
+            }
+        })
+    )
     })
   }
 
