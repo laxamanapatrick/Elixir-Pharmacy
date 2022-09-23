@@ -223,7 +223,7 @@ export const RawMaterialsInformation = ({ formulas, setCode, codeData, fetchRequ
                             </HStack>
                             <HStack w='full'>
                                 <Text fontSize='xs' fontWeight='semibold' w='40%'>
-                                    Batch:
+                                    Quantity Batch:
                                 </Text>
                                 <VStack spacing={0} w='full'>
                                     <Controller
