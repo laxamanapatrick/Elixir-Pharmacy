@@ -49,6 +49,7 @@ const MoveOrderPage = ({ notification, fetchNotification }) => {
   const [farmName, setFarmName] = useState('')
 
   const [deliveryStatus, setDeliveryStatus] = useState('')
+  const [batchNumber, setBatchNumber] = useState('')
 
   const [moveData, setMoveData] = useState([])
   const [lengthIndicator, setLengthIndicator] = useState('')
@@ -201,7 +202,7 @@ const MoveOrderPage = ({ notification, fetchNotification }) => {
           setCurrentPage={setCurrentPage} currentPage={currentPage} pagesCount={pagesCount}
           setOrderId={setOrderId} orderId={orderId}
           setItemCode={setItemCode} setWarehouseId={setWarehouseId} setHighlighterId={setHighlighterId}
-          setDeliveryStatus={setDeliveryStatus}
+          setDeliveryStatus={setDeliveryStatus} setBatchNumber={setBatchNumber}
           buttonChanger={buttonChanger}
           fetchApprovedMoveOrders={fetchApprovedMoveOrders}
           lengthIndicator={lengthIndicator}
@@ -222,6 +223,7 @@ const MoveOrderPage = ({ notification, fetchNotification }) => {
           buttonChanger ?
             <SaveButton
               deliveryStatus={deliveryStatus}
+              batchNumber={batchNumber}
               orderListData={orderListData}
               fetchApprovedMoveOrders={fetchApprovedMoveOrders}
               fetchOrderList={fetchOrderList}

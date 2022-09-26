@@ -167,6 +167,7 @@ export const PrintModal = ({ isOpen, onClose, printData, closeApprove, fetchAppr
                                 <Text>Warehouse: {`Pharmacy`}</Text>
                                 <Text>Customer: {printData[0]?.farmName}</Text>
                                 <Text>Address: {printData[0]?.farmName}</Text>
+                                <Text>Batch Number: {printData[0]?.batchNo}</Text>
                             </Flex>
                             <Flex flexDirection='column'>
                                 <Barcode width={3} height={50} value={Number(orderId)} />
@@ -401,6 +402,7 @@ export const PrintModal = ({ isOpen, onClose, printData, closeApprove, fetchAppr
                                             <Text>Warehouse: {`Pharmacy`}</Text>
                                             <Text>Customer: {printData[0]?.farmName}</Text>
                                             <Text>Address: {printData[0]?.farmName}</Text>
+                                            <Text>Batch Number: {printData[0]?.batchNo}</Text>
                                         </Flex>
                                         <Flex flexDirection='column'>
                                             <Barcode width={3} height={50} value={Number(orderId)} />

@@ -17,7 +17,7 @@ import moment from 'moment'
 import { CancelApprovedDate } from './Action-Modals'
 
 export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage, fetchApprovedMoveOrders, lengthIndicator,
-    setCurrentPage, setItemCode, setWarehouseId, setHighlighterId, setOrderId, orderId, setDeliveryStatus, buttonChanger, preparedLength }) => {
+    setCurrentPage, setItemCode, setWarehouseId, setHighlighterId, setOrderId, orderId, setDeliveryStatus, setBatchNumber, buttonChanger, preparedLength }) => {
 
     const handlePageChange = (nextPage) => {
         setCurrentPage(nextPage)
@@ -119,17 +119,35 @@ export const ListofApprovedDate = ({ farmName, moveData, pagesCount, currentPage
 
             {
                 buttonChanger ?
-                    <HStack w='full' justifyContent='start'>
-                        <Badge bgColor='secondary' color='white' px={3}>Delivery Status: </Badge>
-                        <Select
-                            onChange={(e) => setDeliveryStatus(e.target.value)}
-                            placeholder=' '
-                            w='15%' size='xs' bgColor='#fff8dc'
-                        >
-                            <option>Pick-Up</option>
-                            <option>For Delivery</option>
-                        </Select>
-                    </HStack>
+                    <VStack spacing={1}>
+                        <HStack w='full' justifyContent='start'>
+                            <Badge bgColor='secondary' color='white' px={3}>Delivery Status: </Badge>
+                            <Select
+                                onChange={(e) => setDeliveryStatus(e.target.value)}
+                                placeholder=' '
+                                w='15%' size='xs' bgColor='#fff8dc'
+                            >
+                                <option>Pick-Up</option>
+                                <option>For Delivery</option>
+                            </Select>
+                        </HStack>
+                        <HStack w='full' justifyContent='start'>
+                            <Badge bgColor='secondary' color='white' px={4}>Batch Number: </Badge>
+                            <Select
+                                onChange={(e) => setBatchNumber(e.target.value)}
+                                placeholder=' '
+                                w='15%' size='xs' bgColor='#fff8dc'
+                            >
+                                <option>{`${moment(new Date()).format('YYYY')} - 1`}</option>
+                                <option>{`${moment(new Date()).format('YYYY')} - 2`}</option>
+                                <option>{`${moment(new Date()).format('YYYY')} - 3`}</option>
+                                <option>{`${moment(new Date()).format('YYYY')} - 4`}</option>
+                                <option>{`${moment(new Date()).format('YYYY')} - 5`}</option>
+                                <option>{`${moment(new Date()).format('YYYY')} - 6`}</option>
+                                <option>{`${moment(new Date()).format('YYYY')} - 7`}</option>
+                            </Select>
+                        </HStack>
+                    </VStack>
                     :
                     ''
             }

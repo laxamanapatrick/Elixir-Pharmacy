@@ -164,7 +164,7 @@ export const CancelConfirmation = ({ isOpen, onClose, id, fetchPreparedItems, fe
 
 //Save Button
 
-export const SaveButton = ({ deliveryStatus, orderListData, fetchApprovedMoveOrders, fetchOrderList,
+export const SaveButton = ({ deliveryStatus, batchNumber, orderListData, fetchApprovedMoveOrders, fetchOrderList,
     setOrderId, setHighlighterId, setItemCode, setDeliveryStatus, setButtonChanger, setCurrentPage, currentPage, fetchNotification }) => {
 
     const { isOpen: isPlateNumber, onClose: closePlateNumber, onOpen: openPlateNumber } = useDisclosure()
@@ -173,8 +173,8 @@ export const SaveButton = ({ deliveryStatus, orderListData, fetchApprovedMoveOrd
         <Flex w='full' justifyContent='end'>
             <Button
                 onClick={() => openPlateNumber()}
-                disabled={!deliveryStatus}
-                title={deliveryStatus ? `Save with plate number ${deliveryStatus}` : 'Please select a plate number.'}
+                disabled={!deliveryStatus || !batchNumber}
+                title={deliveryStatus ? `Save with delivery status "${deliveryStatus}" and batch number "${batchNumber}"` : 'Please select a delivery status and batch number.'}
                 size='sm' colorScheme='blue' px={6}
             >
                 Save
@@ -184,6 +184,7 @@ export const SaveButton = ({ deliveryStatus, orderListData, fetchApprovedMoveOrd
                     isOpen={isPlateNumber}
                     onClose={closePlateNumber}
                     deliveryStatus={deliveryStatus}
+                    batchNumber={batchNumber}
                     orderListData={orderListData}
                     fetchApprovedMoveOrders={fetchApprovedMoveOrders}
                     fetchOrderList={fetchOrderList}
@@ -200,7 +201,7 @@ export const SaveButton = ({ deliveryStatus, orderListData, fetchApprovedMoveOrd
         </Flex>
     )
 }
-export const DeliveryStatusConfirmation = ({ isOpen, onClose, deliveryStatus, orderListData, fetchApprovedMoveOrders, fetchOrderList,
+export const DeliveryStatusConfirmation = ({ isOpen, onClose, deliveryStatus, batchNumber, orderListData, fetchApprovedMoveOrders, fetchOrderList,
     setOrderId, setHighlighterId, setItemCode, setDeliveryStatus, setButtonChanger, setCurrentPage, currentPage, fetchNotification }) => {
 
     const toast = useToast()
@@ -211,6 +212,7 @@ export const DeliveryStatusConfirmation = ({ isOpen, onClose, deliveryStatus, or
             return {
                 id: item.id,
                 deliveryStatus: deliveryStatus,
+                batchNo: batchNumber
             }
         })
         setIsLoading(true)
