@@ -13,25 +13,27 @@ export const ConfirmModal = ({ isOpen, onClose, resultArray, setIsLoading, setEr
         try {
             setIsLoading(true)
             const res = apiClient.post(`Ordering/AddNewOrders`,
-                resultArray.map(item => ({
-                    transactId: item?.transactId,
-                    customerName: item?.customerName,
-                    customerPosition: item?.customerPosition,
-                    farmType: item?.farmType,
-                    farmCode: item?.farmCode,
-                    farmName: item?.farmName,
-                    orderNo: item?.orderNo,
-                    batchNo: parseInt(item?.batchNo),
-                    orderDate: moment(item?.orderDate).format("yyyy-MM-DD"),
-                    dateNeeded: moment(item?.dateNeeded).format("yyyy-MM-DD"),
-                    timeNeeded: item?.dateNeeded,
-                    transactionType: item?.transactionType,
-                    itemCode: item?.itemCode,
-                    itemDescription: item?.itemDescription,
-                    uom: item?.uom,
-                    quantityOrdered: item?.quantityOrdered,
-                    category: item?.category
-                }))
+                resultArray.map(item => {
+                    return {
+                        transactId: item?.transactId,
+                        customerName: item?.customerName,
+                        customerPosition: item?.customerPosition,
+                        farmType: item?.farmType,
+                        farmCode: item?.farmCode,
+                        farmName: item?.farmName,
+                        orderNo: item?.orderNo,
+                        batchNo: item?.batchNo.toString(),
+                        orderDate: moment(item?.orderDate).format("yyyy-MM-DD"),
+                        dateNeeded: moment(item?.dateNeeded).format("yyyy-MM-DD"),
+                        timeNeeded: item?.dateNeeded,
+                        transactionType: item?.transactionType,
+                        itemCode: item?.itemCode,
+                        itemDescription: item?.itemDescription,
+                        uom: item?.uom,
+                        quantityOrdered: item?.quantityOrdered,
+                        category: item?.category
+                    }
+                })
             )
                 .then(res => {
                     ToastComponent("Success", "Orders Synced!", "success", toast)
