@@ -30,12 +30,13 @@ export const MoveOrderTransactionHistory = ({ dateFrom, dateTo, sample, setSheet
             'Category': item.category,
             'Quantity': item.quantity,
             'Batch Number': item.batchNo,
-            'Expiration Date': moment(item.expirationDate).format('yyyy-MM-DD'),
+            'Expiration Date': item.expirationDate ? moment(item.expirationDate).format('yyyy-MM-DD') : '',
             'Transaction Type': item.transactionType,
-            'Move Order Date': moment(item.moveOrderDate).format('yyyy-MM-DD'),
+            'Move Order Date': item.moveOrderDate ? moment(item.moveOrderDate).format('yyyy-MM-DD') : '',
             'Move Order By': item.moveOrderBy,
-            'Transacted Date': item.transactedDate ? moment(item.transactedDate).format('yyyy-MM-DD') : 'For transaction',
-            'Transacted By': item.transactedBy ? item.transactedBy : 'For transaction'
+            'Status': item.transactedDate ? 'Transacted' : 'For Transaction',
+            'Transacted Date': item.transactedDate ? moment(item.transactedDate).format('yyyy-MM-DD') : '',
+            'Transacted By': item.transactedBy ? item.transactedBy : ''
           }
         })
       )
@@ -76,6 +77,7 @@ export const MoveOrderTransactionHistory = ({ dateFrom, dateTo, sample, setSheet
                       <Th color='white'>Transaction Type</Th>
                       <Th color='white'>Move Order Date</Th>
                       <Th color='white'>Move Order By</Th>
+                      <Th color='white'>Status</Th>
                       <Th color='white'>Transacted Date</Th>
                       <Th color='white'>Transacted By</Th>
                     </>
@@ -102,12 +104,13 @@ export const MoveOrderTransactionHistory = ({ dateFrom, dateTo, sample, setSheet
                         </>
                         :
                         <>
-                          <Td>{moment(item.expirationDate).format('yyyy-MM-DD')}</Td>
+                          <Td>{item.expirationDate ? moment(item.expirationDate).format('yyyy-MM-DD') : ''}</Td>
                           <Td>{item.transactionType}</Td>
-                          <Td>{moment(item.moveOrderDate).format('yyyy-MM-DD')}</Td>
+                          <Td>{item.moveOrderDate ? moment(item.moveOrderDate).format('yyyy-MM-DD'): ''}</Td>
                           <Td>{item.moveOrderBy}</Td>
-                          <Td>{item.transactedDate ? moment(item.transactedDate).format('yyyy-MM-DD') : 'For transaction'}</Td>
-                          <Td>{item.transactedBy ? item.transactedBy : 'For transaction'}</Td>
+                          <Td>{item.transactedDate ? 'Transacted' : 'For Transaction'}</Td>
+                          <Td>{item.transactedDate ? moment(item.transactedDate).format('yyyy-MM-DD') : ''}</Td>
+                          <Td>{item.transactedBy ? item.transactedBy : ''}</Td>
                         </>
                     }
                   </Tr>

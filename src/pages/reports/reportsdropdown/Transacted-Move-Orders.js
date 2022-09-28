@@ -47,8 +47,6 @@ export const TransactedMoveOrders = ({ dateFrom, dateTo, sample, setSheetData })
     }
   }, [dateFrom, dateTo])
 
-  console.log(tmoData)
-
   return (
     <Flex w='full' flexDirection='column'>
       <Flex border='1px'>
