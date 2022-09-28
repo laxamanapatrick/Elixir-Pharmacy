@@ -12,7 +12,7 @@ const fetchTransactedMoveOrdersApi = async (dateFrom, dateTo) => {
 export const TransactedMoveOrders = ({ dateFrom, dateTo, sample, setSheetData }) => {
 
   const [tmoData, setTMOData] = useState([])
-  const [buttonChanger, setButtonChanger] = useState(true)
+  // const [buttonChanger, setButtonChanger] = useState(true)
 
   const fetchTransactedMoveOrders = () => {
     fetchTransactedMoveOrdersApi(dateFrom, dateTo).then(res => {
@@ -27,9 +27,11 @@ export const TransactedMoveOrders = ({ dateFrom, dateTo, sample, setSheetData })
             'Item Code': item.itemCode,
             'Item Description': item.itemDescription,
             'Total Quantity': item.quantity,
+            'Batch Number': item.batchNo,
             'Transaction Type': item.transactionType,
-            'Move Order Date': moment(item.moveOrderDate).format('yyyy-MM-DD'),
-            'Transaction Date': moment(item.transactedDate).format('yyyy-MM-DD'),
+            'Move Order Date': item.moveOrderDate ? moment(item.moveOrderDate).format('yyyy-MM-DD') : '',
+            'Delivery Date': item.deliveryDate ?  moment(item.deliveryDate).format('yyyy-MM-DD') : '',
+            'Transaction Date': item.transactedDate ? moment(item.transactedDate).format('yyyy-MM-DD') : '',
             'Transacted By': item.transactedBy
           }
         })
@@ -45,6 +47,8 @@ export const TransactedMoveOrders = ({ dateFrom, dateTo, sample, setSheetData })
     }
   }, [dateFrom, dateTo])
 
+  console.log(tmoData)
+
   return (
     <Flex w='full' flexDirection='column'>
       <Flex border='1px'>
@@ -58,8 +62,10 @@ export const TransactedMoveOrders = ({ dateFrom, dateTo, sample, setSheetData })
                 <Th color='white'>Item Code</Th>
                 <Th color='white'>Item Description</Th>
                 <Th color='white'>Total Quantity</Th>
+                <Th color='white'>Batch Number</Th>
                 <Th color='white'>Transaction Type</Th>
                 <Th color='white'>Move Order Date</Th>
+                <Th color='white'>Delivery Date</Th>
                 <Th color='white'>Transaction Date</Th>
                 <Th color='white'>Transacted By</Th>
               </Tr>
@@ -74,9 +80,11 @@ export const TransactedMoveOrders = ({ dateFrom, dateTo, sample, setSheetData })
                     <Td>{item.itemCode}</Td>
                     <Td>{item.itemDescription}</Td>
                     <Td>{item.quantity}</Td>
+                    <Td>{item.batchNo}</Td>
                     <Td>{item.transactionType}</Td>
-                    <Td>{moment(item.moveOrderDate).format('yyyy-MM-DD')}</Td>
-                    <Td>{moment(item.transactedDate).format('yyyy-MM-DD')}</Td>
+                    <Td>{item.moveOrderDate ? moment(item.moveOrderDate).format('yyyy-MM-DD') : ''}</Td>
+                    <Td>{item.deliveryDate ? moment(item.deliveryDate).format('yyyy-MM-DD') : ''}</Td>
+                    <Td>{item.transactedDate ? moment(item.transactedDate).format('yyyy-MM-DD'): ''}</Td>
                     <Td>{item.transactedBy}</Td>
                   </Tr>
                 )
@@ -86,11 +94,11 @@ export const TransactedMoveOrders = ({ dateFrom, dateTo, sample, setSheetData })
         </PageScrollReusable>
       </Flex>
 
-      <Flex justifyContent='end' mt={2}>
+      {/* <Flex justifyContent='end' mt={2}>
         <Button size='xs' colorScheme='teal' onClick={() => setButtonChanger(!buttonChanger)}>
           {buttonChanger ? `>>>>` : `<<<<`}
         </Button>
-      </Flex>
+      </Flex> */}
     </Flex>
   )
 }

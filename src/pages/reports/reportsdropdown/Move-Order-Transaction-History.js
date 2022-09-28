@@ -21,7 +21,7 @@ export const MoveOrderTransactionHistory = ({ dateFrom, dateTo, sample, setSheet
         res?.map((item, i) => {
           return {
             'Line Number': i + 1,
-            'Move Order Id': item.moveOrderId ,
+            'Move Order Id': item.moveOrderId,
             'Customer Code': item.customerCode,
             'Customer Name': item.customerName,
             'Item Code': item.itemCode,
@@ -29,10 +29,13 @@ export const MoveOrderTransactionHistory = ({ dateFrom, dateTo, sample, setSheet
             'UOM': item.uom,
             'Category': item.category,
             'Quantity': item.quantity,
+            'Batch Number': item.batchNo,
             'Expiration Date': moment(item.expirationDate).format('yyyy-MM-DD'),
             'Transaction Type': item.transactionType,
-            'Move Order By': item.moveOrderBy,
             'Move Order Date': moment(item.moveOrderDate).format('yyyy-MM-DD'),
+            'Move Order By': item.moveOrderBy,
+            'Transacted Date': item.transactedDate ? moment(item.transactedDate).format('yyyy-MM-DD') : 'For transaction',
+            'Transacted By': item.transactedBy ? item.transactedBy : 'For transaction'
           }
         })
       )
@@ -65,13 +68,16 @@ export const MoveOrderTransactionHistory = ({ dateFrom, dateTo, sample, setSheet
                       <Th color='white'>UOM</Th>
                       <Th color='white'>Category</Th>
                       <Th color='white'>Quantity</Th>
-                      <Th color='white'>Expiration Date</Th>
+                      <Th color='white'>Batch Number</Th>
                     </>
                     :
                     <>
+                      <Th color='white'>Expiration Date</Th>
                       <Th color='white'>Transaction Type</Th>
-                      <Th color='white'>Move Order By</Th>
                       <Th color='white'>Move Order Date</Th>
+                      <Th color='white'>Move Order By</Th>
+                      <Th color='white'>Transacted Date</Th>
+                      <Th color='white'>Transacted By</Th>
                     </>
                 }
               </Tr>
@@ -92,13 +98,16 @@ export const MoveOrderTransactionHistory = ({ dateFrom, dateTo, sample, setSheet
                           <Td>{item.uom}</Td>
                           <Td>{item.category}</Td>
                           <Td>{item.quantity}</Td>
-                          <Td>{moment(item.expirationDate).format('yyyy-MM-DD')}</Td>
+                          <Td>{item.batchNo}</Td>
                         </>
                         :
                         <>
+                          <Td>{moment(item.expirationDate).format('yyyy-MM-DD')}</Td>
                           <Td>{item.transactionType}</Td>
-                          <Td>{item.moveOrderBy}</Td>
                           <Td>{moment(item.moveOrderDate).format('yyyy-MM-DD')}</Td>
+                          <Td>{item.moveOrderBy}</Td>
+                          <Td>{item.transactedDate ? moment(item.transactedDate).format('yyyy-MM-DD') : 'For transaction'}</Td>
+                          <Td>{item.transactedBy ? item.transactedBy : 'For transaction'}</Td>
                         </>
                     }
                   </Tr>

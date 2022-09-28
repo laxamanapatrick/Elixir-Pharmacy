@@ -80,13 +80,25 @@ const Reports = () => {
                             {
                                 sample < 9 ?
                                     <Flex justifyContent='start' flexDirection='row'>
-                                        <Flex flexDirection='column'>
+                                        {/* <Flex flexDirection='column' ml={1}>
+                                            <Flex>
+                                                <Badge>Status</Badge>
+                                            </Flex>
+                                            <Select
+                                                onChange={(e) => setExpiryDays(e.target.value)}
+                                                bgColor='#fff8dc' w='full'
+                                            >
+                                                <option value={30}>For Transaction</option>
+                                                <option value={60}>Transacted</option>
+                                            </Select>
+                                        </Flex> */}
+                                        <Flex flexDirection='column' ml={1}>
                                             <Flex>
                                                 <Badge>Date from</Badge>
                                             </Flex>
                                             <Input bgColor='#fff8dc' type='date' value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} />
                                         </Flex>
-                                        <Flex flexDirection='column'>
+                                        <Flex flexDirection='column' ml={1}>
                                             <Flex>
                                                 <Badge>Date to</Badge>
                                             </Flex>
@@ -95,7 +107,7 @@ const Reports = () => {
                                     </Flex>
                                     :
                                     sample === 9 &&
-                                    <Flex justifyContent='start' flexDirection='column'>
+                                    <Flex justifyContent='start' flexDirection='column' ml={1}>
                                         <Flex>
                                             <Badge>Expiry Days</Badge>
                                         </Flex>

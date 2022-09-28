@@ -102,6 +102,7 @@ const QCReceivingPage = ({ fetchNotification }) => {
   }
 
   const searchHandler = (inputValue) => {
+    setKeyword(inputValue)
     setSearch(inputValue)
   }
 
@@ -120,6 +121,8 @@ const QCReceivingPage = ({ fetchNotification }) => {
     openCancelModal()
   }
 
+  const [keyword, setKeyword] = useState('')
+
   return (
     <Flex p={5} w='full' flexDirection='column'>
       <Flex justifyContent='center'>
@@ -133,7 +136,7 @@ const QCReceivingPage = ({ fetchNotification }) => {
               pointerEvents='none'
               children={<FaSearch color='gray.300' />}
             />
-            <Input type='text' placeholder='Search: PO Number'
+            <Input type='text' placeholder='Search: Item Description'
               focusBorderColor='accent'
               onChange={(e) => searchHandler(e.target.value)}
             />
@@ -179,48 +182,54 @@ const QCReceivingPage = ({ fetchNotification }) => {
               </Thead>
               <Tbody>
 
-                {poData.posummary?.map(po =>
+                {poData?.posummary
+                // ?.filter((val) => {
+                //   const newKeyword = new RegExp(`${keyword.toLowerCase()}`)
+                //   return val.posummary.pO_Number?.toLowerCase().match(newKeyword, '*')
+                // }
+                // )
+                  ?.map(po =>
 
-                  <Tr key={po.id}>
+                    <Tr key={po.id}>
 
-                    {/* <Td>{po.id}</Td> */}
-                    <Td>{po.pO_Number}</Td>
-                    <Td>{po.itemCode}</Td>
-                    <Td>{po.itemDescription}</Td>
-                    <Td>{po.supplier}</Td>
-                    <Td>{po.uom}</Td>
-                    <Td>{po.quantityOrdered.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
-                    <Td>{po.actualGood.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
-                    <Td>{po.actualRemaining.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
-                    <Td>
-                      <HStack spacing={4}>
+                      {/* <Td>{po.id}</Td> */}
+                      <Td>{po.pO_Number}</Td>
+                      <Td>{po.itemCode}</Td>
+                      <Td>{po.itemDescription}</Td>
+                      <Td>{po.supplier}</Td>
+                      <Td>{po.uom}</Td>
+                      <Td>{po.quantityOrdered.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                      <Td>{po.actualGood.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                      <Td>{po.actualRemaining.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                      <Td>
+                        <HStack spacing={4}>
 
-                        <Button
-                          onClick={() => viewModalHandler(po.id, po.pO_Number, po.pO_Date, po.pR_Number, po.pr_Date)}
-                          color='white' bgColor='#5CB85C' _hover={{ bgColor: 'secondary', color: 'white' }} size='xs'
-                        >
-                          View
-                        </Button>
+                          <Button
+                            onClick={() => viewModalHandler(po.id, po.pO_Number, po.pO_Date, po.pR_Number, po.pr_Date)}
+                            color='white' bgColor='#5CB85C' _hover={{ bgColor: 'secondary', color: 'white' }} size='xs'
+                          >
+                            View
+                          </Button>
 
-                        <Button
-                          onClick={() => editModalHandler(po)}
-                          color='white' bgColor='#3C8DBC' _hover={{ bgColor: 'secondary', color: 'white' }} size='xs'
-                        >
-                          Edit
-                        </Button>
+                          <Button
+                            onClick={() => editModalHandler(po)}
+                            color='white' bgColor='#3C8DBC' _hover={{ bgColor: 'secondary', color: 'white' }} size='xs'
+                          >
+                            Edit
+                          </Button>
 
-                        <Button
-                          onClick={() => cancelModalHandler(po.id)}
-                          color='white' bgColor='danger' _hover={{ bgColor: 'secondary', color: 'white' }} size='xs'
-                        >
-                          Cancel
-                        </Button>
+                          <Button
+                            onClick={() => cancelModalHandler(po.id)}
+                            color='white' bgColor='danger' _hover={{ bgColor: 'secondary', color: 'white' }} size='xs'
+                          >
+                            Cancel
+                          </Button>
 
-                      </HStack>
-                    </Td>
+                        </HStack>
+                      </Td>
 
-                  </Tr>
-                )}
+                    </Tr>
+                  )}
 
               </Tbody>
             </Table>
