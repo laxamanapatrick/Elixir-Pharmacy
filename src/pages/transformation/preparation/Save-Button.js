@@ -69,7 +69,7 @@ const SaveModal = ({ isOpen, onClose, transformId, itemCode, weight, fetchRequir
             const res = apiClient.put(`Preparation/PrepareMaterialsForRequest/${transformId}`, {
                 transformId: transformId,
                 itemCode: itemCode,
-                weighingScale: weight,
+                weighingScale: parseFloat(weight),
                 preparedBy: currentUser.userName
             })
                 .then(res => {

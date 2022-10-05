@@ -143,7 +143,7 @@ const ErrorList = ({ isOpen, onClose, errorData }) => {
                         <Accordion allowToggle>
 
                             {/* Duplicated */}
-                            {duplicate.length > 0 ?
+                            {duplicate?.length > 0 ?
                                 <AccordionItem bgColor='gray.200'>
                                     <Flex>
                                         <AccordionButton color='white' fontWeight='semibold'>
@@ -158,7 +158,7 @@ const ErrorList = ({ isOpen, onClose, errorData }) => {
                                         <PageScrollModalErrorList>
 
                                             {
-                                                duplicate.length > 0 ? (
+                                                duplicate?.length > 0 ? (
 
                                                     <Table variant='striped' size="sm">
                                                         <Thead bgColor='secondary'>
@@ -216,7 +216,7 @@ const ErrorList = ({ isOpen, onClose, errorData }) => {
                                 : ''}
 
                             {/* Item Code */}
-                            {itemCode.length > 0 ?
+                            {itemCode?.length > 0 ?
                                 <AccordionItem bgColor='gray.200'>
                                     <Flex>
                                         <AccordionButton color='white' fontWeight='semibold'>
@@ -232,7 +232,7 @@ const ErrorList = ({ isOpen, onClose, errorData }) => {
                                         <PageScrollModalErrorList>
 
                                             {
-                                                itemCode.length > 0 ? (
+                                                itemCode?.length > 0 ? (
 
                                                     <Table variant='striped' size="sm">
 
@@ -293,7 +293,7 @@ const ErrorList = ({ isOpen, onClose, errorData }) => {
                                 : ''}
 
                             {/* Supplier */}
-                            {supplier.length > 0 ?
+                            {supplier?.length > 0 ?
                                 <AccordionItem bgColor='gray.200'>
                                     <Flex>
                                         <AccordionButton color='white' fontWeight='semibold'>
@@ -309,7 +309,7 @@ const ErrorList = ({ isOpen, onClose, errorData }) => {
                                         <PageScrollModalErrorList>
 
                                             {
-                                                supplier.length > 0 ? (
+                                                supplier?.length > 0 ? (
 
                                                     <Table variant='striped' size="sm">
 
@@ -370,7 +370,7 @@ const ErrorList = ({ isOpen, onClose, errorData }) => {
                                 : ''}
 
                             {/* UOM */}
-                            {uom.length > 0 ?
+                            {uom?.length > 0 ?
                                 <AccordionItem bgColor='gray.200'>
                                     <Flex>
                                         <AccordionButton color='white' fontWeight='semibold'>
@@ -386,7 +386,7 @@ const ErrorList = ({ isOpen, onClose, errorData }) => {
                                         <PageScrollModalErrorList>
 
                                             {
-                                                uom.length > 0 ? (
+                                                uom?.length > 0 ? (
 
                                                     <Table variant='striped' size="sm">
 

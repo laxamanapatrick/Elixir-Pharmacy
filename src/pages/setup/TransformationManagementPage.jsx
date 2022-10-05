@@ -328,12 +328,13 @@ const TransformationManagementPage = () => {
 
                       </HStack>
                     </Td>
-
+                    
                     <Td>{formula.id}</Td>
                     <Td>{formula.itemCode}</Td>
                     <Td>{formula.itemDescription}</Td>
                     <Td>{formula.version}</Td>
                     <Td>{formula.quantity.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}</Td>
+                    {/* <Td>{formula.quantity}</Td> */}
                     {/* <Td>{formula.uom}</Td> */}
                     <Td>{formula.dateAdded}</Td>
                     <Td>{formula.addedBy}</Td>

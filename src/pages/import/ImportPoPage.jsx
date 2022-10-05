@@ -89,7 +89,7 @@ const ImportPoPage = () => {
       pR_date: moment(newPrDate).format("YYYY-MM-DD"),
       pO_number: item.po_number,
       pO_date: moment(newPoDate).format("YYYY-MM-DD"),
-      itemCode: item.item_code,
+      itemCode: item.item_code.toString(),
       itemDescription: item.item_description,
       ordered: item.qty_ordered,
       delivered: item.qty_delivered,

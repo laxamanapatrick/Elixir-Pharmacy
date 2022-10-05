@@ -127,7 +127,7 @@ const ImportRawMaterialsPage = () => {
     if (resultArray.length > 0) {
       setisLoading(true)
       const submitData = resultArray.map(item => ({
-        itemCode: item.itemCode,
+        itemCode: item.itemCode.toString(),
         itemDescription: item.itemDescription,
         uomId: functionUOM(item.uom),
         itemCategoryId: functionItemCategory(item.itemCategory),

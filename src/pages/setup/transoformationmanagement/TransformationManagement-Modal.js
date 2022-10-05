@@ -128,7 +128,7 @@ const ModalComponent = ({ isOpen, onClose, formulaId, formulaItemCode, formulaIt
             setAddButtonDisabler(false)
         }
 
-        setRawMaterialQuantity(data)
+        setRawMaterialQuantity(parseFloat(data))
     }
 
     const recipeDataHandler = () => {
