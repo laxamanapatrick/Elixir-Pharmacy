@@ -26,6 +26,7 @@ export const TransactedMoveOrders = ({ dateFrom, dateTo, sample, setSheetData })
             'Customer Name': item.customerName,
             'Item Code': item.itemCode,
             'Item Description': item.itemDescription,
+            'UOM': item.uom,
             'Total Quantity': item.quantity,
             'Batch Number': item.batchNo,
             'Transaction Type': item.transactionType,
@@ -59,6 +60,7 @@ export const TransactedMoveOrders = ({ dateFrom, dateTo, sample, setSheetData })
                 <Th color='white'>Customer Name</Th>
                 <Th color='white'>Item Code</Th>
                 <Th color='white'>Item Description</Th>
+                <Th color='white'>UOM</Th>
                 <Th color='white'>Total Quantity</Th>
                 <Th color='white'>Batch Number</Th>
                 <Th color='white'>Transaction Type</Th>
@@ -77,6 +79,7 @@ export const TransactedMoveOrders = ({ dateFrom, dateTo, sample, setSheetData })
                     <Td>{item.customerName}</Td>
                     <Td>{item.itemCode}</Td>
                     <Td>{item.itemDescription}</Td>
+                    <Td>{item.uom}</Td>
                     <Td>{item.quantity}</Td>
                     <Td>{item.batchNo}</Td>
                     <Td>{item.transactionType}</Td>

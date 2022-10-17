@@ -138,7 +138,7 @@ const DrawerComponent = ({ isOpen, onClose, register, errors, isValid, handleSub
 
             <Drawer
                 isOpen={isOpen}
-                placement='center'
+                placement='right'
                 onClose={onClose}
             >
                 <DrawerOverlay />
