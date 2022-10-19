@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import moment from 'moment'
 import * as XLSX from 'xlsx'
-import { Badge, Button, Flex, HStack, Input, Select } from '@chakra-ui/react'
+import { Badge, Button, Flex, HStack, Input, Select, Skeleton } from '@chakra-ui/react'
 import { MiscellaneousIssueHistory } from './reportsdropdown/Miscellaneous-Issue-History'
 import { MiscellaneousReceiptHistory } from './reportsdropdown/Miscellaneous-Receipt-History'
 import { MoveOrderTransactionHistory } from './reportsdropdown/Move-Order-Transaction-History'
@@ -11,6 +11,7 @@ import { WarehouseReceivingHistory } from './reportsdropdown/Warehouse-Receiving
 import { TransactedMoveOrders } from './reportsdropdown/Transacted-Move-Orders'
 import { CancelledOrders } from './reportsdropdown/Cancelled-Orders'
 import { NearlyExpiryReports } from './reportsdropdown/Nearly-Expiry-Reports'
+import { InventoryMovement } from './reportsdropdown/Inventory-Movement'
 
 const Reports = () => {
 
@@ -63,7 +64,8 @@ const Reports = () => {
                                     <option value={6}>Miscellaneous Receipt History</option>
                                     <option value={7}>Transacted Move Orders</option>
                                     <option value={8}>Cancelled Orders</option>
-                                    <option value={9}>Nearly Expiry Report</option>
+                                    <option value={9}>Inventory Movement</option>
+                                    <option value={10}>Nearly Expiry Report</option>
                                 </Select>
                                 <Button
                                     onClick={handleExport}
@@ -78,7 +80,7 @@ const Reports = () => {
                         {/* Viewing Condition  */}
                         <Flex justifyContent='start'>
                             {
-                                sample < 9 ?
+                                sample < 10 ?
                                     <Flex justifyContent='start' flexDirection='row'>
                                         {/* <Flex flexDirection='column' ml={1}>
                                             <Flex>
@@ -106,7 +108,7 @@ const Reports = () => {
                                         </Flex>
                                     </Flex>
                                     :
-                                    sample === 9 &&
+                                    sample === 10 &&
                                     <Flex justifyContent='start' flexDirection='column' ml={1}>
                                         <Flex>
                                             <Badge>Expiry Days</Badge>
@@ -149,8 +151,11 @@ const Reports = () => {
                                                         : sample === 8 ?
                                                             <CancelledOrders sample={sample} dateFrom={dateFrom} dateTo={dateTo} setSheetData={setSheetData} />
                                                             : sample === 9 ?
-                                                                <NearlyExpiryReports sample={sample} expiryDays={expiryDays} setSheetData={setSheetData} />
-                                                                : ''
+                                                                <InventoryMovement dateFrom={dateFrom} dateTo={dateTo} sample={sample} setSheetData={setSheetData} />
+                                                                :
+                                                                sample === 10 ?
+                                                                    <NearlyExpiryReports sample={sample} expiryDays={expiryDays} setSheetData={setSheetData} />
+                                                                    : ''
                         }
                     </Flex>
 
