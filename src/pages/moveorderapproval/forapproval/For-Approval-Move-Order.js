@@ -24,6 +24,8 @@ export const ForApprovalMoveOrder = ({ setCurrentPage, setPageSize, setSearch, p
         "View", "Approve", "Reject"
     ]
 
+    const [totalQuantity, setTotalQuantity] = useState('')
+
     const { isOpen: isView, onClose: closeView, onOpen: openView } = useDisclosure()
     const { isOpen: isApprove, onClose: closeApprove, onOpen: openApprove } = useDisclosure()
     const { isOpen: isReject, onClose: closeReject, onOpen: openReject } = useDisclosure()
@@ -53,8 +55,10 @@ export const ForApprovalMoveOrder = ({ setCurrentPage, setPageSize, setSearch, p
     const approveHandler = (data) => {
         if (data) {
             setOrderId(data.orderNo)
+            setTotalQuantity(data.quantity)
         } else {
             setOrderId('')
+            setTotalQuantity('')
         }
         openApprove()
     }
@@ -168,6 +172,7 @@ export const ForApprovalMoveOrder = ({ setCurrentPage, setPageSize, setSearch, p
                         fetchForApprovalMO={fetchForApprovalMO}
                         printData={viewData}
                         fetchNotification={fetchNotification}
+                        totalQuantity={totalQuantity}
                     />
                 )
             }

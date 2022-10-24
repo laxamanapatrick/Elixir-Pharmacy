@@ -293,7 +293,7 @@ function Layout({ isSidebarVisible, sideBarHandler, notification, fetchNotificat
         <Flex w='full' bgColor='gray.300' flexDirection='column'>
           <Header sideBarHandler={sideBarHandler} />
 
-          <Flex bgColor='white' h='100%' >
+          <Flex bgColor='white' h='100%'>
             <Outlet />
           </Flex>
         </Flex>

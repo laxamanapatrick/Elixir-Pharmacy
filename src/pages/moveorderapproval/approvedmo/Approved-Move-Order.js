@@ -37,6 +37,8 @@ export const ApprovedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, page
         isTransact: ''
     }])
 
+    const [totalQuantity, setTotalQuantity] = useState('')
+
     const { isOpen: isTrack, onClose: closeTrack, onOpen: openTrack } = useDisclosure()
     const { isOpen: isReject, onClose: closeReject, onOpen: openReject } = useDisclosure()
     const { isOpen: isPrint, onClose: closePrint, onOpen: openPrint } = useDisclosure()
@@ -93,12 +95,14 @@ export const ApprovedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, page
         }
     }
 
-    const printHanlder = (id) => {
+    const printHanlder = (id, quantity) => {
         if (id) {
             setOrderId(id)
+            setTotalQuantity(quantity)
             openPrint()
         } else {
             setOrderId('')
+            setTotalQuantity('')
         }
     }
 
@@ -146,7 +150,7 @@ export const ApprovedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, page
                                             </Button>
                                         </Td>
                                         <Td>
-                                            <Button size='xs' colorScheme='cyan' color='white' onClick={() => printHanlder(order.orderNo)}>Print</Button>
+                                            <Button size='xs' colorScheme='cyan' color='white' onClick={() => printHanlder(order.orderNo, order.quantity)}>Print</Button>
                                         </Td>
                                         <Td>
                                             <Button
@@ -214,6 +218,7 @@ export const ApprovedMoveOrder = ({ setCurrentPage, setPageSize, setSearch, page
                         printData={printData}
                         fetchApprovedMO={fetchApprovedMO}
                         orderId={orderId}
+                        totalQuantity={totalQuantity}
                     />
                 )
             }

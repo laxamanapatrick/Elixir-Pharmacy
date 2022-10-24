@@ -63,7 +63,7 @@ export const ViewModal = ({ isOpen, onClose, viewData }) => {
   )
 }
 
-export const ApproveModal = ({ isOpen, onClose, orderNo, fetchForApprovalMO, printData, fetchNotification }) => {
+export const ApproveModal = ({ isOpen, onClose, orderNo, fetchForApprovalMO, printData, fetchNotification, totalQuantity }) => {
 
   const [isLoading, setIsLoading] = useState(false)
 
@@ -153,6 +153,7 @@ export const ApproveModal = ({ isOpen, onClose, orderNo, fetchForApprovalMO, pri
             printData={printData}
             fetchApprovedMO={fetchForApprovalMO}
             orderId={orderNo}
+            totalQuantity={totalQuantity}
           />
         )
       }
@@ -302,6 +303,10 @@ export const ApproveModal = ({ isOpen, onClose, orderNo, fetchForApprovalMO, pri
                   }
                 </Tbody>
               </Table>
+
+              <Flex justifyContent='start' mb={3}>
+                <Text>Total Quantity: {totalQuantity && totalQuantity}</Text>
+              </Flex>
 
               <Flex justifyContent='space-between' mb={5} mt={2}>
                 <HStack>

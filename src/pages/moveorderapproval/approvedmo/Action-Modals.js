@@ -96,7 +96,7 @@ export const TrackModal = ({ isOpen, onClose, trackData, trackList }) => {
     )
 }
 
-export const PrintModal = ({ isOpen, onClose, printData, closeApprove, fetchApprovedMO, orderId }) => {
+export const PrintModal = ({ isOpen, onClose, printData, closeApprove, fetchApprovedMO, orderId, totalQuantity }) => {
 
     const [isLoading, setIsLoading] = useState(false)
 
@@ -202,6 +202,10 @@ export const PrintModal = ({ isOpen, onClose, printData, closeApprove, fetchAppr
                                     }
                                 </Tbody>
                             </Table>
+
+                            <Flex justifyContent='start' mb={3}>
+                                <Text>Total Quantity: {totalQuantity && totalQuantity}</Text>
+                            </Flex>
                         </PageScrollReusable>
 
                         <Flex justifyContent='space-between' mb={5} mt={2}>
@@ -436,6 +440,10 @@ export const PrintModal = ({ isOpen, onClose, printData, closeApprove, fetchAppr
                                             }
                                         </Tbody>
                                     </Table>
+
+                                    <Flex justifyContent='start' mb={3}>
+                                        <Text>Total Quantity: {totalQuantity && totalQuantity}</Text>
+                                    </Flex>
 
                                     <Flex justifyContent='space-between' mb={5} mt={2}>
                                         <HStack>
