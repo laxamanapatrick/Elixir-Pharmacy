@@ -48,7 +48,7 @@ import TransformationPage from './pages/TransformationPage';
 import TransformationPlanningPage from './pages/transformation/TransformationPlanningPage'
 import AddRequest from './pages/transformation/transformation-planning/Add-Request';
 import StatusOfRequest from './pages/transformation/transformation-planning/Status-Of-Request';
-import RequestReject from './pages/transformation/transformation-planning/Request-Reject';
+// import RequestReject from './pages/transformation/transformation-planning/Request-Reject';
 
 
 import ApprovalRequestPage from './pages/transformation/ApprovalRequestPage'
@@ -213,7 +213,7 @@ function App() {
             <Route path="transformation-planning" element={user ? <TransformationPlanningPage notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />}>
               <Route path="add-request" element={user ? <AddRequest notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />} />
               <Route path="status-of-request" element={user ? <StatusOfRequest notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />} />
-              <Route path="request-reject" element={user ? <RequestReject notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />} />
+              {/* <Route path="request-reject" element={user ? <RequestReject notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />} /> */}
             </Route>
             <Route path="approval-request" element={user ? <ApprovalRequestPage notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />} />
             <Route path="preparation" element={user ? <PreparationPage notification={notification} fetchNotification={fetchNotification} /> : <Navigate to="/login" />} />

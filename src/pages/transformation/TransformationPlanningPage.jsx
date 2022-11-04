@@ -12,8 +12,8 @@ import { IoMdNotificationsOutline } from 'react-icons/io'
 import { Link, useLocation } from 'react-router-dom'
 import AddRequest from './transformation-planning/Add-Request'
 import StatusOfRequest from './transformation-planning/Status-Of-Request'
-import RequestReject from './transformation-planning/Request-Reject'
-import PageScrollTransformation from '../../components/PageScroll-Transformation'
+// import RequestReject from './transformation-planning/Request-Reject'
+// import PageScrollTransformation from '../../components/PageScroll-Transformation'
 import apiClient from '../../services/apiClient'
 
 const fetchNotificationApi = async () => {
@@ -58,7 +58,7 @@ const TransformationPlanningPage = ({ notification, fetchNotification }) => {
           >
             <Link to='/transformation/transformation-planning/status-of-request'>Status of Request</Link>
           </Button>
-          <Button
+          {/* <Button
             bgColor={navigation === 3 ? 'secondary' : ''}
             color={navigation === 3 ? 'white' : ''}
             _hover={{ bgColor: 'accent', color: 'white' }}
@@ -77,7 +77,7 @@ const TransformationPlanningPage = ({ notification, fetchNotification }) => {
                 }
               </HStack>
             </Link>
-          </Button>
+          </Button> */}
         </HStack>
 
         {/* <Button
@@ -102,11 +102,11 @@ const TransformationPlanningPage = ({ notification, fetchNotification }) => {
               <StatusOfRequest fetchNotification={fetchNotification} />
             )
             :
-            navigation === 3 ?
-              (
-                <RequestReject fetchNotification={fetchNotification} />
-              )
-              :
+            // navigation === 3 ?
+            //   (
+            //     <RequestReject fetchNotification={fetchNotification} />
+            //   )
+            //   :
               ""
         }
         {/* </PageScrollTransformation> */}
