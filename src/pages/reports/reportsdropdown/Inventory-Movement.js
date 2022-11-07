@@ -23,10 +23,10 @@ export const InventoryMovement = ({ dateFrom, dateTo, setSheetData }) => {
                         'Item Code': item.itemCode,
                         'Item Description': item.itemDescription,
                         'Category': item.itemCategory,
-                        'Total Out': item.totalOut,
-                        'Total IN': item.totalIn,
-                        'Ending': item.ending,
-                        'Current SOH': item.currentStock
+                        'AS OF QTY': item.ending,
+                        'Purchase': item.totalIn,
+                        'Usage(Out)': item.totalOut,
+                        'Current QTY': item.currentStock
                     }
                 })
             )
@@ -51,10 +51,10 @@ export const InventoryMovement = ({ dateFrom, dateTo, setSheetData }) => {
                                 <Th color='white'>Item Code</Th>
                                 <Th color='white'>Item Description</Th>
                                 <Th color='white'>Category</Th>
-                                <Th color='white'>Total Out</Th>
-                                <Th color='white'>Total IN</Th>
-                                <Th color='white'>Ending</Th>
-                                <Th color='white'>Current SOH</Th>
+                                <Th color='white'>AS OF QTY</Th>
+                                <Th color='white'>Purchase</Th>
+                                <Th color='white'>{`Usage(Out)`}</Th>
+                                <Th color='white'>Current QTY</Th>
                             </Tr>
                         </Thead>
                         <Tbody>
@@ -64,9 +64,9 @@ export const InventoryMovement = ({ dateFrom, dateTo, setSheetData }) => {
                                         <Td>{item.itemCode}</Td>
                                         <Td>{item.itemDescription}</Td>
                                         <Td>{item.itemCategory}</Td>
-                                        <Td>{item.totalOut}</Td>
-                                        <Td>{item.totalIn}</Td>
                                         <Td>{item.ending}</Td>
+                                        <Td>{item.totalIn}</Td>
+                                        <Td>{item.totalOut}</Td>
                                         <Td>{item.currentStock}</Td>
                                     </Tr>
                                 )
