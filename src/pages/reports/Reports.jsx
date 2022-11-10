@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import moment from 'moment'
 import * as XLSX from 'xlsx'
-import { Badge, Button, Flex, HStack, Input, Select, Skeleton } from '@chakra-ui/react'
+import { Badge, Button, Flex, HStack, Input, Select, Skeleton, Text, VStack } from '@chakra-ui/react'
 import { MiscellaneousIssueHistory } from './reportsdropdown/Miscellaneous-Issue-History'
 import { MiscellaneousReceiptHistory } from './reportsdropdown/Miscellaneous-Receipt-History'
 import { MoveOrderTransactionHistory } from './reportsdropdown/Move-Order-Transaction-History'
@@ -39,6 +39,8 @@ const Reports = () => {
 
         XLSX.writeFile(workbook, "Elixir_Reports_ExportFile.xlsx")
     }
+
+    const minimumDateForInventoryMovement = '2022-01-01'
 
     return (
         <>
@@ -94,17 +96,20 @@ const Reports = () => {
                                                 <option value={60}>Transacted</option>
                                             </Select>
                                         </Flex> */}
+                                        {
+                                            sample != 9 &&
+                                            <Flex flexDirection='column' ml={1}>
+                                                <Flex>
+                                                    <Badge>Date from</Badge>
+                                                </Flex>
+                                                <Input bgColor='#fff8dc' type='date' value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} />
+                                            </Flex>
+                                        }
                                         <Flex flexDirection='column' ml={1}>
                                             <Flex>
-                                                <Badge>Date from</Badge>
+                                                <Badge>{sample === 9 ? 'Rollback Date' : 'Date to'}</Badge>
                                             </Flex>
-                                            <Input bgColor='#fff8dc' type='date' value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} />
-                                        </Flex>
-                                        <Flex flexDirection='column' ml={1}>
-                                            <Flex>
-                                                <Badge>Date to</Badge>
-                                            </Flex>
-                                            <Input bgColor='#fff8dc' type='date' value={dateTo} onChange={(e) => setDateTo(e.target.value)} />
+                                            <Input bgColor='#fff8dc' type='date' value={dateTo} onChange={(e) => setDateTo(e.target.value)} min={sample === 9 ? minimumDateForInventoryMovement : undefined} />
                                         </Flex>
                                     </Flex>
                                     :
