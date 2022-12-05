@@ -1,7 +1,13 @@
+<<<<<<< HEAD
 
 # Setting up the Elixir Project
 Hello to all random viewers, The system must have a backend and MySQL database in order to run which will be found on my backend partner's github repository. Link here: https://github.com/JaypeeOfficial/ELIXIR.API
 
+
+Hello to all random viewers,
+The system must have a backend and MySQL database in order to run which will be found on my backend partner's github repository.
+Link here: https://github.com/JaypeeOfficial/ELIXIR.API
+>>>>>>> 8d43796d4a4ade9f58730c217bce3aa4b627ebf6
 
 
 # Getting Started with Create React App
