@@ -41,7 +41,7 @@ export const ListofMoveOrder = ({ moveOrderList, setMoveOrderInformation, moveOr
       farmCode: item.farmCode,
       orderNoPKey: item.orderNoPKey,
       isApprove: item.isApproved,
-      preparedBy: currentUser?.userName
+      preparedBy: currentUser?.fullName
     }
   })
 
@@ -62,7 +62,7 @@ export const ListofMoveOrder = ({ moveOrderList, setMoveOrderInformation, moveOr
       farmCode: data.farmCode,
       orderNoPKey: data.orderNoPKey,
       isApprove: data.isApproved,
-      preparedBy: currentUser?.userName
+      preparedBy: currentUser?.fullName
     }
     if (e.target.checked) {
       setCheckedItems([...checkedItems, valueSubmit])

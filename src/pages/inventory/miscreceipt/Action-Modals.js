@@ -86,7 +86,7 @@ export const SaveConfirmation = ({ isOpen, onClose, listDataTempo, setListDataTe
       totalQuantity: totalQuantity,
       details: listDataTempo[0]?.description,
       remarks: listDataTempo[0]?.remarks,
-      preparedBy: currentUser?.userName
+      preparedBy: currentUser?.fullName
     }
 
     if (totalQuantity > 0) {
@@ -109,7 +109,7 @@ export const SaveConfirmation = ({ isOpen, onClose, listDataTempo, setListDataTe
                   actualGood: item.quantity,
                   details: item.description,
                   remarks: item.remarks,
-                  receivedBy: currentUser.userName
+                  receivedBy: currentUser.fullName
                 }
               })
               try {

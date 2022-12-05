@@ -27,7 +27,7 @@ export const AddQuantityConfirmation = ({ isOpen, onClose, id, orderNo, itemCode
                     itemCode: itemCode,
                     quantityOrdered: Number(quantityOrdered),
                     expirationDate: expirationDate,
-                    preparedBy: currentUser.userName
+                    preparedBy: currentUser.fullName
                 }
             )
                 .then(res => {

@@ -132,7 +132,7 @@ const ImportRawMaterialsPage = () => {
         uomId: functionUOM(item.uom),
         itemCategoryId: functionItemCategory(item.itemCategory),
         bufferLevel: item.bufferLevel,
-        addedBy: currentUser.userName
+        addedBy: currentUser.fullName
       }))
       try {
         const res = apiClient.post('Import/AddNewRawMaterialManual',

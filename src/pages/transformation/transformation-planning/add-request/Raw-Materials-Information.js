@@ -60,7 +60,7 @@ export const RawMaterialsInformation = ({ formulas, setCode, codeData, fetchRequ
                 version: "",
                 batch: "",
                 quantity: "",
-                addedBy: currentUser.userName
+                addedBy: currentUser.fullName
             }
         }
     })

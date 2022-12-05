@@ -97,7 +97,7 @@ const ImportPoPage = () => {
       uom: item.uom,
       unitPrice: item.unit_price,
       vendorName: item.vendor_name.trimEnd(),
-      addedBy: currentUser.username
+      addedBy: currentUser.fullName
     }
 
   })

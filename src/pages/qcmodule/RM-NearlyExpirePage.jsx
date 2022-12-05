@@ -41,8 +41,6 @@ import RejectModal from './rm-nearly-expire-page/Reject-Modal';
 import { NotificationContext } from '../../context/NotificationContext';
 import { ViewModal } from './rm-nearly-expire-page/View-Modal';
 
-const currentUser = decodeUser()
-
 const fetchRMNearlyExpireApi = async (pageNumber, pageSize, search) => {
   const res = await apiClient.get(`Receiving/GetAllNearlyExpireWithPaginationOrig?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${search}`)
   return res.data

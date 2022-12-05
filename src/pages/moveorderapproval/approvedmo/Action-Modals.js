@@ -594,7 +594,7 @@ export const RejectModal = ({ isOpen, onClose, id, fetchApprovedMO, fetchNotific
                 {
                     orderNo: id,
                     remarks: reasonSubmit,
-                    rejectBy: currentUser?.userName
+                    rejectBy: currentUser?.fullName
                 }
             )
                 .then(res => {

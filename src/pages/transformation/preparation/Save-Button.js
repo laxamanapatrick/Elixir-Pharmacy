@@ -70,7 +70,7 @@ const SaveModal = ({ isOpen, onClose, transformId, itemCode, weight, fetchRequir
                 transformId: transformId,
                 itemCode: itemCode,
                 weighingScale: parseFloat(weight),
-                preparedBy: currentUser.userName
+                preparedBy: currentUser.fullName
             })
                 .then(res => {
                     if (requirements.length === 1) {

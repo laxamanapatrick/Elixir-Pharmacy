@@ -149,7 +149,7 @@ export const TransactConfirmation = ({ isOpen, onClose, deliveryDate, checkedIte
     //                     orderNoPKey: item.orderNoPKey,
     //                     deliveryDate: moment(deliveryDate).format("yyyy-MM-DD"),
     //                     isApprove: item.isApprove,
-    //                     preparedBy: currentUser.userName
+    //                     preparedBy: currentUser.fullName
     //                 }
     //             })
     //             // [
@@ -198,7 +198,7 @@ export const TransactConfirmation = ({ isOpen, onClose, deliveryDate, checkedIte
                 orderNoPKey: item.orderNoPKey,
                 isApprove: item.isApprove,
                 deliveryDate: deliveryDate,
-                preparedBy: currentUser?.userName
+                preparedBy: currentUser?.fullName
             }
         })
         setIsLoading(true)

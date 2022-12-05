@@ -58,7 +58,7 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo, fetchNo
         expiry_date: "",
         actual_delivered: "",
         batch_no: "",
-        addedBy: currentUser.userName
+        addedBy: currentUser.fullName
       },
       displayData: {
         id: editData.id,
@@ -120,7 +120,7 @@ export const EditModalComponent = ({ editData, isOpen, onClose, fetchPo, fetchNo
     actual_Delivered: Number(actualDelivered),
     batch_No: batchNo,
     totalReject: sumQuantity,
-    qcBy: currentUser.userName
+    qcBy: currentUser.fullName
   }
 
   const newDate = new Date()

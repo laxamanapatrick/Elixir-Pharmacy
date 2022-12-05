@@ -28,7 +28,7 @@ export const AddConfirmation = ({ isOpen, onClose, closeAddModal, details, setDe
                 quantity: rawMatsInfo.quantity,
                 remarks: remarks,
                 details: details,
-                preparedBy: currentUser.userName
+                preparedBy: currentUser.fullName
             }
             const res = apiClient.post(`Miscellaneous/AddNewMiscellaneousIssueDetails`, addSubmit)
                 .then(res => {
@@ -109,7 +109,7 @@ export const SaveConfirmation = ({ isOpen, onClose, totalQuantity, details, cust
                     customerCode: customerData.customerCode,
                     customer: customerData.customer,
                     totalQuantity: totalQuantity,
-                    preparedBy: currentUser.userName,
+                    preparedBy: currentUser.fullName,
                     remarks: remarks,
                     details: details
                 }
@@ -328,7 +328,7 @@ export const AllCancelConfirmation = ({ isOpen, onClose, miscData, setSelectorId
         //                             expirationdate: item.expirationDate,
         //                             quantity: item.quantity,
         //                             remarks: item.description,
-        //                             preparedBy: currentUser.userName
+        //                             preparedBy: currentUser.fullName
         //                         }
         //                     })
         //                     try {

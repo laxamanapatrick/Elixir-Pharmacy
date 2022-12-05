@@ -30,7 +30,7 @@ export const ApproveModal = ({ isOpen, onClose, orderNo, setOrderNo, fetchOrderL
                     onClose()
                 })
                 .catch(err => {
-                    ToastComponent("Success", "Order was not approved.", "success", toast)
+                    ToastComponent("Error", "Order was not approved.", "error", toast)
                     setIsLoading(false)
                 })
         } catch (error) {
@@ -96,7 +96,7 @@ export const RejectModal = ({ isOpen, onClose, orderNo, setOrderNo, fetchOrderLi
                 {
                     orderNoPKey: orderNo,
                     remarks: reason,
-                    rejectedBy: currentUser.userName
+                    rejectedBy: currentUser.fullName
                 }
             )
                 .then(res => {

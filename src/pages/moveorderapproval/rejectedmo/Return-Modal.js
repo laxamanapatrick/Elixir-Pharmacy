@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Button, ButtonGroup, Flex, Heading, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Select, Text, useToast, VStack } from '@chakra-ui/react'
-import { BsQuestionOctagonFill } from 'react-icons/bs'
 import apiClient from '../../../services/apiClient'
 import { ToastComponent } from '../../../components/Toast'
-import { decodeUser } from '../../../services/decode-user'
-
-const currentUser = decodeUser()
 
 export const ReturnModal = ({ isOpen, onClose, orderNo, fetchRejectedMO, fetchNotification }) => {
 

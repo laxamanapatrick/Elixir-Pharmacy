@@ -23,13 +23,11 @@ import DatePicker from 'react-datepicker'
 import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
-import { decodeUser } from '../../../../services/decode-user';
 import { ToastComponent } from '../../../../components/Toast';
 import apiClient from '../../../../services/apiClient';
 import moment from 'moment';
 import ErrorModal from '../add-request/Error-Modal';
 
-const currentUser = decodeUser()
 
 const EditModalReject = ({ isOpen, onClose, transformId, setTransformId, editData, fetchRejected, fetchRequirements, fetchNotification }) => {
 

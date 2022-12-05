@@ -155,7 +155,7 @@ export const CancelModalConfirmation = ({ isOpen, onClose, cancelId, setCurrentP
                 {
                     id: cancelId,
                     remarks: cancelRemarks,
-                    isCancelBy: currentUser.userName
+                    isCancelBy: currentUser.fullName
                 }
             )
                 .then(res => {
@@ -309,7 +309,7 @@ const ScheduleValidation = ({ isOpen, onClose, closeSchedule, preparationDate, c
             return {
                 id: item,
                 preparedDate: preparationDate,
-                preparedBy: currentUser.userName
+                preparedBy: currentUser.fullName
             }
         })
         setIsLoading(true)

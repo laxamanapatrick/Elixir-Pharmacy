@@ -55,7 +55,7 @@ const ScannedModalSubmit = ({ itemCodeData, code, receivingDate, lotCategory, ac
             lotCategory: lotCategory,
             actualGood: actualGood,
             totalReject: sumQuantity,
-            receivedBy: currentUser.userName
+            receivedBy: currentUser.fullName
         }
         try {
             setIsLoading(true)

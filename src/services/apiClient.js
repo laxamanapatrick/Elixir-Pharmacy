@@ -9,7 +9,7 @@ const user = decodeUser()
 export default axios.create({
     baseURL: "https://localhost:44342/api/",
     headers: {
-        "Content-type": "application/json",
+        "Content-Type": "application/json",
         "Authorization": 'Bearer '+user?.token
     }
 })

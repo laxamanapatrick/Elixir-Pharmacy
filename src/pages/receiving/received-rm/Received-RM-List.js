@@ -51,7 +51,6 @@ import { ToastComponent } from '../../../components/Toast';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
-import { decodeUser } from '../../../services/decode-user';
 import PageScroll from '../../../components/PageScroll';
 import PageScrollReusable from '../../../components/PageScroll-Reusable';
 import {
@@ -67,8 +66,6 @@ import { FaSearch } from 'react-icons/fa';
 import { AiFillPrinter } from 'react-icons/ai'
 import { useReactToPrint } from 'react-to-print';
 import Barcode from 'react-barcode';
-
-const currentUser = decodeUser()
 
 const fetchWarehouseIdApi = async (search) => {
     const res = await apiClient.get(`Warehouse/GetAllListOfWarehouseReceivingId?search=${search}`)

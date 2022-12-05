@@ -33,7 +33,7 @@ const ReturnModal = ({ qcReceivingId, fetchReject, isOpen, onClose, fetchNotific
       const res = apiClient.put(`Receiving/WarehouseReturnRejectbyQc/${qcReceivingId}`,
         {
           id: qcReceivingId,
-          rejectedBy: currentUser.userName
+          rejectedBy: currentUser.fullName
         }
       ).then(res => {
         ToastComponent("Succes!", "Rejected Raw Material has been returned", "success", toast)

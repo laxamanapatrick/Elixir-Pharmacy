@@ -82,7 +82,7 @@ export const SaveConfirmation = ({ isOpen,
         transformId: transformId,
         expiration: expirationDate,
         lotCategory: lotCategory,
-        receivedBy: currentUser.userName,
+        receivedBy: currentUser.fullName,
       })
         .then(res => {
           ToastComponent('Success', 'Mixing has started', 'success', toast)

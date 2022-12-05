@@ -19,14 +19,11 @@ import {
   useDisclosure
 } from '@chakra-ui/react'
 import PageScrollImport from '../../components/PageScrollImport'
-import { decodeUser } from '../../services/decode-user'
 import ReturnModal from './receiving-list/Return-Modal'
 import apiClient from '../../services/apiClient'
 import NoListData from './receiving-list/No-List-Data'
 import { FaSearch } from 'react-icons/fa'
 import { Pagination, PaginationContainer, PaginationNext, PaginationPage, PaginationPageGroup, PaginationPrevious, usePagination } from '@ajna/pagination'
-
-const currentUser = decodeUser()
 
 const fetchReceivingListApi = async (pageNumber, pageSize, search) => {
   const res = await apiClient.get(`Receiving/GetAllAvailableForWarehouseReceivingWithPaginationOrig?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${search}`)

@@ -64,7 +64,7 @@ export const ModalComponent = ({ fetchWHReceiving, modalData, isOpen, onClose, f
         expirationDate: modalData.expirationDate,
         reject: modalData.reject,
         remarks: "",
-        addedBy: currentUser.userName
+        addedBy: currentUser.fullName
       }
     }
   })

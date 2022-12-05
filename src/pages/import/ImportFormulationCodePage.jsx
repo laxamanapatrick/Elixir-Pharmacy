@@ -158,7 +158,7 @@ const ImportFormulationCodePage = () => {
             formulaDescription: item.formulaDescription,
             itemDescription: item.itemDescription,
             version: item.version,
-            addedBy: currentUser.userName
+            addedBy: currentUser.fullName
           }))
         ).then((res) => {
           ToastComponent("Success!", "Raw Materials Imported", "success", toast)

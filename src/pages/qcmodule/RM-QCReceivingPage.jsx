@@ -49,8 +49,6 @@ import { CancelModalComponent } from './qc-receiving-page/Cancel-Modal'
 import { NotificationContext } from '../../context/NotificationContext'
 
 
-const currentUser = decodeUser()
-
 const fetchPoApi = async (pageNumber, pageSize, search) => {
   const res = await apiClient.get(`Receiving/GetAllAvailablePoWithPaginationOrig?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${search}`)
   return res.data

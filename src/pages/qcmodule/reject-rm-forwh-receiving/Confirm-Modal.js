@@ -34,7 +34,7 @@ const ConfirmModal = ({ qcReceivingId, fetchReject, isOpen, onClose, fetchNotifi
       const res = apiClient.put(`Receiving/WarehouseConfirmRejectbyQc/${qcReceivingId}`, 
       {
         qcReceivingId,
-        rejectedBy: currentUser.userName
+        rejectedBy: currentUser.fullName
       }
       ).then(res => {
         ToastComponent("Succes!", "Rejected Raw Material has been confirmed", "success", toast)

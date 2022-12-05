@@ -32,7 +32,7 @@ const toast = useToast()
             const res = apiClient.put(`Receiving/ApproveNearlyExpire/${receivingId}`,
                 {
                     id: receivingId,
-                    expiryApproveBy: currentUser.username
+                    expiryApproveBy: currentUser.fullName
                 }
             ).then((res) => {
                 ToastComponent("Success!", "Nearly Expired Raw Material Approved", "success", toast)

@@ -82,7 +82,7 @@ const EditModalReject = ({ isOpen, onClose, transformId, setTransformId, editDat
                 version: "",
                 batch: "",
                 quantity: "",
-                addedBy: currentUser.userName
+                addedBy: currentUser.fullName
             }
             // formData: {
             //     transformId: transformId,
@@ -93,7 +93,7 @@ const EditModalReject = ({ isOpen, onClose, transformId, setTransformId, editDat
             //     version: editData.version,
             //     batch: editData.batch,
             //     quantity: editData.quantity,
-            //     addedBy: currentUser.userName
+            //     addedBy: currentUser.fullName
             // }
         }
     })
