@@ -51,7 +51,7 @@ export const WarehouseReceivingHistory = ({ dateFrom, dateTo, sample, setSheetDa
   return (
     <Flex w='full' flexDirection='column'>
       <Flex border='1px'>
-        <PageScrollReusable minHeight='802px' maxHeight='820px'>
+        <PageScrollReusable minHeight='800px' maxHeight='820px'>
           <Table size='sm'>
             <Thead bgColor='secondary'>
               <Tr>
