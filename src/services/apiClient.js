@@ -20,10 +20,11 @@ export default axios.create({
 // export default axios.create({
 //     baseURL: "http://10.10.13.16:45458/api/",
 //     headers: {
-//         "Content-type": "application/json",
+//         "Content-Type": "application/json",
 //         "Authorization": 'Bearer '+user?.token
 //     }
 // })
+
 
 
 
@@ -43,8 +44,20 @@ export default axios.create({
 // export default axios.create({
 //     baseURL: "http://10.10.2.31:82/api/",
 //     headers: {
-//         "Content-type": "application/json",
+//         "Content-Type": "application/json",
 //         "Authorization": 'Bearer '+user?.token
 //     }
 // })
 
+
+
+
+//Depot Version
+
+// export default axios.create({
+//     baseURL: "http://10.10.2.6:8002/api",
+//     headers: {
+//         "Content-Type": "application/json",
+//         "Authorization": 'Bearer '+user?.token
+//     }
+// })
