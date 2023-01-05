@@ -33,7 +33,7 @@ export const ActionButton = ({ selectorId, setSelectorId, totalQuantity, custome
                     >
                         Save
                     </Button>
-                    <Button colorScheme='red' px={3} onClick={cancelHandler}>Cancel All</Button>
+                    <Button colorScheme='red' px={3} disabled={miscData.length === 0 || isLoading || hideButton} onClick={cancelHandler}>Cancel All</Button>
                 </ButtonGroup>
             </Flex>
 

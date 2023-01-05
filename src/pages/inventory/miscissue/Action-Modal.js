@@ -41,9 +41,9 @@ export const AddConfirmation = ({ isOpen, onClose, closeAddModal, details, setDe
                         expirationDate: '',
                         quantity: ''
                     })
+                    fetchActiveMiscIssues()
                     setWarehouseId('')
                     setIsLoading(false)
-                    fetchActiveMiscIssues()
                     onClose()
                     closeAddModal()
                 })
