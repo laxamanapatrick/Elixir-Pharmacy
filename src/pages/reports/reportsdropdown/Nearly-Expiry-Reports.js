@@ -30,7 +30,7 @@ export const NearlyExpiryReports = ({ expiryDays, setSheetData }) => {
                         'Received Date': moment(item.receiveDate).format('yyyy-MM-DD'),
                         'Manufacturing Date': moment(item.manufacturingDate).format('yyyy-MM-DD'),
                         'Expiration Date': moment(item.expirationDate).format('yyyy-MM-DD'),
-                        'Expiration Days': item.expirationDays,
+                        'Expiration Days': ((new Date(item?.expirationDate) - new Date()) / (24 * 60 * 60 * 1000)).toLocaleString(undefined, { maximumFractionDigits: 0, minimumFractionDigits: 0 }),
                         'Received By': item.receivedBy
                     }
                 })
@@ -45,6 +45,8 @@ export const NearlyExpiryReports = ({ expiryDays, setSheetData }) => {
             setNearlyExpireData([])
         }
     }, [expiryDays])
+
+
 
     return (
         <Flex w='full' flexDirection='column'>
@@ -94,7 +96,8 @@ export const NearlyExpiryReports = ({ expiryDays, setSheetData }) => {
                                                 <> */}
                                         <Td>{item.manufacturingDate}</Td>
                                         <Td>{item.expirationDate}</Td>
-                                        <Td>{item.expirationDays}</Td>
+                                        {/* <Td>{item.expirationDays}</Td> */}
+                                        <Td>{((new Date(item?.expirationDate) - new Date()) / (24 * 60 * 60 * 1000)).toLocaleString(undefined, { maximumFractionDigits: 0, minimumFractionDigits: 0 })}</Td>
                                         <Td>{item.receivedBy}</Td>
                                         {/* </>
                                         } */}
