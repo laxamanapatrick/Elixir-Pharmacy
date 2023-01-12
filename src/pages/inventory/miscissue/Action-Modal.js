@@ -143,7 +143,6 @@ export const SaveConfirmation = ({ isOpen, onClose, totalQuantity, details, cust
                                             expirationDate: '',
                                             quantity: ''
                                         })
-                                        setIsLoading(false)
                                         setHideButton(false)
                                     })
                             } catch (error) {
@@ -152,6 +151,7 @@ export const SaveConfirmation = ({ isOpen, onClose, totalQuantity, details, cust
                         }
 
                     })
+                    setIsLoading(false)
                     .catch(err => {
                         ToastComponent("Error", "Information was not saved", "error", toast)
                         setIsLoading(false)
