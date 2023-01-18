@@ -5,7 +5,9 @@ import PageScrollReusable from '../../../components/PageScroll-Reusable'
 import moment from 'moment'
 
 const fetchMoveOrderHistoryApi = async (dateFrom, dateTo) => {
-  const res = await apiClient.get(`Report/MoveOrderHistory?dateFrom=${dateFrom}&dateTo=${dateTo}`)
+  const datePlusOne = new Date(dateTo)
+  const dateToDaya = moment(datePlusOne?.setDate(datePlusOne?.getDate() + 1)).format("YYYY-MM-DD")
+  const res = await apiClient.get(`Report/MoveOrderHistory?dateFrom=${dateFrom}&dateTo=${dateToDaya}`)
   return res.data
 }
 
