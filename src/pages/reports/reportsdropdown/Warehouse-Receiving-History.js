@@ -48,6 +48,8 @@ export const WarehouseReceivingHistory = ({ dateFrom, dateTo, sample, setSheetDa
     }
   }, [dateFrom, dateTo, sample])
 
+  console.log(warehouseData)
+
   return (
     <Flex w='full' flexDirection='column'>
       <Flex border='1px'>
