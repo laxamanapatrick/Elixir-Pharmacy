@@ -96,7 +96,7 @@ const ImportPoPage = () => {
       billed: item.qty_billed,
       uom: item.uom,
       unitPrice: item.unit_price,
-      vendorName: item.vendor_name.trimEnd(),
+      vendorName: item.vendor_name?.trimEnd(),
       addedBy: currentUser.fullName
     }
 
