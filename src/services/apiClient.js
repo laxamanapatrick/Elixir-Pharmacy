@@ -26,36 +26,10 @@ export default axios.create({
 // })
 
 
-
-
-//
-
-
-
-
-
-
-
-
-
-
 // Live
 
 // export default axios.create({
 //     baseURL: "http://10.10.2.31:82/api/",
-//     headers: {
-//         "Content-Type": "application/json",
-//         "Authorization": 'Bearer '+user?.token
-//     }
-// })
-
-
-
-
-//Depot Version
-
-// export default axios.create({
-//     baseURL: "http://10.10.2.6:8002/api",
 //     headers: {
 //         "Content-Type": "application/json",
 //         "Authorization": 'Bearer '+user?.token

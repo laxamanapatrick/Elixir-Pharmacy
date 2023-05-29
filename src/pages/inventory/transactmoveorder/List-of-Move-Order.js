@@ -41,6 +41,7 @@ export const ListofMoveOrder = ({ moveOrderList, setMoveOrderInformation, moveOr
       farmCode: item.farmCode,
       orderNoPKey: item.orderNoPKey,
       isApprove: item.isApproved,
+      preparedDate: moment(item.preparedDate).format('yyyy-MM-DD'),
       preparedBy: currentUser?.fullName
     }
   })
@@ -62,6 +63,7 @@ export const ListofMoveOrder = ({ moveOrderList, setMoveOrderInformation, moveOr
       farmCode: data.farmCode,
       orderNoPKey: data.orderNoPKey,
       isApprove: data.isApproved,
+      preparedDate: moment(data.preparedDate).format('yyyy-MM-DD'),
       preparedBy: currentUser?.fullName
     }
     if (e.target.checked) {
