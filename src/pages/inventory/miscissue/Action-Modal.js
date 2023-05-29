@@ -95,7 +95,7 @@ export const AddConfirmation = ({ isOpen, onClose, closeAddModal, details, setDe
 }
 
 export const SaveConfirmation = ({ isOpen, onClose, totalQuantity, details, customerData, setTotalQuantity,
-    miscData, fetchActiveMiscIssues, isLoading, setIsLoading, customerRef, setDetails, setRawMatsInfo, setHideButton, remarks, setRemarks, remarksRef
+    miscData, fetchActiveMiscIssues, isLoading, setIsLoading, customerRef, setDetails, setRawMatsInfo, setHideButton, remarks, setRemarks, remarksRef, transactionDate
 }) => {
 
     const toast = useToast()
@@ -111,7 +111,8 @@ export const SaveConfirmation = ({ isOpen, onClose, totalQuantity, details, cust
                     totalQuantity: totalQuantity,
                     preparedBy: currentUser.fullName,
                     remarks: remarks,
-                    details: details
+                    details: details,
+                    transactionDate: transactionDate
                 }
                 )
                     .then(res => {

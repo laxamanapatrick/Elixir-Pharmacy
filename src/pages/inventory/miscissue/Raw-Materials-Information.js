@@ -5,7 +5,8 @@ import moment from 'moment'
 import apiClient from '../../../services/apiClient'
 
 export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, details, setDetails, customerRef,
-    customers, rawMats, uoms, expiryDates, setSelectorId, setCustomerData, setWarehouseId, warehouseId, fetchActiveMiscIssues, customerData, remarks, setRemarks, remarksRef
+    customers, rawMats, uoms, expiryDates, setSelectorId, setCustomerData, setWarehouseId, warehouseId, fetchActiveMiscIssues, customerData, remarks, setRemarks, remarksRef,
+    transactionDate, setTransactionDate
 }) => {
 
     const { isOpen: isModal, onClose: closeModal, onOpen: openModal } = useDisclosure()
@@ -65,6 +66,10 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, details, 
         }
     }
 
+    const newDate = new Date();
+    const maxTransactionDate = moment(newDate).format("yyyy-MM-DD");
+    const minTransactionDate = moment(newDate.setDate(newDate.getDate() - 7)).format("yyyy-MM-DD")
+
     return (
         <Flex justifyContent='center' flexDirection='column' w='full'>
             <VStack w='full' spacing={6}>
@@ -121,6 +126,18 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, details, 
                             <Text w='full' border='1px' borderColor='gray.200' py={1.5}>{rawMatsInfo.customer ? rawMatsInfo.customer : 'Select a customer'}</Text>
                         </HStack>
 
+                        {/* Transaction Date */}
+                        <HStack w="full">
+                            <Text minW="50%" w="auto"bgColor="secondary" color="white" pl={2} pr={10} py={2.5} fontSize="xs">Transaction Date: </Text>
+                            <Input
+                                onChange={(e) => setTransactionDate(e.target.value)}
+                                min={minTransactionDate}
+                                max={maxTransactionDate}
+                                type="date"
+                                bgColor="#fff8dc"
+                            />
+                            </HStack>
+
                     </VStack>
 
                 </Flex>
@@ -139,7 +156,7 @@ export const RawMaterialsInformation = ({ rawMatsInfo, setRawMatsInfo, details, 
                 <Flex w='full' justifyContent='end' mt={4}>
                     <Button
                         onClick={() => openModal()}
-                        disabled={!rawMatsInfo.customer || !details || !remarks}
+                        disabled={!rawMatsInfo.customer || !details || !remarks || !transactionDate}
                         size='xs' colorScheme='blue'
                     >
                         New

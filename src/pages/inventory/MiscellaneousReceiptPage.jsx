@@ -53,6 +53,7 @@ const MiscellaneousReceiptPage = () => {
   })
   const [details, setDetails] = useState('')
   const [remarks, setRemarks] = useState('')
+  const [transactionDate, setTransactionDate] = useState('')
 
   const [listDataTempo, setListDataTempo] = useState([])
   const [selectorId, setSelectorId] = useState('')
@@ -184,6 +185,7 @@ const MiscellaneousReceiptPage = () => {
                 setSupplierData={setSupplierData}
                 supplierRef={supplierRef}
                 remarks={remarks} setRemarks={setRemarks} remarksRef={remarksRef}
+                transactionDate={transactionDate} setTransactionDate={setTransactionDate}
               />
               {
                 listDataTempo.length > 0 ?
@@ -209,6 +211,7 @@ const MiscellaneousReceiptPage = () => {
                       //cancel key
                       rowIndex={rowIndex}
                       remarks={remarks} setRemarks={setRemarks} remarksRef={remarksRef}
+                      transactionDate={transactionDate}
                     />
                   </>
                   : ''

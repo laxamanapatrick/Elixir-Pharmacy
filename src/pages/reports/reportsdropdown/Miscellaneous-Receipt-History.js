@@ -69,8 +69,9 @@ export const MiscellaneousReceiptHistory = ({ dateFrom, dateTo, sample, setSheet
                     :
                     <>
                       <Th color='white'>Expiration Date</Th>
-                      <Th color='white'>Transact By</Th>
+                      <Th color='white'>Date Input</Th>
                       <Th color='white'>Transaction Date</Th>
+                      <Th color='white'>Transact By</Th>
                     </>
                 }
               </Tr>
@@ -96,8 +97,9 @@ export const MiscellaneousReceiptHistory = ({ dateFrom, dateTo, sample, setSheet
                         :
                         <>
                           <Td>{item.expirationDate}</Td>
-                          <Td>{item.transactBy}</Td>
                           <Td>{moment(item.transactDate).format('yyyy-MM-DD')}</Td>
+                          <Td>{moment(item.transactionDate).format('yyyy-MM-DD')}</Td>
+                          <Td>{item.transactBy}</Td>
                         </>
                     }
                   </Tr>

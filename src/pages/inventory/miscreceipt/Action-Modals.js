@@ -73,7 +73,7 @@ export const AddConfirmation = ({ isOpen, onClose, closeAddModal, details, setDe
 }
 
 export const SaveConfirmation = ({ isOpen, onClose, listDataTempo, setListDataTempo, supplierData, totalQuantity, supplierRef, setDetails, setRawMatsInfo,
-  remarks, setRemarks, remarksRef }) => {
+  remarks, setRemarks, remarksRef, transactionDate }) => {
 
   const [isLoading, setIsLoading] = useState(false)
   const toast = useToast()
@@ -86,7 +86,8 @@ export const SaveConfirmation = ({ isOpen, onClose, listDataTempo, setListDataTe
       totalQuantity: totalQuantity,
       details: listDataTempo[0]?.description,
       remarks: listDataTempo[0]?.remarks,
-      preparedBy: currentUser?.fullName
+      preparedBy: currentUser?.fullName,
+      transactionDate: transactionDate
     }
 
     if (totalQuantity > 0) {

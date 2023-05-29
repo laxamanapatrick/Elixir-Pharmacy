@@ -71,8 +71,9 @@ export const MiscellaneousIssueHistory = ({ dateFrom, dateTo, sample, setSheetDa
                     :
                     <>
                       <Th color='white'>Expiration Date</Th>
-                      <Th color='white'>Transact By</Th>
+                      <Th color='white'>Date Input</Th>
                       <Th color='white'>Transaction Date</Th>
+                      <Th color='white'>Transact By</Th>
                     </>
                 }
               </Tr>
@@ -98,8 +99,9 @@ export const MiscellaneousIssueHistory = ({ dateFrom, dateTo, sample, setSheetDa
                         :
                         <>
                           <Td>{item.expirationDate}</Td>
-                          <Td>{item.transactBy}</Td>
                           <Td>{moment(item.transactDate).format('yyyy-MM-DD')}</Td>
+                          <Td>{moment(item.transactionDate).format('yyyy-MM-DD')}</Td>
+                          <Td>{item.transactBy}</Td>
                         </>
                     }
                   </Tr>

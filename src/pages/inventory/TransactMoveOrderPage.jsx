@@ -82,6 +82,8 @@ const TransactMoveOrderPage = ({ notification, fetchNotification }) => {
   const maxDate = moment(newDate).format('yyyy-MM-DD')
   const minDate = moment(newDate.setDate(newDate.getDate() - 7)).format('yyyy-MM-DD')
 
+  console.log(moveOrderList, checkedItems)
+
   return (
     <>
       <Flex w='full' justifyContent='space-between' flexDirection='column'>

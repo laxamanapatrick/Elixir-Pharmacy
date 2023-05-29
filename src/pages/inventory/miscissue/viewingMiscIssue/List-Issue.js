@@ -141,7 +141,7 @@ export const ListofIssues = () => {
                                 <Th color='white'>Customer Code</Th>
                                 <Th color='white'>Customer Name</Th>
                                 <Th color='white'>Total Quantity</Th>
-                                <Th color='white'>Transaction Date</Th>
+                                <Th color='white'>Date Input</Th>
                                 <Th color='white'>Transacted By</Th>
                                 <Th color='white'>View</Th>
                                 {/* <Th color='white'>Change status</Th> */}

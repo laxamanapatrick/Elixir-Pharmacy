@@ -72,11 +72,12 @@ export const MoveOrderTransactionHistory = ({ dateFrom, dateTo, sample, setSheet
                       <Th color='white'>Category</Th>
                       <Th color='white'>Quantity</Th>
                       <Th color='white'>Batch Number</Th>
+                      <Th color='white'>Expiration Date</Th>
                     </>
                     :
                     <>
-                      <Th color='white'>Expiration Date</Th>
                       <Th color='white'>Transaction Type</Th>
+                      {/* <Th color='white'>Prepared Date</Th> */}
                       <Th color='white'>Move Order Date</Th>
                       <Th color='white'>Move Order By</Th>
                       <Th color='white'>Status</Th>
@@ -103,11 +104,12 @@ export const MoveOrderTransactionHistory = ({ dateFrom, dateTo, sample, setSheet
                           <Td>{item.category}</Td>
                           <Td>{item.quantity}</Td>
                           <Td>{item.batchNo}</Td>
+                          <Td>{item.expirationDate ? moment(item.expirationDate).format('yyyy-MM-DD') : ''}</Td>
                         </>
                         :
                         <>
-                          <Td>{item.expirationDate ? moment(item.expirationDate).format('yyyy-MM-DD') : ''}</Td>
                           <Td>{item.transactionType}</Td>
+                          {/* <Td>{item.moveOrderDate ? moment(item.preparedDate).format('yyyy-MM-DD'): ''}</Td> */}
                           <Td>{item.moveOrderDate ? moment(item.moveOrderDate).format('yyyy-MM-DD'): ''}</Td>
                           <Td>{item.moveOrderBy}</Td>
                           <Td>{item.transactedDate ? 'Transacted' : 'For Transaction'}</Td>
