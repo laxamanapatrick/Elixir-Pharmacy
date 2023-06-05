@@ -105,7 +105,7 @@ export const ReceivedRMList = () => {
             UOM: item?.uom,
             SOH: item?.soh,
             "Expiry Date": moment(item?.expirationDate).format(
-              "DD/MM/yyyy"
+              "ll"
             ),
           };
         })

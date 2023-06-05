@@ -219,7 +219,7 @@ const AvailableBarcodeModal = ({ isOpen, onClose, availableBarcode, setWarehouse
                                 <Tbody>
                                     {availableBarcode?.map(items =>
 
-                                        items.actualGood <= 0 ? '' :
+                                        items.soh <= 0 ? '' :
 
                                             <Tr
                                                 key={items.id}
@@ -227,7 +227,7 @@ const AvailableBarcodeModal = ({ isOpen, onClose, availableBarcode, setWarehouse
                                                 <Td>{items.id}</Td>
                                                 <Td>{items.itemCode}</Td>
                                                 <Td>{items.itemDescription}</Td>
-                                                <Td>{items.actualGood}</Td>
+                                                <Td>{items.soh}</Td>
                                                 <Td>{items.expirationDay}</Td>
                                                 <Td
                                                     color={items.expirationDay <= 0 ? 'red' : ''}
