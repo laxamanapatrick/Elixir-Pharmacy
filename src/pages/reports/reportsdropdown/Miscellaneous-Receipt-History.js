@@ -25,6 +25,7 @@ export const MiscellaneousReceiptHistory = ({ dateFrom, dateTo, sample, setSheet
             'Supplier Code': item.supplierCode,
             'Supplier Name': item.supplierName,
             'Details': item.details,
+            'Descripiton': item.description ? item.description : "",
             'Item Code': item.itemCode,
             'Item Description': item.itemDescription,
             'UOM': item.uom,
@@ -60,6 +61,7 @@ export const MiscellaneousReceiptHistory = ({ dateFrom, dateTo, sample, setSheet
                   buttonChanger ?
                     <>
                       <Th color='white'>Details</Th>
+                      <Th color='white'>Description</Th>
                       <Th color='white'>Item Code</Th>
                       <Th color='white'>Item Description</Th>
                       <Th color='white'>UOM</Th>
@@ -88,6 +90,7 @@ export const MiscellaneousReceiptHistory = ({ dateFrom, dateTo, sample, setSheet
                         ?
                         <>
                           <Td>{item.details}</Td>
+                          <Td>{item.description ? item.description : ""}</Td>
                           <Td>{item.itemCode}</Td>
                           <Td>{item.itemDescription}</Td>
                           <Td>{item.uom}</Td>
