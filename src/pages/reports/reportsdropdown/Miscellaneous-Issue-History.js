@@ -44,8 +44,8 @@ export const MiscellaneousIssueHistory = ({
             "Issue ID": item.orderId,
             "Customer Code": item.customerCode,
             "Customer Name": item.customerName,
-            Details: item.details,
-            Description: item.description ? item.description : "",
+            Remarks: item.remarks ? item.remarks : "",
+            Details: item.details ? item.details : "",
             "Item Code": item.itemCode,
             "Item Description": item.itemDescription,
             UOM: item.uom,
@@ -79,8 +79,8 @@ export const MiscellaneousIssueHistory = ({
                 <Th color="white">Customer Name</Th>
                 {buttonChanger ? (
                   <>
+                    <Th color="white">Remarks</Th>
                     <Th color="white">Details</Th>
-                    <Th color="white">Description</Th>
                     <Th color="white">Item Code</Th>
                     <Th color="white">Item Description</Th>
                     <Th color="white">UOM</Th>
@@ -105,8 +105,8 @@ export const MiscellaneousIssueHistory = ({
                   <Td>{item.customerName}</Td>
                   {buttonChanger ? (
                     <>
-                      <Td>{item.details}</Td>
-                      <Td>{item.description ? item.description : ""}</Td>
+                      <Td>{item.remarks ? item.remarks : ""}</Td>
+                      <Td>{item.details ? item.details : ""}</Td>
                       <Td>{item.itemCode}</Td>
                       <Td>{item.itemDescription}</Td>
                       <Td>{item.uom}</Td>
