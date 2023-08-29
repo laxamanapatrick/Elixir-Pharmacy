@@ -42,6 +42,7 @@ export const TransformationReportHistory = ({
           transformId: item.transformId,
           itemCode: item.itemCode,
           itemDescription: item.itemDescription,
+          actualQuantity: item.actualQuantity,
           totalQuantity: item.totalQuantity,
           version: item.version,
           batch: item.batch,
@@ -66,6 +67,7 @@ export const TransformationReportHistory = ({
             "Item Description": item.itemDescription,
             "Version": item.version,
             "Batch": item.batch,
+            "Actual Quantity": item.actualQuantity,
             "Total Quantity": item.totalQuantity,
             "Planning Date": moment(item.planningDate).format("yyyy-MM-DD"),
             "Date Transformed": moment(item.dateTransformed).format(
@@ -94,6 +96,7 @@ export const TransformationReportHistory = ({
       transformId: item.transformId,
       itemCode: item.itemCode,
       itemDescription: item.itemDescription,
+      actualQuantity: item.actualQuantity,
       totalQuantity: item.totalQuantity,
       version: item.version,
       batch: item.batch,
@@ -120,6 +123,7 @@ export const TransformationReportHistory = ({
                 <Th color="white">Version</Th>
                 <Th color="white">Batch</Th>
                 <Th color="white">Total Quantity</Th>
+                <Th color="white">Actual Quantity</Th>
                 <Th color="white">Planning Date</Th>
                 <Th color="white">Date Transformed</Th>
                 <Th color="white">Category</Th>
@@ -134,6 +138,7 @@ export const TransformationReportHistory = ({
                   <Td>{item.version}</Td>
                   <Td>{item.batch}</Td>
                   <Td>{item.totalQuantity}</Td>
+                  <Td>{item.actualQuantity}</Td>
                   <Td>
                     {item.planningDate
                       ? moment(item.planningDate).format("yyyy-MM-DD")
